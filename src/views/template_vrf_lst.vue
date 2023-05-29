@@ -286,7 +286,7 @@
   <!-----------------------------------------------------------modal Add Order Manual--->
   <div class="container py-2">
     <div class="py-2">
-      <form @submit.prevent="addManualOrder" enctype="multipart/form-data" id="form1">
+      <form @submit.prevent="addManualVRF" enctype="multipart/form-data" id="form1">
         <div class="modal fade" id="myModalNew">
           <div class="modal-dialog modalcustom">
             <div class="modal-content">
@@ -316,16 +316,42 @@
                       </thead>
                       <tbody>
                         <tr v-for="data, index in rowData" :key="data.Id">
-                          <td scope="col" class="colwidth5" v-html="data.tbDateF"></td>
-                          <td scope="col" class="colwidth5" v-html="data.tbDateT"></td>
-                          <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center;"
-                            v-html="data.tbFullName"></td>
-                          <td scope="col" class="colwidth10" v-html="data.ddlvehicle_brand"></td>
-                          <td scope="col" class="colwidth10" v-html="data.tbVehicle_Registration"></td>
-                          <td scope="col" class="colwidth10" v-html="data.ddlvehicle_color"></td>
-                          <td scope="col" class="colwidth25" style="text-align: center;" v-html="data.tbGardNo"></td>
-                          <td scope="col" class="colwidth10"><span @click="deleteData(index)" style="cursor: pointer;"><i
-                                class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>&nbsp;|&nbsp;<span
+                          <td scope="col" class="colwidth5">
+                            <!--How to create 2 calendar with range -->
+                            <datepicker  class="form-control" v-model="data.tbDateF" style="width:7rem;" inputFormat="dd/MM/yyyy" />
+                            <!-- <datepicker  class="form-control" v-model="rowData.tbDateF" style="width:7rem;" inputFormat="dd/MM/yyyy" /> -->
+                          </td>
+                          <td scope="col" class="colwidth5">
+                            <datepicker  class="form-control" v-model="data.tbDateT" style="width:7rem;" inputFormat="dd/MM/yyyy" />
+                            <!-- <datepicker  class="form-control" v-model="rowData.tbDateT" style="width:7rem;" inputFormat="dd/MM/yyyy" /> -->
+
+                          </td>
+                          <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center;">
+                            <input type="text" class="form-control" style="width: 20rem; display: inline-block;"
+                              v-model="data.tbFullName" />
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <select class="form-select form-select-sm" v-model="data.ddlvehicle_brand">
+                              <option v-for="option in data_ddl.vehicle_brand" :value="option.id" :key="option.id">{{
+                                option.vehicle_brand }}</option>
+                            </select>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <input type="text" class="form-control" style="width: 10rem; display: inline-block;"
+                              v-model="data.tbVehicle_Registration" />
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <select class="form-select form-select-sm" v-model="data.ddlvehicle_color">
+                              <option v-for="option in data_ddl.vehicle_color" :value="option.id" :key="option.id">{{
+                                option.vehicle_color }}</option>
+                            </select>
+                          </td>
+                          <td scope="col" class="colwidth25" style="text-align: center;">
+                            <input type="text" class="form-control" style="width: 20rem; display: inline-block;"
+                              v-model="data.tbGardNo" /> 
+                          </td>
+                          <td scope="col" class="colwidth10"><span @click="deleteData(index)" style="cursor: pointer;">
+                              <i class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>&nbsp;|&nbsp;<span
                               @click.prevent="addItem()" class="text-decoration-none text-gray fs-7"
                               style="cursor: pointer"><i class="fa fa-plus-circle align-middle" /></span></td>
                         </tr>
@@ -349,14 +375,14 @@
                       ชื่อแม่แบบ:
                     </div>
                     <div class="col">
-                      <input type="text" id="template_name" class="form-control" style="width:15rem;" v-model="NewVrf.template_name" />
+                      <input type="text" id="template_name" class="form-control" style="width:15rem;"
+                        v-model="NewVrf.template_name" />
                     </div>
                     <div class="col">
                       เหตุผลในการเข้าพบ:
-                    </div>                    
+                    </div>
                     <div class="col">
-                      <input type="text" id="reason" class="form-control" style="width:15rem;"
-                        v-model="NewVrf.reason" />
+                      <input type="text" id="reason" class="form-control" style="width:15rem;" v-model="NewVrf.reason" />
                     </div>
                     <div class="col">
                       ชื่อบริษัทผู้มาติดต่อ:
@@ -370,22 +396,20 @@
                     <div class="col">
                       ผู้ร้องขอ:
                     </div>
-                    <div class="col">                      
-                      <VueMultiselect  name="requestor" id="requestor" :options="data_ddl.userlist"
+                    <div class="col">
+                      <VueMultiselect name="requestor" id="requestor" :options="data_ddl.userlist"
                         class="form-select form-select-sm p-0" label="first_name" :style="{
                           width: '15rem'
                           , height: '0.5rem'
-                        }" 
-                        v-model="NewVrf.requestor" :select-label="null" :allow-empty="true" :close-on-select="true"
-                        :value="user_id" track-by="user_id"
-                        placeholder="เลือก" :deselectLabel=null>
+                        }" v-model="NewVrf.requestor" :select-label="null" :allow-empty="true" :close-on-select="true"
+                        :value="user_id" track-by="user_id" placeholder="เลือก" :deselectLabel=null>
                       </VueMultiselect>
                     </div>
                     <div class="col">
                       ตำแหน่งผู้ร้องขอ:
                     </div>
                     <div class="col">
-                        <!-- <select id="requestor_position" class="form-select form-select-sm" style="width:15rem;"
+                      <!-- <select id="requestor_position" class="form-select form-select-sm" style="width:15rem;"
                         v-model="NewVrf.requestor_position">                        
                         <option selected="selected" value=""></option>
                         <option v-for="data in NewOrder.BankTypeData" :key="data.customerID" :value="data.customerID"
@@ -394,29 +418,25 @@
                           }}
                         </option> 
                       </select>   -->
-                      <VueMultiselect  name="requestor_position" id="requestor_position" :options="data_ddl.position"
+                      <VueMultiselect name="requestor_position" id="requestor_position" :options="data_ddl.position"
                         class="form-select form-select-sm p-0" label="position" :style="{
                           width: '15rem'
                           , height: '0.5rem'
-                        }" 
-                        v-model="NewVrf.requestor_position" :select-label="null" :allow-empty="true" :close-on-select="true"
-                        :value="id" track-by="id"
-                        placeholder="เลือก" :deselectLabel=null>
-                      </VueMultiselect>                    
+                        }" v-model="NewVrf.requestor_position" :select-label="null" :allow-empty="true"
+                        :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
+                      </VueMultiselect>
                     </div>
                     <div class="col">
                       แผนกผู้ร้องขอ:
                     </div>
-                    <div class="col">   
-                      <VueMultiselect  name="requestor_dept" id="requestor_dept" :options="data_ddl.dept"
+                    <div class="col">
+                      <VueMultiselect name="requestor_dept" id="requestor_dept" :options="data_ddl.dept"
                         class="form-select form-select-sm p-0" label="department" :style="{
                           width: '15rem'
                           , height: '0.5rem'
-                        }" 
-                        v-model="NewVrf.requestor_dept" :select-label="null" :allow-empty="true" :close-on-select="true"
-                        :value="id" track-by="id"
-                        placeholder="เลือก" :deselectLabel=null>
-                      </VueMultiselect>                 
+                        }" v-model="NewVrf.requestor_dept" :select-label="null" :allow-empty="true"
+                        :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
+                      </VueMultiselect>
                     </div>
                   </div>
                   <div class="row p-2">
@@ -431,30 +451,26 @@
                       ชื่อผู้นำพา:
                     </div>
                     <div class="col">
-                      <VueMultiselect  name="navigator" id="navigator" :options="data_ddl.navigator"
+                      <VueMultiselect name="navigator" id="navigator" :options="data_ddl.navigator"
                         class="form-select form-select-sm p-0" label="fullname" :style="{
                           width: '15rem'
                           , height: '0.5rem'
-                        }" 
-                        v-model="NewVrf.navigator" :select-label="null" :allow-empty="true" :close-on-select="true"
-                        :value="user_id" track-by="user_id"
-                        placeholder="เลือก" :deselectLabel=null>
-                      </VueMultiselect> 
+                        }" v-model="NewVrf.navigator" :select-label="null" :allow-empty="true" :close-on-select="true"
+                        :value="user_id" track-by="user_id" placeholder="เลือก" :deselectLabel=null>
+                      </VueMultiselect>
                     </div>
                     <div class="col">
                       พื้นที่เข้าพบ:
                     </div>
                     <div class="col">
-                      <VueMultiselect  name="area" id="area" :options="data_ddl.area"
+                      <VueMultiselect name="area" id="area" :options="data_ddl.area"
                         class="form-select form-select-sm p-0" label="meeting_area" :style="{
                           width: '15rem'
                           , height: '0.5rem'
-                        }" 
-                        v-model="NewVrf.area" :select-label="null" :allow-empty="true" :close-on-select="true"
-                        :value="id" track-by="id"
-                        placeholder="เลือก" :deselectLabel=null>
-                      </VueMultiselect> 
-                    </div>                    
+                        }" v-model="NewVrf.area" :select-label="null" :allow-empty="true" :close-on-select="true"
+                        :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
+                      </VueMultiselect>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -786,9 +802,13 @@ import { defineComponent, reactive, ref, computed, watch } from "vue";
 import TableLite from "../components/TableLite.vue";
 import { useRouter } from 'vue-router'
 import Datepicker from 'vue3-datepicker'
+
 import VueMultiselect from 'vue-multiselect'
 import Loading from "../components/Loading.vue";
 import Alert_popup from "../components/Alert_popup.vue";
+
+
+
 
 // var user_id = localStorage.getItem('user_id')
 // console.log(user_id)
@@ -797,19 +817,23 @@ export default defineComponent({
   components: {
     Alert_popup,
     Loading, TableLite, Sidebar
-    , Header, collapsed, toggleSidebar, sidebarWidth, Datepicker, VueMultiselect
+    , Header, collapsed, toggleSidebar, sidebarWidth
+    ,  VueMultiselect
+    , Datepicker  
   },
-  setup() {
-    // const order_status = ref(null)
-    const data_ddl = reactive({ 
+  setup() { 
+    const data_ddl = reactive({
       userlist: [],
-      position:[],
-      dept:[],
-      navigator:[],
-      meeting_area:[],
-      area:[]
+      position: [],
+      dept: [],
+      navigator: [],
+      meeting_area: [],
+      area: [],
+      vehicle_brand: [],
+      vehicle_color: [],
+
     })
-    const userlist = ref(null)   
+    const userlist = ref(null)
     const NewVrf = reactive({
       template_name: "",
       reason: "",
@@ -858,7 +882,24 @@ export default defineComponent({
     const gfc_cct_code = ref(localStorage.getItem('gfc_cct_code'))
     const RoleId = ref(localStorage.getItem('RoleId'))
     const router = useRouter()
-    const rowData = reactive([])
+    //const rowData = reactive([])
+    const rowData = ref([
+        {
+        //   tbDateF: null
+        //    ,tbDateT: null
+        //    ,tbName: ''
+        //    ,tbSname: ''
+        //    ,tbFullName: ''
+        //    ,tbSname: ''
+        //    ,tbVehicle_Registration:''
+        //    ,ddlvehicle_brand: ''
+        //    ,ddlvehicle_color:''
+        //    ,minDate: null,
+        // maxDate: null,
+        // isDateDisabled: (date) => false, // Initialize function to disable no date
+        // // Other data...
+       }
+    ]);
     const loading = ref(false)
     const AdvSearch = reactive({
       order_no: "",
@@ -987,6 +1028,7 @@ export default defineComponent({
         }
       }
     };
+
     //-----check session
     hasLocalStorage.value = window.localStorage.getItem('user_id');
     if ((hasLocalStorage.value === 'null') || (hasLocalStorage.value === null) || (hasLocalStorage.value === '')) {
@@ -1009,7 +1051,7 @@ export default defineComponent({
       let message_ = ''
       type__ === 'cancel' ? message_ = 'คุณต้องการยกเลิกรายการอนุมัติที่เลือกไว้ ?' : message_ = 'คุณต้องการส่งอนุมัติรายการคำสั่งที่เลือกไว้ ?'
       alert_popup_message_inside.value = message_
-    }
+    }    
     const gettemplatefile = async (value) => {
       let filename = ''
       value === 'Deposit' ? filename = 'BranchtoCCTTemplate_deposit.xls' : filename = 'CCTToBranchTemplate_withdraw.xls'
@@ -1440,11 +1482,14 @@ export default defineComponent({
         approve_setting_id: localStorage.getItem('approve_setting_id'),
         approve_setting_version: localStorage.getItem('approve_setting_version')
       };
-      
-      await axios.get(process.env.VUE_APP_API_URL + '/get_dept', { params: { division_id: localStorage.getItem('user_division_id')
-    ,branch_id: localStorage.getItem('user_branch_id')
-    } })
-        .then((res) => { 
+
+      await axios.get(process.env.VUE_APP_API_URL + '/get_dept', {
+        params: {
+          division_id: localStorage.getItem('user_division_id')
+          , branch_id: localStorage.getItem('user_branch_id')
+        }
+      })
+        .then((res) => {
           data_ddl.dept = res.data
           // console.log('get_user data: ', res.data)
         }, (res) => {
@@ -1452,9 +1497,9 @@ export default defineComponent({
           console.log(res.data.message)
           console.log('console.log( res.data.message ): ', console.log(res.data.message))
           // ActitySelectd.branchtobranch
-        });  
+        });
       await axios.get(process.env.VUE_APP_API_URL + '/get_position')
-        .then((res) => { 
+        .then((res) => {
           data_ddl.position = res.data
           // console.log('get_user data: ', res.data)
         }, (res) => {
@@ -1462,48 +1507,53 @@ export default defineComponent({
           console.log(res.data.message)
           console.log('console.log( res.data.message ): ', console.log(res.data.message))
           // ActitySelectd.branchtobranch
-        }); 
+        });
       await axios.get(process.env.VUE_APP_API_URL + '/get_user', { params: { department_id: localStorage.getItem('user_department_id') } })
-      .then((res) => { 
-        data_ddl.userlist = res.data
-        // console.log('get_user data: ', res.data)
-      }, (res) => {
-        // error callback          
-        console.log(res.data.message)
-        console.log('console.log( res.data.message ): ', console.log(res.data.message))
-        // ActitySelectd.branchtobranch
-      });      
+        .then((res) => {
+          data_ddl.userlist = res.data
+          // console.log('get_user data: ', res.data)
+        }, (res) => {
+          // error callback          
+          console.log(res.data.message)
+          console.log('console.log( res.data.message ): ', console.log(res.data.message))
+          // ActitySelectd.branchtobranch
+        });
       await axios.get(process.env.VUE_APP_API_URL + '/get_navigator', { params: { user_id: localStorage.getItem('user_id') } })
-      .then((res) => { 
-        data_ddl.navigator = res.data
-        // console.log('get_user data: ', res.data)
-      }, (res) => {
-        // error callback          
-        console.log(res.data.message)
-        console.log('console.log( res.data.message ): ', console.log(res.data.message))
-        // ActitySelectd.branchtobranch
-      });       
+        .then((res) => {
+          data_ddl.navigator = res.data
+          // console.log('get_user data: ', res.data)
+        }, (res) => {
+          // error callback          
+          console.log(res.data.message)
+          console.log('console.log( res.data.message ): ', console.log(res.data.message))
+          // ActitySelectd.branchtobranch
+        });
       await axios.get(process.env.VUE_APP_API_URL + '/get_meeting_area', { params: { user_id: localStorage.getItem('user_id') } })
-      .then((res) => { 
-        data_ddl.area = res.data
-        // console.log('get_user data: ', res.data)
-      }, (res) => {
-        // error callback          
-        console.log(res.data.message)
-        console.log('console.log( res.data.message ): ', console.log(res.data.message))
-        // ActitySelectd.branchtobranch
-      });  
-      // const res = await axios.get(process.env.VUE_APP_API_URL + '/orderlist', { params })
-      //   .then((res) => {
-      //     Data_.value = JSON.parse(JSON.stringify(res.data))
-      //     console.log("myRequest Data_: ", Data_)
-      //     Data_.value.forEach(function (value) {
-      //       console.log('Data_.value.forEach(function (value) : ', value);
-      //     });
-      //   }, (res) => {
-      //     // error callback
-      //     console.log(res.data)
-      //   })
+        .then((res) => {
+          data_ddl.area = res.data
+          // console.log('get_user data: ', res.data)
+        }, (res) => {
+          // error callback          
+          console.log(res.data.message)
+          console.log('console.log( res.data.message ): ', console.log(res.data.message))
+          // ActitySelectd.branchtobranch
+        });
+
+      await axios.get(process.env.VUE_APP_API_URL + '/get_vehicle_brand')
+        .then((res) => {
+          // success callback     
+          data_ddl.vehicle_brand = res.data
+        }, (res) => {
+          // error callback          
+        });
+
+      await axios.get(process.env.VUE_APP_API_URL + '/get_vehicle_color')
+        .then((res) => {
+          // success callback     
+          data_ddl.vehicle_color = res.data
+        }, (res) => {
+          // error callback          
+        });
       return await new Promise((resolve, reject) => {
         try {
           table.isLoading = true;
@@ -2333,8 +2383,8 @@ export default defineComponent({
           console.log(res.data.message)
         });
     }
-    // const addManualOrder = async () => {
-    const addManualOrder = () => {
+    // const addManualVRF = async () => {
+    const addManualVRF = () => {
       const formData = new FormData()
       formData.append('OrderCategoryNew', NewOrder.OrderCategoryNew)
       formData.append('OrderTypeNew', NewOrder.OrderTypeNew)
@@ -2443,11 +2493,25 @@ export default defineComponent({
       let val = (value / 1)
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     }
-
     const addItem = async () => {
       Id.value++
+      rowData.value.push({
+        tbDateF: null
+        , tbDateT: null
+        , tbName: ''
+        , tbSname: ''
+        , tbFullName: ''
+        , tbSname: ''
+        , tbVehicle_Registration: ''
+        , ddlvehicle_brand: ''
+        , ddlvehicle_color: ''
+      });
+    }
+
+     const addItem2 = async () => {
+      Id.value++
       let tbDateF = ""
-      tbDateF = "<input type='text' id='tbDateF_" + Id.value + "' class='datepicker' style='width:5rem;' inputFormat='dd/MM/yyyy' />"
+      tbDateF = "<datepicker id='tbDateF_" + Id.value + "' class='datepicker' style='width:5rem;' inputFormat='dd/MM/yyyy' />"
       let tbDateT = ""
       tbDateT = "<datepicker id='tbDateT_" + Id.value + "' class='form-control' style='width:5rem;' inputFormat='dd/MM/yyyy' />"
       let tbName = ""
@@ -2510,8 +2574,8 @@ export default defineComponent({
       rowData.push(my_object)
     }
     const deleteData = (index) => {
-      console.log( index )
-      rowData.splice( index, 1 )
+      console.log(index)
+      rowData.value.splice(index, 1)
       Id.value--
     }
     const editOrder = async () => {
@@ -2571,7 +2635,7 @@ export default defineComponent({
         message_editOrder.value = "Something went wrong: " + err
         error_editOrder.value = true
       }
-    }
+    }    
     return { 
       data_ddl,
       userlist,
@@ -2589,7 +2653,7 @@ export default defineComponent({
       , OrderDataExisting, getBranchAndCashEdit
       , editOrder, formatPrice, router, format_date, sendFile, selectFile, file, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder
       , OrderCategory, OrderType, BankType, JobDate, getBranchForCash
-      , user_id, department_id, position_id, CustomerID, gfc_cct, formatdate_show, formatPrice_noFixed, addItem, deleteData, addManualOrder, NewOrder, DownloadLink
+      , user_id, department_id, position_id, CustomerID, gfc_cct, formatdate_show, formatPrice_noFixed, addItem, deleteData, addManualVRF, NewOrder, DownloadLink
       , getBranchAndCash, getBranchOrCashCen, calamount, rowData, Id
       , calamount_orderEdit, sendApprove, checkstatus_send_to_checker, getBankTypeData
     }
@@ -2619,11 +2683,13 @@ export default defineComponent({
   width: 120rem;
   text-align: center;
 }
+
 .colwidth10 {
   width: 10%;
   /* กำหนดความกว้างของโมดัลเป็น 800px */
   text-align: center;
 }
+
 .colwidth25 {
   width: 25%;
   /* กำหนดความกว้างของโมดัลเป็น 800px */
@@ -2750,5 +2816,6 @@ export default defineComponent({
     display: block;
     background-color: #eee;
     width: 80px;
-  } */</style>
+  } */
+</style>
   
