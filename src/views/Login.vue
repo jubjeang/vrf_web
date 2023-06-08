@@ -148,6 +148,7 @@ export default {
                           localStorage.setItem('user_department_id', userdata[0].department_id)                          
                           localStorage.setItem('user_department', userdata[0].department)
                           localStorage.setItem('user_position', userdata[0].position)
+                          localStorage.setItem('user_positin_id', userdata[0].positin_id)
                           localStorage.setItem('user_role', userdata[0].role)
                           localStorage.setItem('user_role_id', userdata[0].role_id)
                           localStorage.setItem('user_work_flow_id', userdata[0].work_flow_id)
