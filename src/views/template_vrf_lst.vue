@@ -13,9 +13,9 @@
       </div>
     </div>
     <div class="row p-1" style="width: 100%">
-      <div class="col d-flex justify-content-end">
-        <h4 data-bs-target="#myModalNew" data-bs-toggle="modal" class="text-decoration-none text-gray fs-5"
-          style="cursor: pointer">สร้างแม่แบบ</h4>
+      <div class="col d-flex justify-content-end">&nbsp;
+        <!-- <h4 data-bs-target="#myModalNew" data-bs-toggle="modal" class="text-decoration-none text-gray fs-5"
+          style="cursor: pointer">สร้างแม่แบบ</h4> -->
       </div>
     </div>
     <div class="row p-0" style="width: 100%">
@@ -27,6 +27,10 @@
       </div>
       <div class="col-10">
         <div style="text-align: right">
+          
+
+          <span data-bs-target="#myModalNew" data-bs-toggle="modal" style="cursor: pointer">สร้างแม่แบบ</span>&nbsp;|&nbsp;
+          
           <label><span style="cursor: pointer;" data-bs-target="#ModalAdvSearch"
               data-bs-toggle="modal">ค้นหาขั้นสูง</span>&nbsp;|&nbsp;ค้นหาโดย:</label>&nbsp;&nbsp;<input
             v-model="searchTerm" />
@@ -831,7 +835,6 @@ export default defineComponent({
       BankTypeData: [],
     })
     const Id = ref(0)
-    const searchdata = ref([]);
     const ActitySelectd = reactive({
       branchtocash: 0,
       cashtocash: 0,
