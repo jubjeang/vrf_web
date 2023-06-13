@@ -800,9 +800,6 @@ import Datepicker from 'vue3-datepicker'
 import VueMultiselect from 'vue-multiselect'
 import Loading from "../components/Loading.vue";
 import Alert_popup from "../components/Alert_popup.vue";
-
-// var user_id = localStorage.getItem('user_id')
-// console.log(user_id)
 export default defineComponent({
   name: 'ListOrder',
   components: {
@@ -1801,7 +1798,6 @@ export default defineComponent({
                   OrderDataExisting.OrderType = obj[0].servicetype
                   OrderDataExisting.RefNo = obj[0].refno
                   OrderDataExisting.JobDate = new Date(obj[0].order_date)
-                  // OrderDataExisting.JobDate =  obj[0].order_date
                   OrderDataExisting.BranchOriginText = obj[0].branchorigin_name
                   OrderDataExisting.BranchOriginId = obj[0].branchorigin_code
                   OrderDataExisting.BranchDestText = obj[0].branchdest_name
@@ -2602,8 +2598,7 @@ export default defineComponent({
       console.log(index)
       rowData.splice(index, 1)
     }
-    const editOrder = async () => {
-
+    const editOrder = async () => { 
       const formData = new FormData()
       formData.append('orderId', OrderDataExisting.orderId)
       formData.append('OrderCategory', OrderDataExisting.OrderCategory)
