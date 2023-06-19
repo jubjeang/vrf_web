@@ -21,8 +21,8 @@
     <div class="row p-0" style="width: 100%">
       <div class="col-2 ps-4" style="text-align: left">
         <button type="button" class="btn btn-danger" style="width:5rem; height:2rem"
-          @click="update_vrftatus_all('cancel')">ยกเลิก</button><!--&nbsp;
-        <button class="btn btn-primary" @click="update_vrftatus_all('send_to_check')"
+          @click="update_vrfstatus_all('cancel')">ยกเลิก</button><!--&nbsp;
+        <button class="btn btn-primary" @click="update_vrfstatus_all('send_to_check')"
           style="width: 5rem; height: 2rem;">ส่งอนุมัติ</button> -->
       </div>
       <div class="col-10">
@@ -730,17 +730,7 @@ export default defineComponent({
       navigator: '',
       area: '',
     })
-    // const VRF_error = reactive({
-    //   template_name: '',
-    //   reason: '',
-    //   contactor: '',
-    //   requestor: '',
-    //   requestor_position: '',
-    //   requestor_dept: '',
-    //   requestor_phone: '',
-    //   navigator: '',
-    //   area: '',
-    // })
+
     const data_ddl_edt = reactive({
       userlist: [],
       position: [],
@@ -773,12 +763,12 @@ export default defineComponent({
       navigator: "",
       area: "",
     })
-    const update_vrftatus_param = reactive({
+    const update_vrfstatus_param = reactive({
       Id: 0,
       Type_: ""
     })
     const alert_popup_message_inside = ref('')
-    const update_vrftatus_all_type = ref('')
+    const update_vrfstatus_all_type = ref('')
     const isOpen_alert_popup = ref(false)
     const function_selected = ref('')
     const Alert_popup = ref(false)
@@ -788,7 +778,6 @@ export default defineComponent({
     const fileInput = ref(null);
 
     //upload data    
-    const file = ref(File | null)//ref('')
     const error = ref(false)
     const checkstatus_send_to_checker = ref(false)
     const error_addManual = ref(false)
@@ -796,10 +785,6 @@ export default defineComponent({
     const message = ref('')
     const message_addManual = ref('')
     const message_editOrder = ref('')
-    const OrderCategory = ref('BankBranch')
-    const OrderType = ref('')
-    const BankType = ref('')
-    const DownloadLink = ref('')
     const today = new Date();
     const tomorrow = new Date(today);
     const JobDate = ref(new Date(today.getDay() === 5 ? tomorrow.setDate(today.getDate() + 3) : tomorrow.setDate(today.getDate() + 1)))
@@ -820,19 +805,6 @@ export default defineComponent({
     const VueMultiselect_ = reactive({
       BranchOriginBG_Color: "",
       BranchDestBG_Color: ""
-    })
-    const NewOrder = reactive({
-      OrderCategoryNew: "BankBranch",
-      OrderTypeNew: "",
-      BankTypeNew: "",
-      JobDateNew: new Date(today.getDay() === 5 ? tomorrow.setDate(today.getDate() + 3) : tomorrow.setDate(today.getDate() + 1)),
-      RefNo: "",
-      RemarkNew: "",
-      DataBranchToOrigin: [],
-      DataBranchToDest: [],
-      BranchOrigin: "",
-      BranchDest: "",
-      BankTypeData: [],
     })
     const Id = ref(0)
     const ActitySelectd = reactive({
@@ -913,10 +885,10 @@ export default defineComponent({
       }
     }
     const confirmDialog = async () => {
-      if (function_selected.value === "update_vrftatus_all") {
+      if (function_selected.value === "update_vrfstatus_all") {
         const params = {
           Id: selecteall.value,
-          Type_: update_vrftatus_all_type.value,
+          Type_: update_vrfstatus_all_type.value,
           user_id: user_id.value
         }
         setTimeout(() => {
@@ -927,7 +899,7 @@ export default defineComponent({
           table.isLoading = true;
           loading.value = true;
           loading.value = false;
-          await axios.get(process.env.VUE_APP_API_URL + '/update_vrftatus_all', { params })
+          await axios.get(process.env.VUE_APP_API_URL + '/update_vrfstatus_all', { params })
             .then((res) => {
               // success callback
               let obj = JSON.parse(JSON.stringify(res.data))
@@ -943,21 +915,21 @@ export default defineComponent({
         catch (err) {
           console.log(err)
         }
-      }//if (function_selected.value === "update_vrftatus_all") {
-      if (function_selected.value === "update_vrftatus") {
+      }//if (function_selected.value === "update_vrfstatus_all") {
+      if (function_selected.value === "update_vrfstatus") {
         setTimeout(() => {
           // table.isLoading = false;
           loading.value = true
         }, 500)
         loading.value = false
         const params = {
-          Id: update_vrftatus_param.Id,
-          Type_: update_vrftatus_param.Type_,
+          Id: update_vrfstatus_param.Id,
+          Type_: update_vrfstatus_param.Type_,
           user_id: user_id.value
         };
         try {
           loading.value = true;
-          await axios.get(process.env.VUE_APP_API_URL + '/update_vrftatus', { params })
+          await axios.get(process.env.VUE_APP_API_URL + '/update_vrfstatus', { params })
             .then((res) => {
               // success callback
               let obj = JSON.parse(JSON.stringify(res.data))
@@ -1032,370 +1004,16 @@ export default defineComponent({
     if ((hasLocalStorage.value === 'null') || (hasLocalStorage.value === null) || (hasLocalStorage.value === '')) {
       router.push('/')
     }
-    //-----end check session
-    const handleFileChange = () => {
-      const file = fileInput.value.files[0];
-      // console.log('file: ', file);
-      // Do something with the selected file
-    }
-    const update_vrftatus_all = (type__) => {
+    const update_vrfstatus_all = (type__) => {
 
       isOpen_alert_popup.value = true;
-      function_selected.value = "update_vrftatus_all"
-      update_vrftatus_all_type.value = type__
+      function_selected.value = "update_vrfstatus_all"
+      update_vrfstatus_all_type.value = type__
       // console.log('isOpen_alert_popup.value before: ', isOpen_alert_popup.value)
       // handle confirmation logic here
       let message_ = ''
       type__ === 'cancel' ? message_ = 'คุณต้องการยกเลิกแม่แบบใบขอเข้าพื้นที่ที่เลือกไว้ ?' : message_ = 'คุณต้องการส่งอนุมัติรายการคำสั่งที่เลือกไว้ ?'
       alert_popup_message_inside.value = message_
-    }
-    const gettemplatefile = async (value) => {
-      let filename = ''
-      value === 'Deposit' ? filename = 'BranchtoCCTTemplate_deposit.xls' : filename = 'CCTToBranchTemplate_withdraw.xls'
-      let formData = new FormData()
-      formData.append('type', value)
-      formData.append('responseType', 'blob')
-      var object = {}
-      formData.forEach((value, key) => object[key] = value)
-      var json = JSON.stringify(object)
-      await axios.post(process.env.VUE_APP_API_URL + '/gettemplatefile', json, { responseType: 'blob', charset: 'Windows-874', responseEncodig: 'UTF-8' }).then(function (response) {
-        const url = URL.createObjectURL(new Blob([response.data], { type: 'application/vnd.ms-excel;charset=Windows-874' }))
-        const link = document.createElement('a')
-        link.href = url
-        link.setAttribute(
-          'download',
-          filename
-        )
-        document.body.appendChild(link)
-        link.click()
-      }); // Please catch me!
-    }
-    const getBranchForCash = async (value, ddltype) => {
-      // console.log('getBranchForCash value: ', value.branch_name, 'branch: ', ddltype, 'value: ', value)
-      if (ddltype === "BranchDest") {
-        NewOrder.BranchOrigin = value
-      }
-      if (ddltype === "BranchOrigin") {
-        NewOrder.BranchDest = value
-      }
-      const params = {
-        CustomerID: CustomerID.value,
-        CCT: value.branch_name,
-        user_id: user_id.value
-      };
-      if (NewOrder.OrderCategoryNew !== "BOT") {
-        if (NewOrder.OrderTypeNew === "Withdraw") {
-          await axios.get(process.env.VUE_APP_API_URL + '/getbranchforcash', { params })
-            .then((res) => {
-              // success callback           
-              if (ddltype === 'BranchDest') {
-                NewOrder.DataBranchToDest = res.data
-                // console.log('NewOrder.DataBranchToDest: ', NewOrder.DataBranchToDest)
-                //Withdraw                
-                VueMultiselect_.BranchDestBG_Color = "ffffff"//A9B7C7
-              }
-            }, (res) => {
-              // error callback
-              console.log(res.data)
-            })
-        }
-        if (NewOrder.OrderTypeNew === "Deposit") {
-          await axios.get(process.env.VUE_APP_API_URL + '/getbranchforcash', { params })
-            .then((res) => {
-              // success callback           
-              if (ddltype === 'BranchOrigin') {
-                NewOrder.DataBranchToOrigin = res.data
-                VueMultiselect_.BranchOriginBG_Color = "ffffff"//A9B7C7         
-              }
-            }, (res) => {
-              // error callback
-              console.log(res.data)
-            });
-        }
-      }
-    }
-    const getOrderType = async (e) => {
-      getBranchAndCash()
-    }
-    const getBranchAndCash = () => {
-      Alert_popup.value = false
-      NewOrder.DataBranchToOrigin = []
-      NewOrder.DataBranchToDest = []
-      if (NewOrder.OrderTypeNew === "Withdraw")//------------------Withdraw
-      {
-        if (NewOrder.OrderCategoryNew === "BOT") {//------------------BOT
-          if (ActitySelectd.bottocash === '0') {
-            alert('ไม่มีสิทธิให้ประเภทบริการฝาก ธปท-ศูนย์เงินสด ได้')
-            // Alert_popup.value = true
-            // Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ธปท-ศูนย์เงินสด ได้'
-            document.getElementById("OrderTypeNew").value = ""
-            NewOrder.OrderTypeNew = "";
-          }
-          else {
-            getBranchOrCashCen('bot', 'BranchOrigin', 'Add')
-            getBranchOrCashCen('cct', 'BranchDest', 'Add')
-            document.getElementById("BranchOrigin").disabled = true
-            document.getElementById("BranchDest").disabled = false
-            VueMultiselect_.BranchOriginBG_Color = "ffffff"//A9B7C7
-            VueMultiselect_.BranchDestBG_Color = "ffffff"//A9B7C7
-
-          }
-        }//------------------End BOT
-        if (NewOrder.OrderCategoryNew === "BankBranch") {
-          if (ActitySelectd.cashtobranch === '0') {
-            // Alert_popup.value = true
-            // Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-สาขา ได้' 
-            alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-สาขา ได้')
-            document.getElementById("OrderTypeNew").value = ""
-            NewOrder.OrderTypeNew = "";
-          }
-          else {
-            getBranchOrCashCen('cashtobranch', 'BranchOrigin', 'Add')
-            document.getElementById("BranchOrigin").disabled = false
-            document.getElementById("BranchDest").disabled = true
-            VueMultiselect_.BranchOriginBG_Color = "ffffff"//A9B7C7
-            VueMultiselect_.BranchDestBG_Color = "A9B7C7"//A9B7C7
-          }
-        }
-      }
-      if (NewOrder.OrderTypeNew === "Deposit") {//------------------Deposit
-        if (NewOrder.OrderCategoryNew === "BOT") {//------------------BOT
-          if (ActitySelectd.cashtobot === '0') {
-            // Alert_popup.value = true
-            // Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-ธปท ได้'
-            alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-ธปท ได้')
-            document.getElementById("OrderTypeNew").value = ""
-            NewOrder.OrderTypeNew = "";
-          }
-          else {
-            getBranchOrCashCen('cct', 'BranchOrigin', 'Add')
-            getBranchOrCashCen('bot', 'BranchDest', 'Add')
-            document.getElementById("BranchOrigin").disabled = false
-            document.getElementById("BranchDest").disabled = false
-            VueMultiselect_.BranchOriginBG_Color = "ffffff"//A9B7C7
-            VueMultiselect_.BranchDestBG_Color = "ffffff"//A9B7C7
-          }
-        }//------------------End BOT
-        if (NewOrder.OrderCategoryNew === "BankBranch") {
-          if (ActitySelectd.branchtocash === '0') {
-            // Alert_popup.value = true
-            // Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก สาขา-ศูนย์เงินสด ได้'
-            alert('ไม่มีสิทธิให้ประเภทบริการฝาก สาขา-ศูนย์เงินสด ได้')
-            document.getElementById("OrderTypeNew").value = ""
-            NewOrder.OrderTypeNew = "";
-          }
-          else {
-            getBranchOrCashCen('cashtobranch', 'BranchDest', 'Add')
-            document.getElementById("BranchOrigin").disabled = true
-            document.getElementById("BranchDest").disabled = false
-            VueMultiselect_.BranchOriginBG_Color = "A9B7C7"//A9B7C7
-            VueMultiselect_.BranchDestBG_Color = "ffffff"//A9B7C7
-          }
-        }
-      }
-      if (NewOrder.OrderTypeNew === "") {
-        document.getElementById("BranchOrigin").disabled = false
-        document.getElementById("BranchDest").disabled = false
-        VueMultiselect_.BranchOriginBG_Color = "ffffff"//A9B7C7
-        VueMultiselect_.BranchDestBG_Color = "ffffff"//A9B7C7
-      }
-    }
-    const getBranchOrCashCen = async (servicetype, ddltype, gettype) => {
-      let type_ = ''
-      type_ = NewOrder.OrderCategoryNew
-      const params = {
-        CustomerID: CustomerID.value,
-        user_id: user_id.value,
-        type_: type_
-      };
-
-      if ((servicetype === 'cct') || (servicetype === 'cashtobranch')) {
-        await axios.get(process.env.VUE_APP_API_URL + '/getcashcenterdata', { params })
-          .then((res) => {
-            // success callback 
-            if (gettype === 'Add') {
-              ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
-            }
-            if (gettype === 'Edit') {
-              ddltype === 'BranchOrigin' ? templete_vrf_Existing.DataBranchToOrigin = res.data : templete_vrf_Existing.DataBranchToDest = res.data
-            }
-          }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          });
-      }
-      //---------------------------------------------      
-      if (servicetype === 'bot') {
-        await axios.get(process.env.VUE_APP_API_URL + '/getbotbranch', { params })
-          .then((res) => {
-            // success callback  
-            if (gettype === 'Add') {
-              ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
-            }
-            if (gettype === 'Edit') {
-              ddltype === 'BranchOrigin' ? templete_vrf_Existing.DataBranchToOrigin = res.data : templete_vrf_Existing.DataBranchToDest = res.data
-            }
-          }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          });
-      }
-      //--------------------------------------------- 
-      if (servicetype === 'branchtocash') {
-        await axios.get('/getbranchdata', { params })
-          .then((res) => {
-            // success callback    
-            if (gettype === 'Add') {
-              ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
-            }
-            if (gettype === 'Edit') {
-              ddltype === 'BranchOrigin' ? templete_vrf_Existing.DataBranchToOrigin = res.data : templete_vrf_Existing.DataBranchToDest = res.data
-            }
-          }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          });
-      }
-      //--------------------------------------------
-    }
-    const getBranchAndCashEdit = () => {
-      templete_vrf_Existing.DataBranchToOrigin = []
-      templete_vrf_Existing.DataBranchToDest = []
-      if (templete_vrf_Existing.OrderCategory === 'BankBranch') {
-        if (templete_vrf_Existing.OrderType === "Withdraw") {
-          getBranchOrCashCenEdit('cashtobranch', 'BranchOrigin')
-          getBranchOrCashCenEdit('branchtocash', 'BranchDest')
-        }
-        if (templete_vrf_Existing.OrderType === "Deposit") {
-          getBranchOrCashCenEdit('branchtocash', 'BranchOrigin')
-          getBranchOrCashCenEdit('cashtobranch', 'BranchDest')
-        }
-      }
-      if (templete_vrf_Existing.OrderCategory === 'BOT') {
-        if (templete_vrf_Existing.OrderType === "Withdraw") {
-          getBranchOrCashCen('bot', 'BranchOrigin', 'Edit')
-          getBranchOrCashCen('cct', 'BranchDest', 'Edit')
-        }
-        if (templete_vrf_Existing.OrderType === "Deposit") {
-          getBranchOrCashCen('cct', 'BranchOrigin', 'Edit')
-          getBranchOrCashCen('bot', 'BranchDest', 'Edit')
-        }
-      }
-    }
-    const getBranchOrCashCenEdit = async (servicetype, ddltype) => {
-      let type_ = ''
-      type_ = templete_vrf_Existing.OrderCategory//NewOrder.OrderCategoryNew
-      const params = {
-        CustomerID: CustomerID.value,
-        user_id: user_id.value,
-        type_: type_
-      };
-      if (servicetype === 'branchtocash') {
-        await axios.get(process.env.VUE_APP_API_URL + '/getbranchdata', { params })
-          .then((res) => {
-            // success callback           
-            ddltype === 'BranchOrigin' ? templete_vrf_Existing.DataBranchToOrigin = res.data : templete_vrf_Existing.DataBranchToDest = res.data
-          }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          });
-      }
-      //--------------------------------------------
-      if (servicetype === 'cashtobranch') {
-        // const params = {
-        //   CustomerID: CustomerID.value
-        // };
-        await axios.get(process.env.VUE_APP_API_URL + '/getcashcenterdata', { params })
-          .then((res) => {
-            // success callback
-            ddltype === 'BranchOrigin' ? templete_vrf_Existing.DataBranchToOrigin = res.data : templete_vrf_Existing.DataBranchToDest = res.data
-          }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          });
-      }
-    }
-    const sendFile = (e) => {
-      // console.log( moment( JobDate.value ).format('YYYY-MM-DD') )
-      const target = e.target
-      if (target && target.files) {
-        file.value = target.files[0];
-      }
-      //document.getElementById('formFileText').value = formFile.value.files[0];
-      let formData = new FormData()
-      formData.append('file', file.value)
-      formData.append('OrderCategory', OrderCategory.value)
-      formData.append('OrderType', OrderType.value)
-      formData.append('BankType', BankType.value)
-      formData.append('JobDate', moment(JobDate.value).format('YYYY-MM-DD'))
-      formData.append('gfc_cct', gfc_cct.value)
-      formData.append('gfc_cct_code', gfc_cct_code.value)
-      formData.append('user_id', user_id.value)
-      formData.append('CustomerID', CustomerID.value)
-      formData.append('approve_setting_id', localStorage.getItem('approve_setting_id'))
-      formData.append('approve_setting_version', localStorage.getItem('approve_setting_version'))
-
-      formData.append('roleid', 0)
-      formData.forEach(element => console.log(element))
-      try {
-        axios.post(process.env.VUE_APP_API_URL + '/upload', formData)
-          .then((res) => {
-            // success callback
-
-            document.getElementById('ClosemyModal').click();
-            // router.push('/listorder')
-            location.reload()
-          }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          });
-        message.value = "File has been upload"
-        file.value = ""
-        error.value = false
-      }
-      catch (err) {
-        console.log(err)
-        message.value = "Something went wrong"
-        error.value = true
-      }
-    }
-    const sendApprove = async (e) => {
-      // alert( templete_vrf_Existing.orderId )
-      if (confirm("คุณต้องการส่งอนุมัติรายการคำสั่ง ?")) {
-        const params = {
-          Id: templete_vrf_Existing.orderId,
-          Type_: 'send_to_check',
-          user_id: user_id.value
-
-        };
-
-        try {
-          await axios.get(process.env.VUE_APP_API_URL + '/update_vrftatus', { params })
-            .then((res) => {
-              // success callback
-              let obj = JSON.parse(JSON.stringify(res.data))
-              // router.push('/listorder')
-              location.reload()
-              // addEditItem
-            }, (res) => {
-              // error callback
-              console.log(res.data)
-            }).finally(() => {
-              //
-            });
-        }
-        catch (err) {
-          console.log(err)
-        }
-      }
-    }
-    const selectFile = (e) => {
-      // file.value = this.$refs.file.files[0]
-      file.value = e.target.files[0]
-      document.getElementById('formFileText').value = e.target.files[0]['name']
-      //headline.value.textContent
-      error.value = false
-      message.value = ""
     }
     const format_date = (date_) => {
       // console.log('date_: ' + date_)
@@ -1636,10 +1254,10 @@ export default defineComponent({
       Array.prototype.forEach.call(elements, function (element) {
         if (element.classList.contains("rejectorder")) {
           element.addEventListener("click", async function () {
-            update_vrftatus_param.Id = this.dataset.id
-            update_vrftatus_param.Type_ = 'reject'
+            update_vrfstatus_param.Id = this.dataset.id
+            update_vrfstatus_param.Type_ = 'reject'
             isOpen_alert_popup.value = true;
-            function_selected.value = "update_vrftatus"
+            function_selected.value = "update_vrfstatus"
             // handle confirmation logic here
             let message_ = ''
             message_ = 'คุณต้องการยกเลิกรายการขอเข้าพื้นที่?'
@@ -1648,10 +1266,10 @@ export default defineComponent({
         }
         if (element.classList.contains("cancelvrf")) {
           element.addEventListener("click", async function () {
-            update_vrftatus_param.Id = this.dataset.id
-            update_vrftatus_param.Type_ = 'cancel'
+            update_vrfstatus_param.Id = this.dataset.id
+            update_vrfstatus_param.Type_ = 'cancel'
             isOpen_alert_popup.value = true;
-            function_selected.value = "update_vrftatus"
+            function_selected.value = "update_vrfstatus"
             // handle confirmation logic here
             let message_ = ''
             message_ = 'คุณต้องการยกเลิกรายการขอเข้าพื้นที่?'
@@ -2158,17 +1776,15 @@ export default defineComponent({
       isOpen_alert_popup,
       Alert_popup_message,
       Alert_popup,
-      fileInput,
-      handleFileChange,
-      update_vrftatus_all,
-      loading, gettemplatefile, VueMultiselect_, selected, options, AdvSearch_, AdvSearch, ActitySelectd,
-      searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish, getOrderType
-      , templete_vrf_Existing, getBranchAndCashEdit
-      , editVRF_validateInput, formatPrice, router, format_date, sendFile, selectFile, file, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder
-      , OrderCategory, OrderType, BankType, JobDate, getBranchForCash
-      , user_id, department_id, position_id, formatdate_show, formatPrice_noFixed, addItem, deleteData, addManualVRF, NewOrder, DownloadLink
-      , getBranchAndCash, getBranchOrCashCen, calamount, rowData, Id
-      , calamount_orderEdit, sendApprove, checkstatus_send_to_checker, getBankTypeData
+      fileInput,      
+      update_vrfstatus_all,
+      loading, VueMultiselect_, selected, options, AdvSearch_, AdvSearch, ActitySelectd,
+      searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish 
+      , templete_vrf_Existing
+      , editVRF_validateInput, formatPrice, router, format_date, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder
+      , JobDate
+      , user_id, department_id, position_id, formatdate_show, formatPrice_noFixed, addItem, deleteData, addManualVRF, calamount, rowData, Id
+      , calamount_orderEdit, checkstatus_send_to_checker
     }
   },
 })

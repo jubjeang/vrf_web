@@ -21,14 +21,14 @@
     <div class="row p-0" style="width: 100%">
       <div class="col-2 ps-4" style="text-align: left">
         <button type="button" class="btn btn-danger" style="width:5rem; height:2rem"
-          @click="update_vrftatus_all('cancel')">ยกเลิก</button><!--&nbsp;
-        <button class="btn btn-primary" @click="update_vrftatus_all('send_to_check')"
+          @click="update_vrf_trans_status_all('cancel')">ยกเลิก</button><!--&nbsp;
+        <button class="btn btn-primary" @click="update_vrf_trans_status_all('send_to_check')"
           style="width: 5rem; height: 2rem;">ส่งอนุมัติ</button> -->
       </div>
       <div class="col-10">
         <div style="text-align: right">
-          <span data-bs-target="#myModalNewFromTemplete" data-bs-toggle="modal"
-            style="cursor: pointer">สร้างรายการจากแม่แบบ</span>&nbsp;|&nbsp;
+          <!-- <span data-bs-target="#myModalNew_with_templete" data-bs-toggle="modal"
+            style="cursor: pointer">สร้างรายการจากแม่แบบ</span>&nbsp;|&nbsp; -->
           <span data-bs-target="#myModalNew" data-bs-toggle="modal"
             style="cursor: pointer">สร้างรายการขอเข้าพื้นที่</span>&nbsp;|&nbsp;
           <label><span style="cursor: pointer;" data-bs-target="#ModalAdvSearch"
@@ -47,7 +47,7 @@
     </div>
     <!-- </div> -->
   </div>
-  <!---------------------------------------------------------------Modal AdvSearch--->
+  <!----------------------------------------------------------------------------------------------------------------------------------------------------Modal AdvSearch--->
   <div class="container py-2">
     <div class="py-2">
       <form id="form3">
@@ -147,20 +147,22 @@
       </form>
     </div>
   </div>
-  <!-----------------------------------------------------------modal Add Vrf Manual--->
+  <!-------------------------------------------------------------------------------------------------------------------modal Add Vrf with templete--->
   <div class="container py-2">
     <div class="py-2">
-      <form @submit.prevent="addManualVRF_validateInput" enctype="multipart/form-data" id="form1">
-        <div class="modal fade" id="myModalNew">
+      <form @submit.prevent="addManualVRF_validateInput" id="form1">
+        <div class="modal fade" id="myModalNew_with_templete">
           <div class="modal-dialog modalcustom">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">สร้างแม่แบบรายการขอเข้าพบ</h5>
+                <h5 class="modal-title">สร้างรายการขอเข้าพื้นที่</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                   @click="ClosemyModalNew_"></button>
               </div>
               <div class="modal-body modalcustom">
                 <div class="container modalcustom">
+                  <!---Create by templete------>
+                  
                   <!---Loop Manual New Order------>
                   <div class="row  ms-4 ps-4 pe-3 me-3 modalcustom">
                     <table class="table table-hover modalcustomtb ">
@@ -183,6 +185,7 @@
                         <tr v-for="data, index in rowData" :key="data.Id">
                           <td scope="col" class="colwidth5">
                             <!--How to create 2 calendar with range -->
+                            
                             <datepicker class="form-control" v-model="data.tbDateF" style="width:7rem;"
                               inputFormat="dd/MM/yyyy" @blur="validateInput('tbDateF', index, 'กรุณาใส่วันที่')" />
                             <p class="error-message" v-if="data.errors && data.errors.tbDateF">
@@ -237,9 +240,9 @@
                           </td>
                           <td scope="col" class="colwidth25" style="text-align: center;">
                             <input type="text" class="form-control" style="width: 20rem; display: inline-block;"
-                              v-model="data.tbGardNo" @blur="validateInput('tbGardNo', index, 'กรุณาใส่ข้อมูล')" />
-                            <p class="error-message" v-if="data.errors && data.errors.tbGardNo">
-                              {{ data.errors.tbGardNo }}
+                              v-model="data.tbCardNo" @blur="validateInput('tbCardNo', index, 'กรุณาใส่ข้อมูล')" />
+                            <p class="error-message" v-if="data.errors && data.errors.tbCardNo">
+                              {{ data.errors.tbCardNo }}
                             </p>
                           </td>
                           <td scope="col" class="colwidth10"><span @click="deleteData(index)" style="cursor: pointer;">
@@ -265,18 +268,24 @@
                   </div>
                   <div class="row p-2">
                     <div class="col">
-                      ชื่อแม่แบบ:
+                      พื้นที่เข้าพบ:
                     </div>
                     <div class="col">
-                      <input type="text" id="template_name" class="form-control" style="width:15rem;"
-                        v-model="NewVrf.template_name" />
-                      <p v-if="VRF_error.template_name && !NewVrf.template_name" class="error-message">กรุณากรอกข้อมูล
-                      </p>
+                      <!--can't get id-->
+                      <VueMultiselect name="area" id="area" :options="data_ddl.area"
+                        class="form-select form-select-sm p-0" label="meeting_area" :style="{
+                          width: '15rem'
+                          , height: '0.5rem'
+                        }" v-model="NewVrf.area" :select-label="null" :allow-empty="true" :close-on-select="true"
+                        :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
+                      </VueMultiselect>
+                      <p v-if="VRF_error.area && !NewVrf.area" class="error-message">กรุณาเลือกข้อมูล</p>
                     </div>
                     <div class="col">
                       เหตุผลในการเข้าพบ:
                     </div>
                     <div class="col">
+                      <input type="hidden" v-model="NewVrf.templete_id" />
                       <input type="text" id="reason" class="form-control" style="width:15rem;" v-model="NewVrf.reason" />
                       <p v-if="VRF_error.reason && !NewVrf.reason" class="error-message">กรุณากรอกข้อมูล</p>
                     </div>
@@ -321,12 +330,11 @@
                       แผนกผู้ร้องขอ:
                     </div>
                     <div class="col">
-                      <VueMultiselect name="requestor_dept" id="requestor_dept" :options="data_ddl.dept"
-                        class="form-select form-select-sm p-0" label="department" :style="{
+                      <VueMultiselect :options="data_ddl.dept" label="department" class="form-select form-select-sm p-0" :style="{
                           width: '15rem'
                           , height: '0.5rem'
-                        }" v-model="NewVrf.requestor_dept" :select-label="null" :allow-empty="true"
-                        :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
+                        }" v-model="NewVrf.requestor_dept" :select-label="null" :allow-empty="true" :close-on-select="true"
+                        :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null >
                       </VueMultiselect>
                       <p v-if="VRF_error.requestor_dept && !NewVrf.requestor_dept" class="error-message">
                         กรุณาเลือกข้อมูล</p>
@@ -356,18 +364,13 @@
                       <p v-if="VRF_error.navigator && !NewVrf.navigator" class="error-message">กรุณาเลือกข้อมูล</p>
                     </div>
                     <div class="col">
-                      พื้นที่เข้าพบ:
+                      แนบไฟล์:
                     </div>
-                    <div class="col">
-                      <!--can't get id-->
-                      <VueMultiselect name="area" id="area" :options="data_ddl.area"
-                        class="form-select form-select-sm p-0" label="meeting_area" :style="{
-                          width: '15rem'
-                          , height: '0.5rem'
-                        }" v-model="NewVrf.area" :select-label="null" :allow-empty="true" :close-on-select="true"
-                        :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
-                      </VueMultiselect>
-                      <p v-if="VRF_error.area && !NewVrf.area" class="error-message">กรุณาเลือกข้อมูล</p>
+                    <div class="col text-start">
+                      <label class="input-group-text" for="formFile"
+                        style="width:5rem; height: 0.5rem; display:inline;">เลือกไฟล์</label>
+                      <input type="file" class="form-control" id="formFile" @change="selectFile" style="display: none;">
+                      <input type="text" class="form-control" id="formFileText" style="width:10rem; display:inline;">
                     </div>
                   </div>
                 </div>
@@ -375,7 +378,7 @@
               <div class="modal-footer pt-0 justify-content-center">
                 <div class="align-top pt-1 d-flex justify-content-center">
                   <button class="btn btn-primary" style="width:4rem; height:2rem;">บันทึก</button>
-                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="ClosemyModalNew"
+                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset"
                     style="width:4rem; height:2rem;" id="ClosemyModalNew" @click="ClosemyModalNew_">ยกเลิก</button>
                 </div>
               </div>
@@ -385,10 +388,330 @@
       </form>
     </div>
   </div>
+
+
+
+
+
+
+  <!-------------------------------------------------------------------------------------------------------------------modal Add Vrf Manual--->
+  <div class="container py-2">
+    <div class="py-2">
+      <form @submit.prevent="addManualVRF_validateInput" id="form1">
+        <div class="modal fade" id="myModalNew">
+          <div class="modal-dialog modalcustom">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">สร้างรายการขอเข้าพื้นที่</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                  @click="ClosemyModalNew_"></button>
+              </div>
+              <div class="modal-body modalcustom">
+                <div class="container modalcustom">
+                  <!--------------------------------------------------------------create by templete-->
+                  <div class="row p-2">
+                    <div class="col">
+                      เลือก templete:
+                    </div>
+                    <div class="col">
+                      <!--can't get id-->
+                      <VueMultiselect  :options="data_ddl.templete"
+                        class="form-select form-select-sm p-0" label="template_name" :style="{
+                          width: '15rem'
+                          , height: '0.5rem'
+                        }" v-model="templete_vrf" :select-label="null" :allow-empty="true" :close-on-select="true"
+                        :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null >
+                      </VueMultiselect>
+                      <!-- :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null @click="set_vrf_frm_templete"> 
+                        <p v-if="VRF_error.area && !NewVrf.area" class="error-message">กรุณาเลือกข้อมูล</p> -->
+                    </div>
+                    <div class="col">
+                      &nbsp;
+                    </div>
+                    <div class="col">
+                      &nbsp;
+                    </div>
+                    <div class="col">
+                      &nbsp;
+                    </div>
+                    <div class="col">
+                      &nbsp;
+                    </div>
+                  </div>
+                  <!---Loop Manual New Order------>
+                  <div class="row  ms-4 ps-4 pe-3 me-3 modalcustom">
+                    <table class="table table-hover modalcustomtb ">
+                      <thead>
+                        <tr>
+                          <th scope="col" class="colwidth5">จากวันที่</th>
+                          <th scope="col" class="colwidth5">ถึงวันที่</th>
+                          <th scope="col" class="colwidth25">ชื่อ-นามสกุล</th>
+                          <th scope="col" class="colwidth10">ยี่ห้อรถ</th>
+                          <th scope="col" class="colwidth10">ทะเบียน</th>
+                          <th scope="col" class="colwidth10">สีรถ</th>
+                          <th scope="col" class="colwidth25">หมายเลขบัตร ประชาชน/ใบขับขี่/พนักงาน</th>
+                          <th scope="col" class="colwidth10">ดำเนินการ <span @click.prevent="addItem()"
+                              class="text-decoration-none text-gray fs-7" style="cursor: pointer"><i
+                                class="fa fa-plus-circle align-middle" />
+                            </span></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="data, index in rowData" :key="data.Id">
+                          <td scope="col" class="colwidth5">
+                            <!--How to create 2 calendar with range -->
+                            
+                            <datepicker class="form-control" v-model="data.tbDateF" style="width:7rem;"
+                              inputFormat="dd/MM/yyyy" @blur="validateInput('tbDateF', index, 'กรุณาใส่วันที่')" />
+                            <p class="error-message" v-if="data.errors && data.errors.tbDateF">
+                              {{ data.errors.tbDateF }}
+                            </p>
+                            <!-- <datepicker  class="form-control" v-model="rowData.tbDateF" style="width:7rem;" inputFormat="dd/MM/yyyy" /> -->
+                          </td>
+                          <td scope="col" class="colwidth5">
+                            <datepicker class="form-control" v-model="data.tbDateT" style="width:7rem;"
+                              inputFormat="dd/MM/yyyy" @blur="validateInput('tbDateT', index, 'กรุณาใส่วันที่')" />
+                            <p class="error-message" v-if="data.errors && data.errors.tbDateT">
+                              {{ data.errors.tbDateT }}
+                            </p>
+                            <!-- <datepicker  class="form-control" v-model="rowData.tbDateT" style="width:7rem;" inputFormat="dd/MM/yyyy" /> -->
+
+                          </td>
+                          <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center;">
+                            <input type="text" class="form-control" style="width: 20rem; display: inline-block;"
+                              v-model="data.tbFullName" @blur="validateInput('tbFullName', index, 'กรุณาใส่ข้อมูล')" />
+                            <p class="error-message" v-if="data.errors && data.errors.tbFullName">
+                              {{ data.errors.tbFullName }}
+                            </p>
+
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <select class="form-select form-select-sm" v-model="data.ddlvehicle_brand"
+                              @change="validateInput('ddlvehicle_brand', index, 'กรุณาเลือกยี่ห้อรถ')">
+                              <option v-for="option in data_ddl.vehicle_brand" :value="option.id" :key="option.id">{{
+                                option.vehicle_brand }}</option>
+                            </select>
+                            <p class="error-message" v-if="data.errors && data.errors.ddlvehicle_brand">
+                              {{ data.errors.ddlvehicle_brand }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <input type="text" class="form-control" style="width: 10rem; display: inline-block;"
+                              v-model="data.tbVehicle_Registration"
+                              @blur="validateInput('tbVehicle_Registration', index, 'กรุณาใส่ข้อมูล')" />
+                            <p class="error-message" v-if="data.errors && data.errors.tbVehicle_Registration">
+                              {{ data.errors.tbVehicle_Registration }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <select class="form-select form-select-sm" v-model="data.ddlvehicle_color"
+                              @change="validateInput('ddlvehicle_color', index, 'กรุณาเลือกสีรถ')">
+                              <option v-for="option in data_ddl.vehicle_color" :value="option.id" :key="option.id">{{
+                                option.vehicle_color }}</option>
+                            </select>
+                            <p class="error-message" v-if="data.errors && data.errors.ddlvehicle_color">
+                              {{ data.errors.ddlvehicle_color }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth25" style="text-align: center;">
+                            <input type="text" class="form-control" style="width: 20rem; display: inline-block;"
+                              v-model="data.tbCardNo" @blur="validateInput('tbCardNo', index, 'กรุณาใส่ข้อมูล')" />
+                            <p class="error-message" v-if="data.errors && data.errors.tbCardNo">
+                              {{ data.errors.tbCardNo }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10"><span @click="deleteData(index)" style="cursor: pointer;">
+                              <i class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>&nbsp;|&nbsp;<span
+                              @click.prevent="addItem()" class="text-decoration-none text-gray fs-7"
+                              style="cursor: pointer"><i class="fa fa-plus-circle align-middle" /></span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!---End Loop Manual New Order------>
+                  <div class="row p-2">
+                    <div class="col ps-4 d-flex">
+                      <h5 class="ps-1 text-gray">&nbsp;</h5>
+                    </div>
+                  </div>
+                  <div class="row p-2" v-if="message_addManual">
+                    <div class="col">
+                      <div :class="`alert ${error_addManual ? 'alert-danger' : 'alert-success'}`">{{
+                        message_addManual
+                      }}</div>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col">
+                      พื้นที่เข้าพบ:
+                    </div>
+                    <div class="col">
+                      <select class="form-select form-select-sm" v-model="NewVrf.area" name="area" id="area"
+                        style="width: 15rem; height: 2.5rem;">
+                        <option value=""></option> 
+                        <option v-for="option in data_ddl.area" :value="option.id" :key="option.id">{{
+                          option.meeting_area }}</option>
+                      </select>
+                      <!--can't get id-->
+                      <!-- <VueMultiselect name="area" id="area" :options="data_ddl.area"
+                        class="form-select form-select-sm p-0" label="meeting_area" :style="{
+                          width: '15rem'
+                          , height: '0.5rem'
+                        }" v-model="NewVrf.area" :select-label="null" :allow-empty="true" :close-on-select="true"
+                        :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
+                      </VueMultiselect> -->
+
+                      <p v-if="VRF_error.area && !NewVrf.area" class="error-message">กรุณาเลือกข้อมูล</p>
+                    </div>
+                    <div class="col">
+                      เหตุผลในการเข้าพบ:
+                    </div>
+                    <div class="col">
+                      <input type="hidden" v-model="NewVrf.templete_id" />
+                      <input type="text" id="reason" class="form-control" style="width:15rem;" v-model="NewVrf.reason" />
+                      <p v-if="VRF_error.reason && !NewVrf.reason" class="error-message">กรุณากรอกข้อมูล</p>
+                    </div>
+                    <div class="col">
+                      ชื่อบริษัทผู้มาติดต่อ:
+                    </div>
+                    <div class="col">
+                      <input type="text" id="contactor" class="form-control" style="width:15rem;"
+                        v-model="NewVrf.contactor" />
+                      <p v-if="VRF_error.contactor && !NewVrf.contactor" class="error-message">กรุณากรอกข้อมูล</p>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col">
+                      ผู้ร้องขอ:
+                    </div>
+                    <div class="col">
+                      <select class="form-select form-select-sm" v-model="NewVrf.requestor" name="requestor" id="requestor"
+                        style="width: 15rem; height: 2.5rem;">
+                        <option value=""></option> 
+                        <option v-for="option in data_ddl.userlist" :value="option.user_id" :key="option.user_id">{{
+                          option.first_name }}</option>
+                      </select>
+                      <!-- <VueMultiselect name="requestor" id="requestor" :options="data_ddl.userlist"
+                        class="form-select form-select-sm p-0" label="first_name" :style="{
+                          width: '15rem'
+                          , height: '0.5rem'
+                        }" v-model="NewVrf.requestor" :select-label="null" :allow-empty="true" :close-on-select="true"
+                        :value="user_id" track-by="user_id" placeholder="เลือก" :deselectLabel=null>
+                      </VueMultiselect> -->
+                      <p v-if="VRF_error.requestor && !NewVrf.requestor" class="error-message">กรุณาเลือกข้อมูล</p>
+                    </div>
+                    <div class="col">
+                      ตำแหน่งผู้ร้องขอ:
+                    </div>
+                    <div class="col">
+                      <option value=""></option> 
+                      <select class="form-select form-select-sm" v-model="NewVrf.requestor_position" name="requestor_position" id="requestor_position"
+                        style="width: 15rem; height: 2.5rem;">
+                        <option value=""></option> 
+                        <option v-for="option in data_ddl.position" :value="option.id" :key="option.id">{{
+                          option.position }}</option>
+                      </select>
+                      <!-- <VueMultiselect name="requestor_position" id="requestor_position" :options="data_ddl.position"
+                        class="form-select form-select-sm p-0" label="position" :style="{
+                          width: '15rem'
+                          , height: '0.5rem'
+                        }" v-model="NewVrf.requestor_position" :select-label="null" :allow-empty="true"
+                        :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
+                      </VueMultiselect> -->
+                      <p v-if="VRF_error.requestor_position && !NewVrf.requestor_position" class="error-message">
+                        กรุณาเลือกข้อมูล</p>
+                    </div>
+                    <div class="col">
+                      แผนกผู้ร้องขอ:
+                    </div>
+                    <div class="col">
+                      <select class="form-select form-select-sm" v-model="NewVrf.requestor_dept" name="requestor_position" id="requestor_position"
+                        style="width: 15rem; height: 2.5rem;">
+                        <option value=""></option> 
+                        <option v-for="option in data_ddl.dept" :value="option.id" :key="option.id">{{
+                          option.department }}</option>
+                      </select>
+                      <!-- <VueMultiselect :options="data_ddl.dept" label="department" class="form-select form-select-sm p-0" :style="{
+                          width: '15rem'
+                          , height: '0.5rem'
+                        }" v-model="NewVrf.requestor_dept" :select-label="null" :allow-empty="true" :close-on-select="true"
+                        :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null >
+                      </VueMultiselect> -->
+                      <p v-if="VRF_error.requestor_dept && !NewVrf.requestor_dept" class="error-message">
+                        กรุณาเลือกข้อมูล</p>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col">
+                      เบอร์โทรผู้ร้องขอ:
+                    </div>
+                    <div class="col">
+                      <input type="text" id="requestor_phone" class="form-control" style="width:15rem;"
+                        v-model="NewVrf.requestor_phone" />
+                      <p v-if="VRF_error.requestor_phone && !NewVrf.requestor_phone" class="error-message">
+                        กรุณากรอกข้อมูล</p>
+                    </div>
+                    <div class="col">
+                      ชื่อผู้นำพา:
+                    </div>
+                    <div class="col">
+                      <select class="form-select form-select-sm" v-model="NewVrf.navigator" name="navigator" id="navigator"
+                        style="width: 15rem; height: 2.5rem;">
+                        <option value=""></option> 
+                        <option v-for="option in data_ddl.navigator" :value="option.user_id" :key="option.user_id">{{
+                          option.fullname }}</option>
+                      </select>                      
+                      <!-- <VueMultiselect name="navigator" id="navigator" :options="data_ddl.navigator"
+                        class="form-select form-select-sm p-0" label="fullname" :style="{
+                          width: '15rem'
+                          , height: '0.5rem'
+                        }" v-model="NewVrf.navigator" :select-label="null" :allow-empty="true" :close-on-select="true"
+                        :value="user_id" track-by="user_id" placeholder="เลือก" :deselectLabel=null>
+                      </VueMultiselect> -->
+                      <p v-if="VRF_error.navigator && !NewVrf.navigator" class="error-message">กรุณาเลือกข้อมูล</p>
+                    </div>
+                    <div class="col">
+                      แนบไฟล์:
+                    </div>
+                    <div class="col text-start">
+                      <label class="input-group-text" for="formFile"
+                        style="width:5rem; height: 0.5rem; display:inline;">เลือกไฟล์</label>
+                      <input type="file" class="form-control" id="formFile" @change="selectFile" style="display: none;">
+                      <input type="text" class="form-control" id="formFileText" style="width:10rem; display:inline;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer pt-0 justify-content-center">
+                <div class="align-top pt-1 d-flex justify-content-center">
+                  <button class="btn btn-primary" style="width:4rem; height:2rem;">บันทึก</button>
+                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset"
+                    style="width:4rem; height:2rem;" id="ClosemyModalNew" @click="ClosemyModalNew_">ยกเลิก</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
   <!-----------------------------------------------------------modal Edit Vrf--->
   <div class="container py-2">
     <div class="py-2">
-      <form @submit.prevent="editVRF_validateInput" enctype="multipart/form-data" id="form2">
+      <form @submit.prevent="editVRF_validateInput" id="form2">
         <div class="modal fade" id="ModalEditvrf">
           <div class="modal-dialog modalcustom">
             <div class="modal-content">
@@ -420,7 +743,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="data, index in templete_vrf_Existing.templete_vrf_Existing_det" :key="data.id">
+                        <tr v-for="data, index in vrf_Existing.vrf_Existing_det" :key="data.id">
                           <td scope="col" class="colwidth5">
                             <datepicker class="form-control" v-model="useSetDate(index, 'date_from').value"
                               @blur="edit_validateInput('date_from', index, 'กรุณาใส่วันที่')" style="width:7rem;"
@@ -439,7 +762,7 @@
                           </td>
                           <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center;">
                             <input type="text" class="form-control" style="width: 20rem; display: inline-block;"
-                              v-model="templete_vrf_Existing.templete_vrf_Existing_det[index].fullname"
+                              v-model="vrf_Existing.vrf_Existing_det[index].fullname"
                               @blur="edit_validateInput('fullname', index, 'กรุณาใส่ข้อมูล')" />
                             <p class="error-message" v-if="data.errors && data.errors.fullname">
                               {{ data.errors.fullname }}
@@ -447,7 +770,7 @@
                           </td>
                           <td scope="col" class="colwidth10">
                             <select class="form-select form-select-sm"
-                              v-model="templete_vrf_Existing.templete_vrf_Existing_det[index].vehicle_brand_id"
+                              v-model="vrf_Existing.vrf_Existing_det[index].vehicle_brand_id"
                               @change="edit_validateInput('vehicle_brand_id', index, 'กรุณาเลือกยี่ห้อรถ')">
                               <option v-for="option in data_ddl.vehicle_brand" :value="option.id" :key="option.id">{{
                                 option.vehicle_brand }}</option>
@@ -458,7 +781,7 @@
                           </td>
                           <td scope="col" class="colwidth10">
                             <input type="text" class="form-control" style="width: 10rem; display: inline-block;"
-                              v-model="templete_vrf_Existing.templete_vrf_Existing_det[index].vehicle_registration"
+                              v-model="vrf_Existing.vrf_Existing_det[index].vehicle_registration"
                               @blur="edit_validateInput('vehicle_registration', index, 'กรุณาใส่ข้อมูล')" />
                             <p class="error-message" v-if="data.errors && data.errors.vehicle_registration">
                               {{ data.errors.vehicle_registration }}
@@ -466,7 +789,7 @@
                           </td>
                           <td scope="col" class="colwidth10">
                             <select class="form-select form-select-sm"
-                              v-model="templete_vrf_Existing.templete_vrf_Existing_det[index].vehicle_color_id"
+                              v-model="vrf_Existing.vrf_Existing_det[index].vehicle_color_id"
                               @change="edit_validateInput('vehicle_color_id', index, 'กรุณาเลือกสีรถ')">
                               <option v-for="option in data_ddl.vehicle_color" :value="option.id" :key="option.id">{{
                                 option.vehicle_color }}</option>
@@ -477,14 +800,14 @@
                           </td>
                           <td scope="col" class="colwidth25" style="text-align: center;">
                             <input type="text" class="form-control" style="width: 20rem; display: inline-block;"
-                              v-model="templete_vrf_Existing.templete_vrf_Existing_det[index].card_no"
+                              v-model="vrf_Existing.vrf_Existing_det[index].card_no"
                               @blur="edit_validateInput('card_no', index, 'กรุณาใส่ข้อมูล')" />
                             <p class="error-message" v-if="data.errors && data.errors.card_no">
                               {{ data.errors.card_no }}
                             </p>
                           </td>
                           <td scope="col" class="colwidth10"><span
-                              @click="deleteData(templete_vrf_Existing.templete_vrf_Existing_det[index].id)"
+                              @click="deleteData(vrf_Existing.vrf_Existing_det[index].id)"
                               style="cursor: pointer;">
                               <i class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>
                             <!-- &nbsp;|&nbsp;<span
@@ -510,22 +833,43 @@
                   </div>
                   <div class="row p-2">
                     <div class="col">
-                      ชื่อแม่แบบ:
+                      พื้นที่เข้าพบ:
                     </div>
                     <div class="col">
-                      <input type="text" id="template_name" class="form-control" style="width:15rem;"
-                        v-model="templete_vrf_Existing.template_name" />
-                      <p v-if="VRF_error.template_name && !templete_vrf_Existing.template_name" class="error-message">
-                        กรุณากรอกข้อมูล
+                      <select class="form-select form-select-sm" v-model="vrf_Existing.area_id"
+                        style="width: 15rem; height: 2.5rem;">
+                        <option v-for="option in data_ddl.area" :value="option.id" :key="option.id">{{
+                          option.meeting_area }}</option>
+                      </select>
+                      <!--can't get id-->
+                      <!-- <VueMultiselect name="area" id="area" :options="data_ddl.area"
+                        class="form-select form-select-sm p-0" label="meeting_area" :style="{
+                          width: '15rem'
+                          , height: '0.5rem'
+                        }" v-model="vrf_Existing.area" :select-label="null" :allow-empty="true"
+                        :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
+                      </VueMultiselect> -->
+                      <!-- 
+                      <VueMultiselect name="area" id="area"
+                        :options="data_ddl.area" class="form-select form-select-sm p-0"
+                        label="meeting_area" :style="{
+                          width: '15rem'
+                          , height: '0.5rem'
+                        }" v-model="vrf_Existing.area" :select-label="null" :allow-empty="true"
+                        :close-on-select="true" :value="id" track-by="id" placeholder="เลือก"
+                        :deselectLabel=null>
+                      </VueMultiselect> -->
+                      <p v-if="VRF_error.area && !vrf_Existing.area_id" class="error-message">กรุณาเลือกข้อมูล
                       </p>
+
                     </div>
                     <div class="col">
                       เหตุผลในการเข้าพบ:
                     </div>
                     <div class="col">
                       <input type="text" id="reason" class="form-control" style="width:15rem;"
-                        v-model="templete_vrf_Existing.reason" />
-                      <p v-if="VRF_error.reason && !templete_vrf_Existing.reason" class="error-message">กรุณากรอกข้อมูล
+                        v-model="vrf_Existing.reason" />
+                      <p v-if="VRF_error.reason && !vrf_Existing.reason" class="error-message">กรุณากรอกข้อมูล
                       </p>
                     </div>
                     <div class="col">
@@ -533,8 +877,8 @@
                     </div>
                     <div class="col">
                       <input type="text" id="contactor" class="form-control" style="width:15rem;"
-                        v-model="templete_vrf_Existing.contactor" />
-                      <p v-if="VRF_error.contactor && !templete_vrf_Existing.contactor" class="error-message">
+                        v-model="vrf_Existing.contactor" />
+                      <p v-if="VRF_error.contactor && !vrf_Existing.contactor" class="error-message">
                         กรุณากรอกข้อมูล</p>
                     </div>
                   </div>
@@ -544,31 +888,31 @@
                     </div>
                     <div class="col">
                       <!-- <input type="text" class="form-control" style="width:15rem;"
-                        v-model="templete_vrf_Existing.requestor_id" /> -->
+                        v-model="vrf_Existing.requestor_id" /> -->
                       <!----why can't set default selected-->
                       <!-- <VueMultiselect :options="data_ddl_edt.userlist"
                         class="form-select form-select-sm p-0" label="first_name" :style="{
                           width: '15rem'
                           , height: '0.5rem'
-                        }" v-model="templete_vrf_Existing.requestor_id" :select-label="null" :allow-empty="true"
+                        }" v-model="vrf_Existing.requestor_id" :select-label="null" :allow-empty="true"
                         :close-on-select="true" :value="user_id" track-by="user_id" placeholder="เลือก"
                         :deselectLabel=null>
                       </VueMultiselect> -->
 
-                      <select class="form-select form-select-sm" v-model="templete_vrf_Existing.requestor_id"
+                      <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_id"
                         style="width: 15rem; height: 2.5rem;">
                         <option v-for="option in data_ddl.userlist" :value="option.user_id" :key="option.user_id">{{
                           option.first_name }}</option>
                       </select>
 
-                      <p v-if="VRF_error.requestor && !templete_vrf_Existing.requestor" class="error-message">
+                      <p v-if="VRF_error.requestor && !vrf_Existing.requestor" class="error-message">
                         กรุณาเลือกข้อมูล</p>
                     </div>
                     <div class="col">
                       ตำแหน่งผู้ร้องขอ:
                     </div>
                     <div class="col">
-                      <select class="form-select form-select-sm" v-model="templete_vrf_Existing.requestor_position_id"
+                      <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_position_id"
                         style="width: 15rem; height: 2.5rem;">
                         <option v-for="option in data_ddl.position" :value="option.id" :key="option.id">{{
                           option.position }}</option>
@@ -577,10 +921,10 @@
                         class="form-select form-select-sm p-0" label="position" :style="{
                           width: '15rem'
                           , height: '0.5rem'
-                        }" v-model="templete_vrf_Existing.requestor_position_id" :select-label="null" :allow-empty="true"
+                        }" v-model="vrf_Existing.requestor_position_id" :select-label="null" :allow-empty="true"
                         :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
                       </VueMultiselect> -->
-                      <p v-if="VRF_error.requestor_position_id && !templete_vrf_Existing.requestor_position_id"
+                      <p v-if="VRF_error.requestor_position_id && !vrf_Existing.requestor_position_id"
                         class="error-message">
                         กรุณาเลือกข้อมูล</p>
                     </div>
@@ -588,7 +932,7 @@
                       แผนกผู้ร้องขอ:
                     </div>
                     <div class="col">
-                      <select class="form-select form-select-sm" v-model="templete_vrf_Existing.requestor_dept_id"
+                      <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_dept_id"
                         style="width: 15rem; height: 2.5rem;">
                         <option v-for="option in data_ddl.dept" :value="option.id" :key="option.id">{{
                           option.department }}</option>
@@ -598,10 +942,10 @@
                         class="form-select form-select-sm p-0" label="department" :style="{
                           width: '15rem'
                           , height: '0.5rem'
-                        }" v-model="templete_vrf_Existing.requestor_dept_id" :select-label="null" :allow-empty="true"
+                        }" v-model="vrf_Existing.requestor_dept_id" :select-label="null" :allow-empty="true"
                         :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
                       </VueMultiselect> -->
-                      <p v-if="VRF_error.requestor_dept && !templete_vrf_Existing.requestor_dept_id"
+                      <p v-if="VRF_error.requestor_dept && !vrf_Existing.requestor_dept_id"
                         class="error-message">
                         กรุณาเลือกข้อมูล</p>
                     </div>
@@ -612,15 +956,15 @@
                     </div>
                     <div class="col">
                       <input type="text" id="requestor_phone" class="form-control" style="width:15rem;"
-                        v-model="templete_vrf_Existing.requestor_phone" />
-                      <p v-if="VRF_error.requestor_phone && !templete_vrf_Existing.requestor_phone" class="error-message">
+                        v-model="vrf_Existing.requestor_phone" />
+                      <p v-if="VRF_error.requestor_phone && !vrf_Existing.requestor_phone" class="error-message">
                         กรุณากรอกข้อมูล</p>
                     </div>
                     <div class="col">
                       ชื่อผู้นำพา:
                     </div>
                     <div class="col">
-                      <select class="form-select form-select-sm" v-model="templete_vrf_Existing.navigator_id"
+                      <select class="form-select form-select-sm" v-model="vrf_Existing.navigator_id"
                         style="width: 15rem; height: 2.5rem;">
                         <option v-for="option in data_ddl.navigator" :value="option.user_id" :key="option.user_id">{{
                           option.fullname }}</option>
@@ -629,42 +973,23 @@
                         class="form-select form-select-sm p-0" label="fullname" :style="{
                           width: '15rem'
                           , height: '0.5rem'
-                        }" v-model="templete_vrf_Existing.navigator" :select-label="null" :allow-empty="true"
+                        }" v-model="vrf_Existing.navigator" :select-label="null" :allow-empty="true"
                         :close-on-select="true" :value="user_id" track-by="user_id" placeholder="เลือก"
                         :deselectLabel=null>
                       </VueMultiselect> -->
-                      <p v-if="VRF_error.navigator_id && !templete_vrf_Existing.navigator_id" class="error-message">
+                      <p v-if="VRF_error.navigator_id && !vrf_Existing.navigator_id" class="error-message">
                         กรุณาเลือกข้อมูล</p>
                     </div>
                     <div class="col">
-                      พื้นที่เข้าพบ:
+                      แนบไฟล์:
                     </div>
-                    <div class="col">
-                      <select class="form-select form-select-sm" v-model="templete_vrf_Existing.area_id"
-                        style="width: 15rem; height: 2.5rem;">
-                        <option v-for="option in data_ddl.area" :value="option.id" :key="option.id">{{
-                          option.meeting_area }}</option>
-                      </select>
-                      <!--can't get id-->
-                      <!-- <VueMultiselect name="area" id="area" :options="data_ddl.area"
-                        class="form-select form-select-sm p-0" label="meeting_area" :style="{
-                          width: '15rem'
-                          , height: '0.5rem'
-                        }" v-model="templete_vrf_Existing.area" :select-label="null" :allow-empty="true"
-                        :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
-                      </VueMultiselect> -->
-                      <!-- 
-                      <VueMultiselect name="area" id="area"
-                        :options="data_ddl.area" class="form-select form-select-sm p-0"
-                        label="meeting_area" :style="{
-                          width: '15rem'
-                          , height: '0.5rem'
-                        }" v-model="templete_vrf_Existing.area" :select-label="null" :allow-empty="true"
-                        :close-on-select="true" :value="id" track-by="id" placeholder="เลือก"
-                        :deselectLabel=null>
-                      </VueMultiselect> -->
-                      <p v-if="VRF_error.area && !templete_vrf_Existing.area_id" class="error-message">กรุณาเลือกข้อมูล
-                      </p>
+                    <div class="col text-start">
+                      <label class="input-group-text" for="formFile_edt"
+                        style="width:0.5rem; height: 0.5rem; display:inline;">เลือกไฟล์</label>
+                      <input type="file" class="form-control" id="formFile_edt" @change="selectFile_edt" style="display: none;">
+                      <input type="text" class="form-control" id="formFileText_edt" style="width:10rem; display:inline;" v-model="vrf_Existing.attach_file">
+                      &nbsp;
+                      <a :href="fileUrl" target="_blank"><i class="fa fa-address-card" aria-hidden="true"></i></a>
                     </div>
                   </div>
                 </div>
@@ -672,7 +997,7 @@
               <div class="modal-footer pt-0 justify-content-center">
                 <div class="align-top pt-1 d-flex justify-content-center">
                   <button class="btn btn-primary" style="width:4rem; height:2rem;">บันทึก</button>
-                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="ClosemyModalNew"
+                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" 
                     style="width:4rem; height:2rem;" id="ClosemyModalNew" @click="ClosemyModalNew_">ยกเลิก</button>
                 </div>
               </div>
@@ -682,6 +1007,10 @@
       </form>
     </div>
   </div>
+
+
+
+
   <Loading v-if="loading" />
   <Alert_popup :message="Alert_popup_message" v-if="Alert_popup" />
   <div class="alert-popup" v-if="isOpen_alert_popup">
@@ -720,9 +1049,9 @@ export default defineComponent({
     , VueMultiselect
     , Datepicker
   },
-  setup() {
+  setup() { 
+    const fileUrl = ref('')    
     const VRF_error = reactive({
-      template_name: '',
       reason: '',
       contactor: '',
       requestor: '',
@@ -733,7 +1062,6 @@ export default defineComponent({
       area: '',
     })
     // const VRF_error = reactive({
-    //   template_name: '',
     //   reason: '',
     //   contactor: '',
     //   requestor: '',
@@ -762,10 +1090,10 @@ export default defineComponent({
       area: [],
       vehicle_brand: [],
       vehicle_color: [],
+      templete:[],
     })
     const userlist = ref(null)
     const NewVrf = reactive({
-      template_name: "",
       reason: "",
       contactor: "",
       requestor: "",
@@ -774,13 +1102,41 @@ export default defineComponent({
       requestor_phone: "",
       navigator: "",
       area: "",
+      templete_id: 0
     })
-    const update_vrftatus_param = reactive({
+    const vrf_Existing = reactive({
+      no: ""
+      , id: ""
+      , reason: ""      
+      , contactor: ""
+      , requestor: ""
+      , requestor_id: ""
+      , requestor_position_id: ""
+      , position: ""
+      , requestor_dept_id: ""
+      , department: ""
+      , requestor_phone: ""
+      , navigator_id: ""
+      , navigator: ""
+      , area_id: ""
+      , meeting_area: ""
+      , user_create: ""
+      , approve_status: ""
+      , approve_by: ""
+      , approve_date: null
+      ,attach_file: ""
+      ,attach_file_primitive: ""
+      ,attach_file_origin: ""
+      , vrf_Existing_det: []
+      , errors: {}
+    })
+    const templete_vrf = ref('')
+    const update_vrf_trans_status_param = reactive({
       Id: 0,
       Type_: ""
     })
     const alert_popup_message_inside = ref('')
-    const update_vrftatus_all_type = ref('')
+    const update_vrf_trans_status_all_type = ref('')
     const isOpen_alert_popup = ref(false)
     const function_selected = ref('')
     const Alert_popup = ref(false)
@@ -823,19 +1179,6 @@ export default defineComponent({
       BranchOriginBG_Color: "",
       BranchDestBG_Color: ""
     })
-    const NewOrder = reactive({
-      OrderCategoryNew: "BankBranch",
-      OrderTypeNew: "",
-      BankTypeNew: "",
-      JobDateNew: new Date(today.getDay() === 5 ? tomorrow.setDate(today.getDate() + 3) : tomorrow.setDate(today.getDate() + 1)),
-      RefNo: "",
-      RemarkNew: "",
-      DataBranchToOrigin: [],
-      DataBranchToDest: [],
-      BranchOrigin: "",
-      BranchDest: "",
-      BankTypeData: [],
-    })
     const Id = ref(0)
     const ActitySelectd = reactive({
       branchtocash: 0,
@@ -846,48 +1189,27 @@ export default defineComponent({
       cashtobot: 0,
     })
     const options = ['list', 'of', 'options'];
-    const hasLocalStorage = ref(null)
-    const templete_vrf_Existing = reactive({
-      no: ""
-      , id: ""
-      , template_name: ""
-      , reason: ""
-      , contactor: ""
-      , requestor: ""
-      , requestor_id: ""
-      , requestor_position_id: ""
-      , position: ""
-      , requestor_dept_id: ""
-      , department: ""
-      , requestor_phone: ""
-      , navigator_id: ""
-      , navigator: ""
-      , area_id: ""
-      , meeting_area: ""
-      , user_create: ""
-      , templete_vrf_Existing_det: []
-      , errors: {}
-    })
+    const hasLocalStorage = ref(null)    
     //-------------------edit validate add vrf-------------------
     const edit_fieldsToValidate = [
       'tbDateF', 'tbDateT', 'tbFullName',
       'ddlvehicle_brand', 'tbVehicle_Registration',
-      'ddlvehicle_color', 'tbGardNo'
+      'ddlvehicle_color', 'tbCardNo'
     ]
     const edit_validateAllInputs = () => {
-      templete_vrf_Existing.templete_vrf_Existing_det.forEach((data, index) => {
+      vrf_Existing.vrf_Existing_det.forEach((data, index) => {
         edit_fieldsToValidate.forEach(field => {
           edit_validateInput(field, index, 'กรุณาใส่ข้อมูล')
         })
       })
     }
     const edit_validateInput = (field, index, errorMessage) => {
-      if (!templete_vrf_Existing.templete_vrf_Existing_det[index][field]) {
-        templete_vrf_Existing.templete_vrf_Existing_det[index].errors = { ...templete_vrf_Existing.templete_vrf_Existing_det[index].errors, [field]: errorMessage }
+      if (!vrf_Existing.vrf_Existing_det[index][field]) {
+        vrf_Existing.vrf_Existing_det[index].errors = { ...vrf_Existing.vrf_Existing_det[index].errors, [field]: errorMessage }
       } else {
-        if (templete_vrf_Existing.templete_vrf_Existing_det[index].errors && templete_vrf_Existing.templete_vrf_Existing_det[index].errors[field]) {
-          const { [field]: removed, ...rest } = templete_vrf_Existing.templete_vrf_Existing_det[index].errors
-          templete_vrf_Existing.templete_vrf_Existing_det[index].errors = { ...rest }
+        if (vrf_Existing.vrf_Existing_det[index].errors && vrf_Existing.vrf_Existing_det[index].errors[field]) {
+          const { [field]: removed, ...rest } = vrf_Existing.vrf_Existing_det[index].errors
+          vrf_Existing.vrf_Existing_det[index].errors = { ...rest }
         }
       }
     }
@@ -895,7 +1217,7 @@ export default defineComponent({
     const fieldsToValidate = [
       'tbDateF', 'tbDateT', 'tbFullName',
       'ddlvehicle_brand', 'tbVehicle_Registration',
-      'ddlvehicle_color', 'tbGardNo'
+      'ddlvehicle_color', 'tbCardNo'
     ]
     const validateAllInputs = () => {
       rowData.value.forEach((data, index) => {
@@ -915,10 +1237,10 @@ export default defineComponent({
       }
     }
     const confirmDialog = async () => {
-      if (function_selected.value === "update_vrftatus_all") {
+      if (function_selected.value === "update_vrf_trans_status_all") {
         const params = {
           Id: selecteall.value,
-          Type_: update_vrftatus_all_type.value,
+          Type_: update_vrf_trans_status_all_type.value,
           user_id: user_id.value
         }
         setTimeout(() => {
@@ -929,13 +1251,12 @@ export default defineComponent({
           table.isLoading = true;
           loading.value = true;
           loading.value = false;
-          await axios.get(process.env.VUE_APP_API_URL + '/update_vrftatus_all', { params })
+          await axios.get(process.env.VUE_APP_API_URL + '/update_vrf_trans_status_all', { params })
             .then((res) => {
               // success callback
               let obj = JSON.parse(JSON.stringify(res.data))
             }, (res) => {
               // error callback
-
             }).finally(() => {
               //
             });
@@ -945,21 +1266,22 @@ export default defineComponent({
         catch (err) {
           console.log(err)
         }
-      }//if (function_selected.value === "update_vrftatus_all") {
-      if (function_selected.value === "update_vrftatus") {
+      }//if (function_selected.value === "update_vrf_trans_status_all") {
+      if (function_selected.value === "update_vrf_trans_status") {
         setTimeout(() => {
           // table.isLoading = false;
           loading.value = true
         }, 500)
         loading.value = false
         const params = {
-          Id: update_vrftatus_param.Id,
-          Type_: update_vrftatus_param.Type_,
-          user_id: user_id.value
+          Id: update_vrf_trans_status_param.Id,
+          Type_: update_vrf_trans_status_param.Type_,
+          user_id: user_id.value,
+          attach_file_primitive: vrf_Existing.attach_file_primitive
         };
         try {
           loading.value = true;
-          await axios.get(process.env.VUE_APP_API_URL + '/update_vrftatus', { params })
+          await axios.get(process.env.VUE_APP_API_URL + '/update_vrf_trans_status', { params })
             .then((res) => {
               // success callback
               let obj = JSON.parse(JSON.stringify(res.data))
@@ -979,10 +1301,10 @@ export default defineComponent({
         }
       }
     };
-    const ClosemyModalNew_ = () => {
+    const ClosemyModalNew_ = () => { 
+      templete_vrf.value = ''      
       rowData.value = []
       Id.value = 0
-      VRF_error.template_name = ''
       VRF_error.reason = ''
       VRF_error.contactor = ''
       VRF_error.requestor = ''
@@ -992,7 +1314,6 @@ export default defineComponent({
       VRF_error.navigator = ''
       VRF_error.area = ''
       //------------------------------------------
-      NewVrf.template_name = "",
         NewVrf.reason = "",
         NewVrf.contactor = "",
         NewVrf.requestor = "",
@@ -1002,25 +1323,24 @@ export default defineComponent({
         NewVrf.navigator = "",
         NewVrf.area = "",
         //------------------------------------------  
-        templete_vrf_Existing.no = "",
-        templete_vrf_Existing.id = "",
-        templete_vrf_Existing.template_name = "",
-        templete_vrf_Existing.reason = "",
-        templete_vrf_Existing.contactor = "",
-        templete_vrf_Existing.requestor = "",
-        templete_vrf_Existing.requestor_id = "",
-        templete_vrf_Existing.requestor_position_id = "",
-        templete_vrf_Existing.position = "",
-        templete_vrf_Existing.requestor_dept_id = "",
-        templete_vrf_Existing.department = "",
-        templete_vrf_Existing.requestor_phone = "",
-        templete_vrf_Existing.navigator_id = "",
-        templete_vrf_Existing.navigator = "",
-        templete_vrf_Existing.area_id = "",
-        templete_vrf_Existing.meeting_area = "",
-        templete_vrf_Existing.user_create = "",
-        templete_vrf_Existing.templete_vrf_Existing_det = [],
-        templete_vrf_Existing.errors = {}
+        vrf_Existing.no = "",
+        vrf_Existing.id = "",
+        vrf_Existing.reason = "",
+        vrf_Existing.contactor = "",
+        vrf_Existing.requestor = "",
+        vrf_Existing.requestor_id = "",
+        vrf_Existing.requestor_position_id = "",
+        vrf_Existing.position = "",
+        vrf_Existing.requestor_dept_id = "",
+        vrf_Existing.department = "",
+        vrf_Existing.requestor_phone = "",
+        vrf_Existing.navigator_id = "",
+        vrf_Existing.navigator = "",
+        vrf_Existing.area_id = "",
+        vrf_Existing.meeting_area = "",
+        vrf_Existing.user_create = "",
+        vrf_Existing.vrf_Existing_det = [],
+        vrf_Existing.errors = {}
       //---------------------------
       AdvSearch.tbDateF = ""
       AdvSearch.tbDateT = ""
@@ -1040,11 +1360,11 @@ export default defineComponent({
       // console.log('file: ', file);
       // Do something with the selected file
     }
-    const update_vrftatus_all = (type__) => {
+    const update_vrf_trans_status_all = (type__) => {//ฟังก์ชั่นนี้เรืยก const confirmDialog = async () => {
 
       isOpen_alert_popup.value = true;
-      function_selected.value = "update_vrftatus_all"
-      update_vrftatus_all_type.value = type__
+      function_selected.value = "update_vrf_trans_status_all"
+      update_vrf_trans_status_all_type.value = type__
       // console.log('isOpen_alert_popup.value before: ', isOpen_alert_popup.value)
       // handle confirmation logic here
       let message_ = ''
@@ -1202,83 +1522,25 @@ export default defineComponent({
         VueMultiselect_.BranchDestBG_Color = "ffffff"//A9B7C7
       }
     }
-    const getBranchOrCashCen = async (servicetype, ddltype, gettype) => {
-      let type_ = ''
-      type_ = NewOrder.OrderCategoryNew
-      const params = {
-        CustomerID: CustomerID.value,
-        user_id: user_id.value,
-        type_: type_
-      };
-
-      if ((servicetype === 'cct') || (servicetype === 'cashtobranch')) {
-        await axios.get(process.env.VUE_APP_API_URL + '/getcashcenterdata', { params })
-          .then((res) => {
-            // success callback 
-            if (gettype === 'Add') {
-              ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
-            }
-            if (gettype === 'Edit') {
-              ddltype === 'BranchOrigin' ? templete_vrf_Existing.DataBranchToOrigin = res.data : templete_vrf_Existing.DataBranchToDest = res.data
-            }
-          }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          });
-      }
-      //---------------------------------------------      
-      if (servicetype === 'bot') {
-        await axios.get(process.env.VUE_APP_API_URL + '/getbotbranch', { params })
-          .then((res) => {
-            // success callback  
-            if (gettype === 'Add') {
-              ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
-            }
-            if (gettype === 'Edit') {
-              ddltype === 'BranchOrigin' ? templete_vrf_Existing.DataBranchToOrigin = res.data : templete_vrf_Existing.DataBranchToDest = res.data
-            }
-          }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          });
-      }
-      //--------------------------------------------- 
-      if (servicetype === 'branchtocash') {
-        await axios.get('/getbranchdata', { params })
-          .then((res) => {
-            // success callback    
-            if (gettype === 'Add') {
-              ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
-            }
-            if (gettype === 'Edit') {
-              ddltype === 'BranchOrigin' ? templete_vrf_Existing.DataBranchToOrigin = res.data : templete_vrf_Existing.DataBranchToDest = res.data
-            }
-          }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          });
-      }
-      //--------------------------------------------
-    }
     const getBranchAndCashEdit = () => {
-      templete_vrf_Existing.DataBranchToOrigin = []
-      templete_vrf_Existing.DataBranchToDest = []
-      if (templete_vrf_Existing.OrderCategory === 'BankBranch') {
-        if (templete_vrf_Existing.OrderType === "Withdraw") {
+      vrf_Existing.DataBranchToOrigin = []
+      vrf_Existing.DataBranchToDest = []
+      if (vrf_Existing.OrderCategory === 'BankBranch') {
+        if (vrf_Existing.OrderType === "Withdraw") {
           getBranchOrCashCenEdit('cashtobranch', 'BranchOrigin')
           getBranchOrCashCenEdit('branchtocash', 'BranchDest')
         }
-        if (templete_vrf_Existing.OrderType === "Deposit") {
+        if (vrf_Existing.OrderType === "Deposit") {
           getBranchOrCashCenEdit('branchtocash', 'BranchOrigin')
           getBranchOrCashCenEdit('cashtobranch', 'BranchDest')
         }
       }
-      if (templete_vrf_Existing.OrderCategory === 'BOT') {
-        if (templete_vrf_Existing.OrderType === "Withdraw") {
+      if (vrf_Existing.OrderCategory === 'BOT') {
+        if (vrf_Existing.OrderType === "Withdraw") {
           getBranchOrCashCen('bot', 'BranchOrigin', 'Edit')
           getBranchOrCashCen('cct', 'BranchDest', 'Edit')
         }
-        if (templete_vrf_Existing.OrderType === "Deposit") {
+        if (vrf_Existing.OrderType === "Deposit") {
           getBranchOrCashCen('cct', 'BranchOrigin', 'Edit')
           getBranchOrCashCen('bot', 'BranchDest', 'Edit')
         }
@@ -1286,7 +1548,7 @@ export default defineComponent({
     }
     const getBranchOrCashCenEdit = async (servicetype, ddltype) => {
       let type_ = ''
-      type_ = templete_vrf_Existing.OrderCategory//NewOrder.OrderCategoryNew
+      type_ = vrf_Existing.OrderCategory//NewOrder.OrderCategoryNew
       const params = {
         CustomerID: CustomerID.value,
         user_id: user_id.value,
@@ -1296,7 +1558,7 @@ export default defineComponent({
         await axios.get(process.env.VUE_APP_API_URL + '/getbranchdata', { params })
           .then((res) => {
             // success callback           
-            ddltype === 'BranchOrigin' ? templete_vrf_Existing.DataBranchToOrigin = res.data : templete_vrf_Existing.DataBranchToDest = res.data
+            ddltype === 'BranchOrigin' ? vrf_Existing.DataBranchToOrigin = res.data : vrf_Existing.DataBranchToDest = res.data
           }, (res) => {
             // error callback
             console.log(res.data.message)
@@ -1310,7 +1572,7 @@ export default defineComponent({
         await axios.get(process.env.VUE_APP_API_URL + '/getcashcenterdata', { params })
           .then((res) => {
             // success callback
-            ddltype === 'BranchOrigin' ? templete_vrf_Existing.DataBranchToOrigin = res.data : templete_vrf_Existing.DataBranchToDest = res.data
+            ddltype === 'BranchOrigin' ? vrf_Existing.DataBranchToOrigin = res.data : vrf_Existing.DataBranchToDest = res.data
           }, (res) => {
             // error callback
             console.log(res.data.message)
@@ -1362,17 +1624,17 @@ export default defineComponent({
       }
     }
     const sendApprove = async (e) => {
-      // alert( templete_vrf_Existing.orderId )
+      // alert( vrf_Existing.orderId )
       if (confirm("คุณต้องการส่งอนุมัติรายการคำสั่ง ?")) {
         const params = {
-          Id: templete_vrf_Existing.orderId,
+          Id: vrf_Existing.orderId,
           Type_: 'send_to_check',
           user_id: user_id.value
 
         };
 
         try {
-          await axios.get(process.env.VUE_APP_API_URL + '/update_vrftatus', { params })
+          await axios.get(process.env.VUE_APP_API_URL + '/update_vrf_trans_status', { params })
             .then((res) => {
               // success callback
               let obj = JSON.parse(JSON.stringify(res.data))
@@ -1399,6 +1661,12 @@ export default defineComponent({
       error.value = false
       message.value = ""
     }
+    const selectFile_edt = (e) => {
+      file.value = e.target.files[0]
+      document.getElementById('formFileText_edt').value = e.target.files[0]['name']
+      error.value = false
+      message.value = ""
+    }    
     const format_date = (date_) => {
       // console.log('date_: ' + date_)
       let date__ = null
@@ -1436,6 +1704,9 @@ export default defineComponent({
       rows: [],
     });
     let Data_ = ref([]);//[]
+    // const set_vrf_frm_templete = async()=>{
+
+    // }
     /**
      * Get server data request
      */
@@ -1451,7 +1722,7 @@ export default defineComponent({
         work_flow_id: localStorage.getItem('user_work_flow_id'),
         role_id: localStorage.getItem('user_role_id')
       }
-      await axios.get(process.env.VUE_APP_API_URL + '/get_templete_vrf_list', { params })
+      await axios.get(process.env.VUE_APP_API_URL + '/get_vrf_list', { params })
         .then((res) => {
           Data_.value = JSON.parse(JSON.stringify(res.data))
           console.log("myRequest Data_: ", Data_)
@@ -1519,6 +1790,13 @@ export default defineComponent({
         }, (res) => {
           // error callback          
         });
+        await axios.get(process.env.VUE_APP_API_URL + '/get_templete', { params } )
+        .then((res) => {
+          // success callback     
+          data_ddl.templete = res.data
+        }, (res) => {
+          // error callback          
+        });
       return await new Promise((resolve, reject) => {
         try {
           table.isLoading = true;
@@ -1528,7 +1806,7 @@ export default defineComponent({
             let newData = Data_.value.filter(
               (x) =>
                 x.no.includes(keyword) ||
-                x.template_name.toLowerCase().includes(keyword.toLowerCase()) ||
+                x.requestor.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.contactor.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.reason.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.meeting_area.toLowerCase().includes(keyword.toLowerCase()) ||
@@ -1550,7 +1828,7 @@ export default defineComponent({
         {
           label: "ลำดับที่",
           field: "id",
-          width: "5%",
+          width: "7%",
           sortable: true,
           isKey: true,
           display: function (row) {
@@ -1564,15 +1842,15 @@ export default defineComponent({
           },
         },
         {
-          label: "ชื่อเทมเพลต",
-          field: "template_name",
+          label: "ชื่อบริษัทผู้มาติดต่อ",
+          field: "contactor",
           width: "20%",
           sortable: true,
         },
         {
-          label: "ชื่อผู้มาติดต่อ",
-          field: "contactor",
-          width: "20%",
+          label: "ผู้ร้องขอ",
+          field: "requestor",
+          width: "18%",
           sortable: true,
         },
         {
@@ -1625,6 +1903,48 @@ export default defineComponent({
     /**
  * Use vue.js watch to watch your state's change
 */
+    // Watch for changes on `templete_vrf`
+    watch(templete_vrf, async (newVal, oldVal) => { 
+        //------------------set transacton data-----------------
+
+
+
+            NewVrf.area = newVal.area
+            NewVrf.contactor = newVal.contactor
+            NewVrf.reason = newVal.reason
+            NewVrf.requestor = newVal.requestor
+            NewVrf.requestor_position = newVal.requestor_position
+            NewVrf.requestor_dept = newVal.requestor_dept
+            NewVrf.requestor_phone = newVal.requestor_phone
+            NewVrf.navigator = newVal.navigator
+            NewVrf.templete_id = newVal.id 
+            await axios.get( process.env.VUE_APP_API_URL + '/get_templete_det', { params: { templete_id: newVal.id } } )
+            .then((res) => {
+              // success callback     
+              //data_ddl.templete = res.data
+              console.log("watch(templete_vrf, async (newVal, oldVal) => {  res.data: ", res.data);
+              Id.value = 0
+              rowData.value = []
+              res.data.forEach(element => {                 
+                Id.value++
+                rowData.value.push({                   
+                  tbDateF: new Date ( element.date_from )
+                  , tbDateT: new Date  ( element.date_to )
+                  , tbFullName: element.fullname                  
+                  , tbVehicle_Registration: element.vehicle_registration
+                  , ddlvehicle_brand: element.vehicle_brand
+                  , ddlvehicle_color: element.vehicle_color
+                  , tbCardNo: element.card_no
+                  , errors: {}
+                  });
+                });
+              }, (res) => {
+                // error callback
+              });           
+            // console.log("New selection:", newVal);
+            // console.log("New selection newVal.id: ", newVal.id);
+            // console.log("Previous selection:", oldVal);
+        });
     watch(
       () => searchTerm.value,
       (val) => {
@@ -1638,10 +1958,10 @@ export default defineComponent({
       Array.prototype.forEach.call(elements, function (element) {
         if (element.classList.contains("rejectorder")) {
           element.addEventListener("click", async function () {
-            update_vrftatus_param.Id = this.dataset.id
-            update_vrftatus_param.Type_ = 'reject'
+            update_vrf_trans_status_param.Id = this.dataset.id
+            update_vrf_trans_status_param.Type_ = 'reject'
             isOpen_alert_popup.value = true;
-            function_selected.value = "update_vrftatus"
+            function_selected.value = "update_vrf_trans_status"
             // handle confirmation logic here
             let message_ = ''
             message_ = 'คุณต้องการยกเลิกรายการขอเข้าพื้นที่?'
@@ -1650,10 +1970,10 @@ export default defineComponent({
         }
         if (element.classList.contains("cancelvrf")) {
           element.addEventListener("click", async function () {
-            update_vrftatus_param.Id = this.dataset.id
-            update_vrftatus_param.Type_ = 'cancel'
+            update_vrf_trans_status_param.Id = this.dataset.id
+            update_vrf_trans_status_param.Type_ = 'cancel'
             isOpen_alert_popup.value = true;
-            function_selected.value = "update_vrftatus"
+            function_selected.value = "update_vrf_trans_status"
             // handle confirmation logic here
             let message_ = ''
             message_ = 'คุณต้องการยกเลิกรายการขอเข้าพื้นที่?'
@@ -1669,33 +1989,38 @@ export default defineComponent({
             };
             try {
               loading.value = true;
-              await axios.get(process.env.VUE_APP_API_URL + '/get_templete_vrf', { params })
+              await axios.get(process.env.VUE_APP_API_URL + '/get_vrf', { params })
                 .then((res) => {
                   // success callback
                   let obj = JSON.parse(JSON.stringify(res.data))
-                  templete_vrf_Existing.id = obj[0].id
-                  templete_vrf_Existing.template_name = obj[0].template_name
-                  templete_vrf_Existing.reason = obj[0].reason
-                  templete_vrf_Existing.contactor = obj[0].contactor
-                  templete_vrf_Existing.requestor = obj[0].requestor
-                  templete_vrf_Existing.requestor_id = obj[0].requestor_id
-                  templete_vrf_Existing.requestor_position_id = obj[0].requestor_position_id
-                  templete_vrf_Existing.position = obj[0].position
-                  templete_vrf_Existing.requestor_dept_id = obj[0].requestor_dept_id
-                  templete_vrf_Existing.department = obj[0].department
-                  templete_vrf_Existing.requestor_phone = obj[0].requestor_phone
-                  templete_vrf_Existing.navigator_id = obj[0].navigator_id
-                  templete_vrf_Existing.area_id = obj[0].area_id
-                  templete_vrf_Existing.meeting_area = obj[0].meeting_area
-                  templete_vrf_Existing.user_create = obj[0].user_create
-                  console.log("obj[0], templete_vrf_Existing: ", templete_vrf_Existing)
+                  vrf_Existing.id = obj[0].id
+                  vrf_Existing.reason = obj[0].reason
+                  vrf_Existing.contactor = obj[0].contactor
+                  vrf_Existing.requestor = obj[0].requestor
+                  vrf_Existing.requestor_id = obj[0].requestor_id
+                  vrf_Existing.requestor_position_id = obj[0].requestor_position_id
+                  vrf_Existing.position = obj[0].position
+                  vrf_Existing.requestor_dept_id = obj[0].requestor_dept_id
+                  vrf_Existing.department = obj[0].department
+                  vrf_Existing.requestor_phone = obj[0].requestor_phone
+                  vrf_Existing.navigator_id = obj[0].navigator_id
+                  vrf_Existing.area_id = obj[0].area_id
+                  vrf_Existing.meeting_area = obj[0].meeting_area
+                  vrf_Existing.user_create = obj[0].user_create
+                  vrf_Existing.attach_file = obj[0].attach_file
+                  vrf_Existing.attach_file_primitive = obj[0].attach_file                  
+                  vrf_Existing.attach_file_origin = obj[0].attach_file_origin
+                  vrf_Existing.approve_status = obj[0].approve_status
+                  vrf_Existing.approve_by = obj[0].approve_by
+                  vrf_Existing.approve_date = obj[0].approve_date
+                  console.log("obj[0], vrf_Existing: ", vrf_Existing)
                 }, (res) => {
                   // error callback
                   console.log(res.data)
                 }).finally(() => {
                   //
-
-                });
+                })
+                fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}`;
               // onMounted(getBranchAndCashEdit)
             }
             catch (err) {
@@ -1704,11 +2029,11 @@ export default defineComponent({
             //---------------------------------get vrf detail---------------------------------------------
             try {
               loading.value = true;
-              await axios.get(process.env.VUE_APP_API_URL + '/get_templete_vrf_det', { params })
+              await axios.get(process.env.VUE_APP_API_URL + '/get_vrf_det', { params })
                 .then((res) => {
                   // success callback
                   let obj = JSON.parse(JSON.stringify(res.data))
-                  templete_vrf_Existing.templete_vrf_Existing_det = obj
+                  vrf_Existing.vrf_Existing_det = obj
                   setTimeout(() => {
                     table.isLoading = false;
                     // table.totalRecordCount = 20;              
@@ -1740,7 +2065,7 @@ export default defineComponent({
         branch_id: localStorage.getItem('user_branch_id'),
       }
       console.log("params: ", params)
-      await axios.get(process.env.VUE_APP_API_URL + '/get_search_vrf', { params })
+      await axios.get(process.env.VUE_APP_API_URL + '/get_search_vrf_trans', { params })
         .then((res) => {
           data.rows = JSON.parse(JSON.stringify(res.data))
           console.log("JSON.parse(JSON.stringify(res.data): ", JSON.parse(JSON.stringify(res.data)))
@@ -1764,17 +2089,17 @@ export default defineComponent({
     const useSetDate = (index, type) => {
       if (type === 'date_from') {
         return computed({
-          get: () => new Date(templete_vrf_Existing.templete_vrf_Existing_det[index].date_from),
+          get: () => new Date(vrf_Existing.vrf_Existing_det[index].date_from),
           set: (newValue) => {
-            templete_vrf_Existing.templete_vrf_Existing_det[index].date_from = newValue;
+            vrf_Existing.vrf_Existing_det[index].date_from = newValue;
           },
         });
       }
       else if (type === 'date_to') {
         return computed({
-          get: () => new Date(templete_vrf_Existing.templete_vrf_Existing_det[index].date_to),
+          get: () => new Date(vrf_Existing.vrf_Existing_det[index].date_to),
           set: (newValue) => {
-            templete_vrf_Existing.templete_vrf_Existing_det[index].date_to = newValue;
+            vrf_Existing.vrf_Existing_det[index].date_to = newValue;
           },
         });
       }
@@ -1796,30 +2121,44 @@ export default defineComponent({
           console.log(res.data.message)
         });
     }
-    const addManualVRF = async () => {
-      const formData = new FormData()
-      formData.append('template_name', NewVrf.template_name)
+    const addManualVRF =  async () => { 
+      console.log('file.value: ', file.value)
+      const formData = new FormData() 
+      // console.log(  'NewVrf.requestor.user_id: ',NewVrf.requestor.user_id ,'NewVrf.requestor: ', NewVrf.requestor  )
+      formData.append('file', file.value)
       formData.append('reason', NewVrf.reason)
       formData.append('contactor', NewVrf.contactor)
-      formData.append('requestor', NewVrf.requestor.user_id)
-      formData.append('requestor_position', NewVrf.requestor_position.id)
-      formData.append('requestor_dept', NewVrf.requestor_dept.id)
+      formData.append('requestor', NewVrf.requestor.user_id !== undefined && NewVrf.requestor.user_id !== 0 ? NewVrf.requestor.user_id : NewVrf.requestor  )
+      formData.append('requestor_position', NewVrf.requestor_position.id !== undefined && NewVrf.requestor_position.id !== 0 ? NewVrf.requestor_position.id : NewVrf.requestor_position  )
+      formData.append('requestor_dept', NewVrf.requestor_dept.id !== undefined && NewVrf.requestor_dept.id !== 0 ? NewVrf.requestor_dept.id : NewVrf.requestor_dept  )
       formData.append('requestor_phone', NewVrf.requestor_phone)
-      formData.append('navigator', NewVrf.navigator.user_id)
-      formData.append('area', NewVrf.area.id)
+      formData.append('navigator', NewVrf.navigator.user_id !== undefined &&NewVrf.navigator.user_id !== 0 ? NewVrf.navigator.user_id : NewVrf.navigator  )
+      formData.append('area', NewVrf.area.id !== undefined && NewVrf.area.id !== 0 ? NewVrf.area.id : NewVrf.area  )
+      formData.append('templete_id', NewVrf.templete_id)
       formData.append('user_id', user_id.value)
-
-      // rowData.value.forEach((value, key) => console.log('rowData value: ', value, 'rowData key: ', key))
+      // formData.append('file', file.value)
+      // formData.append('reason', NewVrf.reason)
+      // formData.append('contactor', NewVrf.contactor)
+      // formData.append('requestor', NewVrf.requestor.user_id)
+      // formData.append('requestor_position', NewVrf.requestor_position.id)
+      // formData.append('requestor_dept', NewVrf.requestor_dept.id)
+      // formData.append('requestor_phone', NewVrf.requestor_phone)
+      // formData.append('navigator', NewVrf.navigator.user_id)
+      // formData.append('area', NewVrf.area.id)
+      // formData.append('templete_id', NewVrf.templete_id)
+      // formData.append('user_id', user_id.value)
       let object_formData = {}
       formData.forEach((value, key) => object_formData[key] = value)
       var json_formData = JSON.stringify(object_formData)
       let id
+      console.log('addManualVRF : formData', formData)
       try {
-        await axios.post(process.env.VUE_APP_API_URL + '/set_manual_add_vrf', json_formData)
+        await axios.post(process.env.VUE_APP_API_URL + '/set_manual_add_vrf_trans', formData)
           .then((res) => {
             // success callback  
-
-            id = res.data
+            console.log('set_manual_add_vrf_trans res.data: ', res.data)
+            id = res.data            
+            console.log('set_manual_add_vrf_trans id: ', id)
           }, (res) => {
             // error callback
             console.log(res.data.message)
@@ -1833,21 +2172,22 @@ export default defineComponent({
         message_addManual.value = "Something went wrong: " + err
         error_addManual.value = true
       }
+
       let object_det = {}
       rowData.value.forEach((value, key) => object_det[key] = value)
       object_det.newid = id
       var json_object_det = JSON.stringify(object_det)
+      console.log('set_manual_add_vrf_trans_det json_object_det: ', json_object_det)
       try {
-        await axios.post(process.env.VUE_APP_API_URL + '/set_manual_add_vrf_det', json_object_det)
+        await axios.post(process.env.VUE_APP_API_URL + '/set_manual_add_vrf_trans_det', json_object_det)
           .then((res) => {
-            // success callback  
-            // console.log('set_manual_add_vrf_det res.data.state:' + res.data.state)           
+            // success callback 
           }, (res) => {
             // error callback
             console.log(res.data.message)
             message_addManual.value = res.data.message
           }).finally(() => {
-            router.push('/templatevrflst')
+            //router.push('/requestvrflst')
           });
         error_addManual.value = false
       }
@@ -1858,18 +2198,18 @@ export default defineComponent({
       }
       finally {
         //  router.push('/templatevrflst')
-        location.reload()
+        //location.reload()
       }
     }
-    const addManualVRF_validateInput = () => {
+    const addManualVRF_validateInput = (e) => {
       validateAllInputs()
-      let isError = false
-      if (!NewVrf.template_name) {
-        VRF_error.template_name = 'กรุณาใส่ข้อมูล';
-        isError = true
-      } else {
-        VRF_error.template_name = '';
+      const target = e.target
+      if (target && target.files) {
+        file.value = target.files[0];
       }
+      let isError = false
+      
+      
       if (!NewVrf.reason) {
         VRF_error.reason = 'กรุณาใส่ข้อมูล';
         isError = true
@@ -1989,6 +2329,7 @@ export default defineComponent({
         , tbVehicle_Registration: ''
         , ddlvehicle_brand: ''
         , ddlvehicle_color: ''
+        ,tbCardNo: ''
         , errors: {}
       });
     }
@@ -1998,58 +2339,56 @@ export default defineComponent({
       rowData.value.splice(index, 1)
       Id.value--
     }
-    const editVRF_validateInput = async () => {
+    const editVRF_validateInput = async (e) => {
       edit_validateAllInputs()
-      let isError = false
-      if (!templete_vrf_Existing.template_name) {
-        VRF_error.template_name = 'กรุณาใส่ข้อมูล';
-        isError = true
-      } else {
-        VRF_error.template_name = '';
+      const target = e.target
+      if (target && target.files) {
+        file.value = target.files[0];
       }
-      if (!templete_vrf_Existing.reason) {
+      let isError = false
+      if (!vrf_Existing.reason) {
         VRF_error.reason = 'กรุณาใส่ข้อมูล';
         isError = true
       } else {
         VRF_error.reason = '';
       }
-      if (!templete_vrf_Existing.contactor) {
+      if (!vrf_Existing.contactor) {
         VRF_error.contactor = 'กรุณาใส่ข้อมูล';
         isError = true
       } else {
         VRF_error.contactor = '';
       }
-      if (!templete_vrf_Existing.requestor_id) {
+      if (!vrf_Existing.requestor_id) {
         VRF_error.requestor = 'กรุณาใส่ข้อมูล';
         isError = true
       } else {
         VRF_error.requestor = '';
       }
-      if (!templete_vrf_Existing.requestor_position_id) {
+      if (!vrf_Existing.requestor_position_id) {
         VRF_error.requestor_position = 'กรุณาใส่ข้อมูล';
         isError = true
       } else {
         VRF_error.requestor_position = '';
       }
-      if (!templete_vrf_Existing.requestor_dept_id) {
+      if (!vrf_Existing.requestor_dept_id) {
         VRF_error.requestor_dept = 'กรุณาใส่ข้อมูล';
         isError = true
       } else {
         VRF_error.requestor_dept = '';
       }
-      if (!templete_vrf_Existing.requestor_phone) {
+      if (!vrf_Existing.requestor_phone) {
         VRF_error.requestor_phone = 'กรุณาใส่ข้อมูล';
         isError = true
       } else {
         VRF_error.requestor_phone = '';
       }
-      if (!templete_vrf_Existing.navigator_id) {
+      if (!vrf_Existing.navigator_id) {
         VRF_error.navigator = 'กรุณาใส่ข้อมูล';
         isError = true
       } else {
         VRF_error.navigator = '';
       }
-      if (!templete_vrf_Existing.area_id) {
+      if (!vrf_Existing.area_id) {
         VRF_error.area = 'กรุณาใส่ข้อมูล';
         isError = true
       } else {
@@ -2063,20 +2402,20 @@ export default defineComponent({
         console.log('isError: ', isError)
         editVRF()
       }
-
     }
     const editVRF = async () => {
       const formData = new FormData()
-      formData.append('template_name', templete_vrf_Existing.template_name)
-      formData.append('id', templete_vrf_Existing.id)
-      formData.append('reason', templete_vrf_Existing.reason)
-      formData.append('contactor', templete_vrf_Existing.contactor)
-      formData.append('requestor', templete_vrf_Existing.requestor_id)
-      formData.append('requestor_position', templete_vrf_Existing.requestor_position_id)
-      formData.append('requestor_dept', templete_vrf_Existing.requestor_dept_id)
-      formData.append('requestor_phone', templete_vrf_Existing.requestor_phone)
-      formData.append('navigator', templete_vrf_Existing.navigator_id)
-      formData.append('area', templete_vrf_Existing.area_id)
+      formData.append('id', vrf_Existing.id)
+      formData.append('file', file.value)
+      formData.append('attach_file_primitive', vrf_Existing.attach_file_primitive)      
+      formData.append('reason', vrf_Existing.reason)
+      formData.append('contactor', vrf_Existing.contactor)
+      formData.append('requestor', vrf_Existing.requestor_id)
+      formData.append('requestor_position', vrf_Existing.requestor_position_id)
+      formData.append('requestor_dept', vrf_Existing.requestor_dept_id)
+      formData.append('requestor_phone', vrf_Existing.requestor_phone)
+      formData.append('navigator', vrf_Existing.navigator_id)
+      formData.append('area', vrf_Existing.area_id)
       formData.append('user_id', user_id.value)
       let object_formData = {}
       formData.forEach((value, key) => object_formData[key] = value)
@@ -2084,7 +2423,7 @@ export default defineComponent({
       let id
       console.log('json_formData: ', json_formData)
       try {
-        await axios.post(process.env.VUE_APP_API_URL + '/set_manual_update_vrf', json_formData)
+        await axios.post(process.env.VUE_APP_API_URL + '/set_manual_update_vrf_trans', formData)
           .then((res) => {
             // success callback  
             //id = res.data
@@ -2101,34 +2440,35 @@ export default defineComponent({
         message_addManual.value = "Something went wrong: " + err
         error_addManual.value = true
       }
+      //------------------------------------------det-------------------------------------------------------------------------------------------------------
       let object_det = []; // initialize the object      
-      for (let index in templete_vrf_Existing.templete_vrf_Existing_det) {
+      for (let index in vrf_Existing.vrf_Existing_det) {
         object_det.push({
-          id: templete_vrf_Existing.templete_vrf_Existing_det[index].id
-          , date_from: new Date(templete_vrf_Existing.templete_vrf_Existing_det[index].date_from)
-          , date_to: new Date(templete_vrf_Existing.templete_vrf_Existing_det[index].date_to)
-          , fullname: templete_vrf_Existing.templete_vrf_Existing_det[index].fullname
-          , vrf_id: templete_vrf_Existing.templete_vrf_Existing_det[index].vrf_id
-          , vehicle_brand_id: templete_vrf_Existing.templete_vrf_Existing_det[index].vehicle_brand_id
-          , vehicle_color_id: templete_vrf_Existing.templete_vrf_Existing_det[index].vehicle_color_id
-          , vehicle_registration: templete_vrf_Existing.templete_vrf_Existing_det[index].vehicle_registration
-          , card_no: templete_vrf_Existing.templete_vrf_Existing_det[index].card_no
+          id: vrf_Existing.vrf_Existing_det[index].id
+          , date_from: new Date(vrf_Existing.vrf_Existing_det[index].date_from)
+          , date_to: new Date(vrf_Existing.vrf_Existing_det[index].date_to)
+          , fullname: vrf_Existing.vrf_Existing_det[index].fullname
+          , vrf_id: vrf_Existing.vrf_Existing_det[index].vrf_id
+          , vehicle_brand_id: vrf_Existing.vrf_Existing_det[index].vehicle_brand_id
+          , vehicle_color_id: vrf_Existing.vrf_Existing_det[index].vehicle_color_id
+          , vehicle_registration: vrf_Existing.vrf_Existing_det[index].vehicle_registration
+          , card_no: vrf_Existing.vrf_Existing_det[index].card_no
           , user_id: user_id.value
         })
       }
       var json_object_det = JSON.stringify(object_det)
       console.log('json_object_det: ', json_object_det)
       try {
-        await axios.post(process.env.VUE_APP_API_URL + '/set_manual_update_vrf_det', json_object_det)
+        await axios.post(process.env.VUE_APP_API_URL + '/set_manual_update_vrf_det_trans', json_object_det)
+        // await axios.post(process.env.VUE_APP_API_URL + '/set_manual_update_vrf_det', json_object_det)
           .then((res) => {
-            // success callback  
-            // console.log('set_manual_add_vrf_det res.data.state:' + res.data.state)           
+            // success callback              
           }, (res) => {
             // error callback
             console.log(res.data.message)
             message_addManual.value = res.data.message
           }).finally(() => {
-            router.push('/templatevrflst')
+            router.push('/requestvrflst')
           });
         error_addManual.value = false
       }
@@ -2142,7 +2482,9 @@ export default defineComponent({
         location.reload()
       }
     }
-    return {
+    return { 
+      templete_vrf,
+      fileUrl,
       useSetDate,
       setDate,
       addManualVRF_validateInput,
@@ -2162,14 +2504,16 @@ export default defineComponent({
       Alert_popup,
       fileInput,
       handleFileChange,
-      update_vrftatus_all,
+      update_vrf_trans_status_all,
       loading, gettemplatefile, VueMultiselect_, selected, options, AdvSearch_, AdvSearch, ActitySelectd,
       searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish, getOrderType
-      , templete_vrf_Existing, getBranchAndCashEdit
-      , editVRF_validateInput, formatPrice, router, format_date, sendFile, selectFile, file, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder
+      , vrf_Existing, getBranchAndCashEdit
+      , editVRF_validateInput, formatPrice, router, format_date, sendFile, selectFile,selectFile_edt
+      , file, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder
       , OrderCategory, OrderType, BankType, JobDate, getBranchForCash
-      , user_id, department_id, position_id, formatdate_show, formatPrice_noFixed, addItem, deleteData, addManualVRF, NewOrder, DownloadLink
-      , getBranchAndCash, getBranchOrCashCen, calamount, rowData, Id
+      , user_id, department_id, position_id, formatdate_show, formatPrice_noFixed, addItem
+      , deleteData, addManualVRF,  DownloadLink
+      , getBranchAndCash, calamount, rowData, Id
       , calamount_orderEdit, sendApprove, checkstatus_send_to_checker, getBankTypeData
     }
   },
@@ -2243,6 +2587,14 @@ export default defineComponent({
 }
 
 #formFile::before {
+  content: "เลือกไฟล์";
+  position: absolute;
+  z-index: 2;
+  display: block;
+  background-color: #eee;
+  width: 1rem;
+}
+#formFile_edt::before {
   content: "เลือกไฟล์";
   position: absolute;
   z-index: 2;
@@ -2343,5 +2695,6 @@ export default defineComponent({
     display: block;
     background-color: #eee;
     width: 80px;
-  } */</style>
+  } */
+</style>
   
