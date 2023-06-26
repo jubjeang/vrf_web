@@ -1530,6 +1530,7 @@ export default defineComponent({
           width: "5%",
           sortable: true,
           isKey: true,
+          className: "jj",
           display: function (row) {
             return (
               // '<button type="button" data-id="' +
@@ -1611,9 +1612,7 @@ export default defineComponent({
               sOutput = row.RoleName + ' อนุมัติแล้ว'
             }
             sOutput = '<span>' + sOutput + '</span>'
-            return ( sOutput            
-            
-              );
+            return ( sOutput );
           },
         },
         {
@@ -2771,21 +2770,4 @@ export default defineComponent({
 #button_alert_popup_cancel :hover {
   background-color: #2980b9;
 }
-
-/* .input-group-text {
-  cursor: pointer;
-}
-
-.form-control:disabled, .form-control[readonly] {
-  background-color: #fff;
-  opacity: 0;
-} */
-/* #formFile::before {
-  content: "Pick file";
-  position: absolute;
-  z-index: 2;
-  display: block;
-  background-color: #eee;
-  width: 80px;
-} */
 </style>

@@ -147,7 +147,7 @@
       </form>
     </div>
   </div>
-  <!-------------------------------------------------------------------------------------------------------------------modal Add Vrf with templete--->
+  <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------modal Add Vrf with templete--->
   <div class="container py-2">
     <div class="py-2">
       <form @submit.prevent="addManualVRF_validateInput" id="form1">
@@ -388,12 +388,6 @@
       </form>
     </div>
   </div>
-
-
-
-
-
-
   <!-------------------------------------------------------------------------------------------------------------------modal Add Vrf Manual--->
   <div class="container py-2">
     <div class="py-2">
@@ -695,19 +689,6 @@
       </form>
     </div>
   </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
   <!-----------------------------------------------------------modal Edit Vrf--->
   <div class="container py-2">
     <div class="py-2">
@@ -997,7 +978,8 @@
               <div class="modal-footer pt-0 justify-content-center">
                 <div class="align-top pt-1 d-flex justify-content-center">
                   <button class="btn btn-primary" style="width:4rem; height:2rem;">บันทึก</button>
-                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" 
+                  <button class="btn btn-success" style="width:5rem; height:2rem;" @click.prevent="sendApprove">ส่งอนุมัติ</button>
+                  <button class="btn btn-danger" data-bs-dismiss="modal" type="reset" 
                     style="width:4rem; height:2rem;" id="ClosemyModalNew" @click="ClosemyModalNew_">ยกเลิก</button>
                 </div>
               </div>
@@ -1007,10 +989,7 @@
       </form>
     </div>
   </div>
-
-
-
-
+<!-- Loading-->
   <Loading v-if="loading" />
   <Alert_popup :message="Alert_popup_message" v-if="Alert_popup" />
   <div class="alert-popup" v-if="isOpen_alert_popup">
@@ -1144,7 +1123,6 @@ export default defineComponent({
     const selected = ref(null);
     const selecteall = ref(null);
     const fileInput = ref(null);
-
     //upload data    
     const file = ref(File | null)//ref('')
     const error = ref(false)
@@ -1627,14 +1605,14 @@ export default defineComponent({
       // alert( vrf_Existing.orderId )
       if (confirm("คุณต้องการส่งอนุมัติรายการคำสั่ง ?")) {
         const params = {
-          Id: vrf_Existing.orderId,
-          Type_: 'send_to_check',
-          user_id: user_id.value
-
+          Id: vrf_Existing.id,
+          Type_: 'send_approve',
+          user_id: user_id.value,
+          role_id: localStorage.getItem('user_role_id'),
+          work_flow_id: localStorage.getItem('user_work_flow_id')
         };
-
         try {
-          await axios.get(process.env.VUE_APP_API_URL + '/update_vrf_trans_status', { params })
+          await axios.get(process.env.VUE_APP_API_URL + '/update_vrf_trans_approve_status', { params })
             .then((res) => {
               // success callback
               let obj = JSON.parse(JSON.stringify(res.data))
@@ -1810,7 +1788,7 @@ export default defineComponent({
                 x.contactor.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.reason.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.meeting_area.toLowerCase().includes(keyword.toLowerCase()) ||
-                x.user_create.toLowerCase().includes(keyword.toLowerCase()) ||
+                x.approve_status.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.user_create.toLowerCase().includes(keyword.toLowerCase())
             );
             resolve(newData);
@@ -1828,48 +1806,76 @@ export default defineComponent({
         {
           label: "ลำดับที่",
           field: "id",
-          width: "7%",
+          width: "5%",
           sortable: true,
-          isKey: true,
+
+          isKey: true,                    
           display: function (row) {
-            return (
-              // '<button type="button" data-id="' +
-              // row.AutoID +
-              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">ถอยรายการ</button>'
-              // +
-              '<span>' + row.no + '</span>'
+            return ( `<div style="text-align: right;">${row.no}</div>`
             );
           },
         },
         {
           label: "ชื่อบริษัทผู้มาติดต่อ",
           field: "contactor",
-          width: "20%",
+          width: "15%",
           sortable: true,
+          display: function (row) {
+            return ( `<div style="text-align: left;">${row.contactor}</div>`
+            );
+          },
+          
         },
         {
           label: "ผู้ร้องขอ",
           field: "requestor",
           width: "18%",
           sortable: true,
+          display: function (row) {
+            return ( `<div style="text-align: left;">${row.requestor}</div>`
+            );
+          },
         },
         {
           label: "เหตุผลในการเข้าพบ",
           field: "reason",
-          width: "20%",
+          width: "15%",
           sortable: true,
+          display: function (row) {
+            return ( `<div style="text-align: left;">${row.reason}</div>`
+            );
+          },
         },
         {
           label: "พื้นที่เข้าพบ",
           field: "meeting_area",
           width: "10%",
           sortable: true,
+          display: function (row) {
+            return ( `<div style="text-align: left;">${row.meeting_area}</div>`
+            );
+          },
+        },
+        {
+          label: "สถานะ",
+          field: "approve_status",
+          width: "12%",
+          sortable: true,
+          display: function (row) {
+            return ( 
+              row.approve_status === null ? `<div style="text-align: left;">สร้างรายการ VRF</div>` : `<div style="text-align: left;">${row.approve_status}</div>`               
+            );
+          },
         },
         {
           label: "สร้างโดย",
           field: "user_create",
           width: "15%",
           sortable: true,
+          display: function (row) {
+            return ( `<div style="text-align: left;">${row.user_create}</div>`
+            );
+          },
         },
         {
           label: "",
@@ -1878,7 +1884,7 @@ export default defineComponent({
           height: "1%",
           display: function (row) {
             return (
-              '<div style="display: flex; j"><button type="button" data-id="' +
+              '<div style="display: flex;"><button type="button" data-id="' +
               row.id +
               '" class="btn btn-danger is-rows-el cancelvrf" style="margin-top: 0.2rem; width: 5rem; height:2rem">ยกเลิก</button>&nbsp; '
               +
@@ -1906,9 +1912,6 @@ export default defineComponent({
     // Watch for changes on `templete_vrf`
     watch(templete_vrf, async (newVal, oldVal) => { 
         //------------------set transacton data-----------------
-
-
-
             NewVrf.area = newVal.area
             NewVrf.contactor = newVal.contactor
             NewVrf.reason = newVal.reason
@@ -2124,7 +2127,6 @@ export default defineComponent({
     const addManualVRF =  async () => { 
       console.log('file.value: ', file.value)
       const formData = new FormData() 
-      // console.log(  'NewVrf.requestor.user_id: ',NewVrf.requestor.user_id ,'NewVrf.requestor: ', NewVrf.requestor  )
       formData.append('file', file.value)
       formData.append('reason', NewVrf.reason)
       formData.append('contactor', NewVrf.contactor)
@@ -2135,18 +2137,7 @@ export default defineComponent({
       formData.append('navigator', NewVrf.navigator.user_id !== undefined &&NewVrf.navigator.user_id !== 0 ? NewVrf.navigator.user_id : NewVrf.navigator  )
       formData.append('area', NewVrf.area.id !== undefined && NewVrf.area.id !== 0 ? NewVrf.area.id : NewVrf.area  )
       formData.append('templete_id', NewVrf.templete_id)
-      formData.append('user_id', user_id.value)
-      // formData.append('file', file.value)
-      // formData.append('reason', NewVrf.reason)
-      // formData.append('contactor', NewVrf.contactor)
-      // formData.append('requestor', NewVrf.requestor.user_id)
-      // formData.append('requestor_position', NewVrf.requestor_position.id)
-      // formData.append('requestor_dept', NewVrf.requestor_dept.id)
-      // formData.append('requestor_phone', NewVrf.requestor_phone)
-      // formData.append('navigator', NewVrf.navigator.user_id)
-      // formData.append('area', NewVrf.area.id)
-      // formData.append('templete_id', NewVrf.templete_id)
-      // formData.append('user_id', user_id.value)
+      formData.append('user_id', user_id.value)      
       let object_formData = {}
       formData.forEach((value, key) => object_formData[key] = value)
       var json_formData = JSON.stringify(object_formData)
@@ -2333,7 +2324,6 @@ export default defineComponent({
         , errors: {}
       });
     }
-
     const deleteData = (index) => {
       console.log(index)
       rowData.value.splice(index, 1)
@@ -2554,7 +2544,6 @@ export default defineComponent({
   width: 120rem;
   text-align: center;
 }
-
 .colwidth10 {
   width: 10%;
   /* กำหนดความกว้างของโมดัลเป็น 800px */

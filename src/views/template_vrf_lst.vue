@@ -27,10 +27,11 @@
       </div>
       <div class="col-10">
         <div style="text-align: right">
-          
 
-          <span data-bs-target="#myModalNew" data-bs-toggle="modal" style="cursor: pointer">สร้างแม่แบบ</span>&nbsp;|&nbsp;
-          
+
+          <span data-bs-target="#myModalNew" data-bs-toggle="modal"
+            style="cursor: pointer">สร้างแม่แบบ</span>&nbsp;|&nbsp;
+
           <label><span style="cursor: pointer;" data-bs-target="#ModalAdvSearch"
               data-bs-toggle="modal">ค้นหาขั้นสูง</span>&nbsp;|&nbsp;ค้นหาโดย:</label>&nbsp;&nbsp;<input
             v-model="searchTerm" />
@@ -57,7 +58,8 @@
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">ค้นหาขั้นสูง</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="ClosemyModalNew_"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                  @click="ClosemyModalNew_"></button>
               </div>
               <div class="modal-body">
                 <div class="container">
@@ -136,7 +138,8 @@
                 <div class="align-top pt-1 d-flex justify-content-center">
                   <button class="btn btn-primary" style="width:4rem; height:2rem;" @click="AdvSearch_"
                     type="button">ค้นหา</button><button class="btn btn-secondary" data-bs-dismiss="modal" type="reset"
-                    ref="CloseModalAdvSearch" style="width:4rem; height:2rem;" id="CloseModalAdvSearch" @click="ClosemyModalNew_">ยกเลิก</button>
+                    ref="CloseModalAdvSearch" style="width:4rem; height:2rem;" id="CloseModalAdvSearch"
+                    @click="ClosemyModalNew_">ยกเลิก</button>
                 </div>
               </div>
             </div>
@@ -182,7 +185,8 @@
                           <td scope="col" class="colwidth5">
                             <!--How to create 2 calendar with range -->
                             <datepicker class="form-control" v-model="data.tbDateF" style="width:7rem;"
-                              inputFormat="dd/MM/yyyy" @blur="validateInput('tbDateF', index, 'กรุณาใส่วันที่')" />
+                              inputFormat="dd/MM/yyyy" @blur="validateInput('tbDateF', index, 'กรุณาใส่วันที่')"
+                              @update:model-value="setToDate(index)" />
                             <p class="error-message" v-if="data.errors && data.errors.tbDateF">
                               {{ data.errors.tbDateF }}
                             </p>
@@ -190,7 +194,7 @@
                           </td>
                           <td scope="col" class="colwidth5">
                             <datepicker class="form-control" v-model="data.tbDateT" style="width:7rem;"
-                              inputFormat="dd/MM/yyyy" @blur="validateInput('tbDateT', index, 'กรุณาใส่วันที่')" />
+                              inputFormat="dd/MM/yyyy" @blur="validateInput('tbDateT', index, 'กรุณาใส่วันที่')" @update:model-value="setFromDate(index)" />
                             <p class="error-message" v-if="data.errors && data.errors.tbDateT">
                               {{ data.errors.tbDateT }}
                             </p>
@@ -275,7 +279,15 @@
                       เหตุผลในการเข้าพบ:
                     </div>
                     <div class="col">
-                      <input type="text" id="reason" class="form-control" style="width:15rem;" v-model="NewVrf.reason" />
+                      <input type="text" id="reason" class="form-control" style="width:15rem;" v-model="NewVrf.reason"
+                        @input="complete_word('reason')" />
+                      <div v-if="result_search_complete_word.reason.length > 0" class="autocomplete-results"
+                        @mouseleave="clear_search_results('reason')">
+                        <div class="autocomplete-item" v-for="result in result_search_complete_word.reason"
+                          :key="result.id" @click="selectResult_search(result, 'reason')">
+                          {{ result.result }}
+                        </div>
+                      </div>
                       <p v-if="VRF_error.reason && !NewVrf.reason" class="error-message">กรุณากรอกข้อมูล</p>
                     </div>
                     <div class="col">
@@ -283,8 +295,16 @@
                     </div>
                     <div class="col">
                       <input type="text" id="contactor" class="form-control" style="width:15rem;"
-                        v-model="NewVrf.contactor" />
+                        v-model="NewVrf.contactor" @input="complete_word('contactor')" />
+                      <div v-if="result_search_complete_word.contactor.length > 0" class="autocomplete-results"
+                        @mouseleave="clear_search_results('contactor')">
+                        <div class="autocomplete-item" v-for="result in result_search_complete_word.contactor"
+                          :key="result.id" @click="selectResult_search(result, 'contactor')">
+                          {{ result.result }}
+                        </div>
+                      </div>
                       <p v-if="VRF_error.contactor && !NewVrf.contactor" class="error-message">กรุณากรอกข้อมูล</p>
+
                     </div>
                   </div>
                   <div class="row p-2">
@@ -719,6 +739,64 @@ export default defineComponent({
     , Datepicker
   },
   setup() {
+    const result_search_complete_word = reactive({
+      contactor: [],
+      reason: []
+    })
+    const clear_search_results = (type) => {
+      if (type === 'contactor') {
+        result_search_complete_word.contactor = [];
+      }
+      if (type === 'reason') {
+        result_search_complete_word.reason = [];
+      }
+    }
+    const complete_word = async (type) => {
+      if (type === 'contactor') {
+        if (NewVrf.contactor.length > 0) {
+          try {
+            const response = await axios.get(process.env.VUE_APP_API_URL + '/get_complete_word', {
+              params: {
+                search: NewVrf.contactor,
+                type: 'contactor',
+              },
+            })
+            result_search_complete_word.contactor = response.data;
+          } catch (err) {
+            console.error(err);
+          }
+        } else {
+          result_search_complete_word.contactor = [];
+        }
+      }
+      if (type === 'reason') {
+        if (NewVrf.reason.length > 0) {
+          try {
+            const response = await axios.get(process.env.VUE_APP_API_URL + '/get_complete_word', {
+              params: {
+                search: NewVrf.reason,
+                type: 'reason',
+              },
+            })
+            result_search_complete_word.reason = response.data;
+          } catch (err) {
+            console.error(err);
+          }
+        } else {
+          result_search_complete_word.reason = [];
+        }
+      }
+    }
+    const selectResult_search = (result, type) => {
+      if (type === 'contactor') {
+        NewVrf.contactor = result.result
+        result_search_complete_word.contactor = []
+      }
+      if (type === 'reason') {
+        NewVrf.reason = result.result
+        result_search_complete_word.reason = []
+      }
+    }
     const VRF_error = reactive({
       template_name: '',
       reason: '',
@@ -730,7 +808,6 @@ export default defineComponent({
       navigator: '',
       area: '',
     })
-
     const data_ddl_edt = reactive({
       userlist: [],
       position: [],
@@ -816,7 +893,7 @@ export default defineComponent({
       cashtobot: 0,
     })
     const options = ['list', 'of', 'options'];
-    const hasLocalStorage = ref(null)    
+    const hasLocalStorage = ref(null)
     const templete_vrf_Existing = reactive({
       no: ""
       , id: ""
@@ -961,43 +1038,43 @@ export default defineComponent({
       VRF_error.requestor_phone = ''
       VRF_error.navigator = ''
       VRF_error.area = ''
-//------------------------------------------
-      NewVrf.template_name= "",
-      NewVrf.reason= "",
-      NewVrf.contactor= "",
-      NewVrf.requestor= "",
-      NewVrf.requestor_position= "",
-      NewVrf.requestor_dept= "",
-      NewVrf.requestor_phone= "",
-      NewVrf.navigator= "",
-      NewVrf.area= "",
-      //------------------------------------------  
-      templete_vrf_Existing.no= "",
-      templete_vrf_Existing.id= "",
-      templete_vrf_Existing.template_name= "",
-      templete_vrf_Existing.reason= "",
-      templete_vrf_Existing.contactor= "",
-      templete_vrf_Existing.requestor= "",
-      templete_vrf_Existing.requestor_id= "",
-      templete_vrf_Existing.requestor_position_id= "",
-      templete_vrf_Existing.position= "",
-      templete_vrf_Existing.requestor_dept_id= "",
-      templete_vrf_Existing.department= "",
-      templete_vrf_Existing.requestor_phone= "",
-      templete_vrf_Existing.navigator_id= "",
-      templete_vrf_Existing.navigator= "",
-      templete_vrf_Existing.area_id= "",
-      templete_vrf_Existing.meeting_area= "",
-      templete_vrf_Existing.user_create= "",
-      templete_vrf_Existing.templete_vrf_Existing_det= [],
-      templete_vrf_Existing.errors= {}
+      //------------------------------------------
+      NewVrf.template_name = "",
+        NewVrf.reason = "",
+        NewVrf.contactor = "",
+        NewVrf.requestor = "",
+        NewVrf.requestor_position = "",
+        NewVrf.requestor_dept = "",
+        NewVrf.requestor_phone = "",
+        NewVrf.navigator = "",
+        NewVrf.area = "",
+        //------------------------------------------  
+        templete_vrf_Existing.no = "",
+        templete_vrf_Existing.id = "",
+        templete_vrf_Existing.template_name = "",
+        templete_vrf_Existing.reason = "",
+        templete_vrf_Existing.contactor = "",
+        templete_vrf_Existing.requestor = "",
+        templete_vrf_Existing.requestor_id = "",
+        templete_vrf_Existing.requestor_position_id = "",
+        templete_vrf_Existing.position = "",
+        templete_vrf_Existing.requestor_dept_id = "",
+        templete_vrf_Existing.department = "",
+        templete_vrf_Existing.requestor_phone = "",
+        templete_vrf_Existing.navigator_id = "",
+        templete_vrf_Existing.navigator = "",
+        templete_vrf_Existing.area_id = "",
+        templete_vrf_Existing.meeting_area = "",
+        templete_vrf_Existing.user_create = "",
+        templete_vrf_Existing.templete_vrf_Existing_det = [],
+        templete_vrf_Existing.errors = {}
       //---------------------------
       AdvSearch.tbDateF = ""
       AdvSearch.tbDateT = ""
       AdvSearch.requestor_id = 0
       AdvSearch.area_id = 0
       AdvSearch.requestor_dept_id = 0
-     //---------------------------
+      //---------------------------
     }
     //-----check session
     hasLocalStorage.value = window.localStorage.getItem('user_id');
@@ -1170,12 +1247,7 @@ export default defineComponent({
           sortable: true,
           isKey: true,
           display: function (row) {
-            return (
-              // '<button type="button" data-id="' +
-              // row.AutoID +
-              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">ถอยรายการ</button>'
-              // +
-              '<span>' + row.no + '</span>'
+            return ( `<div style="text-align: right;">${row.no}</div>`
             );
           },
         },
@@ -1184,30 +1256,50 @@ export default defineComponent({
           field: "template_name",
           width: "20%",
           sortable: true,
+          display: function (row) {
+            return ( `<div style="text-align: left;">${row.template_name}</div>`
+            );
+          },
         },
         {
           label: "ชื่อผู้มาติดต่อ",
           field: "contactor",
           width: "20%",
           sortable: true,
+          display: function (row) {
+            return ( `<div style="text-align: left;">${row.contactor}</div>`
+            );
+          },
         },
         {
           label: "เหตุผลในการเข้าพบ",
           field: "reason",
           width: "20%",
           sortable: true,
+          display: function (row) {
+            return ( `<div style="text-align: left;">${row.reason}</div>`
+            );
+          },
         },
         {
           label: "พื้นที่เข้าพบ",
           field: "meeting_area",
           width: "10%",
           sortable: true,
+          display: function (row) {
+            return ( `<div style="text-align: left;">${row.meeting_area}</div>`
+            );
+          },
         },
         {
           label: "สร้างโดย",
           field: "user_create",
           width: "15%",
           sortable: true,
+          display: function (row) {
+            return ( `<div style="text-align: left;">${row.user_create}</div>`
+            );
+          },
         },
         {
           label: "",
@@ -1351,7 +1443,7 @@ export default defineComponent({
         tbDateT: AdvSearch.tbDateT !== '' ? AdvSearch.tbDateT : null,
         requestor_id: AdvSearch.requestor_id !== 0 ? AdvSearch.requestor_id : null,
         area_id: AdvSearch.area_id !== 0 ? AdvSearch.area_id : null,
-        requestor_dept_id: AdvSearch.requestor_dept_id !== 0 ? AdvSearch.requestor_dept_id : null,        
+        requestor_dept_id: AdvSearch.requestor_dept_id !== 0 ? AdvSearch.requestor_dept_id : null,
         department_id: department_id.value,
         branch_id: localStorage.getItem('user_branch_id'),
       }
@@ -1608,7 +1700,6 @@ export default defineComponent({
         , errors: {}
       });
     }
-
     const deleteData = (index) => {
       console.log(index)
       rowData.value.splice(index, 1)
@@ -1758,7 +1849,39 @@ export default defineComponent({
         location.reload()
       }
     }
+    const setToDate = (index) => {
+      let newDate = new Date(rowData.value[index].tbDateF);
+      rowData.value[index].tbDateT = new Date(newDate.getFullYear(), newDate.getMonth()+1, newDate.getDate()-1);
+    }
+    const setFromDate = (index) => {
+      console.log(`Selected date in range is: ${index}`);
+      console.log(`rowData[${index}]:`, rowData.value[index].tbDateF);
+      let newDateF = new Date(rowData.value[index].tbDateF);
+      let dateLimit = new Date(newDateF.getFullYear(), newDateF.getMonth()+1, newDateF.getDate()-1);
+      let newDateT = new Date(rowData.value[index].tbDateT);
+      if (newDateT > dateLimit) {       
+        alert('วันที่สิ้นสุดต้องไม่เกิน 1 เดือน หลังจากวันที่เริ่มต้น')
+        rowData.value[index].tbDateT = dateLimit      } 
+      else
+      {
+        rowData.value[index].tbDateT = newDateT        
+      }
+      if (newDateT < newDateF) {       
+        alert('วันสิ้นสุดต้องมากกว่าวันที่เริ่มต้น')
+        //rowData.value[index].tbDateT = dateLimit      
+      } 
+      else
+      {
+        rowData.value[index].tbDateT = newDateT        
+      }      
+    }        
     return {
+      setFromDate,
+      setToDate,
+      clear_search_results,
+      selectResult_search,
+      complete_word,
+      result_search_complete_word,
       useSetDate,
       setDate,
       addManualVRF_validateInput,
@@ -1776,10 +1899,10 @@ export default defineComponent({
       isOpen_alert_popup,
       Alert_popup_message,
       Alert_popup,
-      fileInput,      
+      fileInput,
       update_vrfstatus_all,
       loading, VueMultiselect_, selected, options, AdvSearch_, AdvSearch, ActitySelectd,
-      searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish 
+      searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish
       , templete_vrf_Existing
       , editVRF_validateInput, formatPrice, router, format_date, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder
       , JobDate
@@ -1792,6 +1915,27 @@ export default defineComponent({
 <style scoped>
 @import '../assets/css/style.css';
 @import '../../node_modules/vue-multiselect/dist/vue-multiselect.css';
+
+.autocomplete-results {
+  position: absolute;
+  left: 1;
+  width: 15rem;
+  text-align: left;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.autocomplete-item {
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.autocomplete-item:hover {
+  background-color: #f1f1f1;
+}
+
 
 .error-message {
   color: red;
@@ -1957,5 +2101,6 @@ export default defineComponent({
     display: block;
     background-color: #eee;
     width: 80px;
-  } */</style>
+  } */
+</style>
   
