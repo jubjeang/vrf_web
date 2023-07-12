@@ -24,32 +24,12 @@ export default {
         user_role: localStorage.getItem('user_role'),
         user_id: localStorage.getItem('user_id')
       }
-      // console.log('get_permission_access params: ',params)
-      // return await axios.get(process.env.VUE_APP_API_URL + '/get_permission_access', { params })
-      //   .then((res) => {
-      //     // success callback
-      //     //out_put.value = JSON.parse( JSON.stringify( res.data ) )
-      //     return JSON.parse(JSON.stringify(res.data))
-      //   }, (res) => {
-      //     // error callback
-      //     console.log('error: ', res.data)
-      //   })
-      // return ( JSON.parse( JSON.stringify( a_ ) ) ) 
       const response = await axios.get(process.env.VUE_APP_API_URL + '/get_permission_access', { params })
       return response.data
     }
-    // out_put.value = get_permission_access().then((data) => {
-    //   return data;
-    //   // console.log('out_put.value: ', out_put.value);
-    // });
-
-    // console.log('out_put.value: ', out_put.value);
-    // console.log('menu_authen1 : ',localStorage.getItem('menu_authen'))
     const load_permission_access = async () => {
-      const data = await get_permission_access()
-      //out_put.value = JSON.parse(JSON.stringify(data))
-      return JSON.parse( JSON.stringify( data ) )
-     // console.log('out_put.value: ', out_put.value[0].request_vrf)      
+      const data = await get_permission_access()      
+      return JSON.parse( JSON.stringify( data ) )     
     }
     out_put.value = load_permission_access().then(data =>out_put.value = data)
     const router = useRouter()
@@ -90,10 +70,12 @@ export default {
     </SidebarLink>
     <SidebarLink v-if="out_put.length" to="/templatevrflst" icon="fas fa-wallet" class="nav-link align-middle" v-show="out_put[0].template_vrf === '1'">รายการแม่แบบ
     </SidebarLink>
-    <SidebarLink v-if="out_put.length" to="" icon="fas fa-wallet" class="nav-link align-middle" v-show="out_put[0].vrf_requert_approve === '1'">รายการขออนุมัติเข้าพื้นที่
+    <SidebarLink v-if="out_put.length" to="/approvevrflst" icon="fas fa-wallet" class="nav-link align-middle" v-show="out_put[0].vrf_requert_approve === '1'">รายการขออนุมัติเข้าพื้นที่
     </SidebarLink>
-    <SidebarLink v-if="out_put.length" to="" icon="fas fa-wallet" class="nav-link align-middle" v-show="out_put[0].security_vrf === '1'" >รายการที่ได้รับการอนุมัติแล้ว
+    <SidebarLink v-if="out_put.length" to="/vrflstforsecurity" icon="fas fa-wallet" class="nav-link align-middle" v-show="out_put[0].security_vrf === '1'" >รายการขอเข้าพื้นที่
     </SidebarLink>
+    <!-- <SidebarLink v-if="out_put.length" to="" icon="fas fa-wallet" class="nav-link align-middle" v-show="out_put[0].security_vrf === '1'" >รายการที่ได้รับการอนุมัติแล้ว
+    </SidebarLink> -->
     <SidebarLink v-if="out_put.length" to="" icon="fas fa-wallet" class="nav-link align-middle" v-show="out_put[0].report_vrf === '1'">รายงาน
     </SidebarLink>            
     <!-- <SidebarLink to="/ordertracking" icon="fa fa-user-circle">บัญชีผู้ใช้</SidebarLink> -->

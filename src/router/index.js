@@ -9,12 +9,22 @@ const routes = [
   {
     path: '/requestvrflst',
     name: 'request_vrf_lst',
-    component: () => import('../views/request_vrf_lst.vue')
+    component: () => import('../views/Request_VRF_Lst.vue')
   },
   {
     path: '/templatevrflst',
     name: 'template_vrf_lst',
-    component: () => import('../views/template_vrf_lst.vue')
+    component: () => import('../views/Template_VRF_Lst.vue')
+  },
+  {
+    path: '/approvevrflst',
+    name: 'approve_vrf_lst',
+    component: () => import('../views/Approve_VRF_Lst.vue')
+  },
+  {
+    path: '/vrflstforsecurity',
+    name: 'vrf_lst_for_security',
+    component: () => import('../views/VRF_Lst_for_Security.vue')
   },
   {
     path: '/main',

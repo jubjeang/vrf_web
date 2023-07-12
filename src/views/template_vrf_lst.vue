@@ -730,7 +730,7 @@ import Loading from "../components/Loading.vue";
 import Alert_popup from "../components/Alert_popup.vue";
 
 export default defineComponent({
-  name: 'template_vrf_lst',
+  name: 'Template_VRF_Lst',
   components: {
     Alert_popup,
     Loading, TableLite, Sidebar
