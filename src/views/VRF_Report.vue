@@ -9,40 +9,27 @@
     </div>
     <div class="row p-1" style="width: 100%">
       <div class="col text-left">
-        <h3>รายการขออนุมัติเข้าพื้นที่</h3>
+        <h3>รายงานการเข้าพื้นที่</h3>
       </div>
     </div>
     <div class="row p-1" style="width: 100%">
       <div class="col d-flex justify-content-end">
         &nbsp;
         <!-- <h4 data-bs-target="#myModalNew" data-bs-toggle="modal" class="text-decoration-none text-gray fs-5"
-            style="cursor: pointer">สร้างแม่แบบ</h4> -->
+              style="cursor: pointer">สร้างแม่แบบ</h4> -->
       </div>
     </div>
     <div class="row p-0" style="width: 100%">
-      <div class="col-2 ps-4" style="text-align: left">
-        <button type="button" class="btn btn-danger" style="width: 5rem; height: 2rem"
-          @click="update_vrf_trans_status_all('cancel')">
-          ยกเลิก
-        </button>
+      <div class="col-1 ps-4" style="text-align: left">
         &nbsp;
-        <button class="btn btn-primary" @click="update_vrf_trans_status_all('approve')" style="width: 5rem; height: 2rem">
-          ส่งอนุมัติ
-        </button>
       </div>
-      <div class="col-10">
+      <div class="col-11">
         <div style="text-align: right">
-          <!-- <span data-bs-target="#myModalNew_with_templete" data-bs-toggle="modal"
-              style="cursor: pointer">สร้างรายการจากแม่แบบ</span>&nbsp;|&nbsp; -->
-          <!-- <span
-            data-bs-target="#myModalNew"
-            data-bs-toggle="modal"
-            style="cursor: pointer"
-          >
-            สร้างรายการขอเข้าพื้นที่
-          </span>
-          &nbsp;|&nbsp; -->
           <label>
+            <span style="cursor: pointer" data-bs-target="#ModalAdvSearch" data-bs-toggle="modal">
+              ดาว์โหลดรายงาน
+            </span>
+            &nbsp;|&nbsp;
             <span style="cursor: pointer" data-bs-target="#ModalAdvSearch" data-bs-toggle="modal">
               ค้นหาขั้นสูง
             </span>
@@ -61,64 +48,6 @@
       </div>
     </div>
     <!-- </div> -->
-  </div>
-  <!-------------------------------------------------------------------------------------------reject vrf    --->
-  <div class="container py-2">
-    <div class="py-2">
-      <form id="form_reject_vrf">
-        <div class="modal fade" id="ModalRejectVRF">
-          <!-- <div class="modal-dialog  modal-lg"> -->
-          <div class="modal-dialog modalcustom_rejectvrf">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                  @click="ClosemyModalNew_"></button>
-              </div>
-              <div class="modal-body">
-                <div class="container">
-                  <div class="row">
-                    <div class="col ps-4 d-flex">
-                      <h5 class="ps-1 text-gray">&nbsp;</h5>
-                    </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col-sm-12 align-center ps-0">
-                      <h3>คุณต้องการตีกลับรายการขอเข้าพื้นที่?</h3>
-                    </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col-sm-4 ps-5 pe-3 text-right">
-                      <h4>เหตุผล:</h4>
-                    </div>
-                    <div class="col-sm-6 ps-0">
-                      <input type="hidden" class="form-control form-control-sm" v-model="reject_vrf.vrf_id_for_reject" />
-                      <input type="text" id="reject_reason" class="form-control" v-model="reject_vrf.reject_reason" />
-                      <p v-if="VRF_error.reject_reason && !reject_vrf.reject_reason
-                        " class="error-message">
-                        กรุณากรอกข้อมูล
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer pt-0 justify-content-center">
-                <div class="align-top pt-1 d-flex justify-content-center">
-                  <button class="btn btn btn-success" style="width: 4rem; height: 2rem"
-                    @click.prevent="addManualRejectVRF_validateInput">
-                    ตกลง
-                  </button>
-                  <button class="btn btn-danger" data-bs-dismiss="modal" type="reset" ref="CloseModalAdvSearch"
-                    style="width: 4rem; height: 2rem" id="CloseModalAdvSearch" @click="ClosemyModalNew_">
-                    ยกเลิก
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
   </div>
   <!---------------------------------------------------------------------------------------------Modal AdvSearch--->
   <div class="container py-2">
@@ -161,7 +90,7 @@
                           width: '15rem',
                           height: '0.5rem'
                         }" v-model="AdvSearch.requestor_id" :select-label="null" :allow-empty="true"
-                        :close-on-select="true" :value="user_id" track-by="user_id" placeholder="เลือก"
+                        :close-on-select="true" :value="user_id"  placeholder="เลือก"
                         :deselectLabel="null"></VueMultiselect>
                     </div>
                     <div class="col-sm-2"></div>
@@ -171,8 +100,9 @@
                         class="form-select form-select-sm p-0" label="meeting_area" :style="{
                           width: '15rem',
                           height: '0.5rem'
-                        }" v-model="AdvSearch.area_id" :select-label="null" :allow-empty="true" :close-on-select="true"
-                        :value="id" track-by="id" placeholder="เลือก" :deselectLabel="null"></VueMultiselect>
+                        }" v-model="AdvSearch.area_id" :select-label="null" :allow-empty="true"
+                        :close-on-select="true" :value="id"  placeholder="เลือก" :deselectLabel="null">
+                      </VueMultiselect>
                     </div>
                   </div>
                   <div class="row p-2">
@@ -183,7 +113,7 @@
                           width: '15rem',
                           height: '0.5rem'
                         }" v-model="AdvSearch.requestor_dept_id" :select-label="null" :allow-empty="true"
-                        :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel="null">
+                        :close-on-select="true" :value="id" placeholder="เลือก" :deselectLabel="null">
                       </VueMultiselect>
                     </div>
                   </div>
@@ -194,7 +124,7 @@
                   <button class="btn btn-primary" style="width: 4rem; height: 2rem" @click="AdvSearch_" type="button">
                     ค้นหา
                   </button>
-                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="CloseModalAdvSearch"
+                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" 
                     style="width: 4rem; height: 2rem" id="CloseModalAdvSearch" @click="ClosemyModalNew_">
                     ยกเลิก
                   </button>
@@ -206,373 +136,7 @@
       </form>
     </div>
   </div>
-  <!-----------------------------------------------------------------------------------------modal Edit Vrf--->
-  <div class="container py-2">
-    <div class="py-2">
-      <form @submit.prevent="editVRF_validateInput" id="form2">
-        <div class="modal fade" id="ModalEditvrf">
-          <div class="modal-dialog modalcustom">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">แก้ไขรายการขอเข้าพื้นที่</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                  @click="ClosemyModalNew_"></button>
-              </div>
-              <div class="modal-body modalcustom">
-                <div class="container modalcustom">
-                  <!---Loop Manual Edit VRF------>
-                  <div class="row ms-4 ps-4 pe-3 me-3 modalcustom">
-                    <table class="table table-hover modalcustomtb">
-                      <thead>
-                        <tr>
-                          <th scope="col" class="colwidth5">จากวันที่</th>
-                          <th scope="col" class="colwidth5">ถึงวันที่</th>
-                          <th scope="col" class="colwidth25">ชื่อ-นามสกุล</th>
-                          <th scope="col" class="colwidth10">ยี่ห้อรถ</th>
-                          <th scope="col" class="colwidth10">ทะเบียน</th>
-                          <th scope="col" class="colwidth10">สีรถ</th>
-                          <th scope="col" class="colwidth25">
-                            หมายเลขบัตร ประชาชน/ใบขับขี่/พนักงาน
-                          </th>
-                          <th scope="col" class="colwidth10">
-                            ดำเนินการ
-                            <!-- <span @click.prevent="addItem()"
-                                class="text-decoration-none text-gray fs-7" style="cursor: pointer"><i
-                                  class="fa fa-plus-circle align-middle" />
-                              </span> -->
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="(data, index) in vrf_Existing.vrf_Existing_det" :key="data.id">
-                          <td scope="col" class="colwidth5">
-                            <datepicker class="form-control" v-model="useSetDate(index, 'date_from').value" @blur="
-                              edit_validateInput(
-                                'date_from',
-                                index,
-                                'กรุณาใส่วันที่'
-                              )
-                              " style="width: 7rem" inputFormat="dd/MM/yyyy" />
-                            <p class="error-message" v-if="data.errors && data.errors.date_from">
-                              {{ data.errors.date_from }}
-                            </p>
-                          </td>
-                          <td scope="col" class="colwidth5">
-                            <datepicker class="form-control" v-model="useSetDate(index, 'date_to').value"
-                              style="width: 7rem" @blur="
-                                edit_validateInput(
-                                  'date_to',
-                                  index,
-                                  'กรุณาใส่วันที่'
-                                )
-                                " inputFormat="dd/MM/yyyy" />
-                            <p class="error-message" v-if="data.errors && data.errors.date_to">
-                              {{ data.errors.date_to }}
-                            </p>
-                          </td>
-                          <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center">
-                            <input type="text" class="form-control" style="width: 20rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index].fullname
-                              " @blur="
-    edit_validateInput(
-      'fullname',
-      index,
-      'กรุณาใส่ข้อมูล'
-    )
-    " readonly />
-                            <p class="error-message" v-if="data.errors && data.errors.fullname">
-                              {{ data.errors.fullname }}
-                            </p>
-                          </td>
-                          <td scope="col" class="colwidth10">
-                            <select class="form-select form-select-sm" v-model="vrf_Existing.vrf_Existing_det[index]
-                              .vehicle_brand_id
-                              " @change="
-    edit_validateInput(
-      'vehicle_brand_id',
-      index,
-      'กรุณาเลือกยี่ห้อรถ'
-    )
-    " disabled>
-                              <option v-for="option in data_ddl.vehicle_brand" :value="option.id" :key="option.id">
-                                {{ option.vehicle_brand }}
-                              </option>
-                            </select>
-                            <p class="error-message" v-if="data.errors && data.errors.vehicle_brand_id">
-                              {{ data.errors.vehicle_brand_id }}
-                            </p>
-                          </td>
-                          <td scope="col" class="colwidth10">
-                            <input type="text" class="form-control" style="width: 10rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index]
-                              .vehicle_registration
-                              " @blur="
-    edit_validateInput(
-      'vehicle_registration',
-      index,
-      'กรุณาใส่ข้อมูล'
-    )
-    " readonly />
-                            <p class="error-message" v-if="data.errors && data.errors.vehicle_registration
-                              ">
-                              {{ data.errors.vehicle_registration }}
-                            </p>
-                          </td>
-                          <td scope="col" class="colwidth10">
-                            <select class="form-select form-select-sm" v-model="vrf_Existing.vrf_Existing_det[index]
-                              .vehicle_color_id
-                              " @change="
-    edit_validateInput(
-      'vehicle_color_id',
-      index,
-      'กรุณาเลือกสีรถ'
-    )
-    " disabled>
-                              <option v-for="option in data_ddl.vehicle_color" :value="option.id" :key="option.id">
-                                {{ option.vehicle_color }}
-                              </option>
-                            </select>
-                            <p class="error-message" v-if="data.errors && data.errors.vehicle_color_id">
-                              {{ data.errors.ddlvehicle_color }}
-                            </p>
-                          </td>
-                          <td scope="col" class="colwidth25" style="text-align: center">
-                            <input type="text" class="form-control" style="width: 20rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index].card_no
-                              " @blur="
-    edit_validateInput(
-      'card_no',
-      index,
-      'กรุณาใส่ข้อมูล'
-    )
-    " readonly />
-                            <p class="error-message" v-if="data.errors && data.errors.card_no">
-                              {{ data.errors.card_no }}
-                            </p>
-                          </td>
-                          <td scope="col" class="colwidth10">
-                            <span @click="
-                              deleteData(
-                                vrf_Existing.vrf_Existing_det[index].id
-                              )
-                              " style="cursor: pointer">
-                              <i class="fa fa-minus-square align-middle" aria-hidden="true"></i>
-                            </span>
-                            <!-- &nbsp;|&nbsp;<span
-                                @click.prevent="addItem()" class="text-decoration-none text-gray fs-7"
-                                style="cursor: pointer"><i class="fa fa-plus-circle align-middle" /></span> -->
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <!---End Loop Manual Edit VRF------>
-                  <div class="row p-2">
-                    <div class="col ps-4 d-flex">
-                      <h5 class="ps-1 text-gray">&nbsp;</h5>
-                    </div>
-                  </div>
-                  <div class="row p-2" v-if="message_addManual">
-                    <div class="col">
-                      <div :class="`alert ${error_addManual ? 'alert-danger' : 'alert-success'
-                        }`">
-                        {{ message_addManual }}
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col">พื้นที่เข้าพบ:</div>
-                    <div class="col">
-                      <select class="form-select form-select-sm" v-model="vrf_Existing.area_id"
-                        style="width: 15rem; height: 2.5rem" disabled>
-                        <option v-for="option in data_ddl.area" :value="option.id" :key="option.id">
-                          {{ option.meeting_area }}
-                        </option>
-                      </select>
-                      <!--can't get id-->
-                      <!-- <VueMultiselect name="area" id="area" :options="data_ddl.area"
-                          class="form-select form-select-sm p-0" label="meeting_area" :style="{
-                            width: '15rem'
-                            , height: '0.5rem'
-                          }" v-model="vrf_Existing.area" :select-label="null" :allow-empty="true"
-                          :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
-                        </VueMultiselect> -->
-                      <!-- 
-                        <VueMultiselect name="area" id="area"
-                          :options="data_ddl.area" class="form-select form-select-sm p-0"
-                          label="meeting_area" :style="{
-                            width: '15rem'
-                            , height: '0.5rem'
-                          }" v-model="vrf_Existing.area" :select-label="null" :allow-empty="true"
-                          :close-on-select="true" :value="id" track-by="id" placeholder="เลือก"
-                          :deselectLabel=null>
-                        </VueMultiselect> -->
-                      <p v-if="VRF_error.area && !vrf_Existing.area_id" class="error-message">
-                        กรุณาเลือกข้อมูล
-                      </p>
-                    </div>
-                    <div class="col">เหตุผลในการเข้าพบ:</div>
-                    <div class="col">
-                      <input type="text" id="reason" class="form-control" style="width: 15rem"
-                        v-model="vrf_Existing.reason" readonly />
-                      <p v-if="VRF_error.reason && !vrf_Existing.reason" class="error-message">
-                        กรุณากรอกข้อมูล
-                      </p>
-                    </div>
-                    <div class="col">ชื่อบริษัทผู้มาติดต่อ:</div>
-                    <div class="col">
-                      <input type="text" id="contactor" class="form-control" style="width: 15rem"
-                        v-model="vrf_Existing.contactor" readonly />
-                      <p v-if="VRF_error.contactor && !vrf_Existing.contactor" class="error-message">
-                        กรุณากรอกข้อมูล
-                      </p>
-                    </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col">ผู้ร้องขอ:</div>
-                    <div class="col">
-                      <!-- <input type="text" class="form-control" style="width:15rem;"
-                          v-model="vrf_Existing.requestor_id" /> -->
-                      <!----why can't set default selected-->
-                      <!-- <VueMultiselect :options="data_ddl_edt.userlist"
-                          class="form-select form-select-sm p-0" label="first_name" :style="{
-                            width: '15rem'
-                            , height: '0.5rem'
-                          }" v-model="vrf_Existing.requestor_id" :select-label="null" :allow-empty="true"
-                          :close-on-select="true" :value="user_id" track-by="user_id" placeholder="เลือก"
-                          :deselectLabel=null>
-                        </VueMultiselect> -->
 
-                      <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_id"
-                        style="width: 15rem; height: 2.5rem" disabled>
-                        <option v-for="option in data_ddl.userlist" :value="option.user_id" :key="option.user_id">
-                          {{ option.first_name }}
-                        </option>
-                      </select>
-
-                      <p v-if="VRF_error.requestor && !vrf_Existing.requestor" class="error-message">
-                        กรุณาเลือกข้อมูล
-                      </p>
-                    </div>
-                    <div class="col">ตำแหน่งผู้ร้องขอ:</div>
-                    <div class="col">
-                      <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_position_id"
-                        style="width: 15rem; height: 2.5rem" disabled>
-                        <option v-for="option in data_ddl.position" :value="option.id" :key="option.id">
-                          {{ option.position }}
-                        </option>
-                      </select>
-                      <!-- <VueMultiselect name="requestor_position" id="requestor_position" :options="data_ddl.position"
-                          class="form-select form-select-sm p-0" label="position" :style="{
-                            width: '15rem'
-                            , height: '0.5rem'
-                          }" v-model="vrf_Existing.requestor_position_id" :select-label="null" :allow-empty="true"
-                          :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
-                        </VueMultiselect> -->
-                      <p v-if="VRF_error.requestor_position_id &&
-                        !vrf_Existing.requestor_position_id
-                        " class="error-message">
-                        กรุณาเลือกข้อมูล
-                      </p>
-                    </div>
-                    <div class="col">แผนกผู้ร้องขอ:</div>
-                    <div class="col">
-                      <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_dept_id"
-                        style="width: 15rem; height: 2.5rem" disabled>
-                        <option v-for="option in data_ddl.dept" :value="option.id" :key="option.id">
-                          {{ option.department }}
-                        </option>
-                      </select>
-
-                      <!-- <VueMultiselect name="requestor_dept" id="requestor_dept" :options="data_ddl.dept"
-                          class="form-select form-select-sm p-0" label="department" :style="{
-                            width: '15rem'
-                            , height: '0.5rem'
-                          }" v-model="vrf_Existing.requestor_dept_id" :select-label="null" :allow-empty="true"
-                          :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
-                        </VueMultiselect> -->
-                      <p v-if="VRF_error.requestor_dept &&
-                        !vrf_Existing.requestor_dept_id
-                        " class="error-message">
-                        กรุณาเลือกข้อมูล
-                      </p>
-                    </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col">เบอร์โทรผู้ร้องขอ:</div>
-                    <div class="col">
-                      <input type="text" id="requestor_phone" class="form-control" style="width: 15rem"
-                        v-model="vrf_Existing.requestor_phone" readonly />
-                      <p v-if="VRF_error.requestor_phone &&
-                        !vrf_Existing.requestor_phone
-                        " class="error-message">
-                        กรุณากรอกข้อมูล
-                      </p>
-                    </div>
-                    <div class="col">ชื่อผู้นำพา:</div>
-                    <div class="col">
-                      <select class="form-select form-select-sm" v-model="vrf_Existing.navigator_id"
-                        style="width: 15rem; height: 2.5rem" disabled>
-                        <option v-for="option in data_ddl.userlist" :value="option.user_id" :key="option.user_id">
-                          {{ option.first_name }}
-                        </option>
-                      </select>
-                      <!-- <select
-                        class="form-select form-select-sm"
-                        v-model="vrf_Existing.navigator_id"
-                        style="width: 15rem; height: 2.5rem"
-                        disabled
-                      >
-                        <option
-                          v-for="option in data_ddl.navigator"
-                          :value="option.user_id"
-                          :key="option.user_id"
-                        >
-                          {{ option.fullname }}
-                        </option>
-                      </select> -->
-                      <!-- <VueMultiselect name="navigator" id="navigator" :options="data_ddl.navigator"
-                          class="form-select form-select-sm p-0" label="fullname" :style="{
-                            width: '15rem'
-                            , height: '0.5rem'
-                          }" v-model="vrf_Existing.navigator" :select-label="null" :allow-empty="true"
-                          :close-on-select="true" :value="user_id" track-by="user_id" placeholder="เลือก"
-                          :deselectLabel=null>
-                        </VueMultiselect> -->
-
-                    </div>
-                    <div class="col">แนบไฟล์:</div>
-                    <div class="col text-start">
-                      <label class="input-group-text" for="formFile_edt"
-                        style="width: 0.5rem; height: 0.5rem; display: inline">
-                        เลือกไฟล์
-                      </label>
-                      <input type="file" class="form-control" id="formFile_edt" @change="selectFile_edt"
-                        style="display: none" disabled />
-                      <input type="text" class="form-control" id="formFileText_edt" style="width: 10rem; display: inline"
-                        v-model="vrf_Existing.attach_file" readonly />
-                      &nbsp;
-                      <a :href="fileUrl" target="_blank">
-                        <i class="fa fa-address-card" aria-hidden="true"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer pt-0 justify-content-center">
-                <div class="align-top pt-1 d-flex justify-content-center">
-                  <button class="btn btn-success" style="width: 5rem; height: 2rem" @click.prevent="sendApprove">
-                    อนุมัติ
-                  </button>
-                  <button class="btn btn-danger" data-bs-dismiss="modal" type="reset" style="width: 4rem; height: 2rem"
-                    id="ClosemyModalNew" @click="ClosemyModalNew_">
-                    ยกเลิก
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
   <!-- Loading-->
   <Loading v-if="loading" />
   <Alert_popup :message="Alert_popup_message" v-if="Alert_popup" />
@@ -582,7 +146,7 @@
       <div class="alert-body">{{ alert_popup_message_inside }}</div>
       <div class="alert-footer">
         <!-- <button @click="onClose">ยกเลิก</button>
-            <button @click="onConfirm">ตกลง</button> -->
+              <button @click="onConfirm">ตกลง</button> -->
         <button id="button_alert_popup_submit" @click="confirmDialog">
           ตกลง
         </button>
@@ -593,7 +157,9 @@
     </div>
   </div>
 </template>
+
 <script>
+//get data from nodejs backend to create report when user click button and download xlsx file
 import Sidebar from '../components/sidebar/Sidebar'
 import {
   collapsed,
@@ -610,10 +176,8 @@ import Datepicker from 'vue3-datepicker'
 import VueMultiselect from 'vue-multiselect'
 import Loading from '../components/Loading.vue'
 import Alert_popup from '../components/Alert_popup.vue'
-
-
-export default defineComponent({
-  name: 'Approve_VRF_Lst',
+export default {
+  name: 'VRF_Report',
   components: {
     Alert_popup,
     Loading,
@@ -671,17 +235,6 @@ export default defineComponent({
       templete: []
     })
     const userlist = ref(null)
-    const NewVrf = reactive({
-      reason: '',
-      contactor: '',
-      requestor: '',
-      requestor_position: '',
-      requestor_dept: '',
-      requestor_phone: '',
-      navigator: '',
-      area: '',
-      templete_id: 0
-    })
     const vrf_Existing = reactive({
       no: '',
       id: '',
@@ -886,6 +439,11 @@ export default defineComponent({
     const ClosemyModalNew_ = () => {
       reject_vrf.vrf_id_for_reject = 0
       reject_vrf.reject_reason = ''
+      AdvSearch.tbDateF = ''
+      AdvSearch.tbDateT = ''
+      AdvSearch.requestor_id = 0
+      AdvSearch.area_id = 0
+      AdvSearch.requestor_dept_id = 0 
     }
     //-----check session
     hasLocalStorage.value = window.localStorage.getItem('user_id')
@@ -1176,7 +734,7 @@ export default defineComponent({
                 // success callback
                 let obj = JSON.parse(JSON.stringify(res.data))
                 // router.push('/listorder')
-                location.reload()                
+                location.reload()
               },
               (res) => {
                 // error callback
@@ -1621,29 +1179,31 @@ export default defineComponent({
         tbDateF: AdvSearch.tbDateF !== '' ? AdvSearch.tbDateF : null,
         tbDateT: AdvSearch.tbDateT !== '' ? AdvSearch.tbDateT : null,
         requestor_id:
-          AdvSearch.requestor_id !== 0 ? AdvSearch.requestor_id : null,
-        area_id: AdvSearch.area_id !== 0 ? AdvSearch.area_id : null,
+          AdvSearch.requestor_id.user_id !== 0 ? AdvSearch.requestor_id.user_id : null,
+        area_id: AdvSearch.area_id.id !== 0 ? AdvSearch.area_id.id : null,
         requestor_dept_id:
-          AdvSearch.requestor_dept_id !== 0
-            ? AdvSearch.requestor_dept_id
+          AdvSearch.requestor_dept_id.id !== 0
+            ? AdvSearch.requestor_dept_id.id
             : null,
         department_id: department_id.value,
         branch_id: localStorage.getItem('user_branch_id')
       }
-      console.log('params: ', params)
+      console.log('AdvSearch_ params: ', params)
       await axios
         .get(process.env.VUE_APP_API_URL + '/get_search_vrf_trans', { params })
         .then(
-          (res) => {
-            data.rows = JSON.parse(JSON.stringify(res.data))
-            console.log(
-              'JSON.parse(JSON.stringify(res.data): ',
-              JSON.parse(JSON.stringify(res.data))
-            )
+          (res) => { 
+            // let output = JSON.parse(JSON.stringify(res.data))
+            // data.rows = output       
+            console.log('res.data: ',res.data)     
+            Data_.value = JSON.parse(JSON.stringify(res.data))
+            data.rows = Data_.value
+                   
           },
           (res) => {
             // error callback
-            console.log(res.data)
+            console.log('error: ',res.data)
+
           }
         )
       document.getElementById('CloseModalAdvSearch').click() //************************** */
@@ -2137,7 +1697,6 @@ export default defineComponent({
       data_ddl_edt,
       data_ddl,
       userlist,
-      NewVrf,
       confirmDialog,
       alert_popup_message_inside,
       isOpen_alert_popup,
@@ -2200,8 +1759,10 @@ export default defineComponent({
       getBankTypeData
     }
   }
-})
+
+}
 </script>
+
 <style scoped>
 @import '../assets/css/style.css';
 @import '../../node_modules/vue-multiselect/dist/vue-multiselect.css';
@@ -2380,4 +1941,3 @@ export default defineComponent({
       width: 80px;
     } */
 </style>
-    

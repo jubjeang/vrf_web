@@ -76,7 +76,7 @@ export default {
     </SidebarLink>
     <!-- <SidebarLink v-if="out_put.length" to="" icon="fas fa-wallet" class="nav-link align-middle" v-show="out_put[0].security_vrf === '1'" >รายการที่ได้รับการอนุมัติแล้ว
     </SidebarLink> -->
-    <SidebarLink v-if="out_put.length" to="" icon="fas fa-wallet" class="nav-link align-middle" v-show="out_put[0].report_vrf === '1'">รายงาน
+    <SidebarLink v-if="out_put.length" to="/vrfreport" icon="fas fa-wallet" class="nav-link align-middle" v-show="out_put[0].report_vrf === '1'">รายงาน
     </SidebarLink>            
     <!-- <SidebarLink to="/ordertracking" icon="fa fa-user-circle">บัญชีผู้ใช้</SidebarLink> -->
     <span class="collapse-icon" :class="{ 'rotate-180': collapsed }" @click="toggleSidebar">
