@@ -194,7 +194,8 @@
                           </td>
                           <td scope="col" class="colwidth5">
                             <datepicker class="form-control" v-model="data.tbDateT" style="width:7rem;"
-                              inputFormat="dd/MM/yyyy" @blur="validateInput('tbDateT', index, 'กรุณาใส่วันที่')" @update:model-value="setFromDate(index)" />
+                              inputFormat="dd/MM/yyyy" @blur="validateInput('tbDateT', index, 'กรุณาใส่วันที่')"
+                              @update:model-value="setFromDate(index)" />
                             <p class="error-message" v-if="data.errors && data.errors.tbDateT">
                               {{ data.errors.tbDateT }}
                             </p>
@@ -239,9 +240,9 @@
                           </td>
                           <td scope="col" class="colwidth25" style="text-align: center;">
                             <input type="text" class="form-control" style="width: 20rem; display: inline-block;"
-                              v-model="data.tbGardNo" @blur="validateInput('tbGardNo', index, 'กรุณาใส่ข้อมูล')" />
-                            <p class="error-message" v-if="data.errors && data.errors.tbGardNo">
-                              {{ data.errors.tbGardNo }}
+                              v-model="data.tbCardNo" @blur="validateInput('tbCardNo', index, 'กรุณาใส่ข้อมูล')" />
+                            <p class="error-message" v-if="data.errors && data.errors.tbCardNo">
+                              {{ data.errors.tbCardNo }}
                             </p>
                           </td>
                           <td scope="col" class="colwidth10"><span @click="deleteData(index)" style="cursor: pointer;">
@@ -430,15 +431,15 @@
                           <th scope="col" class="colwidth10">สีรถ</th>
                           <th scope="col" class="colwidth25">หมายเลขบัตร ประชาชน/ใบขับขี่/พนักงาน</th>
                           <th scope="col" class="colwidth10">ดำเนินการ
-                            <!-- <span @click.prevent="addItem()"
+                            <span @click.prevent="addExistingItem(templete_vrf_Existing.id)"
                               class="text-decoration-none text-gray fs-7" style="cursor: pointer"><i
                                 class="fa fa-plus-circle align-middle" />
-                            </span> -->
+                            </span>
                           </th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="data, index in templete_vrf_Existing.templete_vrf_Existing_det" :key="data.id">
+                        <tr v-for="data, index in templete_vrf_Existing.templete_vrf_Existing_det" :key="index">
                           <td scope="col" class="colwidth5">
                             <datepicker class="form-control" v-model="useSetDate(index, 'date_from').value"
                               @blur="edit_validateInput('date_from', index, 'กรุณาใส่วันที่')" style="width:7rem;"
@@ -502,7 +503,7 @@
                             </p>
                           </td>
                           <td scope="col" class="colwidth10"><span
-                              @click="deleteData(templete_vrf_Existing.templete_vrf_Existing_det[index].id)"
+                              @click="deleteExistingData(index)"
                               style="cursor: pointer;">
                               <i class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>
                             <!-- &nbsp;|&nbsp;<span
@@ -919,7 +920,7 @@ export default defineComponent({
     const edit_fieldsToValidate = [
       'tbDateF', 'tbDateT', 'tbFullName',
       'ddlvehicle_brand', 'tbVehicle_Registration',
-      'ddlvehicle_color', 'tbGardNo'
+      'ddlvehicle_color', 'tbCardNo'
     ]
     const edit_validateAllInputs = () => {
       templete_vrf_Existing.templete_vrf_Existing_det.forEach((data, index) => {
@@ -942,7 +943,7 @@ export default defineComponent({
     const fieldsToValidate = [
       'tbDateF', 'tbDateT', 'tbFullName',
       'ddlvehicle_brand', 'tbVehicle_Registration',
-      'ddlvehicle_color', 'tbGardNo'
+      'ddlvehicle_color', 'tbCardNo'
     ]
     const validateAllInputs = () => {
       rowData.value.forEach((data, index) => {
@@ -1247,7 +1248,7 @@ export default defineComponent({
           sortable: true,
           isKey: true,
           display: function (row) {
-            return ( `<div style="text-align: right;">${row.no}</div>`
+            return (`<div style="text-align: right;">${row.no}</div>`
             );
           },
         },
@@ -1257,7 +1258,7 @@ export default defineComponent({
           width: "20%",
           sortable: true,
           display: function (row) {
-            return ( `<div style="text-align: left;">${row.template_name}</div>`
+            return (`<div style="text-align: left;">${row.template_name}</div>`
             );
           },
         },
@@ -1267,7 +1268,7 @@ export default defineComponent({
           width: "20%",
           sortable: true,
           display: function (row) {
-            return ( `<div style="text-align: left;">${row.contactor}</div>`
+            return (`<div style="text-align: left;">${row.contactor}</div>`
             );
           },
         },
@@ -1277,7 +1278,7 @@ export default defineComponent({
           width: "20%",
           sortable: true,
           display: function (row) {
-            return ( `<div style="text-align: left;">${row.reason}</div>`
+            return (`<div style="text-align: left;">${row.reason}</div>`
             );
           },
         },
@@ -1287,7 +1288,7 @@ export default defineComponent({
           width: "10%",
           sortable: true,
           display: function (row) {
-            return ( `<div style="text-align: left;">${row.meeting_area}</div>`
+            return (`<div style="text-align: left;">${row.meeting_area}</div>`
             );
           },
         },
@@ -1297,7 +1298,7 @@ export default defineComponent({
           width: "15%",
           sortable: true,
           display: function (row) {
-            return ( `<div style="text-align: left;">${row.user_create}</div>`
+            return (`<div style="text-align: left;">${row.user_create}</div>`
             );
           },
         },
@@ -1441,12 +1442,23 @@ export default defineComponent({
       const params = {
         tbDateF: AdvSearch.tbDateF !== '' ? AdvSearch.tbDateF : null,
         tbDateT: AdvSearch.tbDateT !== '' ? AdvSearch.tbDateT : null,
-        requestor_id: AdvSearch.requestor_id !== 0 ? AdvSearch.requestor_id : null,
-        area_id: AdvSearch.area_id !== 0 ? AdvSearch.area_id : null,
-        requestor_dept_id: AdvSearch.requestor_dept_id !== 0 ? AdvSearch.requestor_dept_id : null,
+        requestor_id: AdvSearch.requestor_id !== 0 ? AdvSearch.requestor_id.user_id : null,
+        area_id: AdvSearch.area_id !== 0 ? AdvSearch.area_id.id : null,
+        requestor_dept_id: AdvSearch.requestor_dept_id !== 0 ? AdvSearch.requestor_dept_id.id : null,
         department_id: department_id.value,
         branch_id: localStorage.getItem('user_branch_id'),
+        checkin_status: null,
       }
+      // const params = {
+      //   tbDateF: AdvSearch.tbDateF !== '' ? AdvSearch.tbDateF : null,
+      //   tbDateT: AdvSearch.tbDateT !== '' ? AdvSearch.tbDateT : null,
+      //   requestor_id: AdvSearch.requestor_id !== 0 ? AdvSearch.requestor_id : null,
+      //   area_id: AdvSearch.area_id !== 0 ? AdvSearch.area_id : null,
+      //   requestor_dept_id: AdvSearch.requestor_dept_id !== 0 ? AdvSearch.requestor_dept_id : null,
+      //   department_id: department_id.value,
+      //   branch_id: localStorage.getItem('user_branch_id'),
+      //   checkin_status: null,
+      // }
       console.log("params: ", params)
       await axios.get(process.env.VUE_APP_API_URL + '/get_search_vrf', { params })
         .then((res) => {
@@ -1489,20 +1501,6 @@ export default defineComponent({
     }
     const dateTime = (value) => {
       return moment(value).format("DD-MM-YYYY");
-    }
-    const getBankTypeData = async () => {
-      const params = {
-        user_id: user_id.value
-      };
-      await axios.get(process.env.VUE_APP_API_URL + '/getbanktypedata', { params })
-        .then((res) => {
-          // success callback       
-          NewOrder.BankTypeData = res.data
-
-        }, (res) => {
-          // error callback
-          console.log(res.data.message)
-        });
     }
     const addManualVRF = async () => {
       const formData = new FormData()
@@ -1687,24 +1685,83 @@ export default defineComponent({
     const addItem = async () => {
       validateAllInputs()
       Id.value++
-      rowData.value.push({
-        tbDateF: null
-        , tbDateT: null
-        , tbName: ''
-        , tbSname: ''
-        , tbFullName: ''
-        , tbSname: ''
-        , tbVehicle_Registration: ''
-        , ddlvehicle_brand: ''
-        , ddlvehicle_color: ''
-        , errors: {}
-      });
+      if (rowData.value.length === 0) {
+        rowData.value.push({
+          tbDateF: new Date()
+          , tbDateT: null
+          , tbName: ''
+          , tbSname: ''
+          , tbFullName: ''
+          , tbSname: ''
+          , tbVehicle_Registration: ''
+          , ddlvehicle_brand: ''
+          , ddlvehicle_color: ''
+          , tbCardNo: ''
+          , errors: {}
+        });
+      }
+      else
+      { 
+        rowData.value.push({
+          tbDateF: rowData.value[0].tbDateF
+          , tbDateT: rowData.value[0].tbDateT
+          , tbName: ''
+          , tbSname: ''
+          , tbFullName: ''
+          , tbSname: ''
+          , tbVehicle_Registration: ''
+          , ddlvehicle_brand: ''
+          , ddlvehicle_color: ''
+          , tbCardNo: ''
+          , errors: {}
+        });
+      }
+    }
+    const addExistingItem = async () => {
+      validateAllInputs()
+      Id.value++
+      if (templete_vrf_Existing.templete_vrf_Existing_det.length === 0) {
+        templete_vrf_Existing.templete_vrf_Existing_det.push({
+          tbDateF: new Date()
+          , tbDateT: null
+          , tbName: ''
+          , tbSname: ''
+          , tbFullName: ''
+          , tbSname: ''
+          , tbVehicle_Registration: ''
+          , ddlvehicle_brand: ''
+          , ddlvehicle_color: ''
+          , tbCardNo: ''
+          , errors: {}
+        });
+      }
+      else
+      { 
+        templete_vrf_Existing.templete_vrf_Existing_det.push({
+          tbDateF: templete_vrf_Existing.templete_vrf_Existing_det[0].tbDateF
+          , tbDateT: templete_vrf_Existing.templete_vrf_Existing_det[0].tbDateT
+          , tbName: ''
+          , tbSname: ''
+          , tbFullName: ''
+          , tbSname: ''
+          , tbVehicle_Registration: ''
+          , ddlvehicle_brand: ''
+          , ddlvehicle_color: ''
+          , tbCardNo: ''
+          , errors: {}
+        });
+      }
+    }    
+    const deleteExistingData = (index) => {
+      console.log(index)
+      templete_vrf_Existing.templete_vrf_Existing_det.splice(index, 1)
+      Id.value--
     }
     const deleteData = (index) => {
       console.log(index)
       rowData.value.splice(index, 1)
       Id.value--
-    }
+    }    
     const editVRF_validateInput = async () => {
       edit_validateAllInputs()
       let isError = false
@@ -1811,11 +1868,11 @@ export default defineComponent({
       let object_det = []; // initialize the object      
       for (let index in templete_vrf_Existing.templete_vrf_Existing_det) {
         object_det.push({
-          id: templete_vrf_Existing.templete_vrf_Existing_det[index].id
+          id: templete_vrf_Existing.id
           , date_from: new Date(templete_vrf_Existing.templete_vrf_Existing_det[index].date_from)
           , date_to: new Date(templete_vrf_Existing.templete_vrf_Existing_det[index].date_to)
           , fullname: templete_vrf_Existing.templete_vrf_Existing_det[index].fullname
-          , vrf_id: templete_vrf_Existing.templete_vrf_Existing_det[index].vrf_id
+          , vrf_id: templete_vrf_Existing.id
           , vehicle_brand_id: templete_vrf_Existing.templete_vrf_Existing_det[index].vehicle_brand_id
           , vehicle_color_id: templete_vrf_Existing.templete_vrf_Existing_det[index].vehicle_color_id
           , vehicle_registration: templete_vrf_Existing.templete_vrf_Existing_det[index].vehicle_registration
@@ -1838,7 +1895,7 @@ export default defineComponent({
             router.push('/templatevrflst')
           });
         error_addManual.value = false
-      }
+       }
       catch (err) {
         console.log(err)
         message_addManual.value = "Something went wrong: " + err
@@ -1851,31 +1908,32 @@ export default defineComponent({
     }
     const setToDate = (index) => {
       let newDate = new Date(rowData.value[index].tbDateF);
-      rowData.value[index].tbDateT = new Date(newDate.getFullYear(), newDate.getMonth()+1, newDate.getDate()-1);
+      rowData.value[index].tbDateT = new Date(newDate.getFullYear(), newDate.getMonth() + 1, newDate.getDate() - 1);
     }
     const setFromDate = (index) => {
       console.log(`Selected date in range is: ${index}`);
       console.log(`rowData[${index}]:`, rowData.value[index].tbDateF);
       let newDateF = new Date(rowData.value[index].tbDateF);
-      let dateLimit = new Date(newDateF.getFullYear(), newDateF.getMonth()+1, newDateF.getDate()-1);
+      let dateLimit = new Date(newDateF.getFullYear(), newDateF.getMonth() + 1, newDateF.getDate() - 1);
       let newDateT = new Date(rowData.value[index].tbDateT);
-      if (newDateT > dateLimit) {       
+      if (newDateT > dateLimit) {
         alert('วันที่สิ้นสุดต้องไม่เกิน 1 เดือน หลังจากวันที่เริ่มต้น')
-        rowData.value[index].tbDateT = dateLimit      } 
-      else
-      {
-        rowData.value[index].tbDateT = newDateT        
+        rowData.value[index].tbDateT = dateLimit
       }
-      if (newDateT < newDateF) {       
+      else {
+        rowData.value[index].tbDateT = newDateT
+      }
+      if (newDateT < newDateF) {
         alert('วันสิ้นสุดต้องมากกว่าวันที่เริ่มต้น')
         //rowData.value[index].tbDateT = dateLimit      
-      } 
-      else
-      {
-        rowData.value[index].tbDateT = newDateT        
-      }      
-    }        
-    return {
+      }
+      else {
+        rowData.value[index].tbDateT = newDateT
+      }
+    }
+    return { 
+      deleteExistingData,
+      addExistingItem,
       setFromDate,
       setToDate,
       clear_search_results,

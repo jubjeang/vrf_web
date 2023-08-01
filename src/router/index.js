@@ -32,6 +32,11 @@ const routes = [
     component: () => import('../views/VRF_Report.vue')
   },
   {
+    path: '/vrfusermgmt',
+    name: 'vrfusermgmt',
+    component: () => import('../views/VRF_usermgmt.vue')
+  },  
+  {
     path: '/main',
     name: 'Main',
     component: () => import('../views/Main.vue')

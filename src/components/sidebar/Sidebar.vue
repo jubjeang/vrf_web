@@ -58,26 +58,28 @@ export default {
 
     <span v-if="collapsed">
       <h3>
-        <div @click="gotoMainPage" style="cursor: pointer;">G</div>
-        <div @click="gotoMainPage" style="cursor: pointer;">F</div>
+        <div @click="gotoMainPage" style="cursor: pointer; font-weight: bold; font-style: normal;">G</div>
+        <div @click="gotoMainPage" style="cursor: pointer; font-weight: bold; font-style: normal;">f</div>
       </h3>
     </span>
     <span v-else>
       <h1 @click="gotoMainPage" style="cursor: pointer;"><img src="@/assets/images/sl_logo.png"
           style="display: block; max-width: auto height: auto;" /></h1>
     </span>
-    <SidebarLink v-if="out_put.length" to="/requestvrflst" icon="fas fa-wallet" class="nav-link align-middle"  v-show="out_put[0].request_vrf === '1'">รายการขอเข้าพื้นที่
+    <SidebarLink v-if="out_put.length" to="/requestvrflst" icon="fa fa-list-alt" class="nav-link align-middle"  v-show="out_put[0].request_vrf === '1'">รายการขอเข้าพื้นที่
     </SidebarLink>
     <SidebarLink v-if="out_put.length" to="/templatevrflst" icon="fas fa-wallet" class="nav-link align-middle" v-show="out_put[0].template_vrf === '1'">รายการแม่แบบ
     </SidebarLink>
-    <SidebarLink v-if="out_put.length" to="/approvevrflst" icon="fas fa-wallet" class="nav-link align-middle" v-show="out_put[0].vrf_requert_approve === '1'">รายการขออนุมัติเข้าพื้นที่
+    <SidebarLink v-if="out_put.length" to="/approvevrflst" icon="fa fa-list-alt" class="nav-link align-middle" v-show="out_put[0].vrf_requert_approve === '1'">รายการขออนุมัติเข้าพื้นที่
     </SidebarLink>
-    <SidebarLink v-if="out_put.length" to="/vrflstforsecurity" icon="fas fa-wallet" class="nav-link align-middle" v-show="out_put[0].security_vrf === '1'" >รายการขอเข้าพื้นที่
+    <SidebarLink v-if="out_put.length" to="/vrflstforsecurity" icon="fa fa-list-alt" class="nav-link align-middle" v-show="out_put[0].security_vrf === '1'" >รายการขอเข้าพื้นที่
     </SidebarLink>
     <!-- <SidebarLink v-if="out_put.length" to="" icon="fas fa-wallet" class="nav-link align-middle" v-show="out_put[0].security_vrf === '1'" >รายการที่ได้รับการอนุมัติแล้ว
     </SidebarLink> -->
-    <SidebarLink v-if="out_put.length" to="/vrfreport" icon="fas fa-wallet" class="nav-link align-middle" v-show="out_put[0].report_vrf === '1'">รายงาน
-    </SidebarLink>            
+    <SidebarLink v-if="out_put.length" to="/vrfreport" icon="fa fa-table" class="nav-link align-middle" v-show="out_put[0].report_vrf === '1'">รายงาน
+    </SidebarLink>
+    <SidebarLink v-if="out_put.length" to="/vrfusermgmt" icon="fa fa-tasks" class="nav-link align-middle" v-show="out_put[0].vrf_usermanagement === '1'">จัดการข้อมูลผู้ใช้
+    </SidebarLink> 
     <!-- <SidebarLink to="/ordertracking" icon="fa fa-user-circle">บัญชีผู้ใช้</SidebarLink> -->
     <span class="collapse-icon" :class="{ 'rotate-180': collapsed }" @click="toggleSidebar">
       <i class="fas fa-angle-double-left" style="cursor: pointer;" />

@@ -58,6 +58,7 @@
 import axios from 'axios'
 import Loading from "../components/Loading.vue";
 import Alert_popup from "../components/Alert_popup.vue";
+axios.defaults.withCredentials = true;
 export default {
   name: 'Login',
   components: { Loading, Alert_popup },

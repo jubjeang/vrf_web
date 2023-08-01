@@ -26,7 +26,7 @@
       <div class="col-11">
         <div style="text-align: right">
           <label>
-            <span style="cursor: pointer" data-bs-target="#ModalAdvSearch" data-bs-toggle="modal">
+            <span style="cursor: pointer" @click="downloadExcel">
               ดาว์โหลดรายงาน
             </span>
             &nbsp;|&nbsp;
@@ -90,8 +90,8 @@
                           width: '15rem',
                           height: '0.5rem'
                         }" v-model="AdvSearch.requestor_id" :select-label="null" :allow-empty="true"
-                        :close-on-select="true" :value="user_id"  placeholder="เลือก"
-                        :deselectLabel="null"></VueMultiselect>
+                        :close-on-select="true" :value="user_id" placeholder="เลือก" :deselectLabel="null">
+                      </VueMultiselect>
                     </div>
                     <div class="col-sm-2"></div>
                     <div class="col-sm-2">พื้นที่เข้าพบ</div>
@@ -100,8 +100,8 @@
                         class="form-select form-select-sm p-0" label="meeting_area" :style="{
                           width: '15rem',
                           height: '0.5rem'
-                        }" v-model="AdvSearch.area_id" :select-label="null" :allow-empty="true"
-                        :close-on-select="true" :value="id"  placeholder="เลือก" :deselectLabel="null">
+                        }" v-model="AdvSearch.area_id" :select-label="null" :allow-empty="true" :close-on-select="true"
+                        :value="id" placeholder="เลือก" :deselectLabel="null">
                       </VueMultiselect>
                     </div>
                   </div>
@@ -116,6 +116,17 @@
                         :close-on-select="true" :value="id" placeholder="เลือก" :deselectLabel="null">
                       </VueMultiselect>
                     </div>
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-2">การเข้าพื้นที่</div>
+                    <div class="col-sm-2 ps-0">
+                      <VueMultiselect :options="data_ddl.checkin_status" class="form-select form-select-sm p-0"
+                        label="text" :style="{
+                          width: '15rem',
+                          height: '0.5rem'
+                        }" v-model="AdvSearch.checkin_status" :select-label="null" :allow-empty="true"
+                        :close-on-select="true" :value="id" placeholder="เลือก" :deselectLabel="null">
+                      </VueMultiselect>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -124,8 +135,8 @@
                   <button class="btn btn-primary" style="width: 4rem; height: 2rem" @click="AdvSearch_" type="button">
                     ค้นหา
                   </button>
-                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" 
-                    style="width: 4rem; height: 2rem" id="CloseModalAdvSearch" @click="ClosemyModalNew_">
+                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" style="width: 4rem; height: 2rem"
+                    id="CloseModalAdvSearch" @click="ClosemyModalNew_">
                     ยกเลิก
                   </button>
                 </div>
@@ -169,13 +180,14 @@ import {
 import Header from '../components/Header'
 import axios from 'axios'
 import moment from 'moment'
-import { defineComponent, reactive, ref, computed, watch } from 'vue'
+import { reactive, ref, computed, watch } from 'vue'
 import TableLite from '../components/TableLite.vue'
 import { useRouter } from 'vue-router'
 import Datepicker from 'vue3-datepicker'
 import VueMultiselect from 'vue-multiselect'
 import Loading from '../components/Loading.vue'
 import Alert_popup from '../components/Alert_popup.vue'
+import { saveAs } from 'file-saver';
 export default {
   name: 'VRF_Report',
   components: {
@@ -230,9 +242,7 @@ export default {
       navigator: [],
       meeting_area: [],
       area: [],
-      vehicle_brand: [],
-      vehicle_color: [],
-      templete: []
+      checkin_status: []
     })
     const userlist = ref(null)
     const vrf_Existing = reactive({
@@ -308,7 +318,8 @@ export default {
       tbDateT: '',
       requestor_id: 0,
       area_id: 0,
-      requestor_dept_id: 0
+      requestor_dept_id: 0,
+      checkin_status: 0
     })
     const VueMultiselect_ = reactive({
       BranchOriginBG_Color: '',
@@ -437,13 +448,12 @@ export default {
       } //if (function_selected.value === "update_vrf_trans_status")
     }
     const ClosemyModalNew_ = () => {
-      reject_vrf.vrf_id_for_reject = 0
-      reject_vrf.reject_reason = ''
       AdvSearch.tbDateF = ''
       AdvSearch.tbDateT = ''
       AdvSearch.requestor_id = 0
       AdvSearch.area_id = 0
-      AdvSearch.requestor_dept_id = 0 
+      AdvSearch.requestor_dept_id = 0
+      AdvSearch.checkin_status = 0
     }
     //-----check session
     hasLocalStorage.value = window.localStorage.getItem('user_id')
@@ -460,295 +470,21 @@ export default {
       // console.log('file: ', file);
       // Do something with the selected file
     }
-    const update_vrf_trans_status_all = (type__) => {
-      //ฟังก์ชั่นนี้เรืยก const confirmDialog = async () => {
-
-      isOpen_alert_popup.value = true
-      function_selected.value = 'update_vrf_trans_status_all'
-      update_vrf_trans_status_all_type.value = type__
-      // console.log('isOpen_alert_popup.value before: ', isOpen_alert_popup.value)
-      // handle confirmation logic here
-      let message_ = ''
-      type__ === 'cancel'
-        ? (message_ = 'คุณต้องการยกเลิกแม่แบบใบขอเข้าพื้นที่ที่เลือกไว้ ?')
-        : (message_ = 'คุณต้องการส่งอนุมัติรายการคำสั่งที่เลือกไว้ ?')
-      alert_popup_message_inside.value = message_
-    }
-    const gettemplatefile = async (value) => {
-      let filename = ''
-      value === 'Deposit'
-        ? (filename = 'BranchtoCCTTemplate_deposit.xls')
-        : (filename = 'CCTToBranchTemplate_withdraw.xls')
-      let formData = new FormData()
-      formData.append('type', value)
-      formData.append('responseType', 'blob')
-      var object = {}
-      formData.forEach((value, key) => (object[key] = value))
-      var json = JSON.stringify(object)
-      await axios
-        .post(process.env.VUE_APP_API_URL + '/gettemplatefile', json, {
+    const downloadExcel = async () => {
+      try {
+        loading.value = true
+        const response = await axios.post(`${process.env.VUE_APP_API_URL}/downloadExcel`, Data_.value, {
           responseType: 'blob',
-          charset: 'Windows-874',
-          responseEncodig: 'UTF-8'
-        })
-        .then(function (response) {
-          const url = URL.createObjectURL(
-            new Blob([response.data], {
-              type: 'application/vnd.ms-excel;charset=Windows-874'
-            })
-          )
-          const link = document.createElement('a')
-          link.href = url
-          link.setAttribute('download', filename)
-          document.body.appendChild(link)
-          link.click()
-        }) // Please catch me!
-    }
-    const getBranchForCash = async (value, ddltype) => {
-      // console.log('getBranchForCash value: ', value.branch_name, 'branch: ', ddltype, 'value: ', value)
-      if (ddltype === 'BranchDest') {
-        NewOrder.BranchOrigin = value
+        });
+        setTimeout(() => {
+          loading.value = false
+          const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+          saveAs(blob, 'report.xlsx');
+        }, 500)
+      } catch (error) {
+        console.log(error);
       }
-      if (ddltype === 'BranchOrigin') {
-        NewOrder.BranchDest = value
-      }
-      const params = {
-        CustomerID: CustomerID.value,
-        CCT: value.branch_name,
-        user_id: user_id.value
-      }
-      if (NewOrder.OrderCategoryNew !== 'BOT') {
-        if (NewOrder.OrderTypeNew === 'Withdraw') {
-          await axios
-            .get(process.env.VUE_APP_API_URL + '/getbranchforcash', { params })
-            .then(
-              (res) => {
-                // success callback
-                if (ddltype === 'BranchDest') {
-                  NewOrder.DataBranchToDest = res.data
-                  // console.log('NewOrder.DataBranchToDest: ', NewOrder.DataBranchToDest)
-                  //Withdraw
-                  VueMultiselect_.BranchDestBG_Color = 'ffffff' //A9B7C7
-                }
-              },
-              (res) => {
-                // error callback
-                console.log(res.data)
-              }
-            )
-        }
-        if (NewOrder.OrderTypeNew === 'Deposit') {
-          await axios
-            .get(process.env.VUE_APP_API_URL + '/getbranchforcash', { params })
-            .then(
-              (res) => {
-                // success callback
-                if (ddltype === 'BranchOrigin') {
-                  NewOrder.DataBranchToOrigin = res.data
-                  VueMultiselect_.BranchOriginBG_Color = 'ffffff' //A9B7C7
-                }
-              },
-              (res) => {
-                // error callback
-                console.log(res.data)
-              }
-            )
-        }
-      }
-    }
-    const getOrderType = async (e) => {
-      getBranchAndCash()
-    }
-    const getBranchAndCash = () => {
-      Alert_popup.value = false
-      NewOrder.DataBranchToOrigin = []
-      NewOrder.DataBranchToDest = []
-      if (NewOrder.OrderTypeNew === 'Withdraw') {
-        //------------------Withdraw
-        if (NewOrder.OrderCategoryNew === 'BOT') {
-          //------------------BOT
-          if (ActitySelectd.bottocash === '0') {
-            alert('ไม่มีสิทธิให้ประเภทบริการฝาก ธปท-ศูนย์เงินสด ได้')
-            // Alert_popup.value = true
-            // Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ธปท-ศูนย์เงินสด ได้'
-            document.getElementById('OrderTypeNew').value = ''
-            NewOrder.OrderTypeNew = ''
-          } else {
-            getBranchOrCashCen('bot', 'BranchOrigin', 'Add')
-            getBranchOrCashCen('cct', 'BranchDest', 'Add')
-            document.getElementById('BranchOrigin').disabled = true
-            document.getElementById('BranchDest').disabled = false
-            VueMultiselect_.BranchOriginBG_Color = 'ffffff' //A9B7C7
-            VueMultiselect_.BranchDestBG_Color = 'ffffff' //A9B7C7
-          }
-        } //------------------End BOT
-        if (NewOrder.OrderCategoryNew === 'BankBranch') {
-          if (ActitySelectd.cashtobranch === '0') {
-            // Alert_popup.value = true
-            // Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-สาขา ได้'
-            alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-สาขา ได้')
-            document.getElementById('OrderTypeNew').value = ''
-            NewOrder.OrderTypeNew = ''
-          } else {
-            getBranchOrCashCen('cashtobranch', 'BranchOrigin', 'Add')
-            document.getElementById('BranchOrigin').disabled = false
-            document.getElementById('BranchDest').disabled = true
-            VueMultiselect_.BranchOriginBG_Color = 'ffffff' //A9B7C7
-            VueMultiselect_.BranchDestBG_Color = 'A9B7C7' //A9B7C7
-          }
-        }
-      }
-      if (NewOrder.OrderTypeNew === 'Deposit') {
-        //------------------Deposit
-        if (NewOrder.OrderCategoryNew === 'BOT') {
-          //------------------BOT
-          if (ActitySelectd.cashtobot === '0') {
-            // Alert_popup.value = true
-            // Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-ธปท ได้'
-            alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-ธปท ได้')
-            document.getElementById('OrderTypeNew').value = ''
-            NewOrder.OrderTypeNew = ''
-          } else {
-            getBranchOrCashCen('cct', 'BranchOrigin', 'Add')
-            getBranchOrCashCen('bot', 'BranchDest', 'Add')
-            document.getElementById('BranchOrigin').disabled = false
-            document.getElementById('BranchDest').disabled = false
-            VueMultiselect_.BranchOriginBG_Color = 'ffffff' //A9B7C7
-            VueMultiselect_.BranchDestBG_Color = 'ffffff' //A9B7C7
-          }
-        } //------------------End BOT
-        if (NewOrder.OrderCategoryNew === 'BankBranch') {
-          if (ActitySelectd.branchtocash === '0') {
-            // Alert_popup.value = true
-            // Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก สาขา-ศูนย์เงินสด ได้'
-            alert('ไม่มีสิทธิให้ประเภทบริการฝาก สาขา-ศูนย์เงินสด ได้')
-            document.getElementById('OrderTypeNew').value = ''
-            NewOrder.OrderTypeNew = ''
-          } else {
-            getBranchOrCashCen('cashtobranch', 'BranchDest', 'Add')
-            document.getElementById('BranchOrigin').disabled = true
-            document.getElementById('BranchDest').disabled = false
-            VueMultiselect_.BranchOriginBG_Color = 'A9B7C7' //A9B7C7
-            VueMultiselect_.BranchDestBG_Color = 'ffffff' //A9B7C7
-          }
-        }
-      }
-      if (NewOrder.OrderTypeNew === '') {
-        document.getElementById('BranchOrigin').disabled = false
-        document.getElementById('BranchDest').disabled = false
-        VueMultiselect_.BranchOriginBG_Color = 'ffffff' //A9B7C7
-        VueMultiselect_.BranchDestBG_Color = 'ffffff' //A9B7C7
-      }
-    }
-    const getBranchAndCashEdit = () => {
-      vrf_Existing.DataBranchToOrigin = []
-      vrf_Existing.DataBranchToDest = []
-      if (vrf_Existing.OrderCategory === 'BankBranch') {
-        if (vrf_Existing.OrderType === 'Withdraw') {
-          getBranchOrCashCenEdit('cashtobranch', 'BranchOrigin')
-          getBranchOrCashCenEdit('branchtocash', 'BranchDest')
-        }
-        if (vrf_Existing.OrderType === 'Deposit') {
-          getBranchOrCashCenEdit('branchtocash', 'BranchOrigin')
-          getBranchOrCashCenEdit('cashtobranch', 'BranchDest')
-        }
-      }
-      if (vrf_Existing.OrderCategory === 'BOT') {
-        if (vrf_Existing.OrderType === 'Withdraw') {
-          getBranchOrCashCen('bot', 'BranchOrigin', 'Edit')
-          getBranchOrCashCen('cct', 'BranchDest', 'Edit')
-        }
-        if (vrf_Existing.OrderType === 'Deposit') {
-          getBranchOrCashCen('cct', 'BranchOrigin', 'Edit')
-          getBranchOrCashCen('bot', 'BranchDest', 'Edit')
-        }
-      }
-    }
-    const getBranchOrCashCenEdit = async (servicetype, ddltype) => {
-      let type_ = ''
-      type_ = vrf_Existing.OrderCategory //NewOrder.OrderCategoryNew
-      const params = {
-        CustomerID: CustomerID.value,
-        user_id: user_id.value,
-        type_: type_
-      }
-      if (servicetype === 'branchtocash') {
-        await axios
-          .get(process.env.VUE_APP_API_URL + '/getbranchdata', { params })
-          .then(
-            (res) => {
-              // success callback
-              ddltype === 'BranchOrigin'
-                ? (vrf_Existing.DataBranchToOrigin = res.data)
-                : (vrf_Existing.DataBranchToDest = res.data)
-            },
-            (res) => {
-              // error callback
-              console.log(res.data.message)
-            }
-          )
-      }
-      //--------------------------------------------
-      if (servicetype === 'cashtobranch') {
-        // const params = {
-        //   CustomerID: CustomerID.value
-        // };
-        await axios
-          .get(process.env.VUE_APP_API_URL + '/getcashcenterdata', { params })
-          .then(
-            (res) => {
-              // success callback
-              ddltype === 'BranchOrigin'
-                ? (vrf_Existing.DataBranchToOrigin = res.data)
-                : (vrf_Existing.DataBranchToDest = res.data)
-            },
-            (res) => {
-              // error callback
-              console.log(res.data.message)
-            }
-          )
-      }
-    }
-    const sendApprove = async (e) => {
-      // alert( vrf_Existing.orderId )
-      if (confirm('คุณต้องการอนุมัติรายการขอเข้าพื้นที่ ?')) {
-        const params = {
-          Id: vrf_Existing.id,
-          Type_: 'send_approve',
-          user_id: user_id.value,
-          role_id: localStorage.getItem('user_role_id'),
-          work_flow_id: localStorage.getItem('user_work_flow_id'),
-          department_id: department_id.value,
-          branch_id: localStorage.getItem('user_branch_id'),
-          division_id: localStorage.getItem('user_division_id')
-        }
-        console.log('sendApprove params:', params)
-        try {
-          await axios
-            .get(
-              process.env.VUE_APP_API_URL + '/update_vrf_trans_approve_status',
-              { params }
-            )
-            .then(
-              (res) => {
-                // success callback
-                let obj = JSON.parse(JSON.stringify(res.data))
-                // router.push('/listorder')
-                location.reload()
-              },
-              (res) => {
-                // error callback
-                console.log(res.data)
-              }
-            )
-            .finally(() => {
-              //
-            })
-        } catch (err) {
-          console.log(err)
-        }
-      }
-    }
+    };
     const selectFile = (e) => {
       // file.value = this.$refs.file.files[0]
       file.value = e.target.files[0]
@@ -815,6 +551,10 @@ export default {
         work_flow_id: localStorage.getItem('user_work_flow_id'),
         role_id: localStorage.getItem('user_role_id')
       }
+      data_ddl.checkin_status = [
+        { id: 1, text: 'มา' },
+        { id: 2, text: 'ไม่มา' },
+      ]
       console.log('params myRequest: ', params)
       await axios
         .get(process.env.VUE_APP_API_URL + '/get_vrf_approve_list', { params })
@@ -963,7 +703,7 @@ export default {
         {
           label: 'ลำดับที่',
           field: 'id',
-          width: '5%',
+          width: '7%',
           sortable: true,
 
           isKey: true,
@@ -983,7 +723,7 @@ export default {
         {
           label: 'ผู้ร้องขอ',
           field: 'requestor',
-          width: '18%',
+          width: '12%',
           sortable: true,
           display: function (row) {
             return `<div style="text-align: left;">${row.requestor}</div>`
@@ -992,7 +732,7 @@ export default {
         {
           label: 'เหตุผลในการเข้าพบ',
           field: 'reason',
-          width: '15%',
+          width: '23%',
           sortable: true,
           display: function (row) {
             return `<div style="text-align: left;">${row.reason}</div>`
@@ -1010,7 +750,7 @@ export default {
         {
           label: 'สถานะ',
           field: 'approve_status',
-          width: '12%',
+          width: '13%',
           sortable: true,
           display: function (row) {
             return row.approve_status === null
@@ -1019,28 +759,12 @@ export default {
           }
         },
         {
-          label: 'สร้างโดย',
-          field: 'user_create',
-          width: '15%',
-          sortable: true,
-          display: function (row) {
-            return `<div style="text-align: left;">${row.user_create}</div>`
-          }
-        },
-        {
-          label: '',
+          label: 'ช่วงวันที่เข้าพื้นที่',
           //field: "quick",
-          width: '10%',
+          width: '15%',
           height: '1%',
           display: function (row) {
-            return (
-              '<div style="display: flex;"><button type="button" data-id="' +
-              row.id +
-              '" class="btn btn-danger is-rows-el rejectvrf" data-bs-target="#ModalRejectVRF"  data-bs-toggle="modal" style="margin-top: 0.2rem; width: 5rem; height:2rem">ไม่อนุมัติ</button>&nbsp; ' +
-              '<button type="button" data-id="' +
-              row.id +
-              '" class="btn btn-info is-rows-el editvrf" style="margin-top: 0.2rem; width: 6rem; height:2rem" data-bs-target="#ModalEditvrf" data-bs-toggle="modal">รายละเอียด</button></div>'
-            )
+            return `<div style="text-align: center;">${formatdate_show(row.date_from)} - ${formatdate_show(row.date_to)}</div>`
           }
         }
       ],
@@ -1186,23 +910,24 @@ export default {
             ? AdvSearch.requestor_dept_id.id
             : null,
         department_id: department_id.value,
-        branch_id: localStorage.getItem('user_branch_id')
+        branch_id: localStorage.getItem('user_branch_id'),
+        checkin_status: AdvSearch.checkin_status.id !== 0 ? AdvSearch.checkin_status.id : null,
       }
       console.log('AdvSearch_ params: ', params)
       await axios
         .get(process.env.VUE_APP_API_URL + '/get_search_vrf_trans', { params })
         .then(
-          (res) => { 
+          (res) => {
             // let output = JSON.parse(JSON.stringify(res.data))
             // data.rows = output       
-            console.log('res.data: ',res.data)     
+            console.log('res.data: ', res.data)
             Data_.value = JSON.parse(JSON.stringify(res.data))
             data.rows = Data_.value
-                   
+
           },
           (res) => {
             // error callback
-            console.log('error: ',res.data)
+            console.log('error: ', res.data)
 
           }
         )
@@ -1239,460 +964,19 @@ export default {
     const dateTime = (value) => {
       return moment(value).format('DD-MM-YYYY')
     }
-    const getBankTypeData = async () => {
-      const params = {
-        user_id: user_id.value
-      }
-      await axios
-        .get(process.env.VUE_APP_API_URL + '/getbanktypedata', { params })
-        .then(
-          (res) => {
-            // success callback
-            NewOrder.BankTypeData = res.data
-          },
-          (res) => {
-            // error callback
-            console.log(res.data.message)
-          }
-        )
-    }
-    const addManualVRF = async () => {
-      console.log('file.value: ', file.value)
-      const formData = new FormData()
-      formData.append('file', file.value)
-      formData.append('reason', NewVrf.reason)
-      formData.append('contactor', NewVrf.contactor)
-      formData.append(
-        'requestor',
-        NewVrf.requestor.user_id !== undefined && NewVrf.requestor.user_id !== 0
-          ? NewVrf.requestor.user_id
-          : NewVrf.requestor
-      )
-      formData.append(
-        'requestor_position',
-        NewVrf.requestor_position.id !== undefined &&
-          NewVrf.requestor_position.id !== 0
-          ? NewVrf.requestor_position.id
-          : NewVrf.requestor_position
-      )
-      formData.append(
-        'requestor_dept',
-        NewVrf.requestor_dept.id !== undefined && NewVrf.requestor_dept.id !== 0
-          ? NewVrf.requestor_dept.id
-          : NewVrf.requestor_dept
-      )
-      formData.append('requestor_phone', NewVrf.requestor_phone)
-      formData.append(
-        'navigator',
-        NewVrf.navigator.user_id !== undefined && NewVrf.navigator.user_id !== 0
-          ? NewVrf.navigator.user_id
-          : NewVrf.navigator
-      )
-      formData.append(
-        'area',
-        NewVrf.area.id !== undefined && NewVrf.area.id !== 0
-          ? NewVrf.area.id
-          : NewVrf.area
-      )
-      formData.append('templete_id', NewVrf.templete_id)
-      formData.append('user_id', user_id.value)
-      let object_formData = {}
-      formData.forEach((value, key) => (object_formData[key] = value))
-      var json_formData = JSON.stringify(object_formData)
-      let id
-      console.log('addManualVRF : formData', formData)
-      try {
-        await axios
-          .post(
-            process.env.VUE_APP_API_URL + '/set_manual_add_vrf_trans',
-            formData
-          )
-          .then(
-            (res) => {
-              // success callback
-              console.log('set_manual_add_vrf_trans res.data: ', res.data)
-              id = res.data
-              console.log('set_manual_add_vrf_trans id: ', id)
-            },
-            (res) => {
-              // error callback
-              console.log(res.data.message)
-            }
-          )
-          .finally(() => { })
-        error_addManual.value = false
-      } catch (err) {
-        console.log(err)
-        message_addManual.value = 'Something went wrong: ' + err
-        error_addManual.value = true
-      }
-
-      let object_det = {}
-      rowData.value.forEach((value, key) => (object_det[key] = value))
-      object_det.newid = id
-      var json_object_det = JSON.stringify(object_det)
-      console.log(
-        'set_manual_add_vrf_trans_det json_object_det: ',
-        json_object_det
-      )
-      try {
-        await axios
-          .post(
-            process.env.VUE_APP_API_URL + '/set_manual_add_vrf_trans_det',
-            json_object_det
-          )
-          .then(
-            (res) => {
-              // success callback
-            },
-            (res) => {
-              // error callback
-              console.log(res.data.message)
-              message_addManual.value = res.data.message
-            }
-          )
-          .finally(() => {
-            //router.push('/requestvrflst')
-          })
-        error_addManual.value = false
-      } catch (err) {
-        console.log(err)
-        message_addManual.value = 'Something went wrong: ' + err
-        error_addManual.value = true
-      } finally {
-        //  router.push('/templatevrflst')
-        location.reload()
-      }
-    }
-    const reject_vrf = reactive({
-      vrf_id_for_reject: 0,
-      reject_reason: ''
-    })
-    const setReject_vrf = async () => {
-      const data = {
-        vrf_id_for_reject: reject_vrf.vrf_id_for_reject,
-        reject_reason: reject_vrf.reject_reason,
-        RejectBy: localStorage.getItem('user_id')
-      }
-      //------------------add header----------------------
-      try {
-        await axios.post(process.env.VUE_APP_API_URL + '/set_reject_vrf', data)
-          .then((res) => {
-            // success callback  
-            console.log('set_reject_vrf res.data: ', res.data)
-          }, (res) => {
-            // error callback
-            console.log(res.data)
-          }).finally(() => {
-
-          });
-        error_addManual.value = false
-      }
-      catch (err) {
-        console.log(err)
-
-      } finally {
-        //router.push('/approvevrflst')
-        location.reload()
-      }
-
-    }
-    const addManualRejectVRF_validateInput = (e) => {
-      let isError = false
-      if (!reject_vrf.reject_reason) {
-        VRF_error.reject_reason = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.reject_reason = ''
-      }
-      if (isError) {
-        console.log('isError: ', isError)
-        return false
-      } //--------------call addManualVRF
-      else {
-        console.log('isError: ', isError)
-        setReject_vrf()
-      }
-    }
-    const calamount_orderEdit = (value) => {
-      console.log(document.getElementById('ddlMoneyTypeEdit' + value).value)
-      console.log(
-        document.getElementById('ddlPackageMoneyTypeEdit' + value).value
-      )
-      console.log(document.getElementById('tbQuantityEdit' + value).value)
-      console.log(document.getElementById('tbAmountEdit' + value).value)
-      let ddlMoneyType = parseFloat(
-        document.getElementById('ddlMoneyTypeEdit' + value).value,
-        10
-      )
-      let tbQuantity = parseFloat(
-        document
-          .getElementById('tbQuantityEdit' + value)
-          .value.replaceAll(',', ''),
-        10
-      )
-      let ddlPackageMoneyType = document.getElementById(
-        'ddlPackageMoneyTypeEdit' + value
-      ).value
-      // let ddlQualityMoneyType = document.getElementById("ddlQualityMoneyTypeEdit" + value).value
-      if (ddlPackageMoneyType === 'Bundle') {
-        !isNaN(ddlMoneyType * tbQuantity * 1000)
-          ? (document.getElementById('tbAmountEdit' + value).value =
-            formatPrice(ddlMoneyType * tbQuantity * 1000))
-          : (document.getElementById('tbAmountEdit' + value).value = '')
-      } else if (ddlPackageMoneyType === 'Pack') {
-        !isNaN(ddlMoneyType * tbQuantity * 5000)
-          ? (document.getElementById('tbAmountEdit' + value).value =
-            formatPrice(ddlMoneyType * tbQuantity * 5000))
-          : (document.getElementById('tbAmountEdit' + value).value = '')
-      } else {
-        !isNaN(ddlMoneyType * tbQuantity)
-          ? (document.getElementById('tbAmountEdit' + value).value =
-            formatPrice(ddlMoneyType * tbQuantity))
-          : (document.getElementById('tbAmountEdit' + value).value = '')
-      }
-    }
-    const calamount = (value) => {
-      console.log(document.getElementById('ddlMoneyType' + value).value)
-      console.log(document.getElementById('ddlPackageMoneyType' + value).value)
-      console.log(document.getElementById('tbQuantity' + value).value)
-      console.log(document.getElementById('tbAmount' + value).value)
-      let ddlMoneyType = parseFloat(
-        document.getElementById('ddlMoneyType' + value).value,
-        10
-      )
-      let tbQuantity = parseFloat(
-        document.getElementById('tbQuantity' + value).value.replaceAll(',', ''),
-        10
-      )
-      let ddlPackageMoneyType = document.getElementById(
-        'ddlPackageMoneyType' + value
-      ).value
-      let ddlQualityMoneyType = document.getElementById(
-        'ddlQualityMoneyType' + value
-      ).value
-      if (ddlPackageMoneyType === 'Bundle') {
-        !isNaN(ddlMoneyType * tbQuantity * 1000)
-          ? (document.getElementById('tbAmount' + value).value = formatPrice(
-            ddlMoneyType * tbQuantity * 1000
-          ))
-          : (document.getElementById('tbAmount' + value).value = '')
-      } else if (ddlPackageMoneyType === 'Pack') {
-        !isNaN(ddlMoneyType * tbQuantity * 5000)
-          ? (document.getElementById('tbAmount' + value).value = formatPrice(
-            ddlMoneyType * tbQuantity * 5000
-          ))
-          : (document.getElementById('tbAmount' + value).value = '')
-      } else {
-        !isNaN(ddlMoneyType * tbQuantity)
-          ? (document.getElementById('tbAmount' + value).value = formatPrice(
-            ddlMoneyType * tbQuantity
-          ))
-          : (document.getElementById('tbAmount' + value).value = '')
-      }
-      console.log(ddlMoneyType * tbQuantity * 5000)
-    }
     const updateCheckedRows = (rowsKey) => {
       selecteall.value = null
       selecteall.value = rowsKey
       console.log('rowsKey: ', rowsKey)
     }
-    const formatPrice_noFixed = (value) => {
-      let val = value / 1
-      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-    }
-    const addItem = async () => {
-      validateAllInputs()
-      Id.value++
-      rowData.value.push({
-        tbDateF: null,
-        tbDateT: null,
-        tbName: '',
-        tbSname: '',
-        tbFullName: '',
-        tbSname: '',
-        tbVehicle_Registration: '',
-        ddlvehicle_brand: '',
-        ddlvehicle_color: '',
-        tbCardNo: '',
-        errors: {}
-      })
-    }
-    const deleteData = (index) => {
-      console.log(index)
-      rowData.value.splice(index, 1)
-      Id.value--
-    }
-    const editVRF_validateInput = async (e) => {
-      edit_validateAllInputs()
-      const target = e.target
-      if (target && target.files) {
-        file.value = target.files[0]
-      }
-      let isError = false
-      if (!vrf_Existing.reason) {
-        VRF_error.reason = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.reason = ''
-      }
-      if (!vrf_Existing.contactor) {
-        VRF_error.contactor = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.contactor = ''
-      }
-      if (!vrf_Existing.requestor_id) {
-        VRF_error.requestor = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.requestor = ''
-      }
-      if (!vrf_Existing.requestor_position_id) {
-        VRF_error.requestor_position = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.requestor_position = ''
-      }
-      if (!vrf_Existing.requestor_dept_id) {
-        VRF_error.requestor_dept = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.requestor_dept = ''
-      }
-      if (!vrf_Existing.requestor_phone) {
-        VRF_error.requestor_phone = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.requestor_phone = ''
-      }
-      if (!vrf_Existing.navigator_id) {
-        VRF_error.navigator = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.navigator = ''
-      }
-      if (!vrf_Existing.area_id) {
-        VRF_error.area = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.area = ''
-      }
-      if (isError) {
-        console.log('isError: ', isError)
-        return false
-      } //--------------call addManualVRF
-      else {
-        console.log('isError: ', isError)
-        editVRF()
-      }
-    }
-    const editVRF = async () => {
-      const formData = new FormData()
-      formData.append('id', vrf_Existing.id)
-      formData.append('file', file.value)
-      formData.append(
-        'attach_file_primitive',
-        vrf_Existing.attach_file_primitive
-      )
-      formData.append('reason', vrf_Existing.reason)
-      formData.append('contactor', vrf_Existing.contactor)
-      formData.append('requestor', vrf_Existing.requestor_id)
-      formData.append('requestor_position', vrf_Existing.requestor_position_id)
-      formData.append('requestor_dept', vrf_Existing.requestor_dept_id)
-      formData.append('requestor_phone', vrf_Existing.requestor_phone)
-      formData.append('navigator', vrf_Existing.navigator_id)
-      formData.append('area', vrf_Existing.area_id)
-      formData.append('user_id', user_id.value)
-      let object_formData = {}
-      formData.forEach((value, key) => (object_formData[key] = value))
-      var json_formData = JSON.stringify(object_formData)
-      let id
-      console.log('json_formData: ', json_formData)
-      try {
-        await axios
-          .post(
-            process.env.VUE_APP_API_URL + '/set_manual_update_vrf_trans',
-            formData
-          )
-          .then(
-            (res) => {
-              // success callback
-              //id = res.data
-            },
-            (res) => {
-              // error callback
-              console.log(res.data.message)
-            }
-          )
-          .finally(() => { })
-        error_addManual.value = false
-      } catch (err) {
-        console.log(err)
-        message_addManual.value = 'Something went wrong: ' + err
-        error_addManual.value = true
-      }
-      //------------------------------------------det-------------------------------------------------------------------------------------------------------
-      let object_det = [] // initialize the object
-      for (let index in vrf_Existing.vrf_Existing_det) {
-        object_det.push({
-          id: vrf_Existing.vrf_Existing_det[index].id,
-          date_from: new Date(vrf_Existing.vrf_Existing_det[index].date_from),
-          date_to: new Date(vrf_Existing.vrf_Existing_det[index].date_to),
-          fullname: vrf_Existing.vrf_Existing_det[index].fullname,
-          vrf_id: vrf_Existing.vrf_Existing_det[index].vrf_id,
-          vehicle_brand_id:
-            vrf_Existing.vrf_Existing_det[index].vehicle_brand_id,
-          vehicle_color_id:
-            vrf_Existing.vrf_Existing_det[index].vehicle_color_id,
-          vehicle_registration:
-            vrf_Existing.vrf_Existing_det[index].vehicle_registration,
-          card_no: vrf_Existing.vrf_Existing_det[index].card_no,
-          user_id: user_id.value
-        })
-      }
-      var json_object_det = JSON.stringify(object_det)
-      console.log('json_object_det: ', json_object_det)
-      try {
-        await axios
-          .post(
-            process.env.VUE_APP_API_URL + '/set_manual_update_vrf_det_trans',
-            json_object_det
-          )
-          // await axios.post(process.env.VUE_APP_API_URL + '/set_manual_update_vrf_det', json_object_det)
-          .then(
-            (res) => {
-              // success callback
-            },
-            (res) => {
-              // error callback
-              console.log(res.data.message)
-              message_addManual.value = res.data.message
-            }
-          )
-          .finally(() => {
-            router.push('/requestvrflst')
-          })
-        error_addManual.value = false
-      } catch (err) {
-        console.log(err)
-        message_addManual.value = 'Something went wrong: ' + err
-        error_addManual.value = true
-      } finally {
-        //  router.push('/templatevrflst')
-        location.reload()
-      }
-    }
+
     return {
-      setReject_vrf,
-      reject_vrf,
+      downloadExcel,
       fileUrl,
       useSetDate,
       setDate,
-      addManualRejectVRF_validateInput,
       VRF_error,
       edit_validateInput,
-      editVRF,
       ClosemyModalNew_,
       data_ddl_edt,
       data_ddl,
@@ -1704,9 +988,7 @@ export default {
       Alert_popup,
       fileInput,
       handleFileChange,
-      update_vrf_trans_status_all,
       loading,
-      gettemplatefile,
       VueMultiselect_,
       selected,
       options,
@@ -1719,10 +1001,7 @@ export default {
       Data_,
       updateCheckedRows,
       tableLoadingFinish,
-      getOrderType,
       vrf_Existing,
-      getBranchAndCashEdit,
-      editVRF_validateInput,
       formatPrice,
       router,
       format_date,
@@ -1739,24 +1018,14 @@ export default {
       OrderType,
       BankType,
       JobDate,
-      getBranchForCash,
       user_id,
       department_id,
       position_id,
       formatdate_show,
-      formatPrice_noFixed,
-      addItem,
-      deleteData,
-      addManualVRF,
       DownloadLink,
-      getBranchAndCash,
-      calamount,
       rowData,
       Id,
-      calamount_orderEdit,
-      sendApprove,
       checkstatus_send_to_approve,
-      getBankTypeData
     }
   }
 
