@@ -1999,13 +1999,6 @@ export default defineComponent({
   color: red;
 }
 
-.modalcustom_advancesearch2 {
-  max-width: 110rem;
-  /* กำหนดความกว้างของโมดัลเป็น 800px */
-  width: 110rem;
-  text-align: center;
-}
-
 .modalcustom_advancesearch {
   max-width: 50rem;
   /* กำหนดความกว้างของโมดัลเป็น 800px */
@@ -2014,16 +2007,16 @@ export default defineComponent({
 }
 
 .modalcustomtb {
-  max-width: 110rem;
+  max-width: 100%;
   /* กำหนดความกว้างของโมดัลเป็น 800px */
-  width: 110rem;
+  width: 100%;
   text-align: center;
 }
 
 .modalcustom {
-  max-width: 120rem;
+  max-width: 100%;
   /* กำหนดความกว้างของโมดัลเป็น 800px */
-  width: 120rem;
+  width: 100%;
   text-align: center;
 }
 

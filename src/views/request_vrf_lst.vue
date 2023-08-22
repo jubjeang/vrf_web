@@ -808,16 +808,6 @@ export default defineComponent({
       navigator: '',
       area: '',
     })
-    // const VRF_error = reactive({
-    //   reason: '',
-    //   contactor: '',
-    //   requestor: '',
-    //   requestor_position: '',
-    //   requestor_dept: '',
-    //   requestor_phone: '',
-    //   navigator: '',
-    //   area: '',
-    // })
     const result_search_complete_word = reactive({
       contactor: [],
       reason: []
