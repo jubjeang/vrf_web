@@ -1099,26 +1099,6 @@ export default defineComponent({
             // ActitySelectd.branchtobranch
           }
         )
-      // await axios
-      //   .get(process.env.VUE_APP_API_URL + '/get_navigator', {
-      //     params: { user_id: localStorage.getItem('user_id') }
-      //   })
-      //   .then(
-      //     (res) => {
-      //       data_ddl.navigator = data_ddl.userlist
-      //       console.log('data_ddl.navigator: ', data_ddl.navigator)
-
-      //     },
-      //     (res) => {
-      //       // error callback
-      //       console.log(res.data.message)
-      //       console.log(
-      //         'console.log( res.data.message ): ',
-      //         console.log(res.data.message)
-      //       )
-      //       // ActitySelectd.branchtobranch
-      //     }
-      //   )
       await axios
         .get(process.env.VUE_APP_API_URL + '/get_meeting_area', {
           params: { user_id: localStorage.getItem('user_id') }

@@ -80,6 +80,8 @@ export default {
     </SidebarLink>
     <SidebarLink v-if="out_put.length" to="/vrfusermgmt" icon="fa fa-tasks" class="nav-link align-middle" v-show="out_put[0].vrf_usermanagement === '1'">จัดการข้อมูลผู้ใช้
     </SidebarLink> 
+    <SidebarLink v-if="out_put.length" to="/vrfusermgmtbydept" icon="fa fa-tasks" class="nav-link align-middle" v-show="out_put[0].vrf_user_mgmt_by_dept === '1'">จัดการข้อมูลผู้ใช้
+    </SidebarLink>     
     <!-- <SidebarLink to="/ordertracking" icon="fa fa-user-circle">บัญชีผู้ใช้</SidebarLink> -->
     <span class="collapse-icon" :class="{ 'rotate-180': collapsed }" @click="toggleSidebar">
       <i class="fas fa-angle-double-left" style="cursor: pointer;" />

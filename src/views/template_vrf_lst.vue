@@ -167,8 +167,6 @@
                     <table class="table table-hover modalcustomtb ">
                       <thead>
                         <tr>
-                          <th scope="col" class="colwidth5">จากวันที่</th>
-                          <th scope="col" class="colwidth5">ถึงวันที่</th>
                           <th scope="col" class="colwidth25">ชื่อ-นามสกุล</th>
                           <th scope="col" class="colwidth10">ยี่ห้อรถ</th>
                           <th scope="col" class="colwidth10">ทะเบียน</th>
@@ -182,26 +180,6 @@
                       </thead>
                       <tbody>
                         <tr v-for="data, index in rowData" :key="data.Id">
-                          <td scope="col" class="colwidth5">
-                            <!--How to create 2 calendar with range -->
-                            <datepicker class="form-control" v-model="data.tbDateF" style="width:7rem;"
-                              inputFormat="dd/MM/yyyy" @blur="validateInput('tbDateF', index, 'กรุณาใส่วันที่')"
-                              @update:model-value="setToDate(index)" />
-                            <p class="error-message" v-if="data.errors && data.errors.tbDateF">
-                              {{ data.errors.tbDateF }}
-                            </p>
-                            <!-- <datepicker  class="form-control" v-model="rowData.tbDateF" style="width:7rem;" inputFormat="dd/MM/yyyy" /> -->
-                          </td>
-                          <td scope="col" class="colwidth5">
-                            <datepicker class="form-control" v-model="data.tbDateT" style="width:7rem;"
-                              inputFormat="dd/MM/yyyy" @blur="validateInput('tbDateT', index, 'กรุณาใส่วันที่')"
-                              @update:model-value="setFromDate(index)" />
-                            <p class="error-message" v-if="data.errors && data.errors.tbDateT">
-                              {{ data.errors.tbDateT }}
-                            </p>
-                            <!-- <datepicker  class="form-control" v-model="rowData.tbDateT" style="width:7rem;" inputFormat="dd/MM/yyyy" /> -->
-
-                          </td>
                           <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center;">
                             <input type="text" class="form-control" style="width: 20rem; display: inline-block;"
                               v-model="data.tbFullName" @blur="validateInput('tbFullName', index, 'กรุณาใส่ข้อมูล')" />
@@ -266,6 +244,33 @@
                       }}</div>
                     </div>
                   </div>
+
+                  <div class="row p-2">
+                    <div class="col">
+                      จากวันที่:
+                    </div>
+                    <div class="col">
+                      <datepicker class="form-control" v-model="NewVrf.date_from" style="width:7rem;"
+                        inputFormat="dd/MM/yyyy" @update:model-value="setToDate('date_from_add')" />
+                      <p v-if="VRF_error.date_from && !NewVrf.date_from" class="error-message">กรุณาเลือกข้อมูล</p>
+                    </div>
+                    <div class="col">
+                      ถึงวันที่:
+                    </div>
+                    <div class="col">
+                      <datepicker class="form-control" v-model="NewVrf.date_to" style="width:7rem;"
+                        inputFormat="dd/MM/yyyy" @update:model-value="setFromDate('date_to_add')" />
+                      <p v-if="VRF_error.date_to && !NewVrf.date_to" class="error-message">กรุณาเลือกข้อมูล</p>
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" style="width: 15rem; display: none;" />
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" style="width: 15rem; display: none;" />
+                    </div>
+                  </div>
+
+                  
                   <div class="row p-2">
                     <div class="col">
                       ชื่อแม่แบบ:
@@ -423,8 +428,6 @@
                     <table class="table table-hover modalcustomtb ">
                       <thead>
                         <tr>
-                          <th scope="col" class="colwidth5">จากวันที่</th>
-                          <th scope="col" class="colwidth5">ถึงวันที่</th>
                           <th scope="col" class="colwidth25">ชื่อ-นามสกุล</th>
                           <th scope="col" class="colwidth10">ยี่ห้อรถ</th>
                           <th scope="col" class="colwidth10">ทะเบียน</th>
@@ -440,22 +443,6 @@
                       </thead>
                       <tbody>
                         <tr v-for="data, index in templete_vrf_Existing.templete_vrf_Existing_det" :key="index">
-                          <td scope="col" class="colwidth5">
-                            <datepicker class="form-control" v-model="useSetDate(index, 'date_from').value"
-                              @blur="edit_validateInput('date_from', index, 'กรุณาใส่วันที่')" style="width:7rem;"
-                              inputFormat="dd/MM/yyyy" />
-                            <p class="error-message" v-if="data.errors && data.errors.date_from">
-                              {{ data.errors.date_from }}
-                            </p>
-                          </td>
-                          <td scope="col" class="colwidth5">
-                            <datepicker class="form-control" v-model="useSetDate(index, 'date_to').value"
-                              style="width:7rem;" @blur="edit_validateInput('date_to', index, 'กรุณาใส่วันที่')"
-                              inputFormat="dd/MM/yyyy" />
-                            <p class="error-message" v-if="data.errors && data.errors.date_to">
-                              {{ data.errors.date_to }}
-                            </p>
-                          </td>
                           <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center;">
                             <input type="text" class="form-control" style="width: 20rem; display: inline-block;"
                               v-model="templete_vrf_Existing.templete_vrf_Existing_det[index].fullname"
@@ -502,8 +489,7 @@
                               {{ data.errors.card_no }}
                             </p>
                           </td>
-                          <td scope="col" class="colwidth10"><span
-                              @click="deleteExistingData(index)"
+                          <td scope="col" class="colwidth10"><span @click="deleteExistingData(index)"
                               style="cursor: pointer;">
                               <i class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>
                             <!-- &nbsp;|&nbsp;<span
@@ -527,6 +513,35 @@
                       }}</div>
                     </div>
                   </div>
+                  
+                  <div class="row p-2">
+                    <div class="col">
+                      จากวันที่:
+                    </div>
+                    <div class="col">
+                      <datepicker class="form-control" v-model="useSetDate('date_from').value" style="width:7rem;"
+                        inputFormat="dd/MM/yyyy" @update:model-value="setToDate('date_from_edit')" />
+                      <p v-if="VRF_error.date_from && !templete_vrf_Existing.date_from" class="error-message">
+                        กรุณาเลือกข้อมูล</p>
+                    </div>
+                    <div class="col">
+                      ถึงวันที่:
+                    </div>
+                    <div class="col">
+                      <datepicker class="form-control" v-model="useSetDate('date_to').value" style="width:7rem;"
+                        inputFormat="dd/MM/yyyy" @update:model-value="setFromDate('date_to_edit')" />
+                      <p v-if="VRF_error.date_to && !templete_vrf_Existing.date_to" class="error-message">กรุณาเลือกข้อมูล
+                      </p>
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" style="width: 15rem; display: none;" />
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" style="width: 15rem; display: none;" />
+                    </div>
+
+                  </div>
+
                   <div class="row p-2">
                     <div class="col">
                       ชื่อแม่แบบ:
@@ -808,6 +823,8 @@ export default defineComponent({
       requestor_phone: '',
       navigator: '',
       area: '',
+      date_from: null,
+      date_to: null
     })
     const data_ddl_edt = reactive({
       userlist: [],
@@ -840,6 +857,8 @@ export default defineComponent({
       requestor_phone: "",
       navigator: "",
       area: "",
+      date_from: null,
+      date_to: null
     })
     const update_vrfstatus_param = reactive({
       Id: 0,
@@ -854,7 +873,6 @@ export default defineComponent({
     const selected = ref(null);
     const selecteall = ref(null);
     const fileInput = ref(null);
-
     //upload data    
     const error = ref(false)
     const checkstatus_send_to_checker = ref(false)
@@ -915,20 +933,15 @@ export default defineComponent({
       , user_create: ""
       , templete_vrf_Existing_det: []
       , errors: {}
+      , date_from: null
+      , date_to: null
     })
     //-------------------edit validate add vrf-------------------
     const edit_fieldsToValidate = [
-      'tbDateF', 'tbDateT', 'tbFullName',
+      'tbFullName',
       'ddlvehicle_brand', 'tbVehicle_Registration',
       'ddlvehicle_color', 'tbCardNo'
     ]
-    const edit_validateAllInputs = () => {
-      templete_vrf_Existing.templete_vrf_Existing_det.forEach((data, index) => {
-        edit_fieldsToValidate.forEach(field => {
-          edit_validateInput(field, index, 'กรุณาใส่ข้อมูล')
-        })
-      })
-    }
     const edit_validateInput = (field, index, errorMessage) => {
       if (!templete_vrf_Existing.templete_vrf_Existing_det[index][field]) {
         templete_vrf_Existing.templete_vrf_Existing_det[index].errors = { ...templete_vrf_Existing.templete_vrf_Existing_det[index].errors, [field]: errorMessage }
@@ -941,7 +954,7 @@ export default defineComponent({
     }
     //-------------------validate add vrf-------------------
     const fieldsToValidate = [
-      'tbDateF', 'tbDateT', 'tbFullName',
+      'tbFullName',
       'ddlvehicle_brand', 'tbVehicle_Registration',
       'ddlvehicle_color', 'tbCardNo'
     ]
@@ -1039,36 +1052,42 @@ export default defineComponent({
       VRF_error.requestor_phone = ''
       VRF_error.navigator = ''
       VRF_error.area = ''
+      VRF_error.date_from = null
+      VRF_error.date_to = null
       //------------------------------------------
-      NewVrf.template_name = "",
-        NewVrf.reason = "",
-        NewVrf.contactor = "",
-        NewVrf.requestor = "",
-        NewVrf.requestor_position = "",
-        NewVrf.requestor_dept = "",
-        NewVrf.requestor_phone = "",
-        NewVrf.navigator = "",
-        NewVrf.area = "",
-        //------------------------------------------  
-        templete_vrf_Existing.no = "",
-        templete_vrf_Existing.id = "",
-        templete_vrf_Existing.template_name = "",
-        templete_vrf_Existing.reason = "",
-        templete_vrf_Existing.contactor = "",
-        templete_vrf_Existing.requestor = "",
-        templete_vrf_Existing.requestor_id = "",
-        templete_vrf_Existing.requestor_position_id = "",
-        templete_vrf_Existing.position = "",
-        templete_vrf_Existing.requestor_dept_id = "",
-        templete_vrf_Existing.department = "",
-        templete_vrf_Existing.requestor_phone = "",
-        templete_vrf_Existing.navigator_id = "",
-        templete_vrf_Existing.navigator = "",
-        templete_vrf_Existing.area_id = "",
-        templete_vrf_Existing.meeting_area = "",
-        templete_vrf_Existing.user_create = "",
-        templete_vrf_Existing.templete_vrf_Existing_det = [],
-        templete_vrf_Existing.errors = {}
+      NewVrf.template_name = ""
+      NewVrf.reason = ""
+      NewVrf.contactor = ""
+      NewVrf.requestor = ""
+      NewVrf.requestor_position = ""
+      NewVrf.requestor_dept = ""
+      NewVrf.requestor_phone = ""
+      NewVrf.navigator = ""
+      NewVrf.area = ""
+      NewVrf.date_from = null
+      NewVrf.date_to = null
+      //------------------------------------------  
+      templete_vrf_Existing.no = ""
+      templete_vrf_Existing.id = ""
+      templete_vrf_Existing.template_name = ""
+      templete_vrf_Existing.reason = ""
+      templete_vrf_Existing.contactor = ""
+      templete_vrf_Existing.requestor = ""
+      templete_vrf_Existing.requestor_id = ""
+      templete_vrf_Existing.requestor_position_id = ""
+      templete_vrf_Existing.position = "",
+        templete_vrf_Existing.requestor_dept_id = ""
+      templete_vrf_Existing.department = ""
+      templete_vrf_Existing.requestor_phone = ""
+      templete_vrf_Existing.navigator_id = ""
+      templete_vrf_Existing.navigator = ""
+      templete_vrf_Existing.area_id = ""
+      templete_vrf_Existing.meeting_area = ""
+      templete_vrf_Existing.user_create = ""
+      templete_vrf_Existing.templete_vrf_Existing_det = []
+      templete_vrf_Existing.errors = {}
+      templete_vrf_Existing.date_from = null
+      templete_vrf_Existing.date_to = null
       //---------------------------
       AdvSearch.tbDateF = ""
       AdvSearch.tbDateT = ""
@@ -1218,17 +1237,24 @@ export default defineComponent({
           table.isLoading = true;
           // Remove setTimeout() and change to your Axios request or AJAX request on here.
           setTimeout(() => {
-            table.isLoading = false;
-            let newData = Data_.value.filter(
-              (x) =>
-                x.no.includes(keyword) ||
-                x.template_name.toLowerCase().includes(keyword.toLowerCase()) ||
-                x.contactor.toLowerCase().includes(keyword.toLowerCase()) ||
-                x.reason.toLowerCase().includes(keyword.toLowerCase()) ||
-                x.meeting_area.toLowerCase().includes(keyword.toLowerCase()) ||
-                x.user_create.toLowerCase().includes(keyword.toLowerCase()) ||
-                x.user_create.toLowerCase().includes(keyword.toLowerCase())
-            );
+            table.isLoading = false; 
+            console.log('Data_.value:',Data_.value);
+            let newData2 = Data_.value.filter((x) => {
+  console.log('Comparing:', x.date_from, 'with', keyword);
+  return x.date_from && x.date_from.includes(keyword);
+});
+
+            let newData = Data_.value.filter((x) => 
+            
+  (x.no && x.no.includes(keyword)) ||
+  (x.template_name && x.template_name.toLowerCase().includes(keyword.toLowerCase())) || 
+  (dateTime( x.date_from ) && dateTime( x.date_from ).includes(keyword)) ||
+    (dateTime( x.date_to ) && dateTime( x.date_to ).includes(keyword)) || 
+  (x.contactor && x.contactor.toLowerCase().includes(keyword.toLowerCase())) ||
+  (x.reason && x.reason.toLowerCase().includes(keyword.toLowerCase())) ||
+  (x.meeting_area && x.meeting_area.toLowerCase().includes(keyword.toLowerCase())) ||
+  (x.user_create && x.user_create.toLowerCase().includes(keyword.toLowerCase()))
+);
             resolve(newData);
           }, 100);
         } catch (error) {
@@ -1244,7 +1270,7 @@ export default defineComponent({
         {
           label: "ลำดับที่",
           field: "id",
-          width: "5%",
+          width: "3%",
           sortable: true,
           isKey: true,
           display: function (row) {
@@ -1255,7 +1281,7 @@ export default defineComponent({
         {
           label: "ชื่อเทมเพลต",
           field: "template_name",
-          width: "20%",
+          width: "15%",
           sortable: true,
           display: function (row) {
             return (`<div style="text-align: left;">${row.template_name}</div>`
@@ -1263,19 +1289,39 @@ export default defineComponent({
           },
         },
         {
-          label: "ชื่อผู้มาติดต่อ",
-          field: "contactor",
-          width: "20%",
+          label: "จากวันที่",
+          field: "date_from",
+          width: "9%",
           sortable: true,
           display: function (row) {
-            return (`<div style="text-align: left;">${row.contactor}</div>`
+            return (`<div style="text-align: left;">${ row.date_from ? dateTime( row.date_from ) : ''}</div>`
+            );
+          },
+        },
+        {
+          label: "ถึงวันที่",
+          field: "date_to",
+          width: "9%",
+          sortable: true,
+          display: function (row) {
+            return (`<div style="text-align: left;">${row.date_to ? dateTime( row.date_to ) : ''}</div>`
+            );
+          },
+        },
+        {
+          label: "ชื่อผู้มาติดต่อ",
+          field: "contactor",
+          width: "15%",
+          sortable: true,
+          display: function (row) {
+            return (`<div style="text-align: left;">${ row.contactor}</div>`
             );
           },
         },
         {
           label: "เหตุผลในการเข้าพบ",
           field: "reason",
-          width: "20%",
+          width: "15%",
           sortable: true,
           display: function (row) {
             return (`<div style="text-align: left;">${row.reason}</div>`
@@ -1385,6 +1431,8 @@ export default defineComponent({
                   templete_vrf_Existing.id = obj[0].id
                   templete_vrf_Existing.template_name = obj[0].template_name
                   templete_vrf_Existing.reason = obj[0].reason
+                  templete_vrf_Existing.date_from = obj[0].date_from
+                  templete_vrf_Existing.date_to = obj[0].date_to
                   templete_vrf_Existing.contactor = obj[0].contactor
                   templete_vrf_Existing.requestor = obj[0].requestor
                   templete_vrf_Existing.requestor_id = obj[0].requestor_id
@@ -1410,6 +1458,7 @@ export default defineComponent({
             catch (err) {
               console.log(err)
             }
+            console.log('param: ', params)
             //---------------------------------get vrf detail---------------------------------------------
             try {
               loading.value = true;
@@ -1429,7 +1478,7 @@ export default defineComponent({
                 }).finally(() => {
                   //
                 });
-              // onMounted(getBranchAndCashEdit)
+            
             }
             catch (err) {
               console.log(err)
@@ -1481,26 +1530,28 @@ export default defineComponent({
     const setDate = (value) => {
       return new Date(value);
     }
-    const useSetDate = (index, type) => {
-      if (type === 'date_from') {
+    const useSetDate = (type) => {
+      if (type === 'date_from' || type === 'date_to') {
         return computed({
-          get: () => new Date(templete_vrf_Existing.templete_vrf_Existing_det[index].date_from),
-          set: (newValue) => {
-            templete_vrf_Existing.templete_vrf_Existing_det[index].date_from = newValue;
+          get: () => {
+            if (templete_vrf_Existing[type]) {
+              return new Date(templete_vrf_Existing[type]);
+            }
+            return null; // หรือค่าว่างที่คุณต้องการ
           },
-        });
-      }
-      else if (type === 'date_to') {
-        return computed({
-          get: () => new Date(templete_vrf_Existing.templete_vrf_Existing_det[index].date_to),
           set: (newValue) => {
-            templete_vrf_Existing.templete_vrf_Existing_det[index].date_to = newValue;
+            if (newValue) {
+              templete_vrf_Existing[type] = newValue;
+            } else {
+              templete_vrf_Existing[type] = null; // หรือค่าว่างที่คุณต้องการ
+            }
           },
         });
       }
     }
     const dateTime = (value) => {
-      return moment(value).format("DD-MM-YYYY");
+      // return moment(value).format("DD-MM-YYYY");
+      return moment.utc(value).format("DD-MM-YYYY");
     }
     const addManualVRF = async () => {
       const formData = new FormData()
@@ -1513,6 +1564,8 @@ export default defineComponent({
       formData.append('requestor_phone', NewVrf.requestor_phone)
       formData.append('navigator', NewVrf.navigator.user_id)
       formData.append('area', NewVrf.area.id)
+      formData.append('date_from', NewVrf.date_from)
+      formData.append('date_to', NewVrf.date_to)
       formData.append('user_id', user_id.value)
 
       // rowData.value.forEach((value, key) => console.log('rowData value: ', value, 'rowData key: ', key))
@@ -1570,6 +1623,11 @@ export default defineComponent({
     const addManualVRF_validateInput = () => {
       validateAllInputs()
       let isError = false
+      if(rowData.value.length === 0){
+        isError = true
+        //message_addManual.value = "กรุณาเพิ่มรายการ"
+        alert("กรุณาเพิ่มรายการ")
+      }
       if (!NewVrf.template_name) {
         VRF_error.template_name = 'กรุณาใส่ข้อมูล';
         isError = true
@@ -1623,6 +1681,18 @@ export default defineComponent({
         isError = true
       } else {
         VRF_error.area = '';
+      }
+      if (!NewVrf.date_from) {
+        VRF_error.date_from = 'กรุณาเลือกข้อมูล';
+        isError = true
+      } else {
+        VRF_error.date_from = '';
+      }
+      if (!NewVrf.date_to) {
+        VRF_error.date_to = 'กรุณาเลือกข้อมูล';
+        isError = true
+      } else {
+        VRF_error.date_to = '';
       }
       if (isError) {
         console.log('isError: ', isError)
@@ -1700,8 +1770,7 @@ export default defineComponent({
           , errors: {}
         });
       }
-      else
-      { 
+      else {
         rowData.value.push({
           tbDateF: rowData.value[0].tbDateF
           , tbDateT: rowData.value[0].tbDateT
@@ -1735,8 +1804,7 @@ export default defineComponent({
           , errors: {}
         });
       }
-      else
-      { 
+      else {
         templete_vrf_Existing.templete_vrf_Existing_det.push({
           tbDateF: templete_vrf_Existing.templete_vrf_Existing_det[0].tbDateF
           , tbDateT: templete_vrf_Existing.templete_vrf_Existing_det[0].tbDateT
@@ -1751,7 +1819,7 @@ export default defineComponent({
           , errors: {}
         });
       }
-    }    
+    }
     const deleteExistingData = (index) => {
       console.log(index)
       templete_vrf_Existing.templete_vrf_Existing_det.splice(index, 1)
@@ -1761,10 +1829,22 @@ export default defineComponent({
       console.log(index)
       rowData.value.splice(index, 1)
       Id.value--
-    }    
+    }
+    const edit_validateAllInputs = () => {
+      templete_vrf_Existing.templete_vrf_Existing_det.forEach((data, index) => {
+        edit_fieldsToValidate.forEach(field => {
+          edit_validateInput(field, index, 'กรุณาใส่ข้อมูล')
+        })
+      })
+    }
     const editVRF_validateInput = async () => {
       edit_validateAllInputs()
       let isError = false
+      if(templete_vrf_Existing.templete_vrf_Existing_det.length === 0){
+        isError = true
+        //message_addManual.value = "กรุณาเพิ่มรายการ"
+        alert("กรุณาเพิ่มรายการ")
+      }
       if (!templete_vrf_Existing.template_name) {
         VRF_error.template_name = 'กรุณาใส่ข้อมูล';
         isError = true
@@ -1819,6 +1899,18 @@ export default defineComponent({
       } else {
         VRF_error.area = '';
       }
+      if (!templete_vrf_Existing.date_from) {
+        VRF_error.date_from = 'กรุณาใส่ข้อมูล';
+        isError = true
+      } else {
+        VRF_error.date_from = '';
+      }
+      if (!templete_vrf_Existing.date_to) {
+        VRF_error.date_to = 'กรุณาใส่ข้อมูล';
+        isError = true
+      } else {
+        VRF_error.date_to = '';
+      }            
       if (isError) {
         console.log('isError: ', isError)
         return false
@@ -1827,7 +1919,6 @@ export default defineComponent({
         console.log('isError: ', isError)
         editVRF()
       }
-
     }
     const editVRF = async () => {
       const formData = new FormData()
@@ -1841,6 +1932,8 @@ export default defineComponent({
       formData.append('requestor_phone', templete_vrf_Existing.requestor_phone)
       formData.append('navigator', templete_vrf_Existing.navigator_id)
       formData.append('area', templete_vrf_Existing.area_id)
+      formData.append('date_from', templete_vrf_Existing.date_from)
+      formData.append('date_to', templete_vrf_Existing.date_to)
       formData.append('user_id', user_id.value)
       let object_formData = {}
       formData.forEach((value, key) => object_formData[key] = value)
@@ -1869,8 +1962,6 @@ export default defineComponent({
       for (let index in templete_vrf_Existing.templete_vrf_Existing_det) {
         object_det.push({
           id: templete_vrf_Existing.id
-          , date_from: new Date(templete_vrf_Existing.templete_vrf_Existing_det[index].date_from)
-          , date_to: new Date(templete_vrf_Existing.templete_vrf_Existing_det[index].date_to)
           , fullname: templete_vrf_Existing.templete_vrf_Existing_det[index].fullname
           , vrf_id: templete_vrf_Existing.id
           , vehicle_brand_id: templete_vrf_Existing.templete_vrf_Existing_det[index].vehicle_brand_id
@@ -1895,7 +1986,7 @@ export default defineComponent({
             router.push('/templatevrflst')
           });
         error_addManual.value = false
-       }
+      }
       catch (err) {
         console.log(err)
         message_addManual.value = "Something went wrong: " + err
@@ -1906,32 +1997,53 @@ export default defineComponent({
         location.reload()
       }
     }
-    const setToDate = (index) => {
-      let newDate = new Date(rowData.value[index].tbDateF);
-      rowData.value[index].tbDateT = new Date(newDate.getFullYear(), newDate.getMonth() + 1, newDate.getDate() - 1);
+    const setToDate = (type) => {
+      if (type === 'date_from_add') {
+        let newDate = new Date(NewVrf.date_from);
+        NewVrf.date_to = new Date(newDate.getFullYear(), newDate.getMonth() + 1, newDate.getDate() - 1);
+      }
+      if (type === 'date_from_edit') {
+        let newDate = new Date(templete_vrf_Existing.date_from);
+        templete_vrf_Existing.date_to = new Date(newDate.getFullYear(), newDate.getMonth() + 1, newDate.getDate() - 1);
+      }
+
     }
-    const setFromDate = (index) => {
-      console.log(`Selected date in range is: ${index}`);
-      console.log(`rowData[${index}]:`, rowData.value[index].tbDateF);
-      let newDateF = new Date(rowData.value[index].tbDateF);
-      let dateLimit = new Date(newDateF.getFullYear(), newDateF.getMonth() + 1, newDateF.getDate() - 1);
-      let newDateT = new Date(rowData.value[index].tbDateT);
-      if (newDateT > dateLimit) {
-        alert('วันที่สิ้นสุดต้องไม่เกิน 1 เดือน หลังจากวันที่เริ่มต้น')
-        rowData.value[index].tbDateT = dateLimit
+    const setFromDate = (type) => {
+      if (type === 'date_to_add') {
+        let newDateF = new Date(NewVrf.date_from);
+        let dateLimit = new Date(newDateF.getFullYear(), newDateF.getMonth() + 1, newDateF.getDate() - 1);
+        let newDateT = new Date(NewVrf.date_to);
+        if (newDateT < newDateF) {
+          alert('วันสิ้นสุดต้องมากกว่าวันที่เริ่มต้น');
+          NewVrf.date_to = null;
+        }
+        else if (newDateT > dateLimit) {
+          alert('วันที่สิ้นสุดต้องไม่เกิน 1 เดือน หลังจากวันที่เริ่มต้น');
+          NewVrf.date_to = null;
+        }
+        else {
+          NewVrf.date_to = newDateT;
+        }
       }
-      else {
-        rowData.value[index].tbDateT = newDateT
+      if (type === 'date_to_edit') {
+        let newDateF = new Date(templete_vrf_Existing.date_from);
+        let dateLimit = new Date(newDateF.getFullYear(), newDateF.getMonth() + 1, newDateF.getDate() - 1);
+        let newDateT = new Date(templete_vrf_Existing.date_to);
+        if (newDateT < newDateF) {
+          alert('วันสิ้นสุดต้องมากกว่าวันที่เริ่มต้น');
+          templete_vrf_Existing.date_to = null;
+        }
+        else if (newDateT > dateLimit) {
+          alert('วันที่สิ้นสุดต้องไม่เกิน 1 เดือน หลังจากวันที่เริ่มต้น');
+          templete_vrf_Existing.date_to = null;
+        }
+        else {
+          templete_vrf_Existing.date_to = newDateT;
+        }
       }
-      if (newDateT < newDateF) {
-        alert('วันสิ้นสุดต้องมากกว่าวันที่เริ่มต้น')
-        //rowData.value[index].tbDateT = dateLimit      
-      }
-      else {
-        rowData.value[index].tbDateT = newDateT
-      }
+
     }
-    return { 
+    return {
       deleteExistingData,
       addExistingItem,
       setFromDate,
@@ -1973,6 +2085,15 @@ export default defineComponent({
 <style scoped>
 @import '../assets/css/style.css';
 @import '../../node_modules/vue-multiselect/dist/vue-multiselect.css';
+
+.label-col {
+  width: 14rem;
+  /* ตั้งค่าความกว้างที่เหมาะสม */
+  max-width: 20rem;
+  /* ป้องกันไม่ให้ขยายตัว */
+  flex-shrink: 0;
+  /*ป้องกันไม่ให้ย่อตัว */
+}
 
 .autocomplete-results {
   position: absolute;
