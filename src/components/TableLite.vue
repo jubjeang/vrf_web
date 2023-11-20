@@ -12,7 +12,8 @@
         >
           <div v-if="isLoading" class="vtl-loading-mask">
             <div class="vtl-loading-content">
-              <span style="color: white">Loading...</span>
+              <span style="color: white"></span>
+              <!-- <span style="color: white">Loading...</span> -->
             </div>
           </div>
           <table

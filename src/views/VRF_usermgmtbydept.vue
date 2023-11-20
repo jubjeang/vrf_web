@@ -47,7 +47,7 @@
                 </div>
             </div>
         </div>
-        <div class="row p-0" style="width: 100%">
+        <div class="row p-0 scrollable-table" style="width: 100%">
             <div class="col-12">
                 <table-lite :is-static-mode="true" :has-checkbox="true" :is-loading="table.isLoading"
                     :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
@@ -152,7 +152,8 @@
                                                 v-model="AdvSearch.employee_id"
                                                 @input="complete_word('employee_id_usrmgt')" />
                                             <div v-if="result_search_complete_word.employee_id.length > 0
-                                                " class="autocomplete-results" @mouseleave="clear_search_results('employee_id_usrmgt')">
+                                                " class="autocomplete-results"
+                                                @mouseleave="clear_search_results('employee_id_usrmgt')">
                                                 <div class="autocomplete-item"
                                                     v-for="result in result_search_complete_word.employee_id"
                                                     :key="result.id" @click="
@@ -417,7 +418,8 @@
                                                 v-model="NewUser_vrf.employee_id"
                                                 @input="complete_word('employee_id_usrmgt')" />
                                             <div v-if="result_search_complete_word.employee_id.length > 0
-                                                " class="autocomplete-results" @mouseleave="clear_search_results('employee_id_usrmgt')">
+                                                " class="autocomplete-results"
+                                                @mouseleave="clear_search_results('employee_id_usrmgt')">
                                                 <div class="autocomplete-item"
                                                     v-for="result in result_search_complete_word.employee_id"
                                                     :key="result.id" @click="
@@ -690,7 +692,8 @@
                                                 v-model="Existing_vrfuser.employee_id"
                                                 @input="complete_word('employee_id_usrmgt')" />
                                             <div v-if="result_search_complete_word.employee_id.length > 0
-                                                " class="autocomplete-results" @mouseleave="clear_search_results('employee_id_usrmgt')">
+                                                " class="autocomplete-results"
+                                                @mouseleave="clear_search_results('employee_id_usrmgt')">
                                                 <div class="autocomplete-item"
                                                     v-for="result in result_search_complete_word.employee_id"
                                                     :key="result.id" @click="
@@ -1250,7 +1253,7 @@ export default defineComponent({
             AdvSearch.employee_id = ''
             AdvSearch.email = ''
             AdvSearch.position_id = null
-            AdvSearch.department_id =localStorage.getItem('user_department_id')
+            AdvSearch.department_id = localStorage.getItem('user_department_id')
             AdvSearch.division_id = Number(localStorage.getItem('user_division_id'))
             AdvSearch.branch_id = Number(localStorage.getItem('user_branch_id'))
             AdvSearch.role_id = null
@@ -1308,7 +1311,7 @@ export default defineComponent({
 
         const sendApprove = async (e) => {
             // alert( vrf_Existing.orderId )
-            if (confirm('คุณต้องการส่งอนุมัติรายการคำสั่ง ?')) {
+            if (confirm('คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ ?')) {
                 const params = {
                     Id: vrf_Existing.id,
                     Type_: 'send_approve',
@@ -1579,6 +1582,15 @@ export default defineComponent({
                     }
                 },
                 {
+                    label: 'User Name',
+                    field: 'username',
+                    width: '18%',
+                    sortable: true,
+                    display: function (row) {
+                        return `<div style="text-align: left;">${row.username}</div>`
+                    }
+                },
+                {
                     label: 'ตำแหน่ง',
                     field: 'position',
                     width: '18%',
@@ -1666,6 +1678,7 @@ export default defineComponent({
             NewUser_vrf.division_id = newVal.division_id
             NewUser_vrf.branch_id = newVal.branch_id
             NewUser_vrf.role_id = newVal.role_id
+            NewUser_vrf.username = newVal.username 
             console.log('NewUser_vrf.templete_id = newVal.id: ', newVal.id
             )
         })
@@ -1760,7 +1773,7 @@ export default defineComponent({
             let message_ = ''
             type__ === 'cancel'
                 ? (message_ = 'คุณต้องการยกเลิกข้อมูลผู้ใช้ที่เลือกไว้ ?')
-                : (message_ = 'คุณต้องการส่งอนุมัติรายการคำสั่งที่เลือกไว้ ?')
+                : (message_ = 'คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ที่เลือกไว้ ?')
             alert_popup_message_inside.value = message_
         }
         const confirmDialog = async () => {
@@ -2308,6 +2321,14 @@ export default defineComponent({
 <style scoped>
 @import '../assets/css/style.css';
 @import '../../node_modules/vue-multiselect/dist/vue-multiselect.css';
+
+.scrollable-table {
+  width: 100%;
+  overflow-x: auto;
+  /* แสดง scrollbar เมื่อจำเป็น */
+  white-space: nowrap;
+  /* ป้องกันการ wrap text */
+}
 
 .autocomplete-results {
     position: absolute;

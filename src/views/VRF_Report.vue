@@ -27,7 +27,7 @@
         <div style="text-align: right">
           <label>
             <span style="cursor: pointer" @click="downloadExcel">
-              ดาว์โหลดรายงาน
+              ดาวน์โหลดรายงาน
             </span>
             &nbsp;|&nbsp;
             <span style="cursor: pointer" data-bs-target="#ModalAdvSearch" data-bs-toggle="modal">
@@ -472,8 +472,9 @@ export default {
     }
     const downloadExcel = async () => {
       try {
+        console.log('data.rows: ',data.rows)
         loading.value = true
-        const response = await axios.post(`${process.env.VUE_APP_API_URL}/downloadExcel`, Data_.value, {
+        const response = await axios.post(`${process.env.VUE_APP_API_URL}/downloadExcel`, data.rows, {
           responseType: 'blob',
         });
         setTimeout(() => {
@@ -898,41 +899,69 @@ export default {
         }
       })
     }
+    // const AdvSearch_ = async () => {
+    //   const params = {
+    //     tbDateF: AdvSearch.tbDateF !== '' ? AdvSearch.tbDateF : null,
+    //     tbDateT: AdvSearch.tbDateT !== '' ? AdvSearch.tbDateT : null,
+    //     requestor_id:
+    //       AdvSearch.requestor_id.user_id !== 0 ? AdvSearch.requestor_id.user_id : null,
+    //     area_id: AdvSearch.area_id.id !== 0 ? AdvSearch.area_id.id : null,
+    //     requestor_dept_id:
+    //       AdvSearch.requestor_dept_id.id !== 0
+    //         ? AdvSearch.requestor_dept_id.id
+    //         : null,
+    //     department_id: department_id.value,
+    //     branch_id: localStorage.getItem('user_branch_id'),
+    //     checkin_status: AdvSearch.checkin_status.id !== 0 ? AdvSearch.checkin_status.id : null,
+    //   }
+    //   console.log('AdvSearch_ params: ', params)
+    //   await axios
+    //     .get(process.env.VUE_APP_API_URL + '/get_search_vrf_trans', { params })
+    //     .then(
+    //       (res) => {
+    //         // let output = JSON.parse(JSON.stringify(res.data))
+    //         // data.rows = output       
+    //         console.log('res.data: ', res.data)
+    //         Data_.value = JSON.parse(JSON.stringify(res.data))
+    //         data.rows = Data_.value
+
+    //       },
+    //       (res) => {
+    //         // error callback
+    //         console.log('error: ', res.data)
+
+    //       }
+    //     )
+    //   document.getElementById('CloseModalAdvSearch').click() //************************** */
+    // }
     const AdvSearch_ = async () => {
-      const params = {
-        tbDateF: AdvSearch.tbDateF !== '' ? AdvSearch.tbDateF : null,
-        tbDateT: AdvSearch.tbDateT !== '' ? AdvSearch.tbDateT : null,
-        requestor_id:
-          AdvSearch.requestor_id.user_id !== 0 ? AdvSearch.requestor_id.user_id : null,
-        area_id: AdvSearch.area_id.id !== 0 ? AdvSearch.area_id.id : null,
-        requestor_dept_id:
-          AdvSearch.requestor_dept_id.id !== 0
-            ? AdvSearch.requestor_dept_id.id
-            : null,
-        department_id: department_id.value,
-        branch_id: localStorage.getItem('user_branch_id'),
-        checkin_status: AdvSearch.checkin_status.id !== 0 ? AdvSearch.checkin_status.id : null,
-      }
-      console.log('AdvSearch_ params: ', params)
-      await axios
-        .get(process.env.VUE_APP_API_URL + '/get_search_vrf_trans', { params })
-        .then(
-          (res) => {
-            // let output = JSON.parse(JSON.stringify(res.data))
-            // data.rows = output       
-            console.log('res.data: ', res.data)
-            Data_.value = JSON.parse(JSON.stringify(res.data))
-            data.rows = Data_.value
-
-          },
-          (res) => {
-            // error callback
-            console.log('error: ', res.data)
-
-          }
-        )
-      document.getElementById('CloseModalAdvSearch').click() //************************** */
-    }
+        if (AdvSearch.tbDateF && AdvSearch.tbDateT && new Date(AdvSearch.tbDateF) > new Date(AdvSearch.tbDateT)) {
+          alert('กรุณาเลือก จากวันที่ น้อยกว่า ถึงวันที่');
+          return;  // Exit the function early without making the API call
+        }        
+        const params = {
+          tbDateF: AdvSearch.tbDateF !== '' ? AdvSearch.tbDateF : null,
+          tbDateT: AdvSearch.tbDateT !== '' ? AdvSearch.tbDateT : null,
+          requestor_id: AdvSearch.requestor_id !== 0 ? AdvSearch.requestor_id.user_id : null,
+          area_id: AdvSearch.area_id !== 0 ? AdvSearch.area_id.id : null,
+          requestor_dept_id: AdvSearch.requestor_dept_id !== 0 ? AdvSearch.requestor_dept_id.id : null,
+          department_id: department_id.value,
+          branch_id: localStorage.getItem('user_branch_id'),
+          role_id: localStorage.getItem('user_role_id'),
+          checkin_status: AdvSearch.checkin_status.id,
+          approve_status: AdvSearch.approve_status !== '' ? AdvSearch.approve_status : null
+        }
+        console.log('AdvSearch_ params: ', params)
+        
+        try {
+          const res = await axios.get(process.env.VUE_APP_API_URL + '/get_search_vrf_trans', { params });
+          data.rows = JSON.parse(JSON.stringify(res.data));
+          console.log('JSON.parse(JSON.stringify(res.data): ', JSON.parse(JSON.stringify(res.data)));
+        } catch (error) {
+          console.log(error.data);
+        }
+        document.getElementById('CloseModalAdvSearch').click();
+    }    
     // Get data on first rendering
     myRequest('').then((newData) => {
       data.rows = newData

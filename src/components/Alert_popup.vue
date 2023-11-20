@@ -28,12 +28,8 @@
     },
     setup(props, { emit }) {
         const isOpen_ref = toRef(props, 'isOpen');
-        console.log('typeof isOpen_ref:',typeof isOpen_ref.value)
-        console.log('isOpen_ref.value:', isOpen_ref.value)    
         const isOpen_ = ref( true );
-        console.log('isOpen :',isOpen_.value) 
-        const onClose = () => { 
-          console.log('aaa')
+        const onClose = () => {           
           isOpen_.value= false;
           emit('close');
         };  

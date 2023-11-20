@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-    <div class="row p-0" style="width: 100%">
+    <div class="row p-0 scrollable-table">
       <div class="col-12">
         <table-lite :is-static-mode="true" :has-checkbox="true" :is-loading="table.isLoading" :columns="table.columns"
           :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable" @is-finished="tableLoadingFinish"
@@ -384,13 +384,30 @@
                     </div>
                     <div class="col">
                       <!--can't get id-->
-                      <VueMultiselect name="area" id="area" :options="data_ddl.area"
+                      <!-- <VueMultiselect name="area" id="area" :options="data_ddl.area"
                         class="form-select form-select-sm p-0" label="meeting_area" :style="{
                           width: '15rem'
                           , height: '0.5rem'
                         }" v-model="NewVrf.area" :select-label="null" :allow-empty="true" :close-on-select="true"
                         :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
-                      </VueMultiselect>
+                      </VueMultiselect> -->
+                      <VueMultiselect
+                            name="area"
+                            id="area"
+                            :options="data_ddl.area"
+                            class="form-select form-select-sm p-0"
+                            label="meeting_area"
+                            :style="{ width: '15rem', height: '0.5rem' }"
+                            v-model="NewVrf.area"
+                            track-by="id"
+                            placeholder="เลือก">
+                            <template #option="{ option }">
+                                <div :style="option.type_meeting_area === 'พื้นที่ความมั่นคง'? {color: 'orange'} : {}">
+                                    {{ option.meeting_area }}
+                                </div>
+                            </template>
+                        </VueMultiselect>
+
                       <p v-if="VRF_error.area && !NewVrf.area" class="error-message">กรุณาเลือกข้อมูล</p>
                     </div>
                   </div>
@@ -676,7 +693,11 @@
                     <div class="col">
                       <select class="form-select form-select-sm" v-model="templete_vrf_Existing.area_id"
                         style="width: 15rem; height: 2.5rem;">
-                        <option v-for="option in data_ddl.area" :value="option.id" :key="option.id">{{
+                        <option v-for="option in data_ddl.area" 
+                        :value="option.id" 
+                        :key="option.id" 
+                        :class="{'orange-text': option.type_meeting_area === 'พื้นที่ความมั่นคง'}" 
+                        >{{
                           option.meeting_area }}</option>
                       </select>
                       <!--can't get id-->
@@ -955,8 +976,10 @@ export default defineComponent({
     //-------------------validate add vrf-------------------
     const fieldsToValidate = [
       'tbFullName',
-      'ddlvehicle_brand', 'tbVehicle_Registration',
-      'ddlvehicle_color', 'tbCardNo'
+      // 'ddlvehicle_brand',
+      // 'tbVehicle_Registration',
+      // 'ddlvehicle_color',
+       'tbCardNo'
     ]
     const validateAllInputs = () => {
       rowData.value.forEach((data, index) => {
@@ -1109,7 +1132,7 @@ export default defineComponent({
       // console.log('isOpen_alert_popup.value before: ', isOpen_alert_popup.value)
       // handle confirmation logic here
       let message_ = ''
-      type__ === 'cancel' ? message_ = 'คุณต้องการยกเลิกแม่แบบใบขอเข้าพื้นที่ที่เลือกไว้ ?' : message_ = 'คุณต้องการส่งอนุมัติรายการคำสั่งที่เลือกไว้ ?'
+      type__ === 'cancel' ? message_ = 'คุณต้องการยกเลิกแม่แบบใบขอเข้าพื้นที่ที่เลือกไว้ ?' : message_ = 'คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ที่เลือกไว้ ?'
       alert_popup_message_inside.value = message_
     }
     const format_date = (date_) => {
@@ -1274,8 +1297,8 @@ export default defineComponent({
           sortable: true,
           isKey: true,
           display: function (row) {
-            return (`<div style="text-align: right;">${row.no}</div>`
-            );
+            // return (`<div style="text-align: right;">${row.no}</div>`);
+            return (`<div style="text-align: center;">${row.no}</div>`);
           },
         },
         {
@@ -1487,7 +1510,11 @@ export default defineComponent({
         }
       });
     };
-    const AdvSearch_ = async () => {
+    const AdvSearch_ = async () => { 
+      if (AdvSearch.tbDateF && AdvSearch.tbDateT && new Date(AdvSearch.tbDateF) > new Date(AdvSearch.tbDateT)) {
+          alert('กรุณาเลือก จากวันที่ น้อยกว่า ถึงวันที่');
+          return;  // Exit the function early without making the API call
+        }
       const params = {
         tbDateF: AdvSearch.tbDateF !== '' ? AdvSearch.tbDateF : null,
         tbDateT: AdvSearch.tbDateT !== '' ? AdvSearch.tbDateT : null,
@@ -1498,18 +1525,8 @@ export default defineComponent({
         branch_id: localStorage.getItem('user_branch_id'),
         checkin_status: null,
       }
-      // const params = {
-      //   tbDateF: AdvSearch.tbDateF !== '' ? AdvSearch.tbDateF : null,
-      //   tbDateT: AdvSearch.tbDateT !== '' ? AdvSearch.tbDateT : null,
-      //   requestor_id: AdvSearch.requestor_id !== 0 ? AdvSearch.requestor_id : null,
-      //   area_id: AdvSearch.area_id !== 0 ? AdvSearch.area_id : null,
-      //   requestor_dept_id: AdvSearch.requestor_dept_id !== 0 ? AdvSearch.requestor_dept_id : null,
-      //   department_id: department_id.value,
-      //   branch_id: localStorage.getItem('user_branch_id'),
-      //   checkin_status: null,
-      // }
       console.log("params: ", params)
-      await axios.get(process.env.VUE_APP_API_URL + '/get_search_vrf', { params })
+      await axios.get(process.env.VUE_APP_API_URL + '/get_search_vrf_templete', { params })
         .then((res) => {
           data.rows = JSON.parse(JSON.stringify(res.data))
           console.log("JSON.parse(JSON.stringify(res.data): ", JSON.parse(JSON.stringify(res.data)))
@@ -1761,8 +1778,7 @@ export default defineComponent({
           , tbDateT: null
           , tbName: ''
           , tbSname: ''
-          , tbFullName: ''
-          , tbSname: ''
+          , tbFullName: ''          
           , tbVehicle_Registration: ''
           , ddlvehicle_brand: ''
           , ddlvehicle_color: ''
@@ -1776,11 +1792,10 @@ export default defineComponent({
           , tbDateT: rowData.value[0].tbDateT
           , tbName: ''
           , tbSname: ''
-          , tbFullName: ''
-          , tbSname: ''
-          , tbVehicle_Registration: ''
-          , ddlvehicle_brand: ''
-          , ddlvehicle_color: ''
+          , tbFullName: ''          
+          , tbVehicle_Registration: rowData.value[0].tbVehicle_Registration
+          , ddlvehicle_brand: rowData.value[0].ddlvehicle_brand
+          , ddlvehicle_color: rowData.value[0].ddlvehicle_color
           , tbCardNo: ''
           , errors: {}
         });
@@ -2086,6 +2101,22 @@ export default defineComponent({
 @import '../assets/css/style.css';
 @import '../../node_modules/vue-multiselect/dist/vue-multiselect.css';
 
+.orange-text {
+    color: orange;
+}
+/* ตั้งค่าทั่วไปสำหรับ .scrollable-table */
+.scrollable-table {
+    width: 100%;
+    overflow-x: auto; /* แสดง scrollbar เมื่อจำเป็น */
+    white-space: nowrap; /* ป้องกันการ wrap text */
+}
+
+/* ซ่อน scrollbar เมื่อหน้าจอกว้างเพียงพอ (เช่น 768px หรือมากกว่า) */
+@media (min-width: 768px) {
+    .scrollable-table {
+        overflow-x: hidden; /* ซ่อน scrollbar */
+    }
+}
 .label-col {
   width: 14rem;
   /* ตั้งค่าความกว้างที่เหมาะสม */

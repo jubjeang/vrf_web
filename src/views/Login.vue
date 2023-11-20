@@ -3,11 +3,10 @@
     <div class="container-fluid h-custom pt-5">
       <div class="row d-flex justify-content-center align-items-center mt-5 pt-4">
         <div class="col-md-12 col-lg-12 col-xl-12 ps-0 ms-0  mb-3">
-          <img src="@/assets/images/gfcth.png" class="img-fluid" alt="Sample image"
-            style="width: 15rem; height: 2rem" />
+          <img src="@/assets/images/gfcth.png" class="img-fluid" alt="Sample image" style="width: 15rem; height: 2rem" />
         </div>
       </div>
-      <div class="row d-flex justify-content-center align-items-center mt-0"> 
+      <div class="row d-flex justify-content-center align-items-center mt-0">
         <div class="col-md-12 col-lg-12 col-xl-12 offset-xl-1 ms-0 mb-5">
           <h3>
             Online VRF System
@@ -17,24 +16,41 @@
           </h3>
         </div>
       </div>
-      <div class="row d-flex justify-content-center align-items-center mt-5">       
+      <div class="row d-flex justify-content-center align-items-center mt-5">
         <div class="col-md-3 col-lg-3 col-xl-3 offset-xl-1 ms-0">
           <form>
             <div class="divider d-flex align-items-center my-4">
               <p class="fw-bold mx-3 mb-0">เข้าสู่ระบบ</p>
             </div>
-            <!-- Email input -->
-            <div class="form-outline mb-4 text-center">
+            <!-- <div class="form-outline mb-4 align-items-center ps-4">
               <input type="text" id="jobid" ref="jobid" v-model="jobid" class="form-control form-control-lg"
-                placeholder="กรอกชื่อผู้ใช้" style="width: 20rem; display:inline;" />
-              <!-- <label class="form-label" for="jobid">User Name</label> -->
+                placeholder="กรอกชื่อผู้ใช้" style="width: 20rem; box-sizing: border-box;" />
+            </div> -->
+            <div class="form-group text-center">
+              <input type="text" id="jobid" ref="jobid" v-model="jobid" class="form-control form-control-lg"
+                placeholder="กรอกชื่อผู้ใช้" />
             </div>
             <!-- Password input -->
-            <div class="form-outline mb-3  text-center">
-              <input type="password" id="password" ref="password" v-model="password" class="form-control form-control-lg"
-                placeholder="กรอกรหัสผ่าน" style="width: 20rem; display:inline;" />
-              <!-- <label class="form-label" for="password">Password</label> -->
+            <div class="form-group text-center pt-4 position-relative position-relative">
+              <input :type="passwordFieldType" id="password" ref="password" v-model="password" class="form-control form-control-lg" placeholder="กรอกรหัสผ่าน"/>
+              <button type="button" @mousedown="showPassword" @mouseup="hidePassword" @mouseleave="hidePassword" 
+                @touchstart.prevent="showPassword" @touchend.prevent="hidePassword"
+                class="btn btn-sm btn-secondary position-absolute password-toggle"                 
+                >
+                แสดง
+              </button>
             </div>
+            <!-- <div class="form-outline mb-3 text-center ps-4 position-relative" style=" width: 22rem;">
+              <input :type="passwordFieldType" id="password" ref="password" v-model="password"
+                class="form-control form-control-lg" placeholder="กรอกรหัสผ่าน"
+                style="width: 20rem;padding-right: 50px; height: 100%; box-sizing: border-box;" />
+              <button type="button" @mousedown="showPassword" @mouseup="hidePassword" @mouseleave="hidePassword"
+                @touchstart.prevent="showPassword" @touchend.prevent="hidePassword"
+                class="btn btn-sm btn-secondary position-absolute"
+                style="width: 50px; right: 0; top: 50%; transform: translateY(-50%); height: 100%; background-color: gray; color: white;">
+                แสดง
+              </button>
+            </div> -->
             <div class="text-center mt-4 pt-2">
               <button type="button" class="btn btn-primary btn-lg"
                 style="padding-left: 2.5rem; padding-right: 2.5rem;  padding-top: 0.2rem; display:inline;" @click="login">
@@ -71,6 +87,7 @@ export default {
       loading: false,
       Alert_popup: false,
       Alert_popup_message: '',
+      passwordFieldType: 'password',
     }
   },
   methods: {
@@ -88,7 +105,7 @@ export default {
           this.loading = false
           // alert('กรุณากรอกชื่อผู้ใช้')
           this.Alert_popup = true
-          this.Alert_popup_message = 'กรุณากรอกชื่อผู้ใช้'
+          this.Alert_popup_message = 'กรุณากรอก ชื่อผู้ใช้/รหัสผ่าน'
           this.$refs.password.focus();
           // localStorage.setItem('user_name', 'UserDemo')
           // this.$router.push('/main')
@@ -146,7 +163,7 @@ export default {
                           localStorage.setItem('user_name', userdata[0].username)
                           localStorage.setItem('user_first_name', userdata[0].first_name)
                           localStorage.setItem('user_last_name', userdata[0].last_name)
-                          localStorage.setItem('user_department_id', userdata[0].department_id)                          
+                          localStorage.setItem('user_department_id', userdata[0].department_id)
                           localStorage.setItem('user_department', userdata[0].department)
                           localStorage.setItem('user_position', userdata[0].position)
                           localStorage.setItem('user_positin_id', userdata[0].positin_id)
@@ -158,14 +175,14 @@ export default {
                           localStorage.setItem('user_branch_id', userdata[0].branch_id)
                           localStorage.setItem('user_division_name', userdata[0].division_name)
                           localStorage.setItem('user_division_id', userdata[0].division_id)
-                          this.$router.push('/main')                     
+                          this.$router.push('/main')
                         }
                         catch (err) {
                           this.loading = false
                           console.log(err)
                           // alert("มีข้อผิดพลาด: " + err)
                           this.Alert_popup = true
-                          this.Alert_popup_message = "มีข้อผิดพลาด: " + err
+                          this.Alert_popup_message = "ชื่อผู้ใช้ยังไม่ถูกลงทะเบียนในระบบ"
                         }
                       }, (res) => {
                         // error callback
@@ -188,29 +205,40 @@ export default {
                   this.Alert_popup_message = "มีข้อผิดพลาด: " + err
                 }
               }, (res) => {
-                // error callback
+                // error callback //-----from /authenticate
                 this.loading = false
-                console.log(JSON.stringify(res.data))
-                this.loading = false
-                this.Alert_popup = true
-                this.Alert_popup_message = "มีข้อผิดพลาด: " + res.data
-                // alert(res.data)
+
+                if (res.data != undefined) {
+                  this.Alert_popup = true
+                  this.Alert_popup_message = "มีข้อผิดพลาด: " + res.data
+                }
+                else {
+                  this.Alert_popup = true
+                  this.Alert_popup_message = "กรอกชื่อผู้ใช้/รหัสผ่าน ไม่ถูกต้อง"
+                  console.log(JSON.stringify(res.data))
+                }
               });
           }
           catch (err) {
             this.loading = false
             console.log(err)
             this.Alert_popup = true
-            this.Alert_popup_message = "มีข้อผิดพลาด: " + err
+            this.Alert_popup_message = "มีข้อผิดพลาด : " + err
           }
         }
         else {
           this.loading = false
-          this.Alert_popup_message = "กรอกชื่อผู้ใช้/รหัสผ่าน ผิดพลาด"
+          this.Alert_popup_message = "กรอกชื่อผู้ใช้/รหัสผ่าน ไม่ถูกต้อง"
           this.Alert_popup = true
         }
       }, 500)
 
+    },
+    showPassword() {
+      this.passwordFieldType = 'text';
+    },
+    hidePassword() {
+      this.passwordFieldType = 'password';
     },
   },
   mounted() {
@@ -242,6 +270,34 @@ export default {
 </script>
 
 <style scoped>
+/* Style for the position-relative class to make the button overlap the input field */
+.position-relative {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Style for the button to position it inside the right end of the input field */
+.position-absolute.end-0.top-0 {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  /* Remove the border if you prefer */
+  background: none;
+  /* Optional: Makes the button have no background */
+  /* Adjust padding and margin if necessary */
+}
+
+/* You might need to adjust padding of the input field to prevent text overlap */
+.form-control-lg {
+  padding-right: 50px;
+  width: 80%; /* full width */
+  margin: 0 auto; /* centers the input field */
+  /* Adjust as needed */
+}
+
 .divider:after,
 .divider:before {
   content: '';
@@ -260,6 +316,41 @@ export default {
 @media (max-width: 450px) {
   .h-custom {
     height: 100%;
+  }
+}
+
+
+.position-relative {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  left: 10%;
+  right: -30px; /* Adjust this value as needed to move the button to the left */
+  top: 40%;
+  transform: translateY(-50%);
+  height: 70%;
+  background-color: gray;
+  color: white;
+  width: 50px;
+}
+@media (min-width: 992px) {
+  .password-toggle { 
+  left: 80%;
+  position: absolute;
+  right: -30px; /* Adjust this value as needed to move the button to the left */
+  top: 68%;
+  transform: translateY(-50%);
+  height: 70%;
+  background-color: gray;
+  color: white;
+  width: 50px;
+}
+}
+@media (max-width: 767px) {
+  .form-control-lg {
+    padding-right: 30px; /* adjust padding for smaller screens */
   }
 }
 </style>
