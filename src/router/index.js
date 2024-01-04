@@ -22,6 +22,11 @@ const routes = [
     component: () => import('../views/Approve_VRF_Lst.vue')
   },
   {
+    path: '/approvevrfpage',
+    name: 'approve_vrf_page',
+    component: () => import('../views/Approve_VRF_Page.vue')
+  },
+  {
     path: '/vrflstforsecurity',
     name: 'vrf_lst_for_security',
     component: () => import('../views/VRF_Lst_for_Security.vue')

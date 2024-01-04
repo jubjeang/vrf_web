@@ -548,9 +548,12 @@
               </div>
               <div class="modal-footer pt-0 justify-content-center">
                 <div class="align-top pt-1 d-flex justify-content-center">
-                  <button class="btn btn-primary" style="width: 4rem; height: 2rem">
+                  <!-- <button class="btn btn-primary" style="width: 4rem; height: 2rem">
                     บันทึก
-                  </button>
+                  </button> -->
+                  <button class="btn btn-success"  style="width: 5rem; height: 2rem">
+                    ส่งอนุมัติ
+                  </button>                  
                   <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" style="width: 4rem; height: 2rem"
                     id="ClosemyModalNew" @click="ClosemyModalNew_">
                     ยกเลิก
@@ -571,7 +574,7 @@
           <div class="modal-dialog modalcustom">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">แก้ไขรายการขอเข้าพื้นที่</h5>
+                <h5 class="modal-title">รายการขอเข้าพื้นที่</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                   @click="ClosemyModalNew_"></button>
               </div>
@@ -589,7 +592,7 @@
                           <th scope="col" class="colwidth25">
                             หมายเลขบัตร ประชาชน/ใบขับขี่/พนักงาน
                           </th>
-                          <th scope="col" class="colwidth10">
+                          <th scope="col" class="colwidth10" v-show="checkstatus_send_to_approve">
                             ดำเนินการ
                             <span @click.prevent="addExistingItem(vrf_Existing.id)"
                               class="text-decoration-none text-gray fs-7" style="cursor: pointer">
@@ -608,7 +611,7 @@
       index,
       'กรุณาใส่ข้อมูล'
     )
-    " />
+    " :disabled="!checkstatus_send_to_approve" />
                             <p class="error-message" v-if="data.errors && data.errors.fullname">
                               {{ data.errors.fullname }}
                             </p>
@@ -622,7 +625,7 @@
       index,
       'กรุณาเลือกยี่ห้อรถ'
     )
-    ">
+    " :disabled="!checkstatus_send_to_approve">
                               <option v-for="option in data_ddl.vehicle_brand" :value="option.id" :key="option.id">
                                 {{ option.vehicle_brand }}
                               </option>
@@ -640,7 +643,7 @@
       index,
       'กรุณาใส่ข้อมูล'
     )
-    " />
+    " :disabled="!checkstatus_send_to_approve" />
                             <p class="error-message" v-if="data.errors && data.errors.vehicle_registration
                               ">
                               {{ data.errors.vehicle_registration }}
@@ -655,7 +658,7 @@
       index,
       'กรุณาเลือกสีรถ'
     )
-    ">
+    " :disabled="!checkstatus_send_to_approve">
                               <option v-for="option in data_ddl.vehicle_color" :value="option.id" :key="option.id">
                                 {{ option.vehicle_color }}
                               </option>
@@ -672,13 +675,14 @@
       index,
       'กรุณาใส่ข้อมูล'
     )
-    " />
+    " :disabled="!checkstatus_send_to_approve" />
                             <p class="error-message" v-if="data.errors && data.errors.card_no">
                               {{ data.errors.card_no }}
                             </p>
                           </td>
                           <td scope="col" class="colwidth10">
-                            <span @click="deleteExistingData(index)" style="cursor: pointer">
+                            <span @click="deleteExistingData(index)" style="cursor: pointer"
+                              v-show="checkstatus_send_to_approve">
                               <i class="fa fa-minus-square align-middle" aria-hidden="true"></i>
                             </span>
                           </td>
@@ -705,34 +709,36 @@
                     </div>
                   </div>
                   <div class="row p-2">
-                    <div class="col">จากวันที่:</div>
-                    <div class="col">
+                    <div class="col-md-2 text-end">จากวันที่:</div>
+                    <div class="col-md-2">
                       <datepicker class="form-control" v-model="vrf_Existing.date_from" style="width: 7rem"
-                        inputFormat="dd/MM/yyyy" @update:model-value="setToDate('date_from_edit')" />
+                        inputFormat="dd/MM/yyyy" @update:model-value="setToDate('date_from_edit')"
+                        :disabled="!checkstatus_send_to_approve" />
                       <p v-if="VRF_error.date_from && !vrf_Existing.date_from" class="error-message">
                         กรุณาเลือกข้อมูล
                       </p>
                     </div>
-                    <div class="col">ถึงวันที่:</div>
-                    <div class="col">
+                    <div class="col-md-2 text-end">ถึงวันที่:</div>
+                    <div class="col-md-2">
                       <datepicker class="form-control" v-model="vrf_Existing.date_to" style="width: 7rem"
-                        inputFormat="dd/MM/yyyy" @update:model-value="setFromDate('date_to_edit')" />
+                        inputFormat="dd/MM/yyyy" @update:model-value="setFromDate('date_to_edit')"
+                        :disabled="!checkstatus_send_to_approve" />
                       <p v-if="VRF_error.date_to && !vrf_Existing.date_to" class="error-message">
                         กรุณาเลือกข้อมูล
                       </p>
                     </div>
-                    <div class="col">
+                    <div class="col-md-2 text-end">
                       <input type="text" class="form-control" style="width: 15rem; display: none" />
                     </div>
-                    <div class="col">
+                    <div class="col-md-2 text-end">
                       <input type="text" class="form-control" style="width: 15rem; display: none" />
                     </div>
                   </div>
                   <div class="row p-2">
-                    <div class="col">พื้นที่เข้าพบ:</div>
-                    <div class="col">
+                    <div class="col-md-2 text-end">พื้นที่เข้าพบ:</div>
+                    <div class="col-md-2">
                       <select class="form-select form-select-sm" v-model="vrf_Existing.area_id"
-                        style="width: 15rem; height: 2.5rem">
+                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
                         <option v-for="option in data_ddl.area" :value="option.id" :key="option.id"
                           :class="{ 'orange-text': option.type_meeting_area === 'พื้นที่ความมั่นคง' }">
                           {{ option.meeting_area }}
@@ -760,26 +766,26 @@
                         กรุณาเลือกข้อมูล
                       </p>
                     </div>
-                    <div class="col">เหตุผลในการเข้าพบ:</div>
-                    <div class="col">
+                    <div class="col-md-2 text-end">เหตุผลในการเข้าพบ:</div>
+                    <div class="col-md-2">
                       <input type="text" id="reason" class="form-control" style="width: 15rem"
-                        v-model="vrf_Existing.reason" />
+                        v-model="vrf_Existing.reason" :disabled="!checkstatus_send_to_approve" />
                       <p v-if="VRF_error.reason && !vrf_Existing.reason" class="error-message">
                         กรุณากรอกข้อมูล
                       </p>
                     </div>
-                    <div class="col">ชื่อบริษัทผู้มาติดต่อ:</div>
-                    <div class="col">
+                    <div class="col-md-2 text-end">ชื่อบริษัทผู้มาติดต่อ:</div>
+                    <div class="col-md-2">
                       <input type="text" id="contactor" class="form-control" style="width: 15rem"
-                        v-model="vrf_Existing.contactor" />
+                        v-model="vrf_Existing.contactor" :disabled="!checkstatus_send_to_approve" />
                       <p v-if="VRF_error.contactor && !vrf_Existing.contactor" class="error-message">
                         กรุณากรอกข้อมูล
                       </p>
                     </div>
                   </div>
                   <div class="row p-2">
-                    <div class="col">ผู้ร้องขอ:</div>
-                    <div class="col">
+                    <div class="col-md-2 text-end">ผู้ร้องขอ:</div>
+                    <div class="col-md-2">
                       <!-- <input type="text" class="form-control" style="width:15rem;"
                         v-model="vrf_Existing.requestor_id" /> -->
                       <!----why can't set default selected-->
@@ -793,7 +799,7 @@
                       </VueMultiselect> -->
 
                       <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_id"
-                        style="width: 15rem; height: 2.5rem">
+                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
                         <option v-for="option in data_ddl.userlist" :value="option.user_id" :key="option.user_id">
                           {{ option.first_name }}
                         </option>
@@ -803,10 +809,10 @@
                         กรุณาเลือกข้อมูล
                       </p>
                     </div>
-                    <div class="col">ตำแหน่งผู้ร้องขอ:</div>
-                    <div class="col">
+                    <div class="col-md-2 text-end">ตำแหน่งผู้ร้องขอ:</div>
+                    <div class="col-md-2">
                       <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_position_id"
-                        style="width: 15rem; height: 2.5rem">
+                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
                         <option v-for="option in data_ddl.position" :value="option.id" :key="option.id">
                           {{ option.position }}
                         </option>
@@ -824,15 +830,14 @@
                         กรุณาเลือกข้อมูล
                       </p>
                     </div>
-                    <div class="col">แผนกผู้ร้องขอ:</div>
-                    <div class="col">
+                    <div class="col-md-2 text-end">แผนกผู้ร้องขอ:</div>
+                    <div class="col-md-2">
                       <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_dept_id"
-                        style="width: 15rem; height: 2.5rem">
+                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
                         <option v-for="option in data_ddl.dept" :value="option.id" :key="option.id">
                           {{ option.department }}
                         </option>
                       </select>
-
                       <!-- <VueMultiselect name="requestor_dept" id="requestor_dept" :options="data_ddl.dept"
                         class="form-select form-select-sm p-0" label="department" :style="{
                           width: '15rem'
@@ -848,20 +853,20 @@
                     </div>
                   </div>
                   <div class="row p-2">
-                    <div class="col">เบอร์โทรผู้ร้องขอ:</div>
-                    <div class="col">
+                    <div class="col-md-2 text-end">เบอร์โทรผู้ร้องขอ:</div>
+                    <div class="col-md-2">
                       <input type="text" id="requestor_phone" class="form-control" style="width: 15rem"
-                        v-model="vrf_Existing.requestor_phone" />
+                        v-model="vrf_Existing.requestor_phone" :disabled="!checkstatus_send_to_approve" />
                       <p v-if="VRF_error.requestor_phone &&
                         !vrf_Existing.requestor_phone
                         " class="error-message">
                         กรุณากรอกข้อมูล
                       </p>
                     </div>
-                    <div class="col">ชื่อผู้นำพา:</div>
-                    <div class="col">
+                    <div class="col-md-2 text-end">ชื่อผู้นำพา:</div>
+                    <div class="col-md-2">
                       <select class="form-select form-select-sm" v-model="vrf_Existing.navigator_id"
-                        style="width: 15rem; height: 2.5rem">
+                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
                         <option v-for="option in data_ddl.navigator" :value="option.user_id" :key="option.user_id">
                           {{ option.fullname }}
                         </option>
@@ -879,20 +884,16 @@
                         กรุณาเลือกข้อมูล
                       </p>
                     </div>
-                    <div class="col">แนบไฟล์:</div>
-                    <div class="col d-flex text-start" style="padding-left: 0; margin-left: 0">
-                      <label class="input-group-text" for="formFile_edt"
-                        style="width: 5rem; height: 2rem; display: inline">
-                        เลือกไฟล์
-                      </label>
-                      <input type="file" class="form-control" id="formFile_edt" @change="selectFile_edt"
-                        style="display: none; width: 5rem" />
-                      <input type="text" class="form-control" id="formFileText_edt" style="width: 9rem; display: inline"
-                        v-model="vrf_Existing.attach_file" />
+                    <div class="col-md-2 text-end">แนบไฟล์:</div>
+                    <div class="col-md-2" style="padding-left: 0; margin-left: 0">
                       &nbsp;
                       <a :href="fileUrl" target="_blank">
                         <i class="fa fa-address-card" aria-hidden="true"></i>
                       </a>
+                      <!-- <label for="formFile_edt"
+                        style="width: auto; height: 2rem; display: inline">
+                        {{ vrf_Existing.attach_file }}
+                      </label> -->
                     </div>
                   </div>
                 </div>
@@ -903,9 +904,696 @@
                     บันทึก
                   </button>
                   <button class="btn btn-success" v-show="checkstatus_send_to_approve" style="width: 5rem; height: 2rem"
-                    @click.prevent="sendApprove">
+                    @click.prevent="sendApprove($event, vrf_Existing.id)">
                     ส่งอนุมัติ
                   </button>
+                  <button class="btn btn-danger" data-bs-dismiss="modal" type="reset" style="width: 4rem; height: 2rem"
+                    id="ClosemyModalNew" @click="ClosemyModalNew_">
+                    ยกเลิก
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-----------------------------------------------------------modal Edit Urgent Case Vrf--->
+  <div class="container py-2">
+    <div class="py-2">
+      <form @submit.prevent="editVRF_Urgentcase_validateInput" id="form4">
+        <div class="modal fade" id="ModalEditUrgentCaseVrf">
+          <div class="modal-dialog modalcustom">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">แก้ไขรายการขอเข้าพื้นที่ด่วน</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                  @click="ClosemyModalNew_"></button>
+              </div>
+              <div class="modal-body modalcustom">
+                <div class="container modalcustom">
+                  <!---Loop Manual Edit VRF------>
+                  <div class="row ms-4 ps-4 pe-3 me-3 modalcustom">
+                    <table class="table table-hover modalcustomtb">
+                      <thead>
+                        <tr>
+                          <th scope="col" class="colwidth25">ชื่อ-นามสกุล</th>
+                          <th scope="col" class="colwidth10">ยี่ห้อรถ</th>
+                          <th scope="col" class="colwidth10">ทะเบียน</th>
+                          <th scope="col" class="colwidth10">สีรถ</th>
+                          <th scope="col" class="colwidth25">
+                            หมายเลขบัตร ประชาชน/ใบขับขี่/พนักงาน
+                          </th>
+                          <th scope="col" class="colwidth25">
+                            หมายเหตุ
+                          </th>
+                          <th scope="col" class="colwidth10" v-show="checkstatus_send_to_approve">
+                            ดำเนินการ
+                            <span @click.prevent="addUrgentcaseItem(vrf_urgent.id)"
+                              class="text-decoration-none text-gray fs-7" style="cursor: pointer">
+                              <i class="fa fa-plus-circle align-middle" />
+                            </span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-------------------------------------existing vrf---------------------------------------->
+                        <tr v-for="(data, index) in vrf_Existing.vrf_Existing_det" :key="index">
+                          <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center">
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block"
+                              v-model="vrf_Existing.vrf_Existing_det[index].fullname"
+                              :disabled="((vrf_Existing.vrf_Existing_det[index].urgentcase_type === 'Absent') || (vrf_Existing.vrf_Existing_det[index].urgentcase_type === null) || !checkstatus_send_to_approve) ? true : false"
+                              @blur="edit_validateInput_vrfurgentcase('fullname', index, 'กรุณาใส่ข้อมูล', vrf_Existing.vrf_Existing_det[index].fullname)" />
+                            <p class="error-message" v-if="data.errors && data.errors.fullname">
+                              {{ data.errors.fullname }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <select class="form-select form-select-sm" v-model="vrf_Existing.vrf_Existing_det[index]
+                              .vehicle_brand_id
+                              "
+                              :disabled="((vrf_Existing.vrf_Existing_det[index].urgentcase_type === 'Absent') || (vrf_Existing.vrf_Existing_det[index].urgentcase_type === null) || !checkstatus_send_to_approve) ? true : false">
+                              <option v-for="option in data_ddl.vehicle_brand" :value="option.id" :key="option.id">
+                                {{ option.vehicle_brand }}
+                              </option>
+                            </select>
+
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <input type="text" class="form-control" style="width: 10rem; display: inline-block"
+                              v-model="vrf_Existing.vrf_Existing_det[index].vehicle_registration"
+                              :disabled="((vrf_Existing.vrf_Existing_det[index].urgentcase_type === 'Absent') || (vrf_Existing.vrf_Existing_det[index].urgentcase_type === null) || !checkstatus_send_to_approve) ? true : false"
+                              @blur="edit_validateInput_vrfurgentcase('vehicle_registration', index, 'กรุณาใส่ข้อมูล', vrf_Existing.vrf_Existing_det[index].vehicle_registration)" />
+                            <p class="error-message" v-if="data.errors && data.errors.vehicle_registration">
+                              {{ data.errors.vehicle_registration }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <select class="form-select form-select-sm" v-model="vrf_Existing.vrf_Existing_det[index]
+                              .vehicle_color_id
+                              "
+                              :disabled="((vrf_Existing.vrf_Existing_det[index].urgentcase_type === 'Absent') || (vrf_Existing.vrf_Existing_det[index].urgentcase_type === null) || !checkstatus_send_to_approve) ? true : false">
+                              <option v-for="option in data_ddl.vehicle_color" :value="option.id" :key="option.id">
+                                {{ option.vehicle_color }}
+                              </option>
+                            </select>
+
+                          </td>
+                          <td scope="col" class="colwidth25" style="text-align: center">
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block"
+                              v-model="vrf_Existing.vrf_Existing_det[index].card_no"
+                              :disabled="((vrf_Existing.vrf_Existing_det[index].urgentcase_type === 'Absent') || (vrf_Existing.vrf_Existing_det[index].urgentcase_type === null) || !checkstatus_send_to_approve) ? true : false"
+                              @blur="edit_validateInput_vrfurgentcase('card_no', index, 'กรุณาใส่ข้อมูล', vrf_Existing.vrf_Existing_det[index].urgentcase_type)" />
+                            <p class="error-message" v-if="data.errors && data.errors.card_no">
+                              {{ data.errors.card_no }}
+                            </p>
+
+                          </td>
+                          <td scope="col" class="colwidth25" style="text-align: center">
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block"
+                              :disabled="((vrf_Existing.vrf_Existing_det[index].urgentcase_type === 'Absent') || (vrf_Existing.vrf_Existing_det[index].urgentcase_type === null) || !checkstatus_send_to_approve)"
+                              v-model="vrf_Existing.vrf_Existing_det[index].remark_urgentcase"
+                              @blur="edit_validateInput_vrfurgentcase('remark_urgentcase', index, 'กรุณาใส่ข้อมูล', vrf_Existing.vrf_Existing_det[index].urgentcase_type)" />
+                            <p class="error-message" v-if="data.errors && data.errors.remark_urgentcase">
+                              {{ data.errors.remark_urgentcase }}
+                            </p>
+
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <span @click="deleteExistingData(index)" style="cursor: pointer"
+                              v-show="((vrf_Existing.vrf_Existing_det[index].urgentcase_type === 'Absent') || (vrf_Existing.vrf_Existing_det[index].urgentcase_type === null) || !checkstatus_send_to_approve) ? false : true">
+                              <i class="fa fa-minus-square align-middle" aria-hidden="true"></i>
+                            </span>
+                          </td>
+                        </tr>
+                        <!-------------------------------------urgentcase vrf---------------------------------------->
+                        <tr v-for="(data, index) in vrf_urgent.vrf_Existing_det" :key="index">
+                          <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center">
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block" v-model="vrf_urgent.vrf_Existing_det[index].fullname
+                              " @blur="
+    urgentcase_validateInput(
+      'fullname',
+      index,
+      'กรุณาใส่ข้อมูล'
+    )
+    " />
+                            <p class="error-message" v-if="data.errors && data.errors.fullname">
+                              {{ data.errors.fullname }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <select class="form-select form-select-sm" v-model="vrf_urgent.vrf_Existing_det[index]
+                              .vehicle_brand_id
+                              " @change="
+    urgentcase_validateInput(
+      'vehicle_brand_id',
+      index,
+      'กรุณาเลือกยี่ห้อรถ'
+    )
+    " :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false">
+                              <option v-for="option in data_ddl.vehicle_brand" :value="option.id" :key="option.id">
+                                {{ option.vehicle_brand }}
+                              </option>
+                            </select>
+                            <p class="error-message" v-if="data.errors && data.errors.vehicle_brand_id">
+                              {{ data.errors.vehicle_brand_id }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <input type="text" class="form-control" style="width: 10rem; display: inline-block" v-model="vrf_urgent.vrf_Existing_det[index]
+                              .vehicle_registration
+                              " @blur="
+    urgentcase_validateInput(
+      'vehicle_registration',
+      index,
+      'กรุณาใส่ข้อมูล'
+    )
+    " :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false" />
+                            <p class="error-message" v-if="data.errors && data.errors.vehicle_registration
+                              ">
+                              {{ data.errors.vehicle_registration }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <select class="form-select form-select-sm" v-model="vrf_urgent.vrf_Existing_det[index]
+                              .vehicle_color_id
+                              " @change="
+    urgentcase_validateInput(
+      'vehicle_color_id',
+      index,
+      'กรุณาเลือกสีรถ'
+    )
+    " :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false">
+                              <option v-for="option in data_ddl.vehicle_color" :value="option.id" :key="option.id">
+                                {{ option.vehicle_color }}
+                              </option>
+                            </select>
+                            <p class="error-message" v-if="data.errors && data.errors.vehicle_color_id">
+                              {{ data.errors.ddlvehicle_color }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth25" style="text-align: center">
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block" v-model="vrf_urgent.vrf_Existing_det[index].card_no
+                              " @blur="
+    urgentcase_validateInput(
+      'card_no',
+      index,
+      'กรุณาใส่ข้อมูล'
+    )
+    " :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false" />
+                            <p class="error-message" v-if="data.errors && data.errors.card_no">
+                              {{ data.errors.card_no }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth25" style="text-align: center">
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block"
+                              v-model="vrf_urgent.vrf_Existing_det[index].remark_urgentcase"
+                              @blur="urgentcase_validateInput('remark_urgentcase', index, 'กรุณาใส่ข้อมูล')" />
+                            <p class="error-message" v-if="data.errors && data.errors.remark_urgentcase">
+                              {{ data.errors.remark_urgentcase }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <span @click="deleteUrgentcaseData(index)" style="cursor: pointer"
+                              v-show="!vrf_urgent.vrf_Existing_det[index].id">
+                              <i class="fa fa-minus-square align-middle" aria-hidden="true"></i>
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!---End Loop Manual Edit VRF------>
+                  <div class="row p-2">
+                    <div class="col ps-4 d-flex">
+                      <h5 class="ps-1 text-gray">&nbsp;</h5>
+                    </div>
+                  </div>
+                  <div class="row p-2" v-if="message_addManual">
+                    <div class="col">
+                      <div :class="`alert ${error_addManual ? 'alert-danger' : 'alert-success'
+                        }`">
+                        {{ message_addManual }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-md-2 text-end">จากวันที่:</div>
+                    <div class="col-md-2">
+                      <datepicker class="form-control" v-model="vrf_urgent.date_from" style="width: 7rem"
+                        inputFormat="dd/MM/yyyy" @update:model-value="setToDate('date_from_edit')" :disabled="true" />
+                    </div>
+                    <div class="col-md-2 text-end">ถึงวันที่:</div>
+                    <div class="col-md-2">
+                      <datepicker class="form-control" v-model="vrf_urgent.date_to" style="width: 7rem"
+                        inputFormat="dd/MM/yyyy" @update:model-value="setFromDate('date_to_edit')" :disabled="true" />
+                    </div>
+                    <div class="col-md-2 text-end">
+                      <input type="text" class="form-control" style="width: 15rem; display: none" />
+                    </div>
+                    <div class="col-md-2 text-end">
+                      <input type="text" class="form-control" style="width: 15rem; display: none" />
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-md-2 text-end">พื้นที่เข้าพบ:</div>
+                    <div class="col-md-2">
+                      <input type="text" class="form-control" style="width: 15rem" v-model="vrf_urgent.meeting_area"
+                        :disabled="true" />
+                    </div>
+                    <div class="col-md-2 text-end">เหตุผลในการเข้าพบ:</div>
+                    <div class="col-md-2">
+                      <input type="text" id="reason" class="form-control" style="width: 15rem" v-model="vrf_urgent.reason"
+                        :disabled="true" />
+                    </div>
+                    <div class="col-md-2 text-end">ชื่อบริษัทผู้มาติดต่อ:</div>
+                    <div class="col-md-2">
+                      <input type="text" id="contactor" class="form-control" style="width: 15rem"
+                        v-model="vrf_urgent.contactor" :disabled="true" />
+                      <p v-if="urgentcase_error.contactor && !vrf_urgent.contactor" class="error-message">
+                        กรุณากรอกข้อมูล
+                      </p>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-md-2 text-end">ผู้ร้องขอ:</div>
+                    <div class="col-md-2">
+                      <input type="text" class="form-control" style="width: 15rem" v-model="vrf_urgent.requestor"
+                        :disabled="true" />
+                    </div>
+                    <div class="col-md-2 text-end">ตำแหน่งผู้ร้องขอ:</div>
+                    <div class="col-md-2">
+                      <input type="text" class="form-control" style="width: 15rem" v-model="vrf_urgent.position"
+                        :disabled="true" />
+                    </div>
+                    <div class="col-md-2 text-end">แผนกผู้ร้องขอ:</div>
+                    <div class="col-md-2">
+                      <input type="text" class="form-control" style="width: 15rem" v-model="vrf_urgent.department"
+                        :disabled="true" />
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-md-2 text-end">เบอร์โทรผู้ร้องขอ:</div>
+                    <div class="col-md-2">
+                      <input type="text" id="requestor_phone" class="form-control" style="width: 15rem"
+                        v-model="vrf_urgent.requestor_phone" :disabled="true" />
+                    </div>
+                    <div class="col-md-2 text-end">ชื่อผู้นำพา:</div>
+                    <div class="col-md-2">
+                      <input type="text" class="form-control" style="width: 15rem" v-model="vrf_urgent.navigator"
+                        :disabled="true" />
+                    </div>
+                    <div class="col-md-2 text-end">แนบไฟล์:</div>
+                    <div class="col-md-2 text-start">
+                      <a :href="fileUrl" target="_blank">
+                        <i class="fa fa-address-card" aria-hidden="true"></i>
+                      </a>
+                      <!-- <label for="formFile_edt"
+                        style="width: auto; height: 2rem; display: inline">
+                        {{ vrf_urgent.attach_file }}
+                      </label> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer pt-0 justify-content-center">
+                <div class="align-top pt-1 d-flex justify-content-center">
+                  <button class="btn btn-primary" v-show="checkstatus_send_to_approve" style="width: 4rem; height: 2rem">
+                    บันทึก
+                  </button>
+                  <button class="btn btn-success" v-show="checkstatus_send_to_approve" style="width: 5rem; height: 2rem"
+                    @click.prevent="sendApprove($event, vrf_urgent.id)">
+                    ส่งอนุมัติ
+                  </button>
+                  <button class="btn btn-danger" data-bs-dismiss="modal" type="reset" style="width: 4rem; height: 2rem"
+                    id="ClosemyModalNew" @click="ClosemyModalNew_">
+                    ยกเลิก
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-----------------------------------------------------------modal add Urgent Vrf--->
+  <div class="container py-2">
+    <div class="py-2">
+      <form @submit.prevent="VRF_Urgentcase_validateInput" id="form4">
+        <div class="modal fade" id="ModalUrgentvrf">
+          <div class="modal-dialog modalcustom">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">เพิ่มรายการขอเข้าพื้นที่ด่วน</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                  @click="ClosemyModalNew_"></button>
+              </div>
+              <div class="modal-body modalcustom">
+                <div class="container modalcustom">
+                  <!---Loop Manual Edit VRF------>
+                  <div class="row ms-4 ps-4 pe-3 me-3 modalcustom">
+                    <table class="table table-hover modalcustomtb">
+                      <thead>
+                        <tr>
+                          <th scope="col" class="colwidth25">ชื่อ-นามสกุล</th>
+                          <th scope="col" class="colwidth10">ยี่ห้อรถ</th>
+                          <th scope="col" class="colwidth10">ทะเบียน</th>
+                          <th scope="col" class="colwidth10">สีรถ</th>
+                          <th scope="col" class="colwidth25">
+                            หมายเลขบัตร ประชาชน/ใบขับขี่/พนักงาน
+                          </th>
+                          <th scope="col" class="colwidth25">
+                            หมายเหตุ
+                          </th>
+                          <th scope="col" class="colwidth10">
+                            ดำเนินการ
+                            <span @click.prevent="addUrgentcaseItem(vrf_urgent.id)"
+                              class="text-decoration-none text-gray fs-7" style="cursor: pointer">
+                              <i class="fa fa-plus-circle align-middle" />
+                            </span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-------------------------------------existing vrf---------------------------------------->
+                        <tr v-for="(data, index) in vrf_Existing.vrf_Existing_det" :key="index">
+                          <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center">
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index].fullname
+                              " :disabled="true" />
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <select class="form-select form-select-sm" v-model="vrf_Existing.vrf_Existing_det[index]
+                              .vehicle_brand_id
+                              " :disabled="true">
+                              <option v-for="option in data_ddl.vehicle_brand" :value="option.id" :key="option.id">
+                                {{ option.vehicle_brand }}
+                              </option>
+                            </select>
+
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <input type="text" class="form-control" style="width: 10rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index]
+                              .vehicle_registration
+                              " :disabled="true" />
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <select class="form-select form-select-sm" v-model="vrf_Existing.vrf_Existing_det[index]
+                              .vehicle_color_id
+                              " :disabled="true">
+                              <option v-for="option in data_ddl.vehicle_color" :value="option.id" :key="option.id">
+                                {{ option.vehicle_color }}
+                              </option>
+                            </select>
+
+                          </td>
+                          <td scope="col" class="colwidth25" style="text-align: center">
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index].card_no
+                              " :disabled="true" />
+
+                          </td>
+                          <td scope="col" class="colwidth25" style="text-align: center">
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block"
+                              :disabled="false" v-model="vrf_Existing.vrf_Existing_det[index].remark_urgentcase
+                                " />
+
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <span @click="deleteExistingData(index)" style="cursor: pointer"
+                              v-show="checkstatus_send_to_approve">
+                              <i class="fa fa-minus-square align-middle" aria-hidden="true"></i>
+                            </span>
+                          </td>
+                          <!-- <td scope="col" class="colwidth10"><span
+                              @click="deleteData(vrf_Existing.vrf_Existing_det[index].id)" style="cursor: pointer;">
+                              <i class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>
+                          </td>                           -->
+                        </tr>
+                        <!-------------------------------------urgentcase vrf---------------------------------------->
+                        <tr v-for="(data, index) in vrf_urgent.vrf_Existing_det" :key="index">
+                          <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center">
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block" v-model="vrf_urgent.vrf_Existing_det[index].fullname
+                              " @blur="
+    urgentcase_validateInput(
+      'fullname',
+      index,
+      'กรุณาใส่ข้อมูล'
+    )
+    " />
+                            <p class="error-message" v-if="data.errors && data.errors.fullname">
+                              {{ data.errors.fullname }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <select class="form-select form-select-sm" v-model="vrf_urgent.vrf_Existing_det[index]
+                              .vehicle_brand_id
+                              " @change="
+    urgentcase_validateInput(
+      'vehicle_brand_id',
+      index,
+      'กรุณาเลือกยี่ห้อรถ'
+    )
+    " :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false">
+                              <option v-for="option in data_ddl.vehicle_brand" :value="option.id" :key="option.id">
+                                {{ option.vehicle_brand }}
+                              </option>
+                            </select>
+                            <p class="error-message" v-if="data.errors && data.errors.vehicle_brand_id">
+                              {{ data.errors.vehicle_brand_id }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <input type="text" class="form-control" style="width: 10rem; display: inline-block" v-model="vrf_urgent.vrf_Existing_det[index]
+                              .vehicle_registration
+                              " @blur="
+    urgentcase_validateInput(
+      'vehicle_registration',
+      index,
+      'กรุณาใส่ข้อมูล'
+    )
+    " :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false" />
+                            <p class="error-message" v-if="data.errors && data.errors.vehicle_registration
+                              ">
+                              {{ data.errors.vehicle_registration }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <select class="form-select form-select-sm" v-model="vrf_urgent.vrf_Existing_det[index]
+                              .vehicle_color_id
+                              " @change="
+    urgentcase_validateInput(
+      'vehicle_color_id',
+      index,
+      'กรุณาเลือกสีรถ'
+    )
+    " :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false">
+                              <option v-for="option in data_ddl.vehicle_color" :value="option.id" :key="option.id">
+                                {{ option.vehicle_color }}
+                              </option>
+                            </select>
+                            <p class="error-message" v-if="data.errors && data.errors.vehicle_color_id">
+                              {{ data.errors.ddlvehicle_color }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth25" style="text-align: center">
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block" v-model="vrf_urgent.vrf_Existing_det[index].card_no
+                              " @blur="
+    urgentcase_validateInput(
+      'card_no',
+      index,
+      'กรุณาใส่ข้อมูล'
+    )
+    " :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false" />
+                            <p class="error-message" v-if="data.errors && data.errors.card_no">
+                              {{ data.errors.card_no }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth25" style="text-align: center">
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block"
+                              v-model="vrf_urgent.vrf_Existing_det[index].remark_urgentcase"
+                              @blur="urgentcase_validateInput('remark_urgentcase', index, 'กรุณาใส่ข้อมูล')" />
+                            <p class="error-message" v-if="data.errors && data.errors.remark_urgentcase">
+                              {{ data.errors.remark_urgentcase }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <span @click="deleteUrgentcaseData(index)" style="cursor: pointer"
+                              v-show="!vrf_urgent.vrf_Existing_det[index].id">
+                              <i class="fa fa-minus-square align-middle" aria-hidden="true"></i>
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!---End Loop Manual Edit VRF------>
+                  <div class="row p-2">
+                    <div class="col ps-4 d-flex">
+                      <h5 class="ps-1 text-gray">&nbsp;</h5>
+                    </div>
+                  </div>
+                  <div class="row p-2" v-if="message_addManual">
+                    <div class="col">
+                      <div :class="`alert ${error_addManual ? 'alert-danger' : 'alert-success'
+                        }`">
+                        {{ message_addManual }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col">จากวันที่:</div>
+                    <div class="col">
+                      <datepicker class="form-control" v-model="vrf_urgent.date_from" style="width: 7rem"
+                        inputFormat="dd/MM/yyyy" @update:model-value="setToDate('date_from_edit')"
+                        :disabled="!checkstatus_send_to_approve" />
+                      <p v-if="urgentcase_error.date_from && !vrf_urgent.date_from" class="error-message">
+                        กรุณาเลือกข้อมูล
+                      </p>
+                    </div>
+                    <div class="col">ถึงวันที่:</div>
+                    <div class="col">
+                      <datepicker class="form-control" v-model="vrf_urgent.date_to" style="width: 7rem"
+                        inputFormat="dd/MM/yyyy" @update:model-value="setFromDate('date_to_edit')"
+                        :disabled="!checkstatus_send_to_approve" />
+                      <p v-if="urgentcase_error.date_to && !vrf_urgent.date_to" class="error-message">
+                        กรุณาเลือกข้อมูล
+                      </p>
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" style="width: 15rem; display: none" />
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" style="width: 15rem; display: none" />
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col">พื้นที่เข้าพบ:</div>
+                    <div class="col">
+                      <select class="form-select form-select-sm" v-model="vrf_urgent.area_id"
+                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
+                        <option v-for="option in data_ddl.area" :value="option.id" :key="option.id"
+                          :class="{ 'orange-text': option.type_meeting_area === 'พื้นที่ความมั่นคง' }">
+                          {{ option.meeting_area }}
+                        </option>
+                      </select>
+                      <p v-if="urgentcase_error.area && !vrf_urgent.area_id" class="error-message">
+                        กรุณาเลือกข้อมูล
+                      </p>
+                    </div>
+                    <div class="col">เหตุผลในการเข้าพบ:</div>
+                    <div class="col">
+                      <input type="text" id="reason" class="form-control" style="width: 15rem" v-model="vrf_urgent.reason"
+                        :disabled="!checkstatus_send_to_approve" />
+                      <p v-if="urgentcase_error.reason && !vrf_urgent.reason" class="error-message">
+                        กรุณากรอกข้อมูล
+                      </p>
+                    </div>
+                    <div class="col">ชื่อบริษัทผู้มาติดต่อ:</div>
+                    <div class="col">
+                      <input type="text" id="contactor" class="form-control" style="width: 15rem"
+                        v-model="vrf_urgent.contactor" :disabled="!checkstatus_send_to_approve" />
+                      <p v-if="urgentcase_error.contactor && !vrf_urgent.contactor" class="error-message">
+                        กรุณากรอกข้อมูล
+                      </p>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col">ผู้ร้องขอ:</div>
+                    <div class="col">
+                      <select class="form-select form-select-sm" v-model="vrf_urgent.requestor_id"
+                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
+                        <option v-for="option in data_ddl.userlist" :value="option.user_id" :key="option.user_id">
+                          {{ option.first_name }}
+                        </option>
+                      </select>
+                      <p v-if="urgentcase_error.requestor && !vrf_urgent.requestor" class="error-message">
+                        กรุณาเลือกข้อมูล
+                      </p>
+                    </div>
+                    <div class="col">ตำแหน่งผู้ร้องขอ:</div>
+                    <div class="col">
+                      <select class="form-select form-select-sm" v-model="vrf_urgent.requestor_position_id"
+                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
+                        <option v-for="option in data_ddl.position" :value="option.id" :key="option.id">
+                          {{ option.position }}
+                        </option>
+                      </select>
+                      <p v-if="urgentcase_error.requestor_position_id &&
+                        !vrf_urgent.requestor_position_id
+                        " class="error-message">
+                        กรุณาเลือกข้อมูล
+                      </p>
+                    </div>
+                    <div class="col">แผนกผู้ร้องขอ:</div>
+                    <div class="col">
+                      <select class="form-select form-select-sm" v-model="vrf_urgent.requestor_dept_id"
+                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
+                        <option v-for="option in data_ddl.dept" :value="option.id" :key="option.id">
+                          {{ option.department }}
+                        </option>
+                      </select>
+                      <p v-if="urgentcase_error.requestor_dept &&
+                        !vrf_urgent.requestor_dept_id
+                        " class="error-message">
+                        กรุณาเลือกข้อมูล
+                      </p>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col">เบอร์โทรผู้ร้องขอ:</div>
+                    <div class="col">
+                      <input type="text" id="requestor_phone" class="form-control" style="width: 15rem"
+                        v-model="vrf_urgent.requestor_phone" :disabled="!checkstatus_send_to_approve" />
+                      <p v-if="urgentcase_error.requestor_phone &&
+                        !vrf_urgent.requestor_phone
+                        " class="error-message">
+                        กรุณากรอกข้อมูล
+                      </p>
+                    </div>
+                    <div class="col">ชื่อผู้นำพา:</div>
+                    <div class="col">
+                      <select class="form-select form-select-sm" v-model="vrf_urgent.navigator_id"
+                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
+                        <option v-for="option in data_ddl.navigator" :value="option.user_id" :key="option.user_id">
+                          {{ option.fullname }}
+                        </option>
+                      </select>
+                      <p v-if="urgentcase_error.navigator_id && !vrf_urgent.navigator_id
+                        " class="error-message">
+                        กรุณาเลือกข้อมูล
+                      </p>
+                    </div>
+                    <div class="col">แนบไฟล์:</div>
+                    <div class="col d-flex text-start" style="padding-left: 0; margin-left: 0">
+                      <label class="input-group-text" for="formFile_edt"
+                        style="width: 5rem; height: 2rem; display: inline">
+                        เลือกไฟล์
+                      </label>
+                      <input type="file" class="form-control" id="formFile_edt" @change="selectFile_edt"
+                        style="display: none; width: 5rem" :disabled="!checkstatus_send_to_approve" />
+                      <input type="text" class="form-control" id="formFileText_edt" style="width: 9rem; display: inline"
+                        v-model="vrf_urgent.attach_file" :disabled="!checkstatus_send_to_approve" />
+                      &nbsp;
+                      <a :href="fileUrl" target="_blank">
+                        <i class="fa fa-address-card" aria-hidden="true"></i>
+                      </a>
+                      <!-- <label for="formFile_edt"
+                        style="width: auto; height: 2rem; display: inline">
+                        {{ vrf_urgent.attach_file }}
+                      </label> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer pt-0 justify-content-center">
+                <div class="align-top pt-1 d-flex justify-content-center">
+                  <button class="btn btn-primary" style="width: 6rem; height: 2rem">
+                    ส่งอนุมัติ
+                  </button>
+                  <!-- <button class="btn btn-success" style="width: 5rem; height: 2rem" @click.prevent="sendApprove">
+                    ส่งอนุมัติ
+                  </button> -->
                   <button class="btn btn-danger" data-bs-dismiss="modal" type="reset" style="width: 4rem; height: 2rem"
                     id="ClosemyModalNew" @click="ClosemyModalNew_">
                     ยกเลิก
@@ -976,6 +1664,20 @@ export default defineComponent({
       contactor: '',
       requestor: '',
       requestor_position: '',
+      requestor_position_id: '',
+      requestor_dept: '',
+      requestor_phone: '',
+      navigator: '',
+      area: '',
+      date_from: null,
+      date_to: null
+    })
+    const urgentcase_error = reactive({
+      reason: '',
+      contactor: '',
+      requestor: '',
+      requestor_position: '',
+      requestor_position_id: '',
       requestor_dept: '',
       requestor_phone: '',
       navigator: '',
@@ -1082,6 +1784,38 @@ export default defineComponent({
       date_from: null,
       date_to: null
     })
+    const vrf_urgent = reactive({
+      no: '',
+      id: '',
+      date_from: null,
+      date_to: null,
+      reason: '',
+      contactor: '',
+      requestor: '',
+      requestor_id: '',
+      requestor_position_id: '',
+      position: '',
+      requestor_dept_id: '',
+      department: '',
+      requestor_phone: '',
+      navigator_id: '',
+      navigator: '',
+      area_id: '',
+      meeting_area: '',
+      user_create: '',
+      approve_status: '',
+      approve_by: '',
+      approve_date: null,
+      attach_file: '',
+      attach_file_primitive: '',
+      attach_file_origin: '',
+      vrf_Existing_det: [],
+      remark_urgent: '',
+      urgentcase_type: '',
+      errors: {},
+      date_from: null,
+      date_to: null
+    })
     const vrf_Existing = reactive({
       no: '',
       id: '',
@@ -1131,7 +1865,6 @@ export default defineComponent({
     const error = ref(false)
     const checkstatus_send_to_approve = ref(false)
     const error_addManual = ref(false)
-    const error_editOrder = ref(false)
     const message = ref('')
     const message_addManual = ref('')
     const message_editOrder = ref('')
@@ -1154,6 +1887,7 @@ export default defineComponent({
     const router = useRouter()
     //const rowData = reactive([])
     const rowData = ref([])
+    const validateInputAll = ref(false)
     const loading = ref(false)
     const AdvSearch = reactive({
       tbDateF: '',
@@ -1190,6 +1924,17 @@ export default defineComponent({
       'ddlvehicle_color',
       'tbCardNo'
     ]
+    //-------------------edit validate add vrf-------------------
+    const edit_urgentcase_vrf_fieldsToValidate = [
+      'fullname',
+      // 'vehicle_brand_id',
+      // 'vehicle_registration',
+      // 'vehicle_color_id',
+      'card_no',
+      'remark_urgentcase'
+    ]
+    //-------------------edit_validateAllInputs
+
     const edit_validateAllInputs = () => {
       vrf_Existing.vrf_Existing_det.forEach((data, index) => {
         edit_fieldsToValidate.forEach((field) => {
@@ -1197,6 +1942,21 @@ export default defineComponent({
         })
       })
     }
+    const edit_urgentcase_vrf_validateAllInputs = () => {
+      vrf_Existing.vrf_Existing_det.forEach((data, index) => {
+        edit_urgentcase_vrf_fieldsToValidate.forEach((field) => {
+          // edit_urgentcase_vrf_validateInput(field, index, 'กรุณาใส่ข้อมูล',vrf_Existing.vrf_Existing_det[index].urgentcase_type)
+          edit_validateInput_vrfurgentcase(field, index, 'กรุณาใส่ข้อมูล', vrf_Existing.vrf_Existing_det[index].urgentcase_type, vrf_Existing.vrf_Existing_det[index].id)
+        })
+      })
+      vrf_urgent.vrf_Existing_det.forEach((data, index) => {
+        edit_urgentcase_vrf_fieldsToValidate.forEach((field) => {
+          // edit_urgentcase_vrf_validateInput(field, index, 'กรุณาใส่ข้อมูล',vrf_Existing.vrf_Existing_det[index].urgentcase_type)
+          urgentcase_validateInput(field, index, 'กรุณาใส่ข้อมูล')
+        })
+      })
+    }
+    //-------------------edit_validateInput
     const edit_validateInput = (field, index, errorMessage) => {
       if (!vrf_Existing.vrf_Existing_det[index][field]) {
         vrf_Existing.vrf_Existing_det[index].errors = {
@@ -1211,6 +1971,62 @@ export default defineComponent({
           const { [field]: removed, ...rest } =
             vrf_Existing.vrf_Existing_det[index].errors
           vrf_Existing.vrf_Existing_det[index].errors = { ...rest }
+        }
+      }
+    }
+    //-------------------edit_validateInput_vrfurgentcase
+    const edit_validateInput_vrfurgentcase = (field, index, errorMessage, urgentcase_type, id) => {//edit_validateInput_vrfurgentcase('remark_urgentcase', index, 'กรุณาใส่ข้อมูล',vrf_Existing.vrf_Existing_det[index].urgentcase_type )
+
+      if (!vrf_Existing.vrf_Existing_det[index][field] && urgentcase_type !== null && id !== null) {
+        vrf_Existing.vrf_Existing_det[index].errors = {
+          ...vrf_Existing.vrf_Existing_det[index].errors,
+          [field]: errorMessage
+        }
+        validateInputAll.value = true
+
+      }
+      else if (!vrf_Existing.vrf_Existing_det[index][field] && urgentcase_type === null && id === null) {
+        vrf_Existing.vrf_Existing_det[index].errors = {
+          ...vrf_Existing.vrf_Existing_det[index].errors,
+          [field]: errorMessage
+        }
+        validateInputAll.value = true
+      }
+      else {
+        if (
+          vrf_Existing.vrf_Existing_det[index].errors &&
+          vrf_Existing.vrf_Existing_det[index].errors[field]
+        ) {
+          const { [field]: removed, ...rest } =
+            vrf_Existing.vrf_Existing_det[index].errors
+          vrf_Existing.vrf_Existing_det[index].errors = { ...rest }
+        }
+      }
+    }
+
+    //-------------------validate urgent case-------------------
+    const urgentcase_validateAllInputs = () => {
+      vrf_urgent.vrf_Existing_det.forEach((data, index) => {
+        edit_urgentcase_vrf_fieldsToValidate.forEach((field) => {
+          urgentcase_validateInput(field, index, 'กรุณาใส่ข้อมูล')
+        })
+      })
+    }
+    const urgentcase_validateInput = (field, index, errorMessage) => {
+      if (!vrf_urgent.vrf_Existing_det[index][field]) {
+        vrf_urgent.vrf_Existing_det[index].errors = {
+          ...vrf_urgent.vrf_Existing_det[index].errors,
+          [field]: errorMessage
+        }
+        validateInputAll.value = true
+      } else {
+        if (
+          vrf_urgent.vrf_Existing_det[index].errors &&
+          vrf_urgent.vrf_Existing_det[index].errors[field]
+        ) {
+          const { [field]: removed, ...rest } =
+            vrf_urgent.vrf_Existing_det[index].errors
+          vrf_urgent.vrf_Existing_det[index].errors = { ...rest }
         }
       }
     }
@@ -1231,6 +2047,7 @@ export default defineComponent({
         })
       })
     }
+
     const validateInput = (field, index, errorMessage) => {
       if (!rowData.value[index][field]) {
         rowData.value[index].errors = {
@@ -1254,7 +2071,7 @@ export default defineComponent({
           work_flow_id: localStorage.getItem('user_work_flow_id')
         }
         setTimeout(() => { }, 500)
-        // console.log('confirmDialog params: ', { params })
+        console.log('confirmDialog params: ', { params })
         try {
           table.isLoading = true
           loading.value = true
@@ -1280,31 +2097,32 @@ export default defineComponent({
           console.log(err)
         }
         if (update_vrf_trans_status_all_type.value === 'approve') {
-            // Send mail
-            try {
-              await Promise.all(
-                selecteall.value.map(async (item) => {
-                  await axios.get(process.env.VUE_APP_API_URL + '/set_sendmail', {
-                    params: {
-                      id_: item, // Use the current item's ID
-                      department_id: localStorage.getItem('user_department_id'),
-                      branch_id: localStorage.getItem('user_branch_id'),
-                      division_id: localStorage.getItem('user_division_id')
-                    }
-                  });
-                })
-              );
-              let message_
-              update_vrf_trans_status_all_type.value === 'cancel' ? message_ = 'คุณยกเลิกรายการขอเข้าพื้นที่เรียบร้อยแล้ว' : message_ = 'คุณส่งอนุมัติรายการขอเข้าพื้นที่เเรียบร้อยแล้ว'
-              alert(message_)
-              location.reload()
-            } catch (err) {
-              console.error(err);
-              console.log('set_sendmail error: ',err);
-              message_addManual.value = 'Something went wrong: ' + err;
-              error_addManual.value = true;
-            }
+          // Send mail
+          try {
+            await Promise.all(
+              selecteall.value.map(async (item) => {
+                await axios.get(process.env.VUE_APP_API_URL + '/set_sendmail', {
+                  params: {
+                    id_: item, // Use the current item's ID
+                    department_id: localStorage.getItem('user_department_id'),
+                    branch_id: localStorage.getItem('user_branch_id'),
+                    division_id: localStorage.getItem('user_division_id')
+                  }
+                });
+              })
+            );
+
+          } catch (err) {
+            console.error(err);
+            console.log('set_sendmail error: ', err);
+            message_addManual.value = 'Something went wrong: ' + err;
+            error_addManual.value = true;
+          }
         }
+        let message_
+        update_vrf_trans_status_all_type.value === 'cancel' ? message_ = 'คุณยกเลิกรายการขอเข้าพื้นที่เรียบร้อยแล้ว' : message_ = 'คุณส่งอนุมัติรายการขอเข้าพื้นที่เเรียบร้อยแล้ว'
+        alert(message_)
+        location.reload()
       } //if (function_selected.value === "update_vrf_trans_status_all")
       if (function_selected.value === 'update_vrf_trans_status') {
         loading.value = true;
@@ -1319,121 +2137,46 @@ export default defineComponent({
         try {
           const response = await axios.get(process.env.VUE_APP_API_URL + '/update_vrf_trans_status', {
             params
-          });          
-          
+          });
+
         } catch (err) {
           console.error(err);
           console.log(err.response.data);
           message_addManual.value = 'Something went wrong: ' + err;
           error_addManual.value = true;
         }
-        if(update_vrf_trans_status_param.Type_==='approve')
-        {
-            // Send mail
-            try {
-              await axios.get(process.env.VUE_APP_API_URL + '/set_sendmail', {
-                params: {
-                  id_: update_vrf_trans_status_param.Id,
-                  department_id: localStorage.getItem('user_department_id'),
-                  branch_id: localStorage.getItem('user_branch_id'),
-                  division_id: localStorage.getItem('user_division_id')
-                }
-              });
-            } catch (err) {
-              console.error(err);
-              console.log(err.response.data);
+        if (update_vrf_trans_status_param.Type_ === 'approve') {
+          // Send mail
+          try {
+            await axios.get(process.env.VUE_APP_API_URL + '/set_sendmail', {
+              params: {
+                id_: update_vrf_trans_status_param.Id,
+                department_id: localStorage.getItem('user_department_id'),
+                branch_id: localStorage.getItem('user_branch_id'),
+                division_id: localStorage.getItem('user_division_id')
+              }
+            });
+          } catch (err) {
+            console.error(err);
+            console.log(err.response.data);
 
-              message_addManual.value = 'Something went wrong: ' + err;
-              error_addManual.value = true;
-            }
+            message_addManual.value = 'Something went wrong: ' + err;
+            error_addManual.value = true;
+          }
 
         }
         let message_;
-          if (update_vrf_trans_status_all_type.value === 'cancel') {
-            message_ = 'คุณยกเลิกรายการขอเข้าพื้นที่เรียบร้อยแล้ว';
-          } else {
-            message_ = 'คุณส่งอนุมัติรายการขอเข้าพื้นที่เเรียบร้อยแล้ว';
-          }
+        if (update_vrf_trans_status_all_type.value === 'cancel') {
+          message_ = 'คุณยกเลิกรายการขอเข้าพื้นที่เรียบร้อยแล้ว';
+        } else {
+          message_ = 'คุณส่งอนุมัติรายการขอเข้าพื้นที่เเรียบร้อยแล้ว';
+        }
 
-          alert(message_);
+        alert(message_);
         loading.value = false;
         location.reload();
       }//if (function_selected.value === 'update_vrf_trans_status') {
 
-      // if (function_selected.value === 'update_vrf_trans_status') {
-      //   setTimeout(() => {
-      //     // table.isLoading = false;
-      //     loading.value = true
-      //   }, 500)
-      //   loading.value = false
-      //   const params = {
-      //     Id: update_vrf_trans_status_param.Id,
-      //     Type_: update_vrf_trans_status_param.Type_,
-      //     user_id: user_id.value,
-      //     attach_file_primitive: vrf_Existing.attach_file_primitive
-      //   }
-      //   try {
-      //     loading.value = true
-      //     await axios
-      //       .get(process.env.VUE_APP_API_URL + '/update_vrf_trans_status', {
-      //         params
-      //       })
-      //       .then(
-      //         (res) => {
-      //           // success callback
-      //           let obj = JSON.parse(JSON.stringify(res.data))
-      //           // console.log(obj[0])
-      //           // router.push('/listorder')
-      //           loading.value = false
-      //           let message_
-      //           update_vrf_trans_status_all_type.value === 'cancel' ? message_ = 'คุณยกเลิกรายการขอเข้าพื้นที่เรียบร้อยแล้ว' : message_ = 'คุณส่งอนุมัติรายการขอเข้าพื้นที่เเรียบร้อยแล้ว'
-      //           alert(message_)
-      //           location.reload()
-      //         },
-      //         (res) => {
-      //           // error callback
-      //           console.log(res.data)
-      //         }
-      //       )
-      //       .finally(() => {
-      //         //
-      //       })
-      //   } catch (err) {
-      //     console.log(err)
-      //   }
-      //   //-------send mail
-      //   try {
-      //     await axios
-      //       .get(process.env.VUE_APP_API_URL + '/set_sendmail', {
-      //         params: {
-      //           id_: update_vrf_trans_status_param.Id,
-      //           department_id: localStorage.getItem('user_department_id'),
-      //           branch_id: localStorage.getItem('user_branch_id'),
-      //           division_id: localStorage.getItem('user_division_id')
-      //         }
-      //       })
-      //       .then(
-      //         (res) => {
-      //           // success callback
-      //         },
-      //         (res) => {
-      //           // error callback
-      //           console.log(res.data)
-      //         }
-      //       )
-      //       .finally(() => {
-      //         //router.push('/requestvrflst')
-      //       })
-      //   } catch (err) {
-      //     console.log(err)
-      //     message_addManual.value = 'Something went wrong: ' + err
-      //     error_addManual.value = true
-      //   } finally {
-      //     //  router.push('/templatevrflst')
-      //     alert('คุณส่งอนุมัติรายการเรียบร้อย')
-      //     location.reload()
-      //   }
-      // } //if (function_selected.value === "update_vrf_trans_status")
     }
     const ClosemyModalNew_ = () => {
       templete_vrf.value = ''
@@ -1447,34 +2190,54 @@ export default defineComponent({
       VRF_error.requestor_phone = ''
       VRF_error.navigator = ''
       VRF_error.area = ''
+      console.log("Before reset:");
+      //------------------------------------------
+      (NewVrf.reason = ''),
+        (NewVrf.contactor = ''),
+        (NewVrf.requestor = ''),
+        (NewVrf.requestor_position = ''),
+        (NewVrf.requestor_dept = ''),
+        (NewVrf.requestor_phone = ''),
+        (NewVrf.navigator = ''),
+        (NewVrf.area = ''),
         //------------------------------------------
-        ; (NewVrf.reason = ''),
-          (NewVrf.contactor = ''),
-          (NewVrf.requestor = ''),
-          (NewVrf.requestor_position = ''),
-          (NewVrf.requestor_dept = ''),
-          (NewVrf.requestor_phone = ''),
-          (NewVrf.navigator = ''),
-          (NewVrf.area = ''),
-          //------------------------------------------
-          (vrf_Existing.no = ''),
-          (vrf_Existing.id = ''),
-          (vrf_Existing.reason = ''),
-          (vrf_Existing.contactor = ''),
-          (vrf_Existing.requestor = ''),
-          (vrf_Existing.requestor_id = ''),
-          (vrf_Existing.requestor_position_id = ''),
-          (vrf_Existing.position = ''),
-          (vrf_Existing.requestor_dept_id = ''),
-          (vrf_Existing.department = ''),
-          (vrf_Existing.requestor_phone = ''),
-          (vrf_Existing.navigator_id = ''),
-          (vrf_Existing.navigator = ''),
-          (vrf_Existing.area_id = ''),
-          (vrf_Existing.meeting_area = ''),
-          (vrf_Existing.user_create = ''),
-          (vrf_Existing.vrf_Existing_det = []),
-          (vrf_Existing.errors = {})
+        (vrf_Existing.no = ''),
+        (vrf_Existing.id = ''),
+        (vrf_Existing.reason = ''),
+        (vrf_Existing.contactor = ''),
+        (vrf_Existing.requestor = ''),
+        (vrf_Existing.requestor_id = ''),
+        (vrf_Existing.requestor_position_id = ''),
+        (vrf_Existing.position = ''),
+        (vrf_Existing.requestor_dept_id = ''),
+        (vrf_Existing.department = ''),
+        (vrf_Existing.requestor_phone = ''),
+        (vrf_Existing.navigator_id = ''),
+        (vrf_Existing.navigator = ''),
+        (vrf_Existing.area_id = ''),
+        (vrf_Existing.meeting_area = ''),
+        (vrf_Existing.user_create = ''),
+        (vrf_Existing.vrf_Existing_det = []),
+        (vrf_Existing.errors = {}),
+        //------------------------------------------
+        (vrf_urgent.no = ''),
+        (vrf_urgent.id = ''),
+        (vrf_urgent.reason = ''),
+        (vrf_urgent.contactor = ''),
+        (vrf_urgent.requestor = ''),
+        (vrf_urgent.requestor_id = ''),
+        (vrf_urgent.requestor_position_id = ''),
+        (vrf_urgent.position = ''),
+        (vrf_urgent.requestor_dept_id = ''),
+        (vrf_urgent.department = ''),
+        (vrf_urgent.requestor_phone = ''),
+        (vrf_urgent.navigator_id = ''),
+        (vrf_urgent.navigator = ''),
+        (vrf_urgent.area_id = ''),
+        (vrf_urgent.meeting_area = ''),
+        (vrf_urgent.user_create = ''),
+        (vrf_urgent.vrf_Existing_det = []),
+        (vrf_urgent.errors = {})
       //---------------------------
       AdvSearch.tbDateF = ''
       AdvSearch.tbDateT = ''
@@ -1482,7 +2245,7 @@ export default defineComponent({
       AdvSearch.area_id = 0
       AdvSearch.requestor_dept_id = 0
       AdvSearch.approve_status = ''
-
+      console.log("After reset:");
       //---------------------------
     }
     //-----check session
@@ -1544,211 +2307,6 @@ export default defineComponent({
           link.click()
         }) // Please catch me!
     }
-    const getBranchForCash = async (value, ddltype) => {
-      // console.log('getBranchForCash value: ', value.branch_name, 'branch: ', ddltype, 'value: ', value)
-      if (ddltype === 'BranchDest') {
-        NewOrder.BranchOrigin = value
-      }
-      if (ddltype === 'BranchOrigin') {
-        NewOrder.BranchDest = value
-      }
-      const params = {
-        CustomerID: CustomerID.value,
-        CCT: value.branch_name,
-        user_id: user_id.value
-      }
-      if (NewOrder.OrderCategoryNew !== 'BOT') {
-        if (NewOrder.OrderTypeNew === 'Withdraw') {
-          await axios
-            .get(process.env.VUE_APP_API_URL + '/getbranchforcash', { params })
-            .then(
-              (res) => {
-                // success callback
-                if (ddltype === 'BranchDest') {
-                  NewOrder.DataBranchToDest = res.data
-                  // console.log('NewOrder.DataBranchToDest: ', NewOrder.DataBranchToDest)
-                  //Withdraw
-                  VueMultiselect_.BranchDestBG_Color = 'ffffff' //A9B7C7
-                }
-              },
-              (res) => {
-                // error callback
-                console.log(res.data)
-              }
-            )
-        }
-        if (NewOrder.OrderTypeNew === 'Deposit') {
-          await axios
-            .get(process.env.VUE_APP_API_URL + '/getbranchforcash', { params })
-            .then(
-              (res) => {
-                // success callback
-                if (ddltype === 'BranchOrigin') {
-                  NewOrder.DataBranchToOrigin = res.data
-                  VueMultiselect_.BranchOriginBG_Color = 'ffffff' //A9B7C7
-                }
-              },
-              (res) => {
-                // error callback
-                console.log(res.data)
-              }
-            )
-        }
-      }
-    }
-    const getOrderType = async (e) => {
-      getBranchAndCash()
-    }
-    const getBranchAndCash = () => {
-      Alert_popup.value = false
-      NewOrder.DataBranchToOrigin = []
-      NewOrder.DataBranchToDest = []
-      if (NewOrder.OrderTypeNew === 'Withdraw') {
-        //------------------Withdraw
-        if (NewOrder.OrderCategoryNew === 'BOT') {
-          //------------------BOT
-          if (ActitySelectd.bottocash === '0') {
-            alert('ไม่มีสิทธิให้ประเภทบริการฝาก ธปท-ศูนย์เงินสด ได้')
-            // Alert_popup.value = true
-            // Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ธปท-ศูนย์เงินสด ได้'
-            document.getElementById('OrderTypeNew').value = ''
-            NewOrder.OrderTypeNew = ''
-          } else {
-            getBranchOrCashCen('bot', 'BranchOrigin', 'Add')
-            getBranchOrCashCen('cct', 'BranchDest', 'Add')
-            document.getElementById('BranchOrigin').disabled = true
-            document.getElementById('BranchDest').disabled = false
-            VueMultiselect_.BranchOriginBG_Color = 'ffffff' //A9B7C7
-            VueMultiselect_.BranchDestBG_Color = 'ffffff' //A9B7C7
-          }
-        } //------------------End BOT
-        if (NewOrder.OrderCategoryNew === 'BankBranch') {
-          if (ActitySelectd.cashtobranch === '0') {
-            // Alert_popup.value = true
-            // Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-สาขา ได้'
-            alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-สาขา ได้')
-            document.getElementById('OrderTypeNew').value = ''
-            NewOrder.OrderTypeNew = ''
-          } else {
-            getBranchOrCashCen('cashtobranch', 'BranchOrigin', 'Add')
-            document.getElementById('BranchOrigin').disabled = false
-            document.getElementById('BranchDest').disabled = true
-            VueMultiselect_.BranchOriginBG_Color = 'ffffff' //A9B7C7
-            VueMultiselect_.BranchDestBG_Color = 'A9B7C7' //A9B7C7
-          }
-        }
-      }
-      if (NewOrder.OrderTypeNew === 'Deposit') {
-        //------------------Deposit
-        if (NewOrder.OrderCategoryNew === 'BOT') {
-          //------------------BOT
-          if (ActitySelectd.cashtobot === '0') {
-            // Alert_popup.value = true
-            // Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-ธปท ได้'
-            alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-ธปท ได้')
-            document.getElementById('OrderTypeNew').value = ''
-            NewOrder.OrderTypeNew = ''
-          } else {
-            getBranchOrCashCen('cct', 'BranchOrigin', 'Add')
-            getBranchOrCashCen('bot', 'BranchDest', 'Add')
-            document.getElementById('BranchOrigin').disabled = false
-            document.getElementById('BranchDest').disabled = false
-            VueMultiselect_.BranchOriginBG_Color = 'ffffff' //A9B7C7
-            VueMultiselect_.BranchDestBG_Color = 'ffffff' //A9B7C7
-          }
-        } //------------------End BOT
-        if (NewOrder.OrderCategoryNew === 'BankBranch') {
-          if (ActitySelectd.branchtocash === '0') {
-            // Alert_popup.value = true
-            // Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก สาขา-ศูนย์เงินสด ได้'
-            alert('ไม่มีสิทธิให้ประเภทบริการฝาก สาขา-ศูนย์เงินสด ได้')
-            document.getElementById('OrderTypeNew').value = ''
-            NewOrder.OrderTypeNew = ''
-          } else {
-            getBranchOrCashCen('cashtobranch', 'BranchDest', 'Add')
-            document.getElementById('BranchOrigin').disabled = true
-            document.getElementById('BranchDest').disabled = false
-            VueMultiselect_.BranchOriginBG_Color = 'A9B7C7' //A9B7C7
-            VueMultiselect_.BranchDestBG_Color = 'ffffff' //A9B7C7
-          }
-        }
-      }
-      if (NewOrder.OrderTypeNew === '') {
-        document.getElementById('BranchOrigin').disabled = false
-        document.getElementById('BranchDest').disabled = false
-        VueMultiselect_.BranchOriginBG_Color = 'ffffff' //A9B7C7
-        VueMultiselect_.BranchDestBG_Color = 'ffffff' //A9B7C7
-      }
-    }
-    const getBranchAndCashEdit = () => {
-      vrf_Existing.DataBranchToOrigin = []
-      vrf_Existing.DataBranchToDest = []
-      if (vrf_Existing.OrderCategory === 'BankBranch') {
-        if (vrf_Existing.OrderType === 'Withdraw') {
-          getBranchOrCashCenEdit('cashtobranch', 'BranchOrigin')
-          getBranchOrCashCenEdit('branchtocash', 'BranchDest')
-        }
-        if (vrf_Existing.OrderType === 'Deposit') {
-          getBranchOrCashCenEdit('branchtocash', 'BranchOrigin')
-          getBranchOrCashCenEdit('cashtobranch', 'BranchDest')
-        }
-      }
-      if (vrf_Existing.OrderCategory === 'BOT') {
-        if (vrf_Existing.OrderType === 'Withdraw') {
-          getBranchOrCashCen('bot', 'BranchOrigin', 'Edit')
-          getBranchOrCashCen('cct', 'BranchDest', 'Edit')
-        }
-        if (vrf_Existing.OrderType === 'Deposit') {
-          getBranchOrCashCen('cct', 'BranchOrigin', 'Edit')
-          getBranchOrCashCen('bot', 'BranchDest', 'Edit')
-        }
-      }
-    }
-    const getBranchOrCashCenEdit = async (servicetype, ddltype) => {
-      let type_ = ''
-      type_ = vrf_Existing.OrderCategory //NewOrder.OrderCategoryNew
-      const params = {
-        CustomerID: CustomerID.value,
-        user_id: user_id.value,
-        type_: type_
-      }
-      if (servicetype === 'branchtocash') {
-        await axios
-          .get(process.env.VUE_APP_API_URL + '/getbranchdata', { params })
-          .then(
-            (res) => {
-              // success callback
-              ddltype === 'BranchOrigin'
-                ? (vrf_Existing.DataBranchToOrigin = res.data)
-                : (vrf_Existing.DataBranchToDest = res.data)
-            },
-            (res) => {
-              // error callback
-              console.log(res.data.message)
-            }
-          )
-      }
-      //--------------------------------------------
-      if (servicetype === 'cashtobranch') {
-        // const params = {
-        //   CustomerID: CustomerID.value
-        // };
-        await axios
-          .get(process.env.VUE_APP_API_URL + '/getcashcenterdata', { params })
-          .then(
-            (res) => {
-              // success callback
-              ddltype === 'BranchOrigin'
-                ? (vrf_Existing.DataBranchToOrigin = res.data)
-                : (vrf_Existing.DataBranchToDest = res.data)
-            },
-            (res) => {
-              // error callback
-              console.log(res.data.message)
-            }
-          )
-      }
-    }
     const sendFile = (e) => {
       // console.log( moment( JobDate.value ).format('YYYY-MM-DD') )
       const target = e.target
@@ -1800,11 +2358,13 @@ export default defineComponent({
         error.value = true
       }
     }
-    const sendApprove = async (e) => {
+    const sendApprove = async (e, id) => {
       if (confirm('คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ ?')) {
         try {
-          const updateParams = {
-            Id: vrf_Existing.id,
+          var updateParams = {}
+
+          updateParams = {
+            Id: id,
             Type_: 'send_approve',
             user_id: user_id.value,
             role_id: localStorage.getItem('user_role_id'),
@@ -1813,7 +2373,7 @@ export default defineComponent({
             division_id: localStorage.getItem('user_division_id'),
             branch_id: localStorage.getItem('user_branch_id')
           };
-
+          console.log('sendApprove updateParams: ', updateParams);
           // Update data before save
           send_approve_status.value = true;
           editVRF_validateInput(e);
@@ -1824,23 +2384,7 @@ export default defineComponent({
             process.env.VUE_APP_API_URL + '/update_vrf_trans_approve_status',
             { params: updateParams }
           );
-
           console.log('Update Response: ', updateResponse.data);
-
-          // Send email
-          const emailParams = {
-            id_: vrf_Existing.id,
-            department_id: localStorage.getItem('user_department_id'),
-            branch_id: localStorage.getItem('user_branch_id'),
-            division_id: localStorage.getItem('user_division_id')
-          };
-
-          const emailResponse = await axios.get(
-            process.env.VUE_APP_API_URL + '/set_sendmail',
-            { params: emailParams }
-          );
-
-          console.log('Email Response: ', emailResponse.data);
 
           alert('คุณส่งอนุมัติรายการเรียบร้อย');
           location.reload();
@@ -1867,6 +2411,7 @@ export default defineComponent({
       error.value = false
       message.value = ''
     }
+    //------------------------------------
     const format_date = (date_) => {
       // console.log('date_: ' + date_)
       let date__ = null
@@ -1885,13 +2430,9 @@ export default defineComponent({
         month = date__.getMonth() + 1
         year = date__.getFullYear()
       }
-      // console.log(`${day}/${month}/${year}`)
       return `${day}/${month}/${year}`
-      // return `${year}-${month}-${day}`;
-      // date_ = new Date(date_)
-      // date_ = moment(date_).format('MM/DD/YYYY')
-      // return date_
     }
+    //------------------------------------
     const formatdate_show = (date_) => {
       let date__ = null
       date__ = moment(date_).format('DD/MM/YYYY')
@@ -2070,22 +2611,34 @@ export default defineComponent({
     const table = reactive({
       isLoading: false,
       columns: [
+        // {
+        //   label: 'ลำดับที่',
+        //   field: 'id',
+        //   width: '2%',
+        //   sortable: true,
+        //   isKey: true,
+        //   display: function (row) {
+        //     //shouldShowCheckbox(row)
+        //     return `<div style="text-align: center;">${row.no}</div>`
+        //     // return `<div style="text-align: right;">${row.no}</div>`
+        //   }
+        // },
         {
-          label: 'ลำดับที่',
+          label: 'VRF No',
           field: 'id',
           width: '2%',
           sortable: true,
-
           isKey: true,
           display: function (row) {
-            //shouldShowCheckbox(row)
-            return `<div style="text-align: center;">${row.no}</div>`
-            // return `<div style="text-align: right;">${row.no}</div>`
+            return `<div style="text-align: center;">${row.id
+              .toString()
+              .padStart(6, '0')}</div>`
           }
         },
         {
           label: 'จาก',
-          field: 'date_from',
+          field: 'id',
+          isKey: true,
           width: '3%',
           sortable: true,
           display: function (row) {
@@ -2152,6 +2705,16 @@ export default defineComponent({
         },
         {
           // label: 'เหตุผลในการตีกลับ',
+          label: 'รายการเพิ่มเติม',
+          field: 'reason_of_reject',
+          width: '15%',
+          sortable: true,
+          display: function (row) {
+            return `<div style="text-align: center;">${row.req_urgentcase_by !== null ? 'เคสด่วน' : ''}</div>`
+          }
+        },
+        {
+          // label: 'เหตุผลในการตีกลับ',
           label: 'หมายเหตุ',
           field: 'reason_of_reject',
           width: '15%',
@@ -2175,13 +2738,23 @@ export default defineComponent({
           width: '10%',
           height: '1%',
           display: function (row) {
+            //var urgentButtonDisabled = row.approve_status_ !== 5 ? ' disabled' : '';
+            let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
+            let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
+            let wording_edit  = row.approve_status_ === 0 ? 'แก้ไข' : 'รายละเอียด'
             return (
               '<div style="display: flex;"><button type="button" data-id="' +
               row.id +
-              '" class="btn btn-danger is-rows-el cancelvrf" style="margin-top: 0.2rem; width: 5rem; height:2rem">ยกเลิก</button>&nbsp; ' +
+              '" class="btn btn-danger is-rows-el cancelvrf" '+cancelButtonDisabled(row.approve_status_)+' style="margin-top: 0.2rem; width: 5rem; height:2rem">ยกเลิก</button>&nbsp; ' +
               '<button type="button" data-id="' +
               row.id +
-              '" class="btn btn-info is-rows-el editvrf" style="margin-top: 0.2rem; width: 5rem; height:2rem" data-bs-target="#ModalEditvrf" data-bs-toggle="modal">แก้ไข</button></div>'
+              '" class="btn btn-info is-rows-el ' + type_event_edit + '" style="margin-top: 0.2rem; width: 6rem; height:2rem" data-bs-target="#' + type_modal_edit + '" data-bs-toggle="modal">'+wording_edit+'</button>&nbsp;'
+              +
+              '<button type="button" data-id="' +
+              row.id +
+              '" class="btn btn-success is-rows-el urgentcase" ' + urgentButtonDisabled(row.approve_status_, row.req_urgentcase_by) + ' style="margin-top: 0.2rem; width: 5rem; height:2rem" data-bs-target="#ModalUrgentvrf" data-bs-toggle="modal">เคสด่วน</button>&nbsp;'
+              +
+              ' </div>'
             )
           }
         }
@@ -2200,10 +2773,7 @@ export default defineComponent({
     /**
      * Use vue.js watch to watch your state's change
      */
-
     const tableElement = ref(null);
-
-
     // Watch for changes on `templete_vrf`
     watch(templete_vrf, async (newVal, oldVal) => {
       //------------------set transacton data-----------------
@@ -2249,10 +2819,9 @@ export default defineComponent({
             // error callback
           }
         )
-      // console.log("New selection:", newVal);
-      // console.log("New selection newVal.id: ", newVal.id);
-      // console.log("Previous selection:", oldVal);
+
     })
+
     watch(
       () => searchTerm.value,
       (val) => {
@@ -2337,12 +2906,6 @@ export default defineComponent({
                     vrf_Existing.approve_status = obj[0].approve_status
                     vrf_Existing.approve_by = obj[0].approve_by
                     vrf_Existing.approve_date = obj[0].approve_date
-                    console.log('obj[0], vrf_Existing: ', vrf_Existing)
-                    console.log(
-                      ' vrf_Existing.date_from :',
-                      vrf_Existing.date_from
-                    )
-                    console.log(' vrf_Existing.date_to :', vrf_Existing.date_to)
                   },
                   (res) => {
                     // error callback
@@ -2353,7 +2916,7 @@ export default defineComponent({
                   //
                 })
               fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}`
-              // onMounted(getBranchAndCashEdit)
+
             } catch (err) {
               console.log(err)
             }
@@ -2381,7 +2944,193 @@ export default defineComponent({
                 .finally(() => {
                   //
                 })
-              // onMounted(getBranchAndCashEdit)
+            } catch (err) {
+              console.log(err)
+            }
+          })
+        }
+        //--------------------------------------------------------------------------------------------------------------------------------event click button add urgentcase
+        if (element.classList.contains('urgentcase')) {
+          element.addEventListener('click', async function () {
+            const params = {
+              Id: this.dataset.id
+            }
+            console.log('Id: ', Id.value)
+            try {
+              loading.value = true
+              await axios
+                .get(process.env.VUE_APP_API_URL + '/get_vrf', { params })
+                .then(
+                  (res) => {
+                    // success callback
+                    let obj = JSON.parse(JSON.stringify(res.data))
+                    console.log('obj[0]: ', obj[0])
+                    checkstatus_send_to_approve.value =
+                      obj[0].approve_status === null ||
+                        obj[0].approve_status === 0
+                        ? true
+                        : false
+                    //----------------------------------------urgent vrf                    
+                    vrf_urgent.id = obj[0].id
+                    vrf_urgent.date_from = setDatepickup(obj[0].date_from)
+                    vrf_urgent.date_to = setDatepickup(obj[0].date_to)
+                    vrf_urgent.reason = obj[0].reason
+                    vrf_urgent.contactor = obj[0].contactor
+                    vrf_urgent.requestor = obj[0].requestor
+                    vrf_urgent.requestor_id = obj[0].requestor_id
+                    vrf_urgent.requestor_position_id =
+                      obj[0].requestor_position_id
+                    vrf_urgent.position = obj[0].position
+                    vrf_urgent.requestor_dept_id = obj[0].requestor_dept_id
+                    vrf_urgent.department = obj[0].department
+                    vrf_urgent.requestor_phone = obj[0].requestor_phone
+                    vrf_urgent.navigator_id = obj[0].navigator_id
+                    vrf_urgent.navigator = obj[0].navigator
+                    vrf_urgent.area_id = obj[0].area_id
+                    vrf_urgent.meeting_area = obj[0].meeting_area
+                    vrf_urgent.user_create = obj[0].user_create
+                    vrf_urgent.attach_file = obj[0].attach_file
+                    vrf_urgent.attach_file_primitive = obj[0].attach_file
+                    vrf_urgent.attach_file_origin = obj[0].attach_file_origin
+                    vrf_urgent.approve_status = obj[0].approve_status
+                    vrf_urgent.approve_by = obj[0].approve_by
+                    vrf_urgent.approve_date = obj[0].approve_date
+                  },
+                  (res) => {
+                    // error callback
+                    console.log(res.data)
+                  }
+                )
+                .finally(() => {
+                  //
+                })
+              fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_urgent.attach_file}`
+
+            } catch (err) {
+              console.log(err)
+            }
+            //---------------------------------get vrf detail---------------------------------------------
+            try {
+              loading.value = true
+              await axios
+                .get(process.env.VUE_APP_API_URL + '/get_vrf_det', { params })
+                .then(
+                  (res) => {
+                    // success callback
+                    let obj = JSON.parse(JSON.stringify(res.data))
+                    //-----------existing vrf
+                    vrf_Existing.vrf_Existing_det = obj
+                    console.log('vrf_Existing.vrf_Existing_det: ', vrf_Existing.vrf_Existing_det)
+                    //-----------urgent vrf
+                    // vrf_urgent.vrf_Existing_det = obj 
+                    setTimeout(() => {
+                      table.isLoading = false
+                      // table.totalRecordCount = 20;
+                    }, 500)
+                    loading.value = false
+                  },
+                  (res) => {
+                    // error callback
+                    console.log(res.data)
+                  }
+                )
+                .finally(() => {
+                  //
+                })
+            } catch (err) {
+              console.log(err)
+            }
+          })
+        }
+        //--------------------------------------------------------------------------------------------------------------------------------event click button edit_urgentcase_vrf
+        if (element.classList.contains('edit_urgentcase_vrf')) {
+          element.addEventListener('click', async function () {
+            console.log('edit_urgentcase_vrf')
+            const params = {
+              Id: this.dataset.id
+            }
+            console.log('Id: ', Id.value)
+            try {
+              loading.value = true
+              await axios
+                .get(process.env.VUE_APP_API_URL + '/get_vrf', { params })
+                .then(
+                  (res) => {
+                    // success callback
+                    let obj = JSON.parse(JSON.stringify(res.data))
+                    console.log('obj[0]: ', obj[0])
+                    checkstatus_send_to_approve.value =
+                      obj[0].approve_status === null ||
+                        obj[0].approve_status === 0
+                        ? true
+                        : false
+                    //----------------------------------------urgent vrf                    
+                    vrf_urgent.id = obj[0].id
+                    vrf_urgent.date_from = setDatepickup(obj[0].date_from)
+                    vrf_urgent.date_to = setDatepickup(obj[0].date_to)
+                    vrf_urgent.reason = obj[0].reason
+                    vrf_urgent.contactor = obj[0].contactor
+                    vrf_urgent.requestor = obj[0].requestor
+                    vrf_urgent.requestor_id = obj[0].requestor_id
+                    vrf_urgent.requestor_position_id =
+                      obj[0].requestor_position_id
+                    vrf_urgent.position = obj[0].position
+                    vrf_urgent.requestor_dept_id = obj[0].requestor_dept_id
+                    vrf_urgent.department = obj[0].department
+                    vrf_urgent.requestor_phone = obj[0].requestor_phone
+                    vrf_urgent.navigator_id = obj[0].navigator_id
+                    vrf_urgent.navigator = obj[0].navigator
+                    vrf_urgent.area_id = obj[0].area_id
+                    vrf_urgent.meeting_area = obj[0].meeting_area
+                    vrf_urgent.user_create = obj[0].user_create
+                    vrf_urgent.attach_file = obj[0].attach_file
+                    vrf_urgent.attach_file_primitive = obj[0].attach_file
+                    vrf_urgent.attach_file_origin = obj[0].attach_file_origin
+                    vrf_urgent.approve_status = obj[0].approve_status
+                    vrf_urgent.approve_by = obj[0].approve_by
+                    vrf_urgent.approve_date = obj[0].approve_date
+                  },
+                  (res) => {
+                    // error callback
+                    console.log(res.data)
+                  }
+                )
+                .finally(() => {
+                  //
+                })
+              fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_urgent.attach_file}`
+
+            } catch (err) {
+              console.log(err)
+            }
+            //---------------------------------get vrf detail---------------------------------------------
+            try {
+              loading.value = true
+              await axios
+                .get(process.env.VUE_APP_API_URL + '/get_vrf_det', { params })
+                .then(
+                  (res) => {
+                    // success callback
+                    let obj = JSON.parse(JSON.stringify(res.data))
+                    //-----------existing vrf
+                    vrf_Existing.vrf_Existing_det = obj
+                    console.log('vrf_Existing.vrf_Existing_det: ', vrf_Existing.vrf_Existing_det)
+                    //-----------urgent vrf
+                    // vrf_urgent.vrf_Existing_det = obj 
+                    setTimeout(() => {
+                      table.isLoading = false
+                      // table.totalRecordCount = 20;
+                    }, 500)
+                    loading.value = false
+                  },
+                  (res) => {
+                    // error callback
+                    console.log(res.data)
+                  }
+                )
+                .finally(() => {
+                  //
+                })
             } catch (err) {
               console.log(err)
             }
@@ -2394,6 +3143,16 @@ export default defineComponent({
       return new Date(
         Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
       )
+    }
+    const cancelButtonDisabled = (approve_status_) => {
+      let urgentButtonDisabled = approve_status_ === 5 ? ' disabled' : '';
+      // let urgentButtonDisabled = approve_status_ !== 5 && req_urgentcase_by === null ? ' disabled' : '';
+      return urgentButtonDisabled
+    }
+    const urgentButtonDisabled = (approve_status_, req_urgentcase_by) => {
+      let urgentButtonDisabled = approve_status_ !== 5 || req_urgentcase_by !== null ? ' disabled' : '';
+      // let urgentButtonDisabled = approve_status_ !== 5 && req_urgentcase_by === null ? ' disabled' : '';
+      return urgentButtonDisabled
     }
     const AdvSearch_ = async () => {
       if (AdvSearch.tbDateF && AdvSearch.tbDateT && new Date(AdvSearch.tbDateF) > new Date(AdvSearch.tbDateT)) {
@@ -2423,7 +3182,6 @@ export default defineComponent({
       }
       document.getElementById('CloseModalAdvSearch').click();
     }
-
     // const AdvSearch_ = async () => {
     //   const params = {
     //     tbDateF: AdvSearch.tbDateF !== '' ? AdvSearch.tbDateF : null,
@@ -2652,35 +3410,6 @@ export default defineComponent({
         //  router.push('/templatevrflst')
         location.reload()
       }
-      // //------------------send mail----------------------
-      // try {
-      //   await axios.get(process.env.VUE_APP_API_URL + '/set_sendmail', {
-      //     params: {
-      //       id_: id
-      //       , department_id: localStorage.getItem('user_department_id')
-      //       , branch_id: localStorage.getItem('user_branch_id')
-      //       , division_id: localStorage.getItem('user_division_id')
-      //     }
-      //   })
-      //     .then((res) => {
-      //       // success callback
-      //     }, (res) => {
-      //       // error callback
-      //       console.log(res.data)
-
-      //     }).finally(() => {
-      //       //router.push('/requestvrflst')
-      //     });
-      // }
-      // catch (err) {
-      //   console.log(err)
-      //   message_addManual.value = "Something went wrong: " + err
-      //   error_addManual.value = true
-      // }
-      // finally {
-      //   //  router.push('/templatevrflst')
-      //   location.reload()
-      // }
     }
     const addManualVRF_validateInput = (e) => {
       validateAllInputs()
@@ -2760,7 +3489,10 @@ export default defineComponent({
       } //--------------call addManualVRF
       else {
         console.log('isError: ', isError)
-        addManualVRF()
+        if (confirm('คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ ?')) {
+          addManualVRF()
+        }
+        
       }
     }
     const updateCheckedRows = (rowsKey) => {
@@ -2783,6 +3515,23 @@ export default defineComponent({
         vehicle_color_id: null,
         card_no: '',
         vrf_id: vrf_id,
+        errors: {}
+      })
+    }
+    const addUrgentcaseItem = async (vrf_id) => {
+      Id.value = vrf_urgent.vrf_Existing_det.length
+      Id.value++
+      console.log('addUrgentcaseItem vrf_id: ', vrf_id, 'Id after plus : ', Id.value);
+      console.log('addUrgentcaseItem vrf_urgent.vrf_Existing_det.length: ', vrf_urgent.vrf_Existing_det.length);
+      vrf_urgent.vrf_Existing_det.push({
+        date_from: new Date(),
+        date_to: '',
+        fullname: '',
+        vehicle_brand_id: null,
+        vehicle_color_id: null,
+        card_no: '',
+        vrf_id: vrf_id,
+        remark_urgent: '',
         errors: {}
       })
     }
@@ -2843,6 +3592,130 @@ export default defineComponent({
       console.log(index)
       vrf_Existing.vrf_Existing_det.splice(index, 1)
       Id.value--
+    }
+    const deleteUrgentcaseData = (index) => {
+      console.log('deleteUrgentcaseData index: ', index)
+      vrf_urgent.vrf_Existing_det.splice(index, 1)
+      Id.value--
+    }
+    //-------------------------------------------------
+
+    const VRF_Urgentcase_validateInput = async (e) => {
+
+      urgentcase_validateAllInputs()
+      let isError = false
+      isError = validateInputAll.value
+      if (vrf_urgent.vrf_Existing_det.length === 0) {
+        isError = true
+        //message_addManual.value = "กรุณาเพิ่มรายการ"
+        alert('กรุณาเพิ่มรายการ')
+      }
+      if (isError) {
+        console.log('urgentcase_error isError: ', isError)
+        validateInputAll.value = false
+        return false
+      } //--------------call addManualVRF
+      else {
+        console.log('isError: ', isError)
+        if (confirm('คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ด่วน ?')) {
+          AddUrgentcase()
+        }
+        
+      }
+    }
+    //-------------------------------------------------
+    const AddUrgentcase = async () => {
+      // updateParams = {
+      //         Id: id,
+      //         Type_: 'send_approve',
+      //         user_id: user_id.value,
+      //         role_id: localStorage.getItem('user_role_id'),
+      //         work_flow_id: localStorage.getItem('user_work_flow_id'),
+      //         department_id: department_id.value,
+      //         division_id: localStorage.getItem('user_division_id'),
+      //         branch_id: localStorage.getItem('user_branch_id')
+      //       };
+      //------------------------------------------det-------------------------------------------------------------------------------------------------------
+      let object_det = [] // initialize the object
+      for (let index in vrf_Existing.vrf_Existing_det) {
+        if (vrf_Existing.vrf_Existing_det[index].remark_urgentcase) {
+          object_det.push({
+            id: vrf_Existing.vrf_Existing_det[index].id,
+            date_from: new Date(vrf_Existing.vrf_Existing_det[index].date_from),
+            date_to: new Date(vrf_Existing.vrf_Existing_det[index].date_to),
+            fullname: vrf_Existing.vrf_Existing_det[index].fullname,
+            vrf_id: vrf_Existing.vrf_Existing_det[index].vrf_id,
+            vehicle_brand_id:
+              vrf_Existing.vrf_Existing_det[index].vehicle_brand_id,
+            vehicle_color_id:
+              vrf_Existing.vrf_Existing_det[index].vehicle_color_id,
+            vehicle_registration:
+              vrf_Existing.vrf_Existing_det[index].vehicle_registration,
+            card_no: vrf_Existing.vrf_Existing_det[index].card_no,
+            user_id: user_id.value,
+            remark_urgent: vrf_Existing.vrf_Existing_det[index].remark_urgentcase,
+            role_id: localStorage.getItem('user_role_id'),
+            work_flow_id: localStorage.getItem('user_work_flow_id'),
+            department_id: department_id.value,
+            division_id: localStorage.getItem('user_division_id'),
+            branch_id: localStorage.getItem('user_branch_id')
+          })
+        }
+      }
+      for (let index in vrf_urgent.vrf_Existing_det) {
+        object_det.push({
+          id: vrf_urgent.vrf_Existing_det[index].id,
+          date_from: new Date(vrf_urgent.vrf_Existing_det[index].date_from),
+          date_to: new Date(vrf_urgent.vrf_Existing_det[index].date_to),
+          fullname: vrf_urgent.vrf_Existing_det[index].fullname,
+          vrf_id: vrf_urgent.vrf_Existing_det[index].vrf_id,
+          vehicle_brand_id:
+            vrf_urgent.vrf_Existing_det[index].vehicle_brand_id,
+          vehicle_color_id:
+            vrf_urgent.vrf_Existing_det[index].vehicle_color_id,
+          vehicle_registration:
+            vrf_urgent.vrf_Existing_det[index].vehicle_registration,
+          card_no: vrf_urgent.vrf_Existing_det[index].card_no,
+          user_id: user_id.value,
+          remark_urgent: vrf_urgent.vrf_Existing_det[index].remark_urgentcase,
+          role_id: localStorage.getItem('user_role_id'),
+          work_flow_id: localStorage.getItem('user_work_flow_id'),
+          department_id: department_id.value,
+          division_id: localStorage.getItem('user_division_id'),
+          branch_id: localStorage.getItem('user_branch_id')
+        })
+      }
+      var json_object_det = JSON.stringify(object_det)
+      console.log('AddUrgentcase json: ', json_object_det)
+      if (confirm('คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ด่วน ?')) {
+        try {
+          await axios
+            .post(
+              process.env.VUE_APP_API_URL + '/update_urgentcase_vrf_det',
+              json_object_det
+            )
+            .then(
+              (res) => {
+                // success callback
+              },
+              (res) => {
+                // error callback
+                console.log(res.data.message)
+                message_addManual.value = res.data.message
+              }
+            )
+            .finally(() => {
+              router.push('/requestvrflst')
+            })
+          error_addManual.value = false
+        } catch (err) {
+          console.log(err)
+          message_addManual.value = 'Something went wrong: ' + err
+          error_addManual.value = true
+        } finally {
+          location.reload();
+        }
+      }
     }
     const editVRF_validateInput = async (e) => {
       edit_validateAllInputs()
@@ -2923,6 +3796,94 @@ export default defineComponent({
       else {
         console.log('isError: ', isError)
         editVRF()
+      }
+    }
+    const editVRF_Urgentcase_validateInput = async (e) => {
+      edit_urgentcase_vrf_validateAllInputs()
+      let isError = false
+      isError = validateInputAll.value
+      if (isError) {
+        console.log('isError: ', isError)
+        validateInputAll.value = false
+        return false
+      } //--------------call addManualVRF
+      else {
+        console.log('isError: ', isError)
+        editVRF_Urgentcase()
+      }
+    }
+    const editVRF_Urgentcase = async () => {
+      //------------------------------------------det-------------------------------------------------------------------------------------------------------
+      let object_det = [] // initialize the object
+      for (let index in vrf_Existing.vrf_Existing_det) {
+        object_det.push({
+          id: vrf_Existing.vrf_Existing_det[index].id,
+          date_from: new Date(vrf_Existing.vrf_Existing_det[index].date_from),
+          date_to: new Date(vrf_Existing.vrf_Existing_det[index].date_to),
+          fullname: vrf_Existing.vrf_Existing_det[index].fullname,
+          vrf_id: vrf_Existing.vrf_Existing_det[index].vrf_id,
+          vehicle_brand_id:
+            vrf_Existing.vrf_Existing_det[index].vehicle_brand_id,
+          vehicle_color_id:
+            vrf_Existing.vrf_Existing_det[index].vehicle_color_id,
+          vehicle_registration:
+            vrf_Existing.vrf_Existing_det[index].vehicle_registration,
+          card_no: vrf_Existing.vrf_Existing_det[index].card_no,
+          user_id: user_id.value,
+          urgentcase_type: vrf_Existing.vrf_Existing_det[index].urgentcase_type,
+          remark_urgentcase: vrf_Existing.vrf_Existing_det[index].remark_urgentcase
+        })
+      }
+      for (let index in vrf_urgent.vrf_Existing_det) {
+        object_det.push({
+          id: vrf_urgent.vrf_Existing_det[index].id,
+          date_from: new Date(vrf_urgent.vrf_Existing_det[index].date_from),
+          date_to: new Date(vrf_urgent.vrf_Existing_det[index].date_to),
+          fullname: vrf_urgent.vrf_Existing_det[index].fullname,
+          vrf_id: vrf_urgent.vrf_Existing_det[index].vrf_id,
+          vehicle_brand_id:
+            vrf_urgent.vrf_Existing_det[index].vehicle_brand_id,
+          vehicle_color_id:
+            vrf_urgent.vrf_Existing_det[index].vehicle_color_id,
+          vehicle_registration:
+            vrf_urgent.vrf_Existing_det[index].vehicle_registration,
+          card_no: vrf_urgent.vrf_Existing_det[index].card_no,
+          user_id: user_id.value,
+          urgentcase_type: 'Additional',
+          remark_urgentcase: vrf_urgent.vrf_Existing_det[index].remark_urgentcase
+        })
+      }
+      var json_object_det = JSON.stringify(object_det)
+      console.log('editVRF_Urgentcase json_object_det: ', json_object_det)
+      try {
+        await axios
+          .post(
+            process.env.VUE_APP_API_URL + '/set_update_urgentcase_vrf',
+            json_object_det
+          )
+          .then(
+            (res) => {
+              // success callback
+            },
+            (res) => {
+              // error callback
+              console.log(res.data.message)
+              message_addManual.value = res.data.message
+            }
+          )
+          .finally(() => {
+            router.push('/requestvrflst')
+          })
+        error_addManual.value = false
+      } catch (err) {
+        console.log(err)
+        message_addManual.value = 'Something went wrong: ' + err
+        error_addManual.value = true
+      } finally {
+        //  router.push('/templatevrflst')
+        // if (send_approve_status.value === false) {
+        location.reload();
+        // }
       }
     }
     const editVRF = async () => {
@@ -3028,12 +3989,19 @@ export default defineComponent({
       }
     }
     return {
+      edit_validateInput_vrfurgentcase,
+      editVRF_Urgentcase_validateInput,
+      VRF_Urgentcase_validateInput,
+      urgentcase_validateInput,
+      deleteUrgentcaseData,
+      vrf_urgent,
       tableElement,
       setFromDateAdd,
       setToDateAdd,
       setDatepickup,
       deleteExistingData,
       addExistingItem,
+      addUrgentcaseItem,
       clear_search_results,
       selectResult_search,
       complete_word,
@@ -3045,6 +4013,7 @@ export default defineComponent({
       setDate,
       addManualVRF_validateInput,
       VRF_error,
+      urgentcase_error,
       validateInput,
       edit_validateInput,
       editVRF,
@@ -3075,9 +4044,7 @@ export default defineComponent({
       Data_,
       updateCheckedRows,
       tableLoadingFinish,
-      getOrderType,
       vrf_Existing,
-      getBranchAndCashEdit,
       editVRF_validateInput,
       formatPrice,
       router,
@@ -3091,12 +4058,10 @@ export default defineComponent({
       message,
       message_addManual,
       message_editOrder,
-      error_editOrder,
       OrderCategory,
       OrderType,
       BankType,
       JobDate,
-      getBranchForCash,
       user_id,
       department_id,
       position_id,
@@ -3106,87 +4071,12 @@ export default defineComponent({
       deleteData,
       addManualVRF,
       DownloadLink,
-      getBranchAndCash,
       rowData,
       Id,
       sendApprove,
       checkstatus_send_to_approve,
       getBankTypeData
     }
-    // const sendApprove = async (e) => {
-    //   // alert( vrf_Existing.orderId )
-    //   if (confirm('คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ ?')) {
-    //     const params = {
-    //       Id: vrf_Existing.id,
-    //       Type_: 'send_approve',
-    //       user_id: user_id.value,
-    //       role_id: localStorage.getItem('user_role_id'),
-    //       work_flow_id: localStorage.getItem('user_work_flow_id'),
-    //       department_id: department_id.value,
-    //       division_id: localStorage.getItem('user_division_id'),
-    //       branch_id: localStorage.getItem('user_branch_id')
-    //     }
-    //     //----update data before save
-    //     send_approve_status.value = true
-    //     editVRF_validateInput(e)
-    //     send_approve_status.value = false
-    //     //----send approve status
-    //     // try {
-    //     //   await axios
-    //     //     .get(
-    //     //       process.env.VUE_APP_API_URL + '/update_vrf_trans_approve_status',
-    //     //       { params }
-    //     //     )
-    //     //     .then(
-    //     //       (res) => {
-    //     //         // success callback
-    //     //         let obj = JSON.parse(JSON.stringify(res.data))
-    //     //         console.log('sendApprove: ', params)
-    //     //         // router.push('/listorder')
-    //     //         // location.reload()
-    //     //       },
-    //     //       (res) => {
-    //     //         // error callback
-    //     //         console.log(res.data)
-    //     //       }
-    //     //     )
-    //     // } catch (err) {
-    //     //   console.log(err)
-    //     // }
-    //     //------------------send mail----------------------
-    //     try {
-    //       await axios
-    //         .get(process.env.VUE_APP_API_URL + '/set_sendmail', {
-    //           params: {
-    //             id_: vrf_Existing.id,
-    //             department_id: localStorage.getItem('user_department_id'),
-    //             branch_id: localStorage.getItem('user_branch_id'),
-    //             division_id: localStorage.getItem('user_division_id')
-    //           }
-    //         })
-    //         .then(
-    //           (res) => {
-    //             // success callback
-    //           },
-    //           (res) => {
-    //             // error callback
-    //             console.log(res.data)
-    //           }
-    //         )
-    //         .finally(() => {
-    //           //router.push('/requestvrflst')
-    //         })
-    //     } catch (err) {
-    //       console.log(err)
-    //       message_addManual.value = 'Something went wrong: ' + err
-    //       error_addManual.value = true
-    //     } finally {
-    //       //  router.push('/templatevrflst')
-    //       alert('คุณส่งอนุมัติรายการเรียบร้อย')
-    //       location.reload()
-    //     }
-    //   }
-    // }
   }
 })
 </script>

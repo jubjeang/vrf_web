@@ -1308,76 +1308,6 @@ export default defineComponent({
                     link.click()
                 }) // Please catch me!
         }
-
-        const sendApprove = async (e) => {
-            // alert( vrf_Existing.orderId )
-            if (confirm('คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ ?')) {
-                const params = {
-                    Id: vrf_Existing.id,
-                    Type_: 'send_approve',
-                    user_id: user_id.value,
-                    role_id: localStorage.getItem('user_role_id'),
-                    work_flow_id: localStorage.getItem('user_work_flow_id'),
-                    department_id: department_id.value,
-                    division_id: localStorage.getItem('user_division_id'),
-                    branch_id: localStorage.getItem('user_branch_id')
-                }
-
-                try {
-                    await axios
-                        .get(
-                            process.env.VUE_APP_API_URL + '/update_vrf_trans_approve_status',
-                            { params }
-                        )
-                        .then(
-                            (res) => {
-                                // success callback
-                                let obj = JSON.parse(JSON.stringify(res.data))
-                                console.log('sendApprove: ', params)
-                                // router.push('/listorder')
-                                // location.reload()
-                            },
-                            (res) => {
-                                // error callback
-                                console.log(res.data)
-                            }
-                        )
-                } catch (err) {
-                    console.log(err)
-                }
-                //------------------send mail----------------------
-                try {
-                    await axios
-                        .get(process.env.VUE_APP_API_URL + '/set_sendmail', {
-                            params: {
-                                id_: vrf_Existing.id,
-                                department_id: localStorage.getItem('user_department_id'),
-                                branch_id: localStorage.getItem('user_branch_id'),
-                                division_id: localStorage.getItem('user_division_id')
-                            }
-                        })
-                        .then(
-                            (res) => {
-                                // success callback
-                            },
-                            (res) => {
-                                // error callback
-                                console.log(res.data)
-                            }
-                        )
-                        .finally(() => {
-                            //router.push('/requestvrflst')
-                        })
-                } catch (err) {
-                    console.log(err)
-                    message_addManual.value = 'Something went wrong: ' + err
-                    error_addManual.value = true
-                } finally {
-                    //  router.push('/templatevrflst')
-                    location.reload()
-                }
-            }
-        }
         const selectFile = (e) => {
             // file.value = this.$refs.file.files[0]
             file.value = e.target.files[0]
@@ -1754,8 +1684,7 @@ export default defineComponent({
                                 .finally(() => {
                                     //
                                 })
-
-                            // onMounted(getBranchAndCashEdit)
+                            
                         } catch (err) {
                             console.log(err)
                         }
@@ -2311,7 +2240,6 @@ export default defineComponent({
             DownloadLink,
             rowData,
             Id,
-            sendApprove,
             checkstatus_send_to_approve,
             getBankTypeData
         }
