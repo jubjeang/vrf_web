@@ -115,7 +115,7 @@
     <div class="row p-2">
       <div class="col text-end">จากวันที่:</div>
       <div class="col">
-        <label  style="width: 10rem; display: inline-block">{{ formattedDateFrom(vrf_Existing.date_from) }}</label>
+        <label style="width: 10rem; display: inline-block">{{ formattedDateFrom(vrf_Existing.date_from) }}</label>
 
       </div>
       <div class="col text-end">ถึงวันที่:</div>
@@ -131,55 +131,55 @@
       <div class="col  text-end">พื้นที่เข้าพบ:</div>
       <div class="col">
         <label style="width: 10rem; display: inline-block">
-                {{ vrf_Existing.meeting_area }}
-              </label>
+          {{ vrf_Existing.meeting_area }}
+        </label>
 
       </div>
       <div class="col  text-end">เหตุผลในการเข้าพบ:</div>
       <div class="col">
         <label style="width: 10rem; display: inline-block">
-                {{ vrf_Existing.reason }}
-              </label>
+          {{ vrf_Existing.reason }}
+        </label>
       </div>
       <div class="col text-end">ชื่อบริษัทผู้มาติดต่อ:</div>
       <div class="col">
         <label style="width: 10rem; display: inline-block">
-                {{ vrf_Existing.contactor }}
-              </label>
+          {{ vrf_Existing.contactor }}
+        </label>
       </div>
     </div>
     <div class="row p-2">
       <div class="col text-end">ผู้ร้องขอ:</div>
       <div class="col">
         <label style="width: 10rem; display: inline-block">
-                {{ vrf_Existing.requestor }}
-              </label>
+          {{ vrf_Existing.requestor }}
+        </label>
       </div>
       <div class="col text-end">ตำแหน่งผู้ร้องขอ:</div>
       <div class="col">
         <label style="width: 10rem; display: inline-block">
-                {{ vrf_Existing.position }}
-              </label>
+          {{ vrf_Existing.position }}
+        </label>
       </div>
       <div class="col text-end">แผนกผู้ร้องขอ:</div>
       <div class="col">
         <label style="width: 10rem; display: inline-block">
-                {{ vrf_Existing.department }}
-              </label>
+          {{ vrf_Existing.department }}
+        </label>
       </div>
     </div>
     <div class="row p-2">
       <div class="col text-end">เบอร์โทรผู้ร้องขอ:</div>
       <div class="col">
         <label style="width: 10rem; display: inline-block">
-                {{ vrf_Existing.requestor_phone }}
-              </label>
+          {{ vrf_Existing.requestor_phone }}
+        </label>
       </div>
       <div class="col text-end">ชื่อผู้นำพา:</div>
       <div class="col">
         <label style="width: 10rem; display: inline-block">
-                {{ vrf_Existing.navigator }}
-              </label>
+          {{ vrf_Existing.navigator }}
+        </label>
       </div>
       <div class="col text-end">แนบไฟล์:</div>
       <div class="col text-start">
@@ -189,14 +189,15 @@
       </div>
     </div>
     <div class="align-top pt-1 d-flex justify-content-center" v-if="vrf_Existing.approve_action === 'True'">
-      
-        <button class="btn btn-success me-3" style="width: 7rem; height: 2rem" @click.prevent="sendApprove">
+
+      <button class="btn btn-success me-3" style="width: 7rem; height: 2rem" @click.prevent="sendApprove">
         อนุมัติ
       </button>
-      <button class="btn btn-danger" data-bs-target="#ModalRejectVRF"  data-bs-toggle="modal" type="reset" style="width: 7rem; height: 2rem">
+      <button class="btn btn-danger" data-bs-target="#ModalRejectVRF" data-bs-toggle="modal" type="reset"
+        style="width: 7rem; height: 2rem">
         ไม่อนุมัติ
       </button>
-         
+
     </div>
   </div>
   <!-- Loading-->
@@ -229,7 +230,7 @@ import {
 
 import axios from 'axios'
 import moment from 'moment'
-import { defineComponent, reactive, ref, computed, watch, watchEffect} from 'vue'
+import { defineComponent, reactive, ref, computed, watch, watchEffect } from 'vue'
 import TableLite from '../components/TableLite.vue'
 import { useRouter } from 'vue-router'
 import Loading from '../components/Loading.vue'
@@ -328,7 +329,9 @@ export default defineComponent({
       attach_file_primitive: '',
       attach_file_origin: '',
       vrf_Existing_det: [],
-      approve_action:'',
+      approve_action: '',
+      req_urgentcase_by: null,
+      req_urgentcase_date: null,
       errors: {}
     })
     const update_vrf_trans_status_param = reactive({
@@ -655,21 +658,11 @@ export default defineComponent({
         user_id: userId,
         vrf_id: vrf_id,
         type: 'send_approve',
+        req_urgentcase_by: vrf_Existing.req_urgentcase_by
       }
       console.log('sendApprove params:', params)
       // alert( vrf_Existing.orderId )
-      if (confirm('คุณต้องการอนุมัติรายการขอเข้าพื้นที่ ?')) {
-        // const params = {
-        //   Id: vrf_Existing.id,
-        //   Type_: 'send_approve',
-        //   user_id: user_id.value,
-        //   role_id: localStorage.getItem('user_role_id'),
-        //   work_flow_id: localStorage.getItem('user_work_flow_id'),
-        //   department_id: department_id.value,
-        //   branch_id: localStorage.getItem('user_branch_id'),
-        //   division_id: localStorage.getItem('user_division_id')
-        // }
-       
+      if (confirm('คุณต้องการอนุมัติรายการขอเข้าพื้นที่ ?')) { 
         try {
           await axios
             .get(
@@ -755,7 +748,7 @@ export default defineComponent({
     /**
      * Get server data request
      */
-     const reject_vrf = reactive({
+    const reject_vrf = reactive({
       vrf_id_for_reject: 0,
       reject_reason: ''
     })
@@ -816,6 +809,8 @@ export default defineComponent({
               vrf_Existing.approve_date = obj[0].approve_date
               vrf_Existing.approvestatus_wording = obj[0].approvestatus_wording
               vrf_Existing.approve_action = obj[0].approve_action
+              vrf_Existing.req_urgentcase_by = obj[0].req_urgentcase_by
+              vrf_Existing.req_urgentcase_date = obj[0].req_urgentcase_date
               console.log('obj[0], vrf_Existing: ', vrf_Existing)
               console.log(
                 ' vrf_Existing.date_from :',
@@ -1633,17 +1628,23 @@ export default defineComponent({
 @import '../../node_modules/vue-multiselect/dist/vue-multiselect.css';
 
 .rounded-border {
-  border: 2px solid #000; /* Adjust the color and size as needed */
-  border-radius: 15px; /* Adjust the radius for the roundness */
+  border: 2px solid #000;
+  /* Adjust the color and size as needed */
+  border-radius: 15px;
+  /* Adjust the radius for the roundness */
   /* Add any other styling as needed, like padding, margin, etc. */
 }
+
 label {
   display: inline-block;
   text-align: left;
 }
+
 .text-end {
-  text-align: right; /* ตัวหนังสือชื่อฟิลด์ชิดขวา */
+  text-align: right;
+  /* ตัวหนังสือชื่อฟิลด์ชิดขวา */
 }
+
 /* ตั้งค่าทั่วไปสำหรับ .scrollable-table */
 .scrollable-table {
   width: 100%;
@@ -1847,6 +1848,5 @@ label {
         display: block;
         background-color: #eee;
         width: 80px;
-      } */
-</style>
+      } */</style>
       

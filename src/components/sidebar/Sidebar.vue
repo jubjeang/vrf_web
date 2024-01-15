@@ -145,6 +145,12 @@ export default {
         <span v-if="isNewData" class="badge">new</span>
       </div>
     </SidebarLink>
+    <SidebarLink v-if="out_put.length" to="/vrfalllist" icon="fa fa-list-alt" class="nav-link align-middle"
+      v-show="out_put[0].vrf_all_list === '1'">
+      <div class="link-content-wrapper">
+        รายการทั้งหมด        
+      </div>
+    </SidebarLink>
 
 
     <SidebarLink v-if="out_put.length" to="/vrflstforsecurity" icon="fa fa-list-alt" class="nav-link align-middle"
@@ -173,10 +179,6 @@ export default {
     <span class="collapse-icon" :class="{ 'rotate-180': collapsed }" @click="toggleSidebar">
       <i class="fas fa-angle-double-left" style="cursor: pointer;" />
     </span>
-
-    <!-- <ul>
-      <li v-for="(item, index) in out_put[0]" :key="index">555 {{ item }}</li>
-    </ul> -->
   </div>
 </template>
 

@@ -7,6 +7,11 @@ const routes = [
     component: () => import('../views/Login.vue')
   },
   {
+    path: '/vrfalllist',
+    name: 'VRF_All_List',
+    component: () => import('../views/VRF_All_List.vue')
+  },
+  {
     path: '/requestvrflst',
     name: 'request_vrf_lst',
     component: () => import('../views/Request_VRF_Lst.vue')

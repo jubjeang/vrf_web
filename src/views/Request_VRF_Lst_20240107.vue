@@ -116,8 +116,8 @@
                   </div>
                   <div class="row p-2">
                     <div class="col-sm-2">สถานะ</div>
-                    <div class="col-sm-2  text-left ps-0">
-                      <select class="form-select form-select-sm" style="width: 9rem;"  v-model="AdvSearch.approve_status">
+                    <div class="col-sm-2">
+                      <select class="form-select form-select-sm" v-model="AdvSearch.approve_status">
                         <option></option>
                         <option value="ตีกลับ">ตีกลับ</option>
                         <option value="สร้างรายการ">สร้างรายการ</option>
@@ -1287,7 +1287,325 @@
       </form>
     </div>
   </div>
+    <!-----------------------------------------------------------modal Edit Urgent Case Vrf--->
+    <div class="container py-2">
+    <div class="py-2">
+      <form @submit.prevent="editVRF_Urgentcase_validateInput" id="form4">
+        <div class="modal fade" id="ModalEditUrgentCaseVrf">
+          <div class="modal-dialog modalcustom">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">แก้ไขรายการขอเข้าพื้นที่ด่วน</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                  @click="ClosemyModalNew_"></button>
+              </div>
+              <div class="modal-body modalcustom">
+                <div class="container modalcustom">
+                  <!---Loop Manual Edit VRF------>
+                  <div class="row ms-4 ps-4 pe-3 me-3 modalcustom">
+                    <table class="table table-hover modalcustomtb">
+                      <thead>
+                        <tr>
+                          <th scope="col" class="colwidth25">ชื่อ-นามสกุล</th>
+                          <th scope="col" class="colwidth10">ยี่ห้อรถ</th>
+                          <th scope="col" class="colwidth10">ทะเบียน</th>
+                          <th scope="col" class="colwidth10">สีรถ</th>
+                          <th scope="col" class="colwidth25">
+                            หมายเลขบัตร ประชาชน/ใบขับขี่/พนักงาน
+                          </th>
+                          <th scope="col" class="colwidth25">
+                            หมายเหตุ
+                          </th>
+                          <th scope="col" class="colwidth10" v-show="checkstatus_send_to_approve">
+                            ดำเนินการ
+                            <span @click.prevent="addUrgentcaseItem(vrf_urgent.id)"
+                              class="text-decoration-none text-gray fs-7" style="cursor: pointer">
+                              <i class="fa fa-plus-circle align-middle" />
+                            </span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-------------------------------------existing vrf---------------------------------------->
+                        <tr v-for="(data, index) in vrf_Existing.vrf_Existing_det" :key="index">
+                          <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center">
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block"
+                              v-model="vrf_Existing.vrf_Existing_det[index].fullname"
+                              :disabled="((vrf_Existing.vrf_Existing_det[index].urgentcase_type === 'Absent') || (vrf_Existing.vrf_Existing_det[index].urgentcase_type === null) || !checkstatus_send_to_approve) ? true : false"
+                              @blur="edit_validateInput_vrfurgentcase('fullname', index, 'กรุณาใส่ข้อมูล', vrf_Existing.vrf_Existing_det[index].fullname)" />
+                            <p class="error-message" v-if="data.errors && data.errors.fullname">
+                              {{ data.errors.fullname }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <select class="form-select form-select-sm" v-model="vrf_Existing.vrf_Existing_det[index]
+                              .vehicle_brand_id
+                              "
+                              :disabled="((vrf_Existing.vrf_Existing_det[index].urgentcase_type === 'Absent') || (vrf_Existing.vrf_Existing_det[index].urgentcase_type === null) || !checkstatus_send_to_approve) ? true : false">
+                              <option v-for="option in data_ddl.vehicle_brand" :value="option.id" :key="option.id">
+                                {{ option.vehicle_brand }}
+                              </option>
+                            </select>
 
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <input type="text" class="form-control" style="width: 10rem; display: inline-block"
+                              v-model="vrf_Existing.vrf_Existing_det[index].vehicle_registration"
+                              :disabled="((vrf_Existing.vrf_Existing_det[index].urgentcase_type === 'Absent') || (vrf_Existing.vrf_Existing_det[index].urgentcase_type === null) || !checkstatus_send_to_approve) ? true : false"
+                              @blur="edit_validateInput_vrfurgentcase('vehicle_registration', index, 'กรุณาใส่ข้อมูล', vrf_Existing.vrf_Existing_det[index].vehicle_registration)" />
+                            <p class="error-message" v-if="data.errors && data.errors.vehicle_registration">
+                              {{ data.errors.vehicle_registration }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <select class="form-select form-select-sm" v-model="vrf_Existing.vrf_Existing_det[index]
+                              .vehicle_color_id
+                              "
+                              :disabled="((vrf_Existing.vrf_Existing_det[index].urgentcase_type === 'Absent') || (vrf_Existing.vrf_Existing_det[index].urgentcase_type === null) || !checkstatus_send_to_approve) ? true : false">
+                              <option v-for="option in data_ddl.vehicle_color" :value="option.id" :key="option.id">
+                                {{ option.vehicle_color }}
+                              </option>
+                            </select>
+
+                          </td>
+                          <td scope="col" class="colwidth25" style="text-align: center">
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block"
+                              v-model="vrf_Existing.vrf_Existing_det[index].card_no"
+                              :disabled="((vrf_Existing.vrf_Existing_det[index].urgentcase_type === 'Absent') || (vrf_Existing.vrf_Existing_det[index].urgentcase_type === null) || !checkstatus_send_to_approve) ? true : false"
+                              @blur="edit_validateInput_vrfurgentcase('card_no', index, 'กรุณาใส่ข้อมูล', vrf_Existing.vrf_Existing_det[index].urgentcase_type)" />
+                            <p class="error-message" v-if="data.errors && data.errors.card_no">
+                              {{ data.errors.card_no }}
+                            </p>
+
+                          </td>
+                          <td scope="col" class="colwidth25" style="text-align: center">
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block"
+                              :disabled="((vrf_Existing.vrf_Existing_det[index].urgentcase_type === 'Absent') || (vrf_Existing.vrf_Existing_det[index].urgentcase_type === null) || !checkstatus_send_to_approve)"
+                              v-model="vrf_Existing.vrf_Existing_det[index].remark_urgentcase"
+                              @blur="edit_validateInput_vrfurgentcase('remark_urgentcase', index, 'กรุณาใส่ข้อมูล', vrf_Existing.vrf_Existing_det[index].urgentcase_type)" />
+                            <p class="error-message" v-if="data.errors && data.errors.remark_urgentcase">
+                              {{ data.errors.remark_urgentcase }}
+                            </p>
+
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <span @click="deleteExistingData(index)" style="cursor: pointer"
+                              v-show="((vrf_Existing.vrf_Existing_det[index].urgentcase_type === 'Absent') || (vrf_Existing.vrf_Existing_det[index].urgentcase_type === null) || !checkstatus_send_to_approve) ? false : true">
+                              <i class="fa fa-minus-square align-middle" aria-hidden="true"></i>
+                            </span>
+                          </td>
+                        </tr>
+                        <!-------------------------------------urgentcase vrf---------------------------------------->
+                        <tr v-for="(data, index) in vrf_urgent.vrf_Existing_det" :key="index">
+                          <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center">
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block" v-model="vrf_urgent.vrf_Existing_det[index].fullname
+                              " @blur="
+    urgentcase_validateInput(
+      'fullname',
+      index,
+      'กรุณาใส่ข้อมูล'
+    )
+    " />
+                            <p class="error-message" v-if="data.errors && data.errors.fullname">
+                              {{ data.errors.fullname }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <select class="form-select form-select-sm" v-model="vrf_urgent.vrf_Existing_det[index]
+                              .vehicle_brand_id
+                              " @change="
+    urgentcase_validateInput(
+      'vehicle_brand_id',
+      index,
+      'กรุณาเลือกยี่ห้อรถ'
+    )
+    " :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false">
+                              <option v-for="option in data_ddl.vehicle_brand" :value="option.id" :key="option.id">
+                                {{ option.vehicle_brand }}
+                              </option>
+                            </select>
+                            <p class="error-message" v-if="data.errors && data.errors.vehicle_brand_id">
+                              {{ data.errors.vehicle_brand_id }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <input type="text" class="form-control" style="width: 10rem; display: inline-block" v-model="vrf_urgent.vrf_Existing_det[index]
+                              .vehicle_registration
+                              " @blur="
+    urgentcase_validateInput(
+      'vehicle_registration',
+      index,
+      'กรุณาใส่ข้อมูล'
+    )
+    " :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false" />
+                            <p class="error-message" v-if="data.errors && data.errors.vehicle_registration
+                              ">
+                              {{ data.errors.vehicle_registration }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <select class="form-select form-select-sm" v-model="vrf_urgent.vrf_Existing_det[index]
+                              .vehicle_color_id
+                              " @change="
+    urgentcase_validateInput(
+      'vehicle_color_id',
+      index,
+      'กรุณาเลือกสีรถ'
+    )
+    " :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false">
+                              <option v-for="option in data_ddl.vehicle_color" :value="option.id" :key="option.id">
+                                {{ option.vehicle_color }}
+                              </option>
+                            </select>
+                            <p class="error-message" v-if="data.errors && data.errors.vehicle_color_id">
+                              {{ data.errors.ddlvehicle_color }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth25" style="text-align: center">
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block" v-model="vrf_urgent.vrf_Existing_det[index].card_no
+                              " @blur="
+    urgentcase_validateInput(
+      'card_no',
+      index,
+      'กรุณาใส่ข้อมูล'
+    )
+    " :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false" />
+                            <p class="error-message" v-if="data.errors && data.errors.card_no">
+                              {{ data.errors.card_no }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth25" style="text-align: center">
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block"
+                              v-model="vrf_urgent.vrf_Existing_det[index].remark_urgentcase"
+                              @blur="urgentcase_validateInput('remark_urgentcase', index, 'กรุณาใส่ข้อมูล')" />
+                            <p class="error-message" v-if="data.errors && data.errors.remark_urgentcase">
+                              {{ data.errors.remark_urgentcase }}
+                            </p>
+                          </td>
+                          <td scope="col" class="colwidth10">
+                            <span @click="deleteUrgentcaseData(index)" style="cursor: pointer"
+                              v-show="!vrf_urgent.vrf_Existing_det[index].id">
+                              <i class="fa fa-minus-square align-middle" aria-hidden="true"></i>
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!---End Loop Manual Edit VRF------>
+                  <div class="row p-2">
+                    <div class="col ps-4 d-flex">
+                      <h5 class="ps-1 text-gray">&nbsp;</h5>
+                    </div>
+                  </div>
+                  <div class="row p-2" v-if="message_addManual">
+                    <div class="col">
+                      <div :class="`alert ${error_addManual ? 'alert-danger' : 'alert-success'
+                        }`">
+                        {{ message_addManual }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-md-2 text-end">จากวันที่:</div>
+                    <div class="col-md-2">
+                      <datepicker class="form-control" v-model="vrf_urgent.date_from" style="width: 7rem"
+                        inputFormat="dd/MM/yyyy" @update:model-value="setToDate('date_from_edit')" :disabled="true" />
+                    </div>
+                    <div class="col-md-2 text-end">ถึงวันที่:</div>
+                    <div class="col-md-2">
+                      <datepicker class="form-control" v-model="vrf_urgent.date_to" style="width: 7rem"
+                        inputFormat="dd/MM/yyyy" @update:model-value="setFromDate('date_to_edit')" :disabled="true" />
+                    </div>
+                    <div class="col-md-2 text-end">
+                      <input type="text" class="form-control" style="width: 15rem; display: none" />
+                    </div>
+                    <div class="col-md-2 text-end">
+                      <input type="text" class="form-control" style="width: 15rem; display: none" />
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-md-2 text-end">พื้นที่เข้าพบ:</div>
+                    <div class="col-md-2">
+                      <input type="text" class="form-control" style="width: 15rem" v-model="vrf_urgent.meeting_area"
+                        :disabled="true" />
+                    </div>
+                    <div class="col-md-2 text-end">เหตุผลในการเข้าพบ:</div>
+                    <div class="col-md-2">
+                      <input type="text" id="reason" class="form-control" style="width: 15rem" v-model="vrf_urgent.reason"
+                        :disabled="true" />
+                    </div>
+                    <div class="col-md-2 text-end">ชื่อบริษัทผู้มาติดต่อ:</div>
+                    <div class="col-md-2">
+                      <input type="text" id="contactor" class="form-control" style="width: 15rem"
+                        v-model="vrf_urgent.contactor" :disabled="true" />
+                      <p v-if="urgentcase_error.contactor && !vrf_urgent.contactor" class="error-message">
+                        กรุณากรอกข้อมูล
+                      </p>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-md-2 text-end">ผู้ร้องขอ:</div>
+                    <div class="col-md-2">
+                      <input type="text" class="form-control" style="width: 15rem" v-model="vrf_urgent.requestor"
+                        :disabled="true" />
+                    </div>
+                    <div class="col-md-2 text-end">ตำแหน่งผู้ร้องขอ:</div>
+                    <div class="col-md-2">
+                      <input type="text" class="form-control" style="width: 15rem" v-model="vrf_urgent.position"
+                        :disabled="true" />
+                    </div>
+                    <div class="col-md-2 text-end">แผนกผู้ร้องขอ:</div>
+                    <div class="col-md-2">
+                      <input type="text" class="form-control" style="width: 15rem" v-model="vrf_urgent.department"
+                        :disabled="true" />
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-md-2 text-end">เบอร์โทรผู้ร้องขอ:</div>
+                    <div class="col-md-2">
+                      <input type="text" id="requestor_phone" class="form-control" style="width: 15rem"
+                        v-model="vrf_urgent.requestor_phone" :disabled="true" />
+                    </div>
+                    <div class="col-md-2 text-end">ชื่อผู้นำพา:</div>
+                    <div class="col-md-2">
+                      <input type="text" class="form-control" style="width: 15rem" v-model="vrf_urgent.navigator"
+                        :disabled="true" />
+                    </div>
+                    <div class="col-md-2 text-end">แนบไฟล์:</div>
+                    <div class="col-md-2 text-start">
+                      <a :href="fileUrl" target="_blank">
+                        <i class="fa fa-address-card" aria-hidden="true"></i>
+                      </a>
+                      <!-- <label for="formFile_edt"
+                        style="width: auto; height: 2rem; display: inline">
+                        {{ vrf_urgent.attach_file }}
+                      </label> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer pt-0 justify-content-center">
+                <div class="align-top pt-1 d-flex justify-content-center">
+                  <button class="btn btn-primary" v-show="checkstatus_send_to_approve" style="width: 4rem; height: 2rem">
+                    บันทึก
+                  </button>
+                  <button class="btn btn-success" v-show="checkstatus_send_to_approve" style="width: 5rem; height: 2rem"
+                    @click.prevent="sendApprove($event, vrf_urgent.id)">
+                    ส่งอนุมัติ
+                  </button>
+                  <button class="btn btn-danger" data-bs-dismiss="modal" type="reset" style="width: 4rem; height: 2rem"
+                    id="ClosemyModalNew" @click="ClosemyModalNew_">
+                    ยกเลิก
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
   <!-- Loading-->
   <Loading v-if="loading" />
   <Alert_popup :message="Alert_popup_message" v-if="Alert_popup" />
@@ -1701,7 +2019,7 @@ export default defineComponent({
         if (isDuplicate) {
           vrf_urgent.vrf_Existing_det[index].errors = {
             ...vrf_urgent.vrf_Existing_det[index].errors,
-            fullname: "ข้อมูลชื่อ-นามสกุลซ้ำกัน"
+            fullname: "ข้อมูลซ้ำกัน"
           };
         } else {
           if (vrf_urgent.vrf_Existing_det[index].errors && vrf_urgent.vrf_Existing_det[index].errors.fullname) {
@@ -1747,19 +2065,17 @@ export default defineComponent({
         }
       }
       let isDuplicate = false;
-      if (field !== 'vehicle_registration') {
-        // ตรวจสอบข้อมูลซ้ำภายใน vrf_urgent.vrf_Existing_det
-        isDuplicate = vrf_urgent.vrf_Existing_det.some((item, idx) =>
-          idx !== index && item[field] === vrf_urgent.vrf_Existing_det[index][field]
-        );
 
-        // ถ้าไม่ซ้ำภายในตัวมันเอง ตรวจสอบกับ vrf_Existing.vrf_Existing_det
-        // ละเว้นการตรวจสอบสำหรับ tbVehicle_Registration
-        if (!isDuplicate && field !== 'tbVehicle_Registration') {
-          isDuplicate = vrf_Existing.vrf_Existing_det.some(item =>
-            item[field] === vrf_urgent.vrf_Existing_det[index][field]
-          );
-        }
+      // ตรวจสอบข้อมูลซ้ำภายใน vrf_urgent.vrf_Existing_det ก่อน
+      isDuplicate = vrf_urgent.vrf_Existing_det.some((item, idx) =>
+        idx !== index && item[field] === vrf_urgent.vrf_Existing_det[index][field]
+      );
+
+      // ถ้าไม่ซ้ำภายในตัวมันเอง ตรวจสอบกับ vrf_Existing.vrf_Existing_det
+      if (!isDuplicate) {
+        isDuplicate = vrf_Existing.vrf_Existing_det.some(item =>
+          item[field] === vrf_urgent.vrf_Existing_det[index][field]
+        );
       }
 
       // ตั้งค่าข้อผิดพลาดหากมีข้อมูลซ้ำ
@@ -1782,8 +2098,27 @@ export default defineComponent({
           vrf_urgent.vrf_Existing_det[index].errors = { ...rest };
         }
       }
-
     }
+
+    // const urgentcase_validateInput = (field, index, errorMessage) => {
+    //   if (!vrf_urgent.vrf_Existing_det[index][field]) {
+    //     vrf_urgent.vrf_Existing_det[index].errors = {
+    //       ...vrf_urgent.vrf_Existing_det[index].errors,
+    //       [field]: errorMessage
+    //     }
+    //     validateInputAll.value = true
+    //   } else {
+    //     if (
+    //       vrf_urgent.vrf_Existing_det[index].errors &&
+    //       vrf_urgent.vrf_Existing_det[index].errors[field]
+    //     ) {
+    //       const { [field]: removed, ...rest } =
+    //         vrf_urgent.vrf_Existing_det[index].errors
+    //       vrf_urgent.vrf_Existing_det[index].errors = { ...rest }
+    //     }
+    //   }
+    // }    
+    //-------------------validate add vrf-------------------
     const fieldsToValidate = [
       // 'tbDateF',
       // 'tbDateT',
@@ -1809,9 +2144,8 @@ export default defineComponent({
         if (isDuplicate) {
           rowData.value[index].errors = {
             ...rowData.value[index].errors,
-            [field]: "ข้อมูลชื่อ-นามสกุลซ้ำกัน"
+            [field]: "ข้อมูลบัตรซ้ำกัน"
           };
-          validateInputAll.value = true
         } else {
           if (rowData.value[index].errors && rowData.value[index].errors[field]) {
             const { [field]: removed, ...rest } = rowData.value[index].errors;
@@ -1826,7 +2160,6 @@ export default defineComponent({
             ...rowData.value[index].errors,
             [field]: "ข้อมูลบัตรซ้ำกัน"
           };
-          validateInputAll.value = true
         } else {
           if (rowData.value[index].errors && rowData.value[index].errors[field]) {
             const { [field]: removed, ...rest } = rowData.value[index].errors;
@@ -1839,7 +2172,6 @@ export default defineComponent({
             ...rowData.value[index].errors,
             [field]: "ห้ามใส่ข้อมูลเกิน 7 ตัวอักษร"
           }
-          validateInputAll.value = true
         }
         else {
           if (rowData.value[index].errors && rowData.value[index].errors[field]) {
@@ -1852,7 +2184,6 @@ export default defineComponent({
           ...rowData.value[index].errors,
           [field]: errorMessage
         }
-        validateInputAll.value = true
       } else {
         if (rowData.value[index].errors && rowData.value[index].errors[field]) {
           const { [field]: removed, ...rest } = rowData.value[index].errors
@@ -2505,7 +2836,7 @@ export default defineComponent({
         {
           // label: 'เหตุผลในการตีกลับ',
           label: 'รายการเพิ่มเติม',
-          field: 'req_urgentcase_by',
+          field: 'reason_of_reject',
           width: '15%',
           sortable: true,
           display: function (row) {
@@ -2958,6 +3289,7 @@ export default defineComponent({
         alert('กรุณาเลือก จากวันที่ น้อยกว่า ถึงวันที่');
         return;  // Exit the function early without making the API call
       }
+
       const params = {
         tbDateF: AdvSearch.tbDateF !== '' ? AdvSearch.tbDateF : null,
         tbDateT: AdvSearch.tbDateT !== '' ? AdvSearch.tbDateT : null,
@@ -2970,6 +3302,7 @@ export default defineComponent({
         approve_status: AdvSearch.approve_status !== '' ? AdvSearch.approve_status : null
       }
       console.log('params: ', params)
+
       try {
         const res = await axios.get(process.env.VUE_APP_API_URL + '/get_search_vrf_list', { params });
         data.rows = JSON.parse(JSON.stringify(res.data));
@@ -2979,6 +3312,40 @@ export default defineComponent({
       }
       document.getElementById('CloseModalAdvSearch').click();
     }
+    // const AdvSearch_ = async () => {
+    //   const params = {
+    //     tbDateF: AdvSearch.tbDateF !== '' ? AdvSearch.tbDateF : null,
+    //     tbDateT: AdvSearch.tbDateT !== '' ? AdvSearch.tbDateT : null,
+    //     requestor_id:
+    //       AdvSearch.requestor_id !== 0 ? AdvSearch.requestor_id.user_id : null,
+    //     area_id: AdvSearch.area_id !== 0 ? AdvSearch.area_id.id : null,
+    //     requestor_dept_id:
+    //       AdvSearch.requestor_dept_id !== 0
+    //         ? AdvSearch.requestor_dept_id.id
+    //         : null,
+    //     department_id: department_id.value,
+    //     branch_id: localStorage.getItem('user_branch_id'),
+    //     checkin_status: null,
+    //     approve_status: AdvSearch.approve_status !== '' ? AdvSearch.approve_status : null
+    //   }
+    //   console.log('params: ', params)
+    //   await axios
+    //     .get(process.env.VUE_APP_API_URL + '/get_search_vrf_list', { params })
+    //     .then(
+    //       (res) => {
+    //         data.rows = JSON.parse(JSON.stringify(res.data))
+    //         console.log(
+    //           'JSON.parse(JSON.stringify(res.data): ',
+    //           JSON.parse(JSON.stringify(res.data))
+    //         )
+    //       },
+    //       (res) => {
+    //         // error callback
+    //         console.log(res.data)
+    //       }
+    //     )
+    //   document.getElementById('CloseModalAdvSearch').click() //************************** */
+    // }
     // Get data on first rendering
     myRequest('').then((newData) => {
       data.rows = newData
@@ -3018,44 +3385,14 @@ export default defineComponent({
         }
       }
     }
-    const setToDateAdd = () => {
-  if (NewVrf.date_from) {
-    const currentDate = new Date();
-    const selectedDate = new Date(NewVrf.date_from);
-
-    // ตั้งค่าเป็นวันที่ปัจจุบัน แต่ลดเวลาลงเพื่อทำให้การเปรียบเทียบเป็นไปตามวันที่เท่านั้น
-    currentDate.setHours(0, 0, 0, 0);
-
-    // ตั้งค่าให้เป็นวันพรุ่งนี้
-    const tomorrow = new Date();
-    //tomorrow.setDate(currentDate.getDate() + 1);
-    tomorrow.setDate(currentDate.getDate() + 0);
-    tomorrow.setHours(0, 0, 0, 0);
-
-    if (selectedDate < tomorrow) {
-      //alert('กรุณาเลือกวันที่ล่วงหน้าอย่างน้อย 1 วัน');
-      alert('กรุณาเลือกวันที่ปัจจุบันเป็นต้นไป');
-      NewVrf.date_from = null;
-      return; // หยุดฟังก์ชันหากวันที่เลือกไม่ถูกต้อง
+    const setToDateAdd = (type) => {
+      if (type === 'date_from_edit' && NewVrf.date_from) {
+        const dateFrom = new Date(NewVrf.date_from)
+        const dateLimit = new Date(dateFrom)
+        dateLimit.setUTCDate(dateLimit.getUTCDate() + 30)
+        NewVrf.date_to = dateLimit
+      }
     }
-
-    // โค้ดสำหรับการตั้งค่า date_to หากวันที่ที่เลือกถูกต้อง
-    const dateLimit = new Date(selectedDate);
-    dateLimit.setDate(dateLimit.getDate() + 30);
-    NewVrf.date_to = dateLimit;
-  }
-}
-
-
-
-    // const setToDateAdd = (type) => {
-    //   if (type === 'date_from_edit' && NewVrf.date_from) {
-    //     const dateFrom = new Date(NewVrf.date_from)
-    //     const dateLimit = new Date(dateFrom)
-    //     dateLimit.setUTCDate(dateLimit.getUTCDate() + 30)
-    //     NewVrf.date_to = dateLimit
-    //   }
-    // }
     const setFromDateAdd = (type) => {
       if (type === 'date_to_edit' && NewVrf.date_from && NewVrf.date_to) {
         const dateFrom = new Date(NewVrf.date_from)
@@ -3170,7 +3507,6 @@ export default defineComponent({
       let object_det = {}
       rowData.value.forEach((value, key) => (object_det[key] = value))
       object_det.newid = id
-      object_det.role_id = localStorage.getItem('user_role_id')
       var json_object_det = JSON.stringify(object_det)
       console.log(
         'set_manual_add_vrf_trans_det json_object_det: ',
@@ -3212,7 +3548,6 @@ export default defineComponent({
         file.value = target.files[0]
       }
       let isError = false
-      isError = validateInputAll.value
       if (rowData.value.length === 0) {
         isError = true
         //message_addManual.value = "กรุณาเพิ่มรายการ"
@@ -3280,7 +3615,6 @@ export default defineComponent({
       }
       if (isError) {
         console.log('isError: ', isError)
-        validateInputAll.value = false
         return false
       } //--------------call addManualVRF
       else {
@@ -3288,6 +3622,7 @@ export default defineComponent({
         if (confirm('คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ ?')) {
           addManualVRF()
         }
+
       }
     }
     const updateCheckedRows = (rowsKey) => {

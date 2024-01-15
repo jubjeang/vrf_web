@@ -1,6 +1,10 @@
 <template>
   <Header />
-  <Sidebar :probs_isVisible="true" :probs_isVisible2="false" :probs_isVisible3="false" />
+  <Sidebar
+    :probs_isVisible="true"
+    :probs_isVisible2="false"
+    :probs_isVisible3="false"
+  />
   <!------------------------------------------------------------------------------------------List main---->
   <div :style="{ 'margin-left': sidebarWidth }" class="row ps-4">
     <!-- <div class="container p-0" style="width: 200rem"> -->
@@ -21,13 +25,20 @@
     </div>
     <div class="row p-0" style="width: 100%">
       <div class="col-2 ps-4" style="text-align: left">
-        <button type="button" class="btn btn-danger" style="width: 5rem; height: 2rem; display: none"
-          @click="update_vrf_trans_status_all('cancel')">
+        <button
+          type="button"
+          class="btn btn-danger"
+          style="width: 5rem; height: 2rem; display: none"
+          @click="update_vrf_trans_status_all('cancel')"
+        >
           ยกเลิก
         </button>
         &nbsp;
-        <button class="btn btn-primary" @click="update_vrf_trans_status_all('approve')"
-          style="width: 5rem; height: 2rem; display: none">
+        <button
+          class="btn btn-primary"
+          @click="update_vrf_trans_status_all('approve')"
+          style="width: 5rem; height: 2rem; display: none"
+        >
           ส่งอนุมัติ
         </button>
       </div>
@@ -44,7 +55,11 @@
           </span>
           &nbsp;|&nbsp; -->
           <label>
-            <span style="cursor: pointer" data-bs-target="#ModalAdvSearch" data-bs-toggle="modal">
+            <span
+              style="cursor: pointer"
+              data-bs-target="#ModalAdvSearch"
+              data-bs-toggle="modal"
+            >
               ค้นหาขั้นสูง
             </span>
             &nbsp;|&nbsp;ค้นหาโดย:
@@ -56,9 +71,18 @@
     </div>
     <div class="row p-0 scrollable-table">
       <div class="col-12">
-        <table-lite :is-static-mode="true" :has-checkbox="false" :is-loading="table.isLoading" :columns="table.columns"
-          :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable" @is-finished="tableLoadingFinish"
-          @return-checked-rows="updateCheckedRows" class="table table-striped table-hover"></table-lite>
+        <table-lite
+          :is-static-mode="true"
+          :has-checkbox="false"
+          :is-loading="table.isLoading"
+          :columns="table.columns"
+          :rows="table.rows"
+          :total="table.totalRecordCount"
+          :sortable="table.sortable"
+          @is-finished="tableLoadingFinish"
+          @return-checked-rows="updateCheckedRows"
+          class="table table-striped table-hover"
+        ></table-lite>
         <!-- <table-lite :is-static-mode="true" :has-checkbox="false" :is-loading="table.isLoading" :columns="table.columns"
           :rows="rowsWithClass" :total="table.totalRecordCount" :sortable="table.sortable"
           @is-finished="tableLoadingFinish" @return-checked-rows="updateCheckedRows" class="table"></table-lite> -->
@@ -76,8 +100,13 @@
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">ค้นหาขั้นสูง</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                  @click="ClosemyModalNew_"></button>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  @click="ClosemyModalNew_"
+                ></button>
               </div>
               <div class="modal-body">
                 <div class="container">
@@ -89,65 +118,148 @@
                   <div class="row p-2">
                     <div class="col-sm-2 pe-0">จากวันที่</div>
                     <div class="col-sm-2 ps-0">
-                      <datepicker class="form-control" v-model="AdvSearch.tbDateF" style="width: 7rem"
-                        inputFormat="dd/MM/yyyy" />
+                      <datepicker
+                        class="form-control"
+                        v-model="AdvSearch.tbDateF"
+                        style="width: 7rem"
+                        inputFormat="dd/MM/yyyy"
+                      />
                     </div>
                     <div class="col-sm-2"></div>
                     <div class="col-sm-2 pe-0">ถึงวันที่</div>
                     <div class="col-sm-2 ps-0">
-                      <datepicker class="form-control" v-model="AdvSearch.tbDateT" style="width: 7rem"
-                        inputFormat="dd/MM/yyyy" />
+                      <datepicker
+                        class="form-control"
+                        v-model="AdvSearch.tbDateT"
+                        style="width: 7rem"
+                        inputFormat="dd/MM/yyyy"
+                      />
                     </div>
                   </div>
 
                   <div class="row p-2">
                     <div class="col-sm-2">ชื่อผู้ร้องขอ</div>
                     <div class="col-sm-2 ps-0">
-                      <VueMultiselect name="requestor" id="requestor" :options="data_ddl.userlist"
-                        class="form-select form-select-sm p-0" label="first_name" :style="{
+                      <VueMultiselect
+                        name="requestor"
+                        id="requestor"
+                        :options="data_ddl.userlist"
+                        class="form-select form-select-sm p-0"
+                        label="first_name"
+                        :style="{
                           width: '15rem',
                           height: '0.5rem'
-                        }" v-model="AdvSearch.requestor_id" :select-label="null" :allow-empty="true"
-                        :close-on-select="true" :value="user_id" track-by="user_id" placeholder="เลือก"
-                        :deselectLabel="null"></VueMultiselect>
+                        }"
+                        v-model="AdvSearch.requestor_id"
+                        :select-label="null"
+                        :allow-empty="true"
+                        :close-on-select="true"
+                        :value="user_id"
+                        track-by="user_id"
+                        placeholder="เลือก"
+                        :deselectLabel="null"
+                      ></VueMultiselect>
                     </div>
                     <div class="col-sm-2"></div>
                     <div class="col-sm-2">พื้นที่เข้าพบ</div>
                     <div class="col-sm-2 ps-0">
-                      <VueMultiselect name="area" id="area" :options="data_ddl.area"
-                        class="form-select form-select-sm p-0" label="meeting_area" :style="{
+                      <VueMultiselect
+                        name="area"
+                        id="area"
+                        :options="data_ddl.area"
+                        class="form-select form-select-sm p-0"
+                        label="meeting_area"
+                        :style="{
                           width: '15rem',
                           height: '0.5rem'
-                        }" v-model="AdvSearch.area_id" :select-label="null" :allow-empty="true" :close-on-select="true"
-                        :value="id" track-by="id" placeholder="เลือก" :deselectLabel="null"></VueMultiselect>
+                        }"
+                        v-model="AdvSearch.area_id"
+                        :select-label="null"
+                        :allow-empty="true"
+                        :close-on-select="true"
+                        :value="id"
+                        track-by="id"
+                        placeholder="เลือก"
+                        :deselectLabel="null"
+                      ></VueMultiselect>
                     </div>
                   </div>
                   <div class="row p-2">
                     <div class="col-sm-2">แผนกผู้ร้องขอ</div>
                     <div class="col-sm-2 ps-0">
-                      <VueMultiselect name="requestor_dept" id="requestor_dept" :options="data_ddl.dept"
-                        class="form-select form-select-sm p-0" label="department" :style="{
+                      <VueMultiselect
+                        name="requestor_dept"
+                        id="requestor_dept"
+                        :options="data_ddl.dept"
+                        class="form-select form-select-sm p-0"
+                        label="department"
+                        :style="{
                           width: '15rem',
                           height: '0.5rem'
-                        }" v-model="AdvSearch.requestor_dept_id" :select-label="null" :allow-empty="true"
-                        :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel="null">
-                      </VueMultiselect>
+                        }"
+                        v-model="AdvSearch.requestor_dept_id"
+                        :select-label="null"
+                        :allow-empty="true"
+                        :close-on-select="true"
+                        :value="id"
+                        track-by="id"
+                        placeholder="เลือก"
+                        :deselectLabel="null"
+                      ></VueMultiselect>
                     </div>
                     <div class="col-sm-2"></div>
                     <div class="col-sm-2 pe-0">ชื่อบริษัทที่มาติดต่อ</div>
                     <div class="col-sm-2 ps-0">
-                      <input type="text" class="form-control" style="width: 15rem" v-model="AdvSearch.contactor" />
+                      <input
+                        type="text"
+                        class="form-control"
+                        style="width: 15rem"
+                        v-model="AdvSearch.contactor"
+                      />
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-sm-2">ชื่อผู้มาติดต่อ</div>
+                    <div class="col-sm-2 ps-0">
+                      <input
+                        type="text"
+                        class="form-control"
+                        style="width: 15rem"
+                        v-model="AdvSearch.requestor"
+                      />
+                    </div>
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-2 pe-0">หมายเลขบัตร</div>
+                    <div class="col-sm-2 ps-0">
+                      <input
+                        type="text"
+                        class="form-control"
+                        style="width: 15rem"
+                        v-model="AdvSearch.card_no"
+                      />
                     </div>
                   </div>
                 </div>
               </div>
               <div class="modal-footer pt-0 justify-content-center">
                 <div class="align-top pt-1 d-flex justify-content-center">
-                  <button class="btn btn-primary" style="width: 4rem; height: 2rem" @click="AdvSearch_" type="button">
+                  <button
+                    class="btn btn-primary"
+                    style="width: 4rem; height: 2rem"
+                    @click="AdvSearch_"
+                    type="button"
+                  >
                     ค้นหา
                   </button>
-                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="CloseModalAdvSearch"
-                    style="width: 4rem; height: 2rem" id="CloseModalAdvSearch" @click="ClosemyModalNew_">
+                  <button
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                    type="reset"
+                    ref="CloseModalAdvSearch"
+                    style="width: 4rem; height: 2rem"
+                    id="CloseModalAdvSearch"
+                    @click="ClosemyModalAdvanceSearch"
+                  >
                     ยกเลิก
                   </button>
                 </div>
@@ -167,14 +279,19 @@
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">รายการขอเข้าพื้นที่</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                  @click="CloseEditModal"></button>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  @click="CloseEditModal"
+                ></button>
               </div>
               <div class="modal-body modalcustom">
                 <div class="container modalcustom">
                   <!---Loop Manual Edit VRF------>
                   <div class="row ms-4 ps-4 pe-3 me-3 modalcustom">
-                    <table class="table  modalcustomtb">
+                    <table class="table modalcustomtb">
                       <thead>
                         <tr>
                           <th scope="col" class="colwidth10">ชื่อ-นามสกุล</th>
@@ -197,69 +314,189 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(data, index) in vrf_Existing.vrf_Existing_det" :key="data.id"
-                          :class="getRowClass(data)">
-                          <td scope="col" class="colwidth10" style="white-space: nowrap; text-align: center">
-                            <input type="text" class="form-control" style="width: 10rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index].fullname
-                              " readonly />
+                        <tr
+                          v-for="(data, index) in vrf_Existing.vrf_Existing_det"
+                          :key="data.id"
+                          :class="getRowClass(data)"
+                        >
+                          <td
+                            scope="col"
+                            class="colwidth10"
+                            style="white-space: nowrap; text-align: center"
+                          >
+                            <input
+                              type="text"
+                              class="form-control"
+                              style="width: 10rem; display: inline-block"
+                              v-model="
+                                vrf_Existing.vrf_Existing_det[index].fullname
+                              "
+                              readonly
+                            />
                           </td>
                           <td scope="col" class="colwidth10">
-                            <input type="text" class="form-control" style="width: 7rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index]
-                              .vehicle_brand
-                              " readonly />
+                            <input
+                              type="text"
+                              class="form-control"
+                              style="width: 7rem; display: inline-block"
+                              v-model="
+                                vrf_Existing.vrf_Existing_det[index]
+                                  .vehicle_brand
+                              "
+                              readonly
+                            />
                           </td>
                           <td scope="col" class="colwidth10">
-                            <input type="text" class="form-control" style="width: 7rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index]
-                              .vehicle_registration
-                              " readonly />
+                            <input
+                              type="text"
+                              class="form-control"
+                              style="width: 7rem; display: inline-block"
+                              v-model="
+                                vrf_Existing.vrf_Existing_det[index]
+                                  .vehicle_registration
+                              "
+                              readonly
+                            />
                           </td>
                           <td scope="col" class="colwidth10">
-                            <input type="text" class="form-control" style="width: 7rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index]
-                              .vehicle_color
-                              " readonly />
+                            <input
+                              type="text"
+                              class="form-control"
+                              style="width: 7rem; display: inline-block"
+                              v-model="
+                                vrf_Existing.vrf_Existing_det[index]
+                                  .vehicle_color
+                              "
+                              readonly
+                            />
                           </td>
-                          <td scope="col" class="colwidth25" style="text-align: center">
-                            <input type="text" class="form-control" style="width: 15rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index].card_no
-                              " readonly />
+                          <td
+                            scope="col"
+                            class="colwidth25"
+                            style="text-align: center"
+                          >
+                            <input
+                              type="text"
+                              class="form-control"
+                              style="width: 15rem; display: inline-block"
+                              v-model="
+                                vrf_Existing.vrf_Existing_det[index].card_no
+                              "
+                              readonly
+                            />
                           </td>
-                          <td scope="col" class="colwidth5" style="text-align: center">
-                            <input type="text" class="form-control" style="
+                          <td
+                            scope="col"
+                            class="colwidth5"
+                            style="text-align: center"
+                          >
+                            <input
+                              type="text"
+                              class="form-control"
+                              style="
                                 width: 5rem;
                                 display: inline-block;
                                 text-align: center;
                                 padding: 0;
-                              " v-model="vrf_Existing.vrf_Existing_det[index]
-                                .checkin_date
-                                " readonly />
+                              "
+                              v-model="
+                                vrf_Existing.vrf_Existing_det[index]
+                                  .checkin_date
+                              "
+                              readonly
+                            />
                           </td>
-                          <td scope="col" class="colwidth5" style="text-align: center">
-                            <input type="text" class="form-control" style="
+                          <td
+                            scope="col"
+                            class="colwidth5"
+                            style="text-align: center"
+                          >
+                            <input
+                              type="text"
+                              class="form-control"
+                              style="
                                 width: 5rem;
                                 display: inline-block;
                                 text-align: center;
                                 padding: 0;
-                              " v-model="vrf_Existing.vrf_Existing_det[index]
-                                .checkout_date
-                                " readonly />
+                              "
+                              v-model="
+                                vrf_Existing.vrf_Existing_det[index]
+                                  .checkout_date
+                              "
+                              readonly
+                            />
                           </td>
-                          <td scope="col" class="colwidth10" style="text-align: center">
-                            <input type="text" class="form-control" style="width: 10rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index].remark_urgentcase
-                              " readonly />
+                          <td
+                            scope="col"
+                            class="colwidth10"
+                            style="text-align: center"
+                          >
+                            <input
+                              type="text"
+                              class="form-control"
+                              style="width: 10rem; display: inline-block"
+                              v-model="
+                                vrf_Existing.vrf_Existing_det[index]
+                                  .remark_urgentcase
+                              "
+                              readonly
+                            />
                           </td>
                           <td scope="col" class="colwidth15">
-                            <span  v-show="check_approve(index)" @click="() => handleCheckinClick(vrf_Existing.vrf_Existing_det[index], index)"
-                              style="cursor: pointer; font-size: small;">
-                              เข้า
-                            &nbsp;|&nbsp;</span>
-                            <span v-show="check_approve(index)" @click="() => ResetCheckin_out(vrf_Existing.vrf_Existing_det[index], index,'In')"
-                              style="cursor: pointer; font-size: small;">
-                              ยกเลิก
-                            &nbsp;&nbsp;</span><br />
-                            <span v-show="check_approve(index)" @click="() => handleCheckoutClick(vrf_Existing.vrf_Existing_det[index], index)"
-                              style="cursor: pointer; font-size: small;"> ออก
-                            &nbsp;|&nbsp;</span>
-                            <span v-show="check_approve(index)" @click="() => ResetCheckin_out(vrf_Existing.vrf_Existing_det[index], index,'Out')"
-                              style="cursor: pointer; font-size: small;">
+                            <span
+                              v-show="check_approve(index)"
+                              @click="
+                                () =>
+                                  handleCheckinClick(
+                                    vrf_Existing.vrf_Existing_det[index],
+                                    index
+                                  )
+                              "
+                              style="cursor: pointer; font-size: small"
+                            >
+                              เข้า &nbsp;|&nbsp;
+                            </span>
+                            <span
+                              v-show="check_approve(index)"
+                              @click="
+                                () =>
+                                  ResetCheckin_out(
+                                    vrf_Existing.vrf_Existing_det[index],
+                                    index,
+                                    'In'
+                                  )
+                              "
+                              style="cursor: pointer; font-size: small"
+                            >
+                              ยกเลิก &nbsp;&nbsp;
+                            </span>
+                            <br />
+                            <span
+                              v-show="check_approve(index)"
+                              @click="
+                                () =>
+                                  handleCheckoutClick(
+                                    vrf_Existing.vrf_Existing_det[index],
+                                    index
+                                  )
+                              "
+                              style="cursor: pointer; font-size: small"
+                            >
+                              ออก &nbsp;|&nbsp;
+                            </span>
+                            <span
+                              v-show="check_approve(index)"
+                              @click="
+                                () =>
+                                  ResetCheckin_out(
+                                    vrf_Existing.vrf_Existing_det[index],
+                                    index,
+                                    'Out'
+                                  )
+                              "
+                              style="cursor: pointer; font-size: small"
+                            >
                               ยกเลิก
                             </span>
                             <!-- <span @click="
@@ -285,8 +522,11 @@
                   </div>
                   <div class="row p-2" v-if="message_addManual">
                     <div class="col">
-                      <div :class="`alert ${error_addManual ? 'alert-danger' : 'alert-success'
-                        }`">
+                      <div
+                        :class="`alert ${
+                          error_addManual ? 'alert-danger' : 'alert-success'
+                        }`"
+                      >
                         {{ message_addManual }}
                       </div>
                     </div>
@@ -295,16 +535,33 @@
                   <div class="row p-2">
                     <div class="col-md-2 text-end">พื้นที่เข้าพบ:</div>
                     <div class="col-md-2">
-                      <input type="text" id="meeting_area" class="form-control" v-model="vrf_Existing.meeting_area"
-                        readonly />
+                      <input
+                        type="text"
+                        id="meeting_area"
+                        class="form-control"
+                        v-model="vrf_Existing.meeting_area"
+                        readonly
+                      />
                     </div>
                     <div class="col-md-2 text-end">เหตุผลในการเข้าพบ:</div>
                     <div class="col-md-2">
-                      <input type="text" id="reason" class="form-control" v-model="vrf_Existing.reason" readonly />
+                      <input
+                        type="text"
+                        id="reason"
+                        class="form-control"
+                        v-model="vrf_Existing.reason"
+                        readonly
+                      />
                     </div>
                     <div class="col-md-2 text-end">ชื่อบริษัทผู้มาติดต่อ:</div>
                     <div class="col-md-2">
-                      <input type="text" id="contactor" class="form-control" v-model="vrf_Existing.contactor" readonly />
+                      <input
+                        type="text"
+                        id="contactor"
+                        class="form-control"
+                        v-model="vrf_Existing.contactor"
+                        readonly
+                      />
                     </div>
                   </div>
 
@@ -312,15 +569,30 @@
                   <div class="row p-2">
                     <div class="col-md-2 text-end">ผู้ร้องขอ:</div>
                     <div class="col-md-2">
-                      <input type="text" class="form-control" v-model="vrf_Existing.requestor" readonly />
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="vrf_Existing.requestor"
+                        readonly
+                      />
                     </div>
                     <div class="col-md-2 text-end">ตำแหน่งผู้ร้องขอ:</div>
                     <div class="col-md-2">
-                      <input type="text" class="form-control" v-model="vrf_Existing.position" readonly />
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="vrf_Existing.position"
+                        readonly
+                      />
                     </div>
                     <div class="col-md-2 text-end">แผนกผู้ร้องขอ:</div>
                     <div class="col-md-2">
-                      <input type="text" class="form-control" v-model="vrf_Existing.department" readonly />
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="vrf_Existing.department"
+                        readonly
+                      />
                     </div>
                   </div>
 
@@ -328,12 +600,22 @@
                   <div class="row p-2">
                     <div class="col-md-2 text-end">เบอร์โทรผู้ร้องขอ:</div>
                     <div class="col-md-2">
-                      <input type="text" id="requestor_phone" class="form-control" v-model="vrf_Existing.requestor_phone"
-                        readonly />
+                      <input
+                        type="text"
+                        id="requestor_phone"
+                        class="form-control"
+                        v-model="vrf_Existing.requestor_phone"
+                        readonly
+                      />
                     </div>
                     <div class="col-md-2 text-end">ชื่อผู้นำพา:</div>
                     <div class="col-md-2">
-                      <input type="text" class="form-control" v-model="vrf_Existing.navigator" readonly />
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="vrf_Existing.navigator"
+                        readonly
+                      />
                     </div>
                     <div class="col-md-2 text-end">แนบไฟล์:</div>
                     <div class="col-md-2 text-start">
@@ -347,15 +629,24 @@
                   <div class="row p-2">
                     <div class="col-md-2 text-end">หมายเหตุ:</div>
                     <div class="col-md-10">
-                      <input type="text" id="comment" class="form-control" v-model="vrf_Existing.comment"
-                        style="width: 70%;" />
+                      <input
+                        type="text"
+                        id="comment"
+                        class="form-control"
+                        v-model="vrf_Existing.comment"
+                        style="width: 70%"
+                      />
                     </div>
                   </div>
                 </div>
               </div>
               <div class="modal-footer pt-0 justify-content-center">
                 <div class="align-top pt-1 d-flex justify-content-center">
-                  <button class="btn btn-success" style="width: 4rem; height: 2rem" @click.prevent="setCheckInOut">
+                  <button
+                    class="btn btn-success"
+                    style="width: 4rem; height: 2rem"
+                    @click.prevent="setCheckInOut"
+                  >
                     {{ check_vrf_inout.label }}
                   </button>
                   <!-- <button class="btn btn-danger" data-bs-dismiss="modal" type="reset" style="width: 4rem; height: 2rem"
@@ -383,7 +674,10 @@
         <button id="button_alert_popup_submit" @click="confirmDialog">
           ตกลง
         </button>
-        <button id="button_alert_popup_cancel" @click="isOpen_alert_popup = false">
+        <button
+          id="button_alert_popup_cancel"
+          @click="isOpen_alert_popup = false"
+        >
           ยกเลิก
         </button>
       </div>
@@ -583,7 +877,9 @@ export default defineComponent({
       contactor: '',
       requestor_id: 0,
       area_id: 0,
-      requestor_dept_id: 0
+      requestor_dept_id: 0,
+      requestor: '',
+      card_no: ''
     })
     const VueMultiselect_ = reactive({
       BranchOriginBG_Color: '',
@@ -600,129 +896,188 @@ export default defineComponent({
     })
     const options = ['list', 'of', 'options']
     const hasLocalStorage = ref(null)
-    // const handleCheckoutClick = (item, index) => {
-    //   // สมมติว่าเราใช้วันปัจจุบันสำหรับการสร้างออบเจกต์ Date
-    //   let currentDate = new Date();
-    //   let checkinDate = new Date(currentDate.toDateString() + ' ' + item.checkin_date);
-    //   let checkoutDate = new Date(currentDate.toDateString() + ' ' + item.checkout_date);
-
-    //   if (item.checkin_date !== '-' && item.checkout_date === '-') {
-    //     Time_stamp(item.id, 'check_out', index);
-    //   } else if (checkinDate > checkoutDate && item.checkout_date !== '-') {
-    //     console.log('เวลาออกน้อยกว่าเวลาเข้าไม่ได้');
-    //     alert('เวลาออกน้อยกว่าเวลาเข้าไม่ได้');
-    //   } else if (item.checkin_date === '-' && item.checkout_date === '-') {
-    //     alert('ต้องคลิกเวลาเข้าก่อน');
-    //   } else {
-    //     console.log('else');
-    //     Time_stamp(item.id, 'check_out', index);
-    //   }
-    // }
-    // const handleCheckinClick = (item, index) => {
-    //   // if (item.checkout_date === '-' && item.checkin_date !== '-') {
-    //   //   Time_stamp(item.id, 'check_in', index);
-    //   // }
-    //   // else if (item.checkin_date === '-' && item.checkout_date === '-') {
-    //   //   Time_stamp(item.id, 'check_in', index);
-    //   // }
-    //   // else {
-    //   //   Time_stamp(item.id, 'check_in', index);
-    //   // }
-    //   Time_stamp(item.id, 'check_in', index);
-    // }
     const check_approve = (index) => {
       if (vrf_Existing.vrf_Existing_det[index].urgentcase_type === null) {
         return true
-      } else { 
+      } else {
         if (vrf_Existing.vrf_Existing_det[index].urgentcase_type === 'Absent') {
           return false
-        } else if ( vrf_Existing.vrf_Existing_det[index].urgentcase_type === 'Additional'
-         && vrf_Existing.vrf_Existing_det[index].approve_status === 5) {
+        } else if (
+          vrf_Existing.vrf_Existing_det[index].urgentcase_type ===
+            'Additional' &&
+          vrf_Existing.vrf_Existing_det[index].approve_status === 5
+        ) {
           return true
-        }
-        else {
+        } else {
           return false
         }
         //return false
       }
-    }
-    // const handleResetCheckin = (item, index) => {
-    //   if (item.isCheckedIn && !item.isCheckedOut) {
-    //     alert('คุณได้ทำการเข้าแล้ว กรุณาคลิกออกก่อนที่จะเข้าใหม่');
-    //     return;
-    //   }
-
-    //   // ตั้งค่า isCheckedOut เป็น false สำหรับการเข้าใหม่
-    //   item.isCheckedOut = false;
-    //   item.isCheckedIn = true;
-    //   ResetCheckin_out(item.id, 'check_in', index);
-    // }
-    // const handleResetCheckout = (item, index) => {
-    //   let currentDate = new Date();
-    //   let checkinDate = new Date(currentDate.toDateString() + ' ' + item.checkin_date);
-    //   let checkoutDate = new Date(currentDate.toDateString() + ' ' + item.checkout_date);
-
-    //   if (!item.isCheckedIn) {
-    //     alert('กรุณาคลิกเข้าก่อน');
-    //     return;
-    //   }
-    //   if (item.isCheckedOut) {
-    //     alert('คุณได้ทำการคลิกออกแล้ว กรุณาคลิกเข้าก่อนที่จะออกใหม่');
-    //     return;
-    //   }
-
-    //   if (checkinDate > checkoutDate && item.checkout_date !== '-') {
-    //     console.log('เวลาออกไม่สามารถน้อยกว่าเวลาเข้าได้');
-    //     alert('เวลาออกไม่สามารถน้อยกว่าเวลาเข้าได้');
-    //   } else {
-    //     item.isCheckedOut = true;
-    //     ResetCheckin_out(item.id, 'check_out', index);
-    //   }
-    // }    
-    const handleCheckinClick = (item, index) => {
-      if (item.isCheckedIn && !item.isCheckedOut) {
-        alert('คุณได้ทำการเข้าแล้ว กรุณาคลิกออกก่อนที่จะเข้าใหม่');
-        return;
+    } 
+    const handleCheckinClick = async (item, index) => { 
+      const params = {
+        Id: vrf_Existing.vrf_Existing_det[index].id
+      }  
+      let currentDate_ = await axios
+        .get(process.env.VUE_APP_API_URL + '/get_currentDateTime', { params })
+        .then(
+          (res) => {
+            // success callback
+            let obj = JSON.parse(JSON.stringify(res.data))
+            return obj[0].checkin
+          },
+          (res) => {
+            // error callback
+            console.log(res.data)
+          }
+        )
+      console.log('item.checkout_date: ', item.checkout_date)
+      item.isCheckedIn = item.isCheckedIn || false
+      item.isCheckedOut = item.isCheckedOut || false
+      // if (item.isCheckedIn && !item.isCheckedOut) {
+      //   alert('คุณได้ทำการเข้าแล้ว กรุณาคลิกออกก่อนที่จะเข้าใหม่')
+      //   return
+      // }
+      // else if(item.checkout_date === currentDate_)
+      // { 
+      //   console.log('เวลาเข้าไม่สามารถเท่ากับเวลาเข้าได้')
+      //   alert('เวลาเข้าไม่สามารถเท่ากับเวลาเข้าได้')
+      //   return
+      // } 
+      // else 
+      if(item.checkout_date==="-" && item.checkin_date !=="-"){
+        alert('คุณได้ทำการเข้าแล้ว กรุณาคลิกออกก่อนที่จะเข้าใหม่')
+        return
       }
-      // ตั้งค่า isCheckedOut เป็น false สำหรับการเข้าใหม่
-      item.isCheckedOut = false;
-      item.isCheckedIn = true;
-      Time_stamp(item.id, 'check_in', index);
-    }
-    const handleCheckoutClick = (item, index) => {
-      let currentDate = new Date();
-      let checkinDate = new Date(currentDate.toDateString() + ' ' + item.checkin_date);
-      let checkoutDate = new Date(currentDate.toDateString() + ' ' + item.checkout_date);
-      console.log('item.isCheckedIn: ', item.isCheckedIn)
-      console.log('item.isCheckedOut: ', item.isCheckedOut)
-
-      if (!item.isCheckedIn) {
-        alert('กรุณาคลิกเข้าก่อน');
-        return;
+      else if(item.checkout_date === currentDate_)
+      { 
+        console.log('เวลาเข้าไม่สามารถเท่ากับเวลาเข้าได้')
+        alert('เวลาเข้าไม่สามารถเท่ากับเวลาเข้าได้')
+        return
       }
-      if (item.isCheckedOut) {
-        alert('คุณได้ทำการคลิกออกแล้ว กรุณาคลิกเข้าก่อนที่จะออกใหม่');
-        return;
-      }
-
-      if (checkinDate > checkoutDate && item.checkout_date !== '-') {
-        console.log('เวลาออกไม่สามารถน้อยกว่าเวลาเข้าได้');
-        alert('เวลาออกไม่สามารถน้อยกว่าเวลาเข้าได้');
-      } else {
-        item.isCheckedOut = true;
-        Time_stamp(item.id, 'check_out', index);
+      else {
+        // ตั้งค่า isCheckedOut เป็น false สำหรับการเข้าใหม่
+        item.isCheckedOut = false
+        item.isCheckedIn = true
+        Time_stamp(item.id, 'check_in', index)
+        console.log('handleCheckinClick item.isCheckedIn: ', item.isCheckedIn)
+        console.log('handleCheckinClick item.isCheckedOut: ', item.isCheckedOut)
+        vrf_Existing.vrf_Existing_det[index].checkout_date = '-'
       }
     }
-    const ResetCheckin_out = async (Item,index, type) => {
+    const handleCheckoutClick = async (item, index) => {
+      let currentDate = new Date()
+      let checkinDate = new Date(
+        currentDate.toDateString() + ' ' + item.checkin_date
+      )
+      let checkoutDate = new Date(
+        currentDate.toDateString() + ' ' + item.checkout_date
+      )
+      const params = {
+        Id: vrf_Existing.vrf_Existing_det[index].id
+      }
+      let currentDate_ = await axios
+        .get(process.env.VUE_APP_API_URL + '/get_currentDateTime', { params })
+        .then(
+          (res) => {
+            // success callback
+            let obj = JSON.parse(JSON.stringify(res.data))
+            return obj[0].checkin
+          },
+          (res) => {
+            // error callback
+            console.log(res.data)
+          }
+        )
+        .finally(() => {
+          //
+        })
+      item.isCheckedIn = item.isCheckedIn || false
+      item.isCheckedOut = item.isCheckedOut || false
+      //ถ้า item.isCheckedIn มีค่าที่เป็น "truthy" (เช่น true, ไม่ใช่ null หรือ undefined หรือค่าว่างอื่นๆ) ค่านี้จะถูกเลือก
+      //ถ้า item.isCheckedIn มีค่าที่เป็น "falsy" (เช่น false, null, undefined, 0, "" ฯลฯ) ค่า false จะถูกเลือกแทน
+      // สร้างวันที่ขึ้นมาใหม่ (ใช้วันปัจจุบันแต่เปลี่ยนเวลา)
+        let checkinDate_Time = new Date();
+        checkinDate_Time.setHours(item.checkin_date.split(':')[0]);
+        checkinDate_Time.setMinutes(item.checkin_date.split(':')[1]);
+
+        let checkoutDate_Time = new Date();
+        checkoutDate_Time.setHours(item.checkout_date.split(':')[0]);
+        checkoutDate_Time.setMinutes(item.checkout_date.split(':')[1]);
+
+      if (item.isCheckedIn === false && item.checkin_date === '-') {
+        alert('กรุณาคลิกเข้าก่อน')
+        console.log('!item.isCheckedIn: ', !item.isCheckedIn)
+        console.log('item.checkin_date: ', item.checkin_date)
+        console.log('Type of item.isCheckedIn: ', typeof item.isCheckedIn)
+        console.log('Type of item.checkin_date: ', typeof item.checkin_date)
+        console.log('!item.isCheckedIn || item.checkin_date ===: ')
+        return
+      } else if (item.checkin_date === '-') {
+        alert('กรุณาคลิกเข้าก่อน')
+        console.log('item.checkin_date === ')
+        return
+      }
+      // else if (item.checkin_date !== '-' && item.checkout_date !=='-')
+      // {
+      //   console.log('(item.checkin_date !== - && item.checkout_date !==-)',item.checkin_date !== '-' && item.checkout_date !=='-')
+      //   alert('คุณได้ทำการคลิกออกแล้ว กรุณาคลิกเข้าก่อนที่จะออกใหม่')
+      //   return
+      // }
+      // else if (checkinDate > checkoutDate && item.checkout_date !== '-') 
+      // {
+      //   console.log('เวลาออกไม่สามารถน้อยกว่าเวลาเข้าได้')
+      //   alert('เวลาออกไม่สามารถน้อยกว่าเวลาเข้าได้')
+      //   return
+      // }
+      else if (item.checkin_date === currentDate_)
+      {
+        console.log('เวลาออกไม่สามารถเท่ากับเวลาเข้าได้')
+        alert('เวลาออกไม่สามารถเท่ากับเวลาเข้าได้')
+        return
+      } 
+      else if (checkoutDate > checkinDate)
+      { 
+        console.log('กรุณาคลิกเข้าก่อน')
+        alert('กรุณาคลิกเข้าก่อน')
+        return
+      }
+      else
+      {
+        item.isCheckedOut = true
+        Time_stamp(item.id, 'check_out', index)
+      }
+    }
+    const ResetCheckin_out = async (Item, index, type) => {
       //alert(vrf_det_id)
       console.log('type: ', type)
       check_vrf_inout.type = type
-      let type_ = check_vrf_inout.type === 'In' ? 'เข้า' : 'ออก' 
-      check_vrf_inout.type === 'In' ? Item.isCheckedOut = false : Item.isCheckedIn = false; 
-      
-      
-      let checkincheckout_det_id = check_vrf_inout.type === 'In' ? Item.checkin_id : Item.checkout_id
-      if (confirm(`คุณยกเลิกการลงเวลา${type_}พื้นที่ ?`)) {
+      let type_ = check_vrf_inout.type === 'In' ? 'เข้า' : 'ออก'
+      // check_vrf_inout.type === 'In'
+      //   ? (Item.isCheckedOut = false)
+      //   : (Item.isCheckedIn = false)
+      if(check_vrf_inout.type === 'In' && vrf_Existing.vrf_Existing_det[index].checkout_date !== '-')
+      {
+          alert('คุณไม่สามารถยกเลิกเวลาเข้าได้')
+          return
+      }
+      if(check_vrf_inout.type === 'In' && vrf_Existing.vrf_Existing_det[index].checkin_date === '-')
+      {
+          alert('คุณไม่สามารถยกเลิกเวลาเข้าได้')
+          return
+      }
+      if(check_vrf_inout.type === 'Out' && vrf_Existing.vrf_Existing_det[index].checkout_date === '-')
+      {
+          alert('คุณไม่สามารถยกเลิกเวลาออกได้')
+          return
+      }            
+      let checkincheckout_det_id =
+        check_vrf_inout.type === 'In' ? vrf_Existing.vrf_Existing_det[index].checkin_id : vrf_Existing.vrf_Existing_det[index].checkout_id
+      if (confirm(`คุณต้องการยกเลิกการลงเวลา${type_}พื้นที่ ?`)) { 
+        check_vrf_inout.type === 'In'
+        ? (Item.isCheckedIn = false)
+        : (Item.isCheckedOut = false)   
+        
         const params = {
           Id: Item.id,
           Type_: check_vrf_inout.type,
@@ -735,22 +1090,26 @@ export default defineComponent({
           await axios
             .get(
               process.env.VUE_APP_API_URL +
-              '/set_update_vrf_det_cancelcheckinout',
+                '/set_update_vrf_det_cancelcheckinout',
               { params }
             )
             .then(
               (res) => {
                 // success callback
                 let obj = JSON.parse(JSON.stringify(res.data))
-                check_vrf_inout.type === 'In'
-                  ? (vrf_Existing.vrf_Existing_det[index].checkin_date =
-                    obj[0].checkin_date)
-                  : (vrf_Existing.vrf_Existing_det[index].checkout_date =
-                    obj[0].checkout_date)
+                if(check_vrf_inout.type === 'In')
+                {
+                  obj[0].checkin_date ?
+                   vrf_Existing.vrf_Existing_det[index].checkin_date = obj[0].checkin_date 
+                  : vrf_Existing.vrf_Existing_det[index].checkin_date = '-' 
+                }
+                if(check_vrf_inout.type === 'Out')
+                {
+                  obj[0].checkout_date ?
+                   vrf_Existing.vrf_Existing_det[index].checkout_date = obj[0].checkout_date 
+                  : vrf_Existing.vrf_Existing_det[index].checkout_date = '-' 
+                }                
                 console.log('Time_stamp obj: ', obj[0].checkin_date)
-                // router.push('/listorder')
-                //location.reload()
-                // addEditItem
               },
               (res) => {
                 // error callback
@@ -780,8 +1139,7 @@ export default defineComponent({
         try {
           await axios
             .get(
-              process.env.VUE_APP_API_URL +
-              '/set_sp_update_vrf_det_checkinout',
+              process.env.VUE_APP_API_URL + '/set_sp_update_vrf_det_checkinout',
               { params }
             )
             .then(
@@ -790,10 +1148,18 @@ export default defineComponent({
                 let obj = JSON.parse(JSON.stringify(res.data))
                 check_vrf_inout.type === 'check_in'
                   ? (vrf_Existing.vrf_Existing_det[index].checkin_date =
-                    obj[0].checkin_date)
+                      obj[0].checkin_date)
                   : (vrf_Existing.vrf_Existing_det[index].checkout_date =
-                    obj[0].checkout_date)
+                      obj[0].checkout_date)
                 console.log('Time_stamp obj: ', obj[0].checkin_date)
+                check_vrf_inout.type === 'check_in'
+                  ? (vrf_Existing.vrf_Existing_det[index].checkin_id
+ = obj[0].checkincheckout_det_in_id)
+                  : (vrf_Existing.vrf_Existing_det[index].checkout_id =
+                      obj[0].checkincheckout_det_out_id) 
+                console.log('vrf_Existing.vrf_Existing_det[index].checkin_id: ', vrf_Existing.vrf_Existing_det[index].checkin_id)
+                console.log('vrf_Existing.vrf_Existing_det[index].checkout_id: ', vrf_Existing.vrf_Existing_det[index].checkout_id)
+               
                 // router.push('/listorder')
                 //location.reload()
                 // addEditItem
@@ -810,7 +1176,7 @@ export default defineComponent({
           console.log(err)
         }
       }
-    }    
+    }
     //-------------------edit validate add vrf-------------------
     const edit_fieldsToValidate = [
       'tbDateF',
@@ -854,7 +1220,7 @@ export default defineComponent({
           role_id: localStorage.getItem('user_role_id'),
           work_flow_id: localStorage.getItem('user_work_flow_id')
         }
-        setTimeout(() => { }, 500)
+        setTimeout(() => {}, 500)
         // console.log('confirmDialog params: ', { params })
         try {
           table.isLoading = true
@@ -932,6 +1298,8 @@ export default defineComponent({
       AdvSearch.requestor_id = 0
       AdvSearch.area_id = 0
       AdvSearch.requestor_dept_id = 0
+      AdvSearch.requestor = ''
+      AdvSearch.card_no = ''
       const params = {
         user_id: user_id.value,
         department_id: department_id.value,
@@ -950,7 +1318,7 @@ export default defineComponent({
         .then(
           (res) => {
             Data_.value = JSON.parse(JSON.stringify(res.data))
-            data.rows = JSON.parse(JSON.stringify(res.data));
+            data.rows = JSON.parse(JSON.stringify(res.data))
             console.log('ClosemyModalNew_ Data_: ', Data_)
           },
           (res) => {
@@ -959,6 +1327,29 @@ export default defineComponent({
           }
         )
     }
+    const ClosemyModalAdvanceSearch = async () => {
+      check_vrf_inout.label = ''
+      check_vrf_inout.id = null
+      check_vrf_inout.type = ''
+      AdvSearch.tbDateF = ''
+      AdvSearch.tbDateT = ''
+      AdvSearch.contactor = ''
+      AdvSearch.requestor_id = 0
+      AdvSearch.area_id = 0
+      AdvSearch.requestor_dept_id = 0
+      AdvSearch.requestor = ''
+      AdvSearch.card_no = ''
+      const params = {
+        user_id: user_id.value,
+        department_id: department_id.value,
+        position_id: position_id.value,
+        employee_id: localStorage.getItem('user_employee_id'),
+        division_id: localStorage.getItem('user_division_id'),
+        branch_id: localStorage.getItem('user_branch_id'),
+        work_flow_id: localStorage.getItem('user_work_flow_id'),
+        role_id: localStorage.getItem('user_role_id')
+      }
+    }    
     const CloseEditModal = async () => {
       check_vrf_inout.label = ''
       check_vrf_inout.id = null
@@ -969,6 +1360,8 @@ export default defineComponent({
       AdvSearch.requestor_id = 0
       AdvSearch.area_id = 0
       AdvSearch.requestor_dept_id = 0
+      AdvSearch.requestor = ''
+      AdvSearch.card_no = ''
       const params = {
         user_id: user_id.value,
         department_id: department_id.value,
@@ -987,7 +1380,7 @@ export default defineComponent({
         .then(
           (res) => {
             Data_.value = JSON.parse(JSON.stringify(res.data))
-            data.rows = JSON.parse(JSON.stringify(res.data));
+            data.rows = JSON.parse(JSON.stringify(res.data))
             console.log('ClosemyModalNew_ Data_: ', Data_)
           },
           (res) => {
@@ -1421,7 +1814,10 @@ export default defineComponent({
           display: function (row) {
             if (row.card_no && row.card_no.length > 3) {
               // เก็บ 3 หลักแรก และแทนที่ส่วนที่เหลือด้วย 'X'
-              return `<div style="text-align: left;">${row.card_no.substring(0, 3)}XXXXXX</div>`
+              return `<div style="text-align: left;">${row.card_no.substring(
+                0,
+                3
+              )}XXXXXX</div>`
             } else {
               // ถ้าไม่ใช่ ให้แสดง card_no ตามปกติ
               return `<div style="text-align: left;">${row.card_no}</div>`
@@ -1453,6 +1849,16 @@ export default defineComponent({
           sortable: true,
           display: function (row) {
             return `<div style="text-align: left;">${row.reason}</div>`
+          }
+        },
+        {
+          // label: 'เหตุผลในการตีกลับ',
+          label: 'รายการเพิ่มเติม',
+          field: 'req_urgentcase_by',
+          width: '15%',
+          sortable: true,
+          display: function (row) {
+            return `<div style="text-align: center;">${row.req_urgentcase_by !== null ? 'เคสด่วน' : ''}</div>`
           }
         },
         {
@@ -1563,7 +1969,9 @@ export default defineComponent({
             try {
               loading.value = true
               await axios
-                .get(process.env.VUE_APP_API_URL + '/get_vrf_security_det', { params })
+                .get(process.env.VUE_APP_API_URL + '/get_vrf_security_det', {
+                  params
+                })
                 .then(
                   (res) => {
                     // success callback
@@ -1615,7 +2023,9 @@ export default defineComponent({
             : null,
         department_id: department_id.value,
         branch_id: localStorage.getItem('user_branch_id'),
-        contactor: AdvSearch.contactor !== '' ? AdvSearch.contactor : null
+        contactor: AdvSearch.contactor !== '' ? AdvSearch.contactor : null,
+        requestor: AdvSearch.requestor !== '' ? AdvSearch.requestor : null,
+        card_no: AdvSearch.card_no !== '' ? AdvSearch.card_no : null
       }
       console.log('params: ', params)
       await axios
@@ -1749,7 +2159,7 @@ export default defineComponent({
               console.log(res.data.message)
             }
           )
-          .finally(() => { })
+          .finally(() => {})
         error_addManual.value = false
       } catch (err) {
         console.log(err)
@@ -1814,7 +2224,7 @@ export default defineComponent({
               console.log(res.data)
             }
           )
-          .finally(() => { })
+          .finally(() => {})
         error_addManual.value = false
       } catch (err) {
         console.log(err)
@@ -1974,7 +2384,7 @@ export default defineComponent({
               console.log(res.data.message)
             }
           )
-          .finally(() => { })
+          .finally(() => {})
         error_addManual.value = false
       } catch (err) {
         console.log(err)
@@ -2033,17 +2443,30 @@ export default defineComponent({
       }
     }
     const getRowClass = (data) => {
-      if (!data.checkin_date && !data.checkout_date || data.checkin_date === '-' && data.checkout_date === '-') {
-        return 'row-orange';
-      } else if (data.checkin_date && data.checkin_date !== '-' && (!data.checkout_date || data.checkout_date === '-')) {
-        return 'row-green';
-      } else if (data.checkin_date && data.checkin_date !== '-' && data.checkout_date && data.checkout_date !== '-') {
-        return 'row-blue';
+      if (
+        (!data.checkin_date && !data.checkout_date) ||
+        (data.checkin_date === '-' && data.checkout_date === '-')
+      ) {
+        return 'row-orange'
+      } else if (
+        data.checkin_date &&
+        data.checkin_date !== '-' &&
+        (!data.checkout_date || data.checkout_date === '-')
+      ) {
+        return 'row-green'
+      } else if (
+        data.checkin_date &&
+        data.checkin_date !== '-' &&
+        data.checkout_date &&
+        data.checkout_date !== '-'
+      ) {
+        return 'row-blue'
       }
-    };
-    return { 
+    }
+    return {
+      ClosemyModalAdvanceSearch,
       check_approve,
-      ResetCheckin_out,   
+      ResetCheckin_out,
       getRowClass,
       handleCheckinClick,
       handleCheckoutClick,
@@ -2135,7 +2558,6 @@ export default defineComponent({
 .row-blue {
   background-color: rgb(167, 167, 246);
 }
-
 
 .orange-text {
   color: orange;
