@@ -958,7 +958,22 @@ export default defineComponent({
       , date_from: null
       , date_to: null
     })
-
+    //-------------------edit validate add vrf-------------------
+    const edit_fieldsToValidate = [
+      'tbFullName',
+      'ddlvehicle_brand', 'tbVehicle_Registration',
+      'ddlvehicle_color', 'tbCardNo'
+    ]
+    const edit_validateInput = (field, index, errorMessage) => {
+      if (!templete_vrf_Existing.templete_vrf_Existing_det[index][field]) {
+        templete_vrf_Existing.templete_vrf_Existing_det[index].errors = { ...templete_vrf_Existing.templete_vrf_Existing_det[index].errors, [field]: errorMessage }
+      } else {
+        if (templete_vrf_Existing.templete_vrf_Existing_det[index].errors && templete_vrf_Existing.templete_vrf_Existing_det[index].errors[field]) {
+          const { [field]: removed, ...rest } = templete_vrf_Existing.templete_vrf_Existing_det[index].errors
+          templete_vrf_Existing.templete_vrf_Existing_det[index].errors = { ...rest }
+        }
+      }
+    }
     const confirmDialog = async () => {
       if (function_selected.value === "update_vrfstatus_all") {
         const params = {
@@ -1600,22 +1615,22 @@ export default defineComponent({
     }
     //-------------------validate add vrf-------------------
     const fieldsToValidate = [
-      // 'tbDateF',
-      // 'tbDateT',
       'tbFullName',
       // 'ddlvehicle_brand',
       // 'tbVehicle_Registration',
       // 'ddlvehicle_color',
-      'tbCardNo'
-    ]
-    const validateAllInputs = () => {
-      rowData.value.forEach((data, index) => {
-        fieldsToValidate.forEach((field) => {
-          validateInput(field, index, 'กรุณาใส่ข้อมูล')
-        })
-      })
-    }
-
+       'tbCardNo'
+    ]    
+    // const validateInput = (field, index, errorMessage) => {
+    //   if (!rowData.value[index][field]) {
+    //     rowData.value[index].errors = { ...rowData.value[index].errors, [field]: errorMessage }
+    //   } else {
+    //     if (rowData.value[index].errors && rowData.value[index].errors[field]) {
+    //       const { [field]: removed, ...rest } = rowData.value[index].errors
+    //       rowData.value[index].errors = { ...rest }
+    //     }
+    //   }
+    // }
     const validateInput = (field, index, errorMessage) => {
       // ตรวจสอบความยาวข้อมูล
       if (field === 'tbFullName') {
@@ -1628,18 +1643,19 @@ export default defineComponent({
           };
           validateInputAll.value = true
         }
-        else if (!rowData.value[index].tbFullName) {
+        else if(!rowData.value[index].tbFullName)
+        {
           rowData.value[index].errors = {
             ...rowData.value[index].errors,
             [field]: "กรุณาใส่ข้อมูล"
-          };
-          validateInputAll.value = true
-        } else {
+          }        
+        }
+        else
+        {
           if (rowData.value[index].errors && rowData.value[index].errors[field]) {
             const { [field]: removed, ...rest } = rowData.value[index].errors;
             rowData.value[index].errors = { ...rest };
           }
-          validateInputAll.value = false
         }
       }
       else if (field === 'tbCardNo')//เลขบัตร
@@ -1653,22 +1669,22 @@ export default defineComponent({
           };
           validateInputAll.value = true
         }
-        else if (!rowData.value[index].tbCardNo) {
+        else if(!rowData.value[index].tbCardNo)
+        {
           rowData.value[index].errors = {
             ...rowData.value[index].errors,
             [field]: "กรุณาใส่ข้อมูล"
-          }
-          validateInputAll.value = true
-        }
-        else {
+          }        
+        }        
+        else
+        {
           if (rowData.value[index].errors && rowData.value[index].errors[field]) {
             const { [field]: removed, ...rest } = rowData.value[index].errors;
             rowData.value[index].errors = { ...rest };
           }
-          validateInputAll.value = false
         }
-      }
-      else if (field === 'tbVehicle_Registration')//ทะเบียนรถ 
+      } 
+      else if (field === 'tbVehicle_Registration')//ทะเบียนรถ
       {
         if (rowData.value[index]['tbVehicle_Registration'].length > 7) {
           rowData.value[index].errors = {
@@ -1682,36 +1698,39 @@ export default defineComponent({
             const { [field]: removed, ...rest } = rowData.value[index].errors
             rowData.value[index].errors = { ...rest }
           }
-          validateInputAll.value = false
         }
       }
-      //  else if (!rowData.value[index][field]) { 
-      //   console.log( 'aaa: ',rowData.value[index][field] )
+      // else if (!rowData.value[index][field]) 
+      // { 
+        
       //   rowData.value[index].errors = {
       //     ...rowData.value[index].errors,
       //     [field]: errorMessage
       //   }
       //   validateInputAll.value = true
-      // } else { 
-      //   console.log( 'bbb: ',rowData.value[index][field] )
+      // }
+      // else
+      // {
       //   if (rowData.value[index].errors && rowData.value[index].errors[field]) {
       //     const { [field]: removed, ...rest } = rowData.value[index].errors
       //     rowData.value[index].errors = { ...rest }
       //   }
       // }
     }
+    const validateAllInputs = () => {
+      rowData.value.forEach((data, index) => {
+        fieldsToValidate.forEach(field => {
+          validateInput(field, index, 'กรุณาใส่ข้อมูล')
+        })
+      })
+    }    
     const addManualVRF_validateInput = (e) => {
       validateAllInputs()
-      const target = e.target
-      if (target && target.files) {
-        file.value = target.files[0]
-      }
       let isError = false
       isError = validateInputAll.value
-      if (rowData.value.length === 0) {
+      if(rowData.value.length === 0){
         isError = true
-        //message_addManual.value = "กรุณาเพิ่มรายการ"
-        alert('กรุณาเพิ่มรายการ')
+        alert("กรุณาเพิ่มรายการ")
       }
       if (!NewVrf.template_name) {
         VRF_error.template_name = 'กรุณาใส่ข้อมูล';
@@ -1720,89 +1739,77 @@ export default defineComponent({
         VRF_error.template_name = '';
       }
       if (!NewVrf.reason) {
-        VRF_error.reason = 'กรุณาใส่ข้อมูล'
+        VRF_error.reason = 'กรุณาใส่ข้อมูล';
         isError = true
-        console.log('NewVrf.reason error isError: ', isError)
       } else {
-        VRF_error.reason = ''
+        VRF_error.reason = '';
       }
       if (!NewVrf.contactor) {
-        VRF_error.contactor = 'กรุณาใส่ข้อมูล'
+        VRF_error.contactor = 'กรุณาใส่ข้อมูล';
         isError = true
-        console.log('NewVrf.contactor error isError: ', isError)
       } else {
-        VRF_error.contactor = ''
+        VRF_error.contactor = '';
       }
       if (!NewVrf.requestor) {
-        VRF_error.requestor = 'กรุณาใส่ข้อมูล'
+        VRF_error.requestor = 'กรุณาใส่ข้อมูล';
         isError = true
-        console.log('NewVrf.requestor error isError: ', isError)
       } else {
-        VRF_error.requestor = ''
+        VRF_error.requestor = '';
       }
       if (!NewVrf.requestor_position) {
-        VRF_error.requestor_position = 'กรุณาใส่ข้อมูล'
+        VRF_error.requestor_position = 'กรุณาใส่ข้อมูล';
         isError = true
-        console.log('NewVrf.requestor_position error isError: ', isError)
       } else {
-        VRF_error.requestor_position = ''
+        VRF_error.requestor_position = '';
       }
       if (!NewVrf.requestor_dept) {
-        VRF_error.requestor_dept = 'กรุณาใส่ข้อมูล'
+        VRF_error.requestor_dept = 'กรุณาใส่ข้อมูล';
         isError = true
-        console.log('NewVrf.requestor_dept error isError: ', isError)
       } else {
-        VRF_error.requestor_dept = ''
+        VRF_error.requestor_dept = '';
       }
       if (!NewVrf.requestor_phone) {
-        VRF_error.requestor_phone = 'กรุณาใส่ข้อมูล'
+        VRF_error.requestor_phone = 'กรุณาใส่ข้อมูล';
         isError = true
-        console.log('NewVrf.requestor_phone error isError: ', isError)
       } else {
-        VRF_error.requestor_phone = ''
+        VRF_error.requestor_phone = '';
       }
       if (!NewVrf.navigator) {
-        VRF_error.navigator = 'กรุณาใส่ข้อมูล'
+        VRF_error.navigator = 'กรุณาใส่ข้อมูล';
         isError = true
-        console.log('NewVrf.navigator error isError: ', isError)
       } else {
-        VRF_error.navigator = ''
+        VRF_error.navigator = '';
       }
       if (!NewVrf.area) {
-        VRF_error.area = 'กรุณาใส่ข้อมูล'
+        VRF_error.area = 'กรุณาใส่ข้อมูล';
         isError = true
-        console.log('NewVrf.area error isError: ', isError)
       } else {
-        VRF_error.area = ''
+        VRF_error.area = '';
       }
       if (!NewVrf.date_from) {
-        VRF_error.date_from = 'กรุณาเลือกข้อมูล'
+        VRF_error.date_from = 'กรุณาเลือกข้อมูล';
         isError = true
-        console.log('NewVrf.date_from error isError: ', isError)
       } else {
-        VRF_error.date_from = ''
+        VRF_error.date_from = '';
       }
       if (!NewVrf.date_to) {
-        VRF_error.date_to = 'กรุณาเลือกข้อมูล'
+        VRF_error.date_to = 'กรุณาเลือกข้อมูล';
         isError = true
-        console.log('NewVrf.date_to error isError: ', isError)
       } else {
-        VRF_error.date_to = ''
+        VRF_error.date_to = '';
       }
       if (isError) {
-
+        console.log('isError: ', isError)
         validateInputAll.value = true
-        console.log('if (isError) {: ', isError)
-        console.log('after validateInputAll.value: ', validateInputAll.value)
-        return
-      } //--------------call addManualVRF
+        return false
+      }//--------------call addManualVRF
       else {
         console.log('isError: ', isError)
-        if (!validateInputAll.value) {
-          if (confirm('คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ ?')) {
-            addManualVRF()
-          }
-        }
+        console.log('validateInputAll: ', validateInputAll.value)
+        if(!validateInputAll.value)
+        { 
+          addManualVRF()
+        }        
       }
     }
     const calamount_orderEdit = (value) => {
@@ -1929,102 +1936,20 @@ export default defineComponent({
       rowData.value.splice(index, 1)
       Id.value--
     }
-    //-------------------edit validate add vrf-------------------
-    const edit_fieldsToValidate = [
-      'fullname',
-      'card_no'
-    ]    
-    const edit_validateInput = (field, index, errorMessage) => {
-      // ตรวจสอบความยาวข้อมูล
-      if (field === 'fullname') {
-        const isDuplicate = templete_vrf_Existing.templete_vrf_Existing_det.some((item, idx) =>
-          idx !== index && item.fullname === templete_vrf_Existing.templete_vrf_Existing_det[index].fullname);
-        if (isDuplicate) {
-          templete_vrf_Existing.templete_vrf_Existing_det[index].errors = {
-            ...templete_vrf_Existing.templete_vrf_Existing_det[index].errors,
-            [field]: "ข้อมูลชื่อ-นามสกุลซ้ำกัน"
-          };
-          validateInputAll.value = true
-        }
-        else if (!templete_vrf_Existing.templete_vrf_Existing_det[index].fullname) {
-          templete_vrf_Existing.templete_vrf_Existing_det[index].errors = {
-            ...templete_vrf_Existing.templete_vrf_Existing_det[index].errors,
-            [field]: "กรุณาใส่ข้อมูล"
-          };
-          validateInputAll.value = true
-        } else {
-          if (templete_vrf_Existing.templete_vrf_Existing_det[index].errors && templete_vrf_Existing.templete_vrf_Existing_det[index].errors[field]) {
-            const { [field]: removed, ...rest } = templete_vrf_Existing.templete_vrf_Existing_det[index].errors;
-            templete_vrf_Existing.templete_vrf_Existing_det[index].errors = { ...rest };
-          }
-          validateInputAll.value = false
-        }
-      }
-      else if (field === 'card_no')//เลขบัตร
-      {
-        const isDuplicate = templete_vrf_Existing.templete_vrf_Existing_det.some((item, idx) =>
-          idx !== index && item.card_no === templete_vrf_Existing.templete_vrf_Existing_det[index].card_no);
-        if (isDuplicate) {
-          templete_vrf_Existing.templete_vrf_Existing_det[index].errors = {
-            ...templete_vrf_Existing.templete_vrf_Existing_det[index].errors,
-            [field]: "ข้อมูลบัตรซ้ำกัน"
-          };
-          validateInputAll.value = true
-        }
-        else if (!templete_vrf_Existing.templete_vrf_Existing_det[index].card_no) {
-          templete_vrf_Existing.templete_vrf_Existing_det[index].errors = {
-            ...templete_vrf_Existing.templete_vrf_Existing_det[index].errors,
-            [field]: "กรุณาใส่ข้อมูล"
-          }
-          validateInputAll.value = true
-        }
-        else {
-          if (templete_vrf_Existing.templete_vrf_Existing_det[index].errors && templete_vrf_Existing.templete_vrf_Existing_det[index].errors[field]) {
-            const { [field]: removed, ...rest } = templete_vrf_Existing.templete_vrf_Existing_det[index].errors;
-            templete_vrf_Existing.templete_vrf_Existing_det[index].errors = { ...rest };
-          }
-          validateInputAll.value = false
-        }
-      }
-      else if (field === 'vehicle_registration')//ทะเบียนรถ 
-      {
-        if (templete_vrf_Existing.templete_vrf_Existing_det[index]['vehicle_registration'].length > 7) {
-          templete_vrf_Existing.templete_vrf_Existing_det[index].errors = {
-            ...templete_vrf_Existing.templete_vrf_Existing_det[index].errors,
-            [field]: "ห้ามใส่ข้อมูลเกิน 7 ตัวอักษร"
-          }
-          validateInputAll.value = true
-        }
-        else {
-          if (templete_vrf_Existing.templete_vrf_Existing_det[index].errors && templete_vrf_Existing.templete_vrf_Existing_det[index].errors[field]) {
-            const { [field]: removed, ...rest } = templete_vrf_Existing.templete_vrf_Existing_det[index].errors
-            templete_vrf_Existing.templete_vrf_Existing_det[index].errors = { ...rest }
-          }
-          validateInputAll.value = false
-        }
-      }
-    }
-    //-------------------edit_validateAllInputs
     const edit_validateAllInputs = () => {
       templete_vrf_Existing.templete_vrf_Existing_det.forEach((data, index) => {
-        edit_fieldsToValidate.forEach((field) => {
+        edit_fieldsToValidate.forEach(field => {
           edit_validateInput(field, index, 'กรุณาใส่ข้อมูล')
         })
       })
     }
-    //-----call function after press submit button edit page
-    const editVRF_validateInput = async (e) => {
+    const editVRF_validateInput = async () => {
       edit_validateAllInputs()
-      const target = e.target
-      if (target && target.files) {
-        file.value = target.files[0]
-      }
       let isError = false
-      isError = validateInputAll.value
-      if (templete_vrf_Existing.templete_vrf_Existing_det.length === 0) {
+      if(templete_vrf_Existing.templete_vrf_Existing_det.length === 0){
         isError = true
         //message_addManual.value = "กรุณาเพิ่มรายการ"
-        alert('กรุณาเพิ่มรายการ')
+        alert("กรุณาเพิ่มรายการ")
       }
       if (!templete_vrf_Existing.template_name) {
         VRF_error.template_name = 'กรุณาใส่ข้อมูล';
@@ -2033,77 +1958,72 @@ export default defineComponent({
         VRF_error.template_name = '';
       }
       if (!templete_vrf_Existing.reason) {
-        VRF_error.reason = 'กรุณาใส่ข้อมูล'
+        VRF_error.reason = 'กรุณาใส่ข้อมูล';
         isError = true
       } else {
-        VRF_error.reason = ''
+        VRF_error.reason = '';
       }
       if (!templete_vrf_Existing.contactor) {
-        VRF_error.contactor = 'กรุณาใส่ข้อมูล'
+        VRF_error.contactor = 'กรุณาใส่ข้อมูล';
         isError = true
       } else {
-        VRF_error.contactor = ''
+        VRF_error.contactor = '';
       }
       if (!templete_vrf_Existing.requestor_id) {
-        VRF_error.requestor = 'กรุณาใส่ข้อมูล'
+        VRF_error.requestor = 'กรุณาใส่ข้อมูล';
         isError = true
       } else {
-        VRF_error.requestor = ''
+        VRF_error.requestor = '';
       }
       if (!templete_vrf_Existing.requestor_position_id) {
-        VRF_error.requestor_position = 'กรุณาใส่ข้อมูล'
+        VRF_error.requestor_position = 'กรุณาใส่ข้อมูล';
         isError = true
       } else {
-        VRF_error.requestor_position = ''
+        VRF_error.requestor_position = '';
       }
       if (!templete_vrf_Existing.requestor_dept_id) {
-        VRF_error.requestor_dept = 'กรุณาใส่ข้อมูล'
+        VRF_error.requestor_dept = 'กรุณาใส่ข้อมูล';
         isError = true
       } else {
-        VRF_error.requestor_dept = ''
+        VRF_error.requestor_dept = '';
       }
       if (!templete_vrf_Existing.requestor_phone) {
-        VRF_error.requestor_phone = 'กรุณาใส่ข้อมูล'
+        VRF_error.requestor_phone = 'กรุณาใส่ข้อมูล';
         isError = true
       } else {
-        VRF_error.requestor_phone = ''
+        VRF_error.requestor_phone = '';
       }
       if (!templete_vrf_Existing.navigator_id) {
-        VRF_error.navigator = 'กรุณาใส่ข้อมูล'
+        VRF_error.navigator = 'กรุณาใส่ข้อมูล';
         isError = true
       } else {
-        VRF_error.navigator = ''
+        VRF_error.navigator = '';
       }
       if (!templete_vrf_Existing.area_id) {
-        VRF_error.area = 'กรุณาใส่ข้อมูล'
+        VRF_error.area = 'กรุณาใส่ข้อมูล';
         isError = true
       } else {
-        VRF_error.area = ''
+        VRF_error.area = '';
       }
       if (!templete_vrf_Existing.date_from) {
-        VRF_error.date_from = 'กรุณาใส่ข้อมูล'
+        VRF_error.date_from = 'กรุณาใส่ข้อมูล';
         isError = true
       } else {
-        VRF_error.date_from = ''
+        VRF_error.date_from = '';
       }
       if (!templete_vrf_Existing.date_to) {
-        VRF_error.date_to = 'กรุณาใส่ข้อมูล'
+        VRF_error.date_to = 'กรุณาใส่ข้อมูล';
         isError = true
       } else {
-        VRF_error.date_to = ''
-      }
+        VRF_error.date_to = '';
+      }            
       if (isError) {
         console.log('isError: ', isError)
-        validateInputAll.value = true
         return false
-      } //--------------call addManualVRF
+      }//--------------call addManualVRF
       else {
         console.log('isError: ', isError)
-        if (!validateInputAll.value) {
-          if (confirm('คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ ?')) {
-            editVRF()
-          }
-        }        
+        editVRF()
       }
     }
     const editVRF = async () => {

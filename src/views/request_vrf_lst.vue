@@ -117,7 +117,7 @@
                   <div class="row p-2">
                     <div class="col-sm-2">สถานะ</div>
                     <div class="col-sm-2  text-left ps-0">
-                      <select class="form-select form-select-sm" style="width: 9rem;"  v-model="AdvSearch.approve_status">
+                      <select class="form-select form-select-sm" style="width: 9rem;" v-model="AdvSearch.approve_status">
                         <option></option>
                         <option value="ตีกลับ">ตีกลับ</option>
                         <option value="สร้างรายการ">สร้างรายการ</option>
@@ -370,7 +370,7 @@
                     <!-- <datepicker class="form-control" v-model="NewVrf.date_from" style="width:7rem;"
                       inputFormat="dd/MM/yyyy" @update:model-value="setToDate('date_from_add')" /> -->
                     <datepicker class="form-control" v-model="NewVrf.date_from" style="width: 7rem"
-                      inputFormat="dd/MM/yyyy" @update:model-value="setToDateAdd('date_from_edit')" />
+                      inputFormat="dd/MM/yyyy" @update:model-value="setFromDateAdd" />
                     <p v-if="VRF_error.date_from && !NewVrf.date_from" class="error-message">
                       กรุณาเลือกข้อมูล
                     </p>
@@ -378,7 +378,7 @@
                   <div class="col">ถึงวันที่:</div>
                   <div class="col">
                     <datepicker class="form-control" v-model="NewVrf.date_to" style="width: 7rem" inputFormat="dd/MM/yyyy"
-                      @update:model-value="setFromDateAdd('date_to_edit')" />
+                      @update:model-value="setToDateAdd('date_to_edit')" />
                     <!-- <datepicker class="form-control" v-model="NewVrf.date_to" style="width:7rem;" inputFormat="dd/MM/yyyy"
                       @update:model-value="setFromDate('date_to_add')" /> -->
                     <p v-if="VRF_error.date_to && !NewVrf.date_to" class="error-message">
@@ -574,7 +574,7 @@
           <div class="modal-dialog modalcustom">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">รายการขอเข้าพื้นที่</h5>
+                <h5 class="modal-title">แก้ไขรายการขอเข้าพื้นที่</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                   @click="ClosemyModalNew_"></button>
               </div>
@@ -604,28 +604,19 @@
                       <tbody>
                         <tr v-for="(data, index) in vrf_Existing.vrf_Existing_det" :key="index">
                           <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center">
-                            <input type="text" class="form-control" style="width: 20rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index].fullname
-                              " @blur="
-    edit_validateInput(
-      'fullname',
-      index,
-      'กรุณาใส่ข้อมูล'
-    )
-    " :disabled="!checkstatus_send_to_approve" />
+                            <input type="text" class="form-control" style="width: 20rem; display: inline-block" 
+                            v-model="vrf_Existing.vrf_Existing_det[index].fullname"
+                             @blur="edit_validateInput('fullname', index, 'กรุณาใส่ข้อมูล')"
+                              :disabled="!checkstatus_send_to_approve" />
                             <p class="error-message" v-if="data.errors && data.errors.fullname">
                               {{ data.errors.fullname }}
                             </p>
                           </td>
                           <td scope="col" class="colwidth10">
-                            <select class="form-select form-select-sm" v-model="vrf_Existing.vrf_Existing_det[index]
-                              .vehicle_brand_id
-                              " @change="
-    edit_validateInput(
-      'vehicle_brand_id',
-      index,
-      'กรุณาเลือกยี่ห้อรถ'
-    )
-    " :disabled="!checkstatus_send_to_approve">
+                            <select class="form-select form-select-sm"
+                             v-model="vrf_Existing.vrf_Existing_det[index].vehicle_brand_id"
+                              @change="edit_validateInput('vehicle_brand_id', index, 'กรุณาเลือกยี่ห้อรถ')"
+                               :disabled="!checkstatus_send_to_approve">
                               <option v-for="option in data_ddl.vehicle_brand" :value="option.id" :key="option.id">
                                 {{ option.vehicle_brand }}
                               </option>
@@ -635,30 +626,20 @@
                             </p>
                           </td>
                           <td scope="col" class="colwidth10">
-                            <input type="text" class="form-control" style="width: 10rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index]
-                              .vehicle_registration
-                              " @blur="
-    edit_validateInput(
-      'vehicle_registration',
-      index,
-      'กรุณาใส่ข้อมูล'
-    )
-    " :disabled="!checkstatus_send_to_approve" />
+                            <input type="text" class="form-control" style="width: 10rem; display: inline-block"
+                             v-model="vrf_Existing.vrf_Existing_det[index].vehicle_registration"
+                              @blur="edit_validateInput('vehicle_registration', index, 'กรุณาใส่ข้อมูล')"
+                               :disabled="!checkstatus_send_to_approve" />
                             <p class="error-message" v-if="data.errors && data.errors.vehicle_registration
                               ">
                               {{ data.errors.vehicle_registration }}
                             </p>
                           </td>
                           <td scope="col" class="colwidth10">
-                            <select class="form-select form-select-sm" v-model="vrf_Existing.vrf_Existing_det[index]
-                              .vehicle_color_id
-                              " @change="
-    edit_validateInput(
-      'vehicle_color_id',
-      index,
-      'กรุณาเลือกสีรถ'
-    )
-    " :disabled="!checkstatus_send_to_approve">
+                            <select class="form-select form-select-sm"
+                             v-model="vrf_Existing.vrf_Existing_det[index].vehicle_color_id"
+                              @change="edit_validateInput('vehicle_color_id', index,'กรุณาเลือกสีรถ')"
+                               :disabled="!checkstatus_send_to_approve">
                               <option v-for="option in data_ddl.vehicle_color" :value="option.id" :key="option.id">
                                 {{ option.vehicle_color }}
                               </option>
@@ -668,14 +649,10 @@
                             </p>
                           </td>
                           <td scope="col" class="colwidth25" style="text-align: center">
-                            <input type="text" class="form-control" style="width: 20rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index].card_no
-                              " @blur="
-    edit_validateInput(
-      'card_no',
-      index,
-      'กรุณาใส่ข้อมูล'
-    )
-    " :disabled="!checkstatus_send_to_approve" />
+                            <input type="text" class="form-control" style="width: 20rem; display: inline-block"
+                             v-model="vrf_Existing.vrf_Existing_det[index].card_no"
+                              @blur="edit_validateInput('card_no', index, 'กรุณาใส่ข้อมูล')"
+                               :disabled="!checkstatus_send_to_approve" />
                             <p class="error-message" v-if="data.errors && data.errors.card_no">
                               {{ data.errors.card_no }}
                             </p>
@@ -1015,27 +992,16 @@
                         <tr v-for="(data, index) in vrf_urgent.vrf_Existing_det" :key="index">
                           <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center">
                             <input type="text" class="form-control" style="width: 15rem; display: inline-block" v-model="vrf_urgent.vrf_Existing_det[index].fullname
-                              " @blur="
-    urgentcase_validateInput(
-      'fullname',
-      index,
-      'กรุณาใส่ข้อมูล'
-    )
-    " />
+                              " @blur="urgentcase_validateInput('fullname', index, 'กรุณาใส่ข้อมูล')" />
                             <p class="error-message" v-if="data.errors && data.errors.fullname">
                               {{ data.errors.fullname }}
                             </p>
                           </td>
                           <td scope="col" class="colwidth10">
                             <select class="form-select form-select-sm" v-model="vrf_urgent.vrf_Existing_det[index]
-                              .vehicle_brand_id
-                              " @change="
-    urgentcase_validateInput(
-      'vehicle_brand_id',
-      index,
-      'กรุณาเลือกยี่ห้อรถ'
-    )
-    " :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false">
+                              .vehicle_brand_id"
+                              @change="urgentcase_validateInput('vehicle_brand_id', index, 'กรุณาเลือกยี่ห้อรถ')"
+                              :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false">
                               <option v-for="option in data_ddl.vehicle_brand" :value="option.id" :key="option.id">
                                 {{ option.vehicle_brand }}
                               </option>
@@ -1045,47 +1011,33 @@
                             </p>
                           </td>
                           <td scope="col" class="colwidth10">
-                            <input type="text" class="form-control" style="width: 10rem; display: inline-block" v-model="vrf_urgent.vrf_Existing_det[index]
-                              .vehicle_registration
-                              " @blur="
-    urgentcase_validateInput(
-      'vehicle_registration',
-      index,
-      'กรุณาใส่ข้อมูล'
-    )
-    " :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false" />
+                            <input type="text" class="form-control" style="width: 10rem; display: inline-block"
+                              v-model="vrf_urgent.vrf_Existing_det[index].vehicle_registration"
+                              @blur="urgentcase_validateInput('vehicle_registration', index, 'กรุณาใส่ข้อมูล')"
+                              :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false" />
                             <p class="error-message" v-if="data.errors && data.errors.vehicle_registration
                               ">
                               {{ data.errors.vehicle_registration }}
                             </p>
                           </td>
                           <td scope="col" class="colwidth10">
-                            <select class="form-select form-select-sm" v-model="vrf_urgent.vrf_Existing_det[index]
-                              .vehicle_color_id
-                              " @change="
-    urgentcase_validateInput(
-      'vehicle_color_id',
-      index,
-      'กรุณาเลือกสีรถ'
-    )
-    " :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false">
+                            <select class="form-select form-select-sm"
+                              v-model="vrf_urgent.vrf_Existing_det[index].vehicle_color_id"
+                              @change="urgentcase_validateInput('vehicle_color_id', index, 'กรุณาเลือกสีรถ')"
+                              :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false">
                               <option v-for="option in data_ddl.vehicle_color" :value="option.id" :key="option.id">
                                 {{ option.vehicle_color }}
                               </option>
                             </select>
                             <p class="error-message" v-if="data.errors && data.errors.vehicle_color_id">
-                              {{ data.errors.ddlvehicle_color }}
+                              {{ data.errors.vehicle_color_id }}
                             </p>
                           </td>
                           <td scope="col" class="colwidth25" style="text-align: center">
-                            <input type="text" class="form-control" style="width: 15rem; display: inline-block" v-model="vrf_urgent.vrf_Existing_det[index].card_no
-                              " @blur="
-    urgentcase_validateInput(
-      'card_no',
-      index,
-      'กรุณาใส่ข้อมูล'
-    )
-    " :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false" />
+                            <input type="text" class="form-control" style="width: 15rem; display: inline-block"
+                              v-model="vrf_urgent.vrf_Existing_det[index].card_no"
+                              @blur="urgentcase_validateInput('card_no', index, 'กรุณาใส่ข้อมูล')"
+                              :disabled="Id === 0 && Id <= vrf_urgent.vrf_Existing_det.length ? true : false" />
                             <p class="error-message" v-if="data.errors && data.errors.card_no">
                               {{ data.errors.card_no }}
                             </p>
@@ -1492,7 +1444,7 @@ export default defineComponent({
       attach_file_primitive: '',
       attach_file_origin: '',
       vrf_Existing_det: [],
-      remark_urgent: '',
+      remark_urgentcase: '',
       urgentcase_type: '',
       errors: {},
       date_from: null,
@@ -1595,35 +1547,16 @@ export default defineComponent({
     const options = ['list', 'of', 'options']
     const hasLocalStorage = ref(null)
     const send_approve_status = ref(false)
-
-    //-------------------edit validate add vrf-------------------
-    const edit_fieldsToValidate = [
-      'tbDateF',
-      'tbDateT',
-      'tbFullName',
-      'ddlvehicle_brand',
-      'tbVehicle_Registration',
-      'ddlvehicle_color',
-      'tbCardNo'
-    ]
     //-------------------edit validate add vrf-------------------
     const edit_urgentcase_vrf_fieldsToValidate = [
       'fullname',
       // 'vehicle_brand_id',
-      // 'vehicle_registration',
+      'vehicle_registration',
       // 'vehicle_color_id',
       'card_no',
       'remark_urgentcase'
     ]
-    //-------------------edit_validateAllInputs
 
-    const edit_validateAllInputs = () => {
-      vrf_Existing.vrf_Existing_det.forEach((data, index) => {
-        edit_fieldsToValidate.forEach((field) => {
-          edit_validateInput(field, index, 'กรุณาใส่ข้อมูล')
-        })
-      })
-    }
     const edit_urgentcase_vrf_validateAllInputs = () => {
       vrf_Existing.vrf_Existing_det.forEach((data, index) => {
         edit_urgentcase_vrf_fieldsToValidate.forEach((field) => {
@@ -1638,24 +1571,7 @@ export default defineComponent({
         })
       })
     }
-    //-------------------edit_validateInput
-    const edit_validateInput = (field, index, errorMessage) => {
-      if (!vrf_Existing.vrf_Existing_det[index][field]) {
-        vrf_Existing.vrf_Existing_det[index].errors = {
-          ...vrf_Existing.vrf_Existing_det[index].errors,
-          [field]: errorMessage
-        }
-      } else {
-        if (
-          vrf_Existing.vrf_Existing_det[index].errors &&
-          vrf_Existing.vrf_Existing_det[index].errors[field]
-        ) {
-          const { [field]: removed, ...rest } =
-            vrf_Existing.vrf_Existing_det[index].errors
-          vrf_Existing.vrf_Existing_det[index].errors = { ...rest }
-        }
-      }
-    }
+
     //-------------------edit_validateInput_vrfurgentcase
     const edit_validateInput_vrfurgentcase = (field, index, errorMessage, urgentcase_type, id) => {//edit_validateInput_vrfurgentcase('remark_urgentcase', index, 'กรุณาใส่ข้อมูล',vrf_Existing.vrf_Existing_det[index].urgentcase_type )
 
@@ -1685,15 +1601,41 @@ export default defineComponent({
         }
       }
     }
+    //-----VRF_Urgentcase_validateInput--------------------------------------
 
-    //-------------------validate urgent case-------------------
+    const VRF_Urgentcase_validateInput = async (e) => {
+
+      urgentcase_validateAllInputs()
+      let isError = false
+      isError = validateInputAll.value
+      if (vrf_urgent.vrf_Existing_det.length === 0) {
+        isError = true
+        //message_addManual.value = "กรุณาเพิ่มรายการ"
+        alert('กรุณาเพิ่มรายการ')
+      }
+      if (isError) {
+        console.log('urgentcase_error isError: ', isError)
+        validateInputAll.value = false
+        return false
+      } //--------------call addManualVRF
+      else {
+        console.log('isError: ', isError)
+        if (confirm('คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ด่วน ?')) {
+          AddUrgentcase()
+        }
+
+      }
+    }
+    //-------------------urgentcase_validateAllInputs-------------------
     const urgentcase_validateAllInputs = () => {
       vrf_urgent.vrf_Existing_det.forEach((data, index) => {
         edit_urgentcase_vrf_fieldsToValidate.forEach((field) => {
+          console.log('field: ', field)
           urgentcase_validateInput(field, index, 'กรุณาใส่ข้อมูล')
         })
       })
     }
+    //-------------------urgentcase_validateInput-------------------    
     const urgentcase_validateInput = (field, index, errorMessage) => {
       if (field === 'fullname') {
         const isDuplicate = vrf_urgent.vrf_Existing_det.some((item, idx) =>
@@ -1703,6 +1645,7 @@ export default defineComponent({
             ...vrf_urgent.vrf_Existing_det[index].errors,
             fullname: "ข้อมูลชื่อ-นามสกุลซ้ำกัน"
           };
+          return
         } else {
           if (vrf_urgent.vrf_Existing_det[index].errors && vrf_urgent.vrf_Existing_det[index].errors.fullname) {
             const { fullname: removed, ...rest } = vrf_urgent.vrf_Existing_det[index].errors;
@@ -1717,25 +1660,31 @@ export default defineComponent({
             ...vrf_urgent.vrf_Existing_det[index].errors,
             card_no: "ข้อมูลบัตรซ้ำกัน"
           };
+          return
         } else {
           if (vrf_urgent.vrf_Existing_det[index].errors && vrf_urgent.vrf_Existing_det[index].errors.card_no) {
             const { card_no: removed, ...rest } = vrf_urgent.vrf_Existing_det[index].errors;
             vrf_urgent.vrf_Existing_det[index].errors = { ...rest };
           }
         }
-      } else if (field === 'vehicle_registration') {
-        if (vrf_urgent.vrf_Existing_det[index]['vehicle_registration'].length > 7) {
-          vrf_urgent.vrf_Existing_det[index].errors = {
-            ...vrf_urgent.vrf_Existing_det[index].errors,
-            vehicle_registration: "ห้ามใส่ข้อมูลเกิน 7 ตัวอักษร"
-          }
-        } else {
-          if (vrf_urgent.vrf_Existing_det[index].errors && vrf_urgent.vrf_Existing_det[index].errors.vehicle_registration) {
-            const { vehicle_registration: removed, ...rest } = vrf_urgent.vrf_Existing_det[index].errors;
-            vrf_urgent.vrf_Existing_det[index].errors = { ...rest };
+      }
+      else if (field === 'vehicle_registration') {
+        if (vrf_urgent.vrf_Existing_det[index]['vehicle_registration']) {
+          if (vrf_urgent.vrf_Existing_det[index]['vehicle_registration'].length > 7) {
+            vrf_urgent.vrf_Existing_det[index].errors = {
+              ...vrf_urgent.vrf_Existing_det[index].errors,
+              vehicle_registration: "ห้ามใส่ข้อมูลเกิน 7 ตัวอักษร"
+            }
+            return
+          } else {
+            if (vrf_urgent.vrf_Existing_det[index].errors && vrf_urgent.vrf_Existing_det[index].errors.vehicle_registration) {
+              const { vehicle_registration: removed, ...rest } = vrf_urgent.vrf_Existing_det[index].errors;
+              vrf_urgent.vrf_Existing_det[index].errors = { ...rest };
+            }
           }
         }
-      } else if (!vrf_urgent.vrf_Existing_det[index][field]) {
+      }
+      else if (!vrf_urgent.vrf_Existing_det[index][field]) {
         vrf_urgent.vrf_Existing_det[index].errors = {
           ...vrf_urgent.vrf_Existing_det[index].errors,
           [field]: errorMessage
@@ -1746,24 +1695,27 @@ export default defineComponent({
           vrf_urgent.vrf_Existing_det[index].errors = { ...rest };
         }
       }
-      let isDuplicate = false;
-      if (field !== 'vehicle_registration') {
+
+
+      let isDuplicate_ = false;
+      if ((field !== 'vehicle_registration') && (field !== 'vehicle_brand_id') && (field !== 'vehicle_color_id')) {
         // ตรวจสอบข้อมูลซ้ำภายใน vrf_urgent.vrf_Existing_det
-        isDuplicate = vrf_urgent.vrf_Existing_det.some((item, idx) =>
+        isDuplicate_ = vrf_urgent.vrf_Existing_det.some((item, idx) =>
           idx !== index && item[field] === vrf_urgent.vrf_Existing_det[index][field]
         );
 
         // ถ้าไม่ซ้ำภายในตัวมันเอง ตรวจสอบกับ vrf_Existing.vrf_Existing_det
-        // ละเว้นการตรวจสอบสำหรับ tbVehicle_Registration
-        if (!isDuplicate && field !== 'tbVehicle_Registration') {
-          isDuplicate = vrf_Existing.vrf_Existing_det.some(item =>
+        // ละเว้นการตรวจสอบสำหรับ tbVehicle_Registration ddlvehicle_brand
+        if (!isDuplicate_ && (field !== 'tbVehicle_Registration' && field !== 'ddlvehicle_brand' && field !== 'ddlvehicle_color')) {
+          isDuplicate_ = vrf_Existing.vrf_Existing_det.some(item =>
             item[field] === vrf_urgent.vrf_Existing_det[index][field]
           );
         }
       }
 
+
       // ตั้งค่าข้อผิดพลาดหากมีข้อมูลซ้ำ
-      if (isDuplicate) {
+      if (isDuplicate_) {
         vrf_urgent.vrf_Existing_det[index].errors = {
           ...vrf_urgent.vrf_Existing_det[index].errors,
           [field]: "ข้อมูลซ้ำกับรายการที่มีอยู่"
@@ -1812,13 +1764,23 @@ export default defineComponent({
             [field]: "ข้อมูลชื่อ-นามสกุลซ้ำกัน"
           };
           validateInputAll.value = true
+        }
+        else if (!rowData.value[index].tbFullName) {
+          rowData.value[index].errors = {
+            ...rowData.value[index].errors,
+            [field]: "กรุณาใส่ข้อมูล"
+          };
+          validateInputAll.value = true
         } else {
           if (rowData.value[index].errors && rowData.value[index].errors[field]) {
             const { [field]: removed, ...rest } = rowData.value[index].errors;
             rowData.value[index].errors = { ...rest };
           }
+          validateInputAll.value = false
         }
-      } else if (field === 'tbCardNo') {
+      }
+      else if (field === 'tbCardNo')//เลขบัตร
+      {
         const isDuplicate = rowData.value.some((item, idx) =>
           idx !== index && item.tbCardNo === rowData.value[index].tbCardNo);
         if (isDuplicate) {
@@ -1827,13 +1789,24 @@ export default defineComponent({
             [field]: "ข้อมูลบัตรซ้ำกัน"
           };
           validateInputAll.value = true
-        } else {
+        }
+        else if (!rowData.value[index].tbCardNo) {
+          rowData.value[index].errors = {
+            ...rowData.value[index].errors,
+            [field]: "กรุณาใส่ข้อมูล"
+          }
+          validateInputAll.value = true
+        }
+        else {
           if (rowData.value[index].errors && rowData.value[index].errors[field]) {
             const { [field]: removed, ...rest } = rowData.value[index].errors;
             rowData.value[index].errors = { ...rest };
           }
+          validateInputAll.value = false
         }
-      } else if (field === 'tbVehicle_Registration') {
+      }
+      else if (field === 'tbVehicle_Registration')//ทะเบียนรถ 
+      {
         if (rowData.value[index]['tbVehicle_Registration'].length > 7) {
           rowData.value[index].errors = {
             ...rowData.value[index].errors,
@@ -1846,17 +1819,120 @@ export default defineComponent({
             const { [field]: removed, ...rest } = rowData.value[index].errors
             rowData.value[index].errors = { ...rest }
           }
+          validateInputAll.value = false
         }
-      } else if (!rowData.value[index][field]) {
-        rowData.value[index].errors = {
-          ...rowData.value[index].errors,
-          [field]: errorMessage
-        }
-        validateInputAll.value = true
+      }
+      //  else if (!rowData.value[index][field]) { 
+      //   console.log( 'aaa: ',rowData.value[index][field] )
+      //   rowData.value[index].errors = {
+      //     ...rowData.value[index].errors,
+      //     [field]: errorMessage
+      //   }
+      //   validateInputAll.value = true
+      // } else { 
+      //   console.log( 'bbb: ',rowData.value[index][field] )
+      //   if (rowData.value[index].errors && rowData.value[index].errors[field]) {
+      //     const { [field]: removed, ...rest } = rowData.value[index].errors
+      //     rowData.value[index].errors = { ...rest }
+      //   }
+      // }
+    }
+    const addManualVRF_validateInput = (e) => {
+      validateAllInputs()
+      const target = e.target
+      if (target && target.files) {
+        file.value = target.files[0]
+      }
+      let isError = false
+      isError = validateInputAll.value
+      if (rowData.value.length === 0) {
+        isError = true
+        //message_addManual.value = "กรุณาเพิ่มรายการ"
+        alert('กรุณาเพิ่มรายการ')
+      }
+      if (!NewVrf.reason) {
+        VRF_error.reason = 'กรุณาใส่ข้อมูล'
+        isError = true
+        console.log('NewVrf.reason error isError: ', isError)
       } else {
-        if (rowData.value[index].errors && rowData.value[index].errors[field]) {
-          const { [field]: removed, ...rest } = rowData.value[index].errors
-          rowData.value[index].errors = { ...rest }
+        VRF_error.reason = ''
+      }
+      if (!NewVrf.contactor) {
+        VRF_error.contactor = 'กรุณาใส่ข้อมูล'
+        isError = true
+        console.log('NewVrf.contactor error isError: ', isError)
+      } else {
+        VRF_error.contactor = ''
+      }
+      if (!NewVrf.requestor) {
+        VRF_error.requestor = 'กรุณาใส่ข้อมูล'
+        isError = true
+        console.log('NewVrf.requestor error isError: ', isError)
+      } else {
+        VRF_error.requestor = ''
+      }
+      if (!NewVrf.requestor_position) {
+        VRF_error.requestor_position = 'กรุณาใส่ข้อมูล'
+        isError = true
+        console.log('NewVrf.requestor_position error isError: ', isError)
+      } else {
+        VRF_error.requestor_position = ''
+      }
+      if (!NewVrf.requestor_dept) {
+        VRF_error.requestor_dept = 'กรุณาใส่ข้อมูล'
+        isError = true
+        console.log('NewVrf.requestor_dept error isError: ', isError)
+      } else {
+        VRF_error.requestor_dept = ''
+      }
+      if (!NewVrf.requestor_phone) {
+        VRF_error.requestor_phone = 'กรุณาใส่ข้อมูล'
+        isError = true
+        console.log('NewVrf.requestor_phone error isError: ', isError)
+      } else {
+        VRF_error.requestor_phone = ''
+      }
+      if (!NewVrf.navigator) {
+        VRF_error.navigator = 'กรุณาใส่ข้อมูล'
+        isError = true
+        console.log('NewVrf.navigator error isError: ', isError)
+      } else {
+        VRF_error.navigator = ''
+      }
+      if (!NewVrf.area) {
+        VRF_error.area = 'กรุณาใส่ข้อมูล'
+        isError = true
+        console.log('NewVrf.area error isError: ', isError)
+      } else {
+        VRF_error.area = ''
+      }
+      if (!NewVrf.date_from) {
+        VRF_error.date_from = 'กรุณาเลือกข้อมูล'
+        isError = true
+        console.log('NewVrf.date_from error isError: ', isError)
+      } else {
+        VRF_error.date_from = ''
+      }
+      if (!NewVrf.date_to) {
+        VRF_error.date_to = 'กรุณาเลือกข้อมูล'
+        isError = true
+        console.log('NewVrf.date_to error isError: ', isError)
+      } else {
+        VRF_error.date_to = ''
+      }
+      if (isError) {
+
+        validateInputAll.value = true
+        console.log('if (isError) {: ', isError)
+        console.log('after validateInputAll.value: ', validateInputAll.value)
+        return
+      } //--------------call addManualVRF
+      else {
+        console.log('isError: ', isError)
+        if (!validateInputAll.value) {
+          if (confirm('คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ ?')) {
+            addManualVRF()
+          }
         }
       }
     }
@@ -1982,6 +2058,8 @@ export default defineComponent({
       rowData.value = []
       Id.value = 0
       VRF_error.reason = ''
+      VRF_error.date_from = ''
+      VRF_error.date_to = ''
       VRF_error.contactor = ''
       VRF_error.requestor = ''
       VRF_error.requestor_position = ''
@@ -3018,36 +3096,33 @@ export default defineComponent({
         }
       }
     }
-    const setToDateAdd = () => {
-  if (NewVrf.date_from) {
-    const currentDate = new Date();
-    const selectedDate = new Date(NewVrf.date_from);
+    const setFromDateAdd = () => {
+      if (NewVrf.date_from) {
+        const currentDate = new Date();
+        const selectedDate = new Date(NewVrf.date_from);
 
-    // ตั้งค่าเป็นวันที่ปัจจุบัน แต่ลดเวลาลงเพื่อทำให้การเปรียบเทียบเป็นไปตามวันที่เท่านั้น
-    currentDate.setHours(0, 0, 0, 0);
+        // ตั้งค่าเป็นวันที่ปัจจุบัน แต่ลดเวลาลงเพื่อทำให้การเปรียบเทียบเป็นไปตามวันที่เท่านั้น
+        currentDate.setHours(0, 0, 0, 0);
 
-    // ตั้งค่าให้เป็นวันพรุ่งนี้
-    const tomorrow = new Date();
-    //tomorrow.setDate(currentDate.getDate() + 1);
-    tomorrow.setDate(currentDate.getDate() + 0);
-    tomorrow.setHours(0, 0, 0, 0);
+        // ตั้งค่าให้เป็นวันพรุ่งนี้
+        const tomorrow = new Date();
+        //tomorrow.setDate(currentDate.getDate() + 1);
+        tomorrow.setDate(currentDate.getDate() + 0);
+        tomorrow.setHours(0, 0, 0, 0);
 
-    if (selectedDate < tomorrow) {
-      //alert('กรุณาเลือกวันที่ล่วงหน้าอย่างน้อย 1 วัน');
-      alert('กรุณาเลือกวันที่ปัจจุบันเป็นต้นไป');
-      NewVrf.date_from = null;
-      return; // หยุดฟังก์ชันหากวันที่เลือกไม่ถูกต้อง
+        if (selectedDate < tomorrow) {
+          //alert('กรุณาเลือกวันที่ล่วงหน้าอย่างน้อย 1 วัน');
+          alert('กรุณาเลือกวันที่ปัจจุบันเป็นต้นไป');
+          NewVrf.date_from = null;
+          return; // หยุดฟังก์ชันหากวันที่เลือกไม่ถูกต้อง
+        }
+
+        // โค้ดสำหรับการตั้งค่า date_to หากวันที่ที่เลือกถูกต้อง
+        const dateLimit = new Date(selectedDate);
+        dateLimit.setDate(dateLimit.getDate() + 30);
+        NewVrf.date_to = dateLimit;
+      }
     }
-
-    // โค้ดสำหรับการตั้งค่า date_to หากวันที่ที่เลือกถูกต้อง
-    const dateLimit = new Date(selectedDate);
-    dateLimit.setDate(dateLimit.getDate() + 30);
-    NewVrf.date_to = dateLimit;
-  }
-}
-
-
-
     // const setToDateAdd = (type) => {
     //   if (type === 'date_from_edit' && NewVrf.date_from) {
     //     const dateFrom = new Date(NewVrf.date_from)
@@ -3056,7 +3131,7 @@ export default defineComponent({
     //     NewVrf.date_to = dateLimit
     //   }
     // }
-    const setFromDateAdd = (type) => {
+    const setToDateAdd = (type) => {
       if (type === 'date_to_edit' && NewVrf.date_from && NewVrf.date_to) {
         const dateFrom = new Date(NewVrf.date_from)
         const dateTo = new Date(NewVrf.date_to)
@@ -3205,91 +3280,6 @@ export default defineComponent({
         location.reload()
       }
     }
-    const addManualVRF_validateInput = (e) => {
-      validateAllInputs()
-      const target = e.target
-      if (target && target.files) {
-        file.value = target.files[0]
-      }
-      let isError = false
-      isError = validateInputAll.value
-      if (rowData.value.length === 0) {
-        isError = true
-        //message_addManual.value = "กรุณาเพิ่มรายการ"
-        alert('กรุณาเพิ่มรายการ')
-      }
-      if (!NewVrf.reason) {
-        VRF_error.reason = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.reason = ''
-      }
-      if (!NewVrf.contactor) {
-        VRF_error.contactor = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.contactor = ''
-      }
-      if (!NewVrf.requestor) {
-        VRF_error.requestor = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.requestor = ''
-      }
-      if (!NewVrf.requestor_position) {
-        VRF_error.requestor_position = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.requestor_position = ''
-      }
-      if (!NewVrf.requestor_dept) {
-        VRF_error.requestor_dept = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.requestor_dept = ''
-      }
-      if (!NewVrf.requestor_phone) {
-        VRF_error.requestor_phone = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.requestor_phone = ''
-      }
-      if (!NewVrf.navigator) {
-        VRF_error.navigator = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.navigator = ''
-      }
-      if (!NewVrf.area) {
-        VRF_error.area = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.area = ''
-      }
-      if (!NewVrf.date_from) {
-        VRF_error.date_from = 'กรุณาเลือกข้อมูล'
-        isError = true
-      } else {
-        VRF_error.date_from = ''
-      }
-      if (!NewVrf.date_to) {
-        VRF_error.date_to = 'กรุณาเลือกข้อมูล'
-        isError = true
-      } else {
-        VRF_error.date_to = ''
-      }
-      if (isError) {
-        console.log('isError: ', isError)
-        validateInputAll.value = false
-        return false
-      } //--------------call addManualVRF
-      else {
-        console.log('isError: ', isError)
-        if (confirm('คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ ?')) {
-          addManualVRF()
-        }
-      }
-    }
     const updateCheckedRows = (rowsKey) => {
       selecteall.value = null
       selecteall.value = rowsKey
@@ -3323,10 +3313,11 @@ export default defineComponent({
         date_to: '',
         fullname: '',
         vehicle_brand_id: null,
+        vehicle_registration: '',
         vehicle_color_id: null,
         card_no: '',
         vrf_id: vrf_id,
-        remark_urgent: '',
+        remark_urgentcase: '',
         errors: {}
       })
     }
@@ -3394,31 +3385,6 @@ export default defineComponent({
       Id.value--
     }
     //-------------------------------------------------
-
-    const VRF_Urgentcase_validateInput = async (e) => {
-
-      urgentcase_validateAllInputs()
-      let isError = false
-      isError = validateInputAll.value
-      if (vrf_urgent.vrf_Existing_det.length === 0) {
-        isError = true
-        //message_addManual.value = "กรุณาเพิ่มรายการ"
-        alert('กรุณาเพิ่มรายการ')
-      }
-      if (isError) {
-        console.log('urgentcase_error isError: ', isError)
-        validateInputAll.value = false
-        return false
-      } //--------------call addManualVRF
-      else {
-        console.log('isError: ', isError)
-        if (confirm('คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ด่วน ?')) {
-          AddUrgentcase()
-        }
-
-      }
-    }
-    //-------------------------------------------------
     const AddUrgentcase = async () => {
       // updateParams = {
       //         Id: id,
@@ -3448,7 +3414,7 @@ export default defineComponent({
               vrf_Existing.vrf_Existing_det[index].vehicle_registration,
             card_no: vrf_Existing.vrf_Existing_det[index].card_no,
             user_id: user_id.value,
-            remark_urgent: vrf_Existing.vrf_Existing_det[index].remark_urgentcase,
+            remark_urgentcase: vrf_Existing.vrf_Existing_det[index].remark_urgentcase,
             role_id: localStorage.getItem('user_role_id'),
             work_flow_id: localStorage.getItem('user_work_flow_id'),
             department_id: department_id.value,
@@ -3472,7 +3438,7 @@ export default defineComponent({
             vrf_urgent.vrf_Existing_det[index].vehicle_registration,
           card_no: vrf_urgent.vrf_Existing_det[index].card_no,
           user_id: user_id.value,
-          remark_urgent: vrf_urgent.vrf_Existing_det[index].remark_urgentcase,
+          remark_urgentcase: vrf_urgent.vrf_Existing_det[index].remark_urgentcase,
           role_id: localStorage.getItem('user_role_id'),
           work_flow_id: localStorage.getItem('user_work_flow_id'),
           department_id: department_id.value,
@@ -3512,6 +3478,112 @@ export default defineComponent({
         }
       }
     }
+    //-------------------edit validate add vrf-------------------
+    const edit_fieldsToValidate = [
+      // 'tbDateF',
+      // 'tbDateT',
+      'fullname',
+      // 'ddlvehicle_brand',
+      // 'tbVehicle_Registration',
+      // 'ddlvehicle_color',
+      'card_no'
+    ]
+    //-------------------edit_validateInput
+    const edit_validateInput = (field, index, errorMessage) => {
+      // ตรวจสอบความยาวข้อมูล
+      if (field === 'fullname') {
+        const isDuplicate = vrf_Existing.vrf_Existing_det.some((item, idx) =>
+          idx !== index && item.fullname === vrf_Existing.vrf_Existing_det[index].fullname);
+        if (isDuplicate) {
+          vrf_Existing.vrf_Existing_det[index].errors = {
+            ...vrf_Existing.vrf_Existing_det[index].errors,
+            [field]: "ข้อมูลชื่อ-นามสกุลซ้ำกัน"
+          };
+          validateInputAll.value = true
+        }
+        else if (!vrf_Existing.vrf_Existing_det[index].fullname) {
+          vrf_Existing.vrf_Existing_det[index].errors = {
+            ...vrf_Existing.vrf_Existing_det[index].errors,
+            [field]: "กรุณาใส่ข้อมูล"
+          };
+          validateInputAll.value = true
+        } else {
+          if (vrf_Existing.vrf_Existing_det[index].errors && vrf_Existing.vrf_Existing_det[index].errors[field]) {
+            const { [field]: removed, ...rest } = vrf_Existing.vrf_Existing_det[index].errors;
+            vrf_Existing.vrf_Existing_det[index].errors = { ...rest };
+          }
+          validateInputAll.value = false
+        }
+      }
+      else if (field === 'card_no')//เลขบัตร
+      {
+        const isDuplicate = vrf_Existing.vrf_Existing_det.some((item, idx) =>
+          idx !== index && item.card_no === vrf_Existing.vrf_Existing_det[index].card_no);
+        if (isDuplicate) {
+          vrf_Existing.vrf_Existing_det[index].errors = {
+            ...vrf_Existing.vrf_Existing_det[index].errors,
+            [field]: "ข้อมูลบัตรซ้ำกัน"
+          };
+          validateInputAll.value = true
+        }
+        else if (!vrf_Existing.vrf_Existing_det[index].card_no) {
+          vrf_Existing.vrf_Existing_det[index].errors = {
+            ...vrf_Existing.vrf_Existing_det[index].errors,
+            [field]: "กรุณาใส่ข้อมูล"
+          }
+          validateInputAll.value = true
+        }
+        else {
+          if (vrf_Existing.vrf_Existing_det[index].errors && vrf_Existing.vrf_Existing_det[index].errors[field]) {
+            const { [field]: removed, ...rest } = vrf_Existing.vrf_Existing_det[index].errors;
+            vrf_Existing.vrf_Existing_det[index].errors = { ...rest };
+          }
+          validateInputAll.value = false
+        }
+      }
+      else if (field === 'vehicle_registration')//ทะเบียนรถ 
+      {
+        if (vrf_Existing.vrf_Existing_det[index]['vehicle_registration'].length > 7) {
+          vrf_Existing.vrf_Existing_det[index].errors = {
+            ...vrf_Existing.vrf_Existing_det[index].errors,
+            [field]: "ห้ามใส่ข้อมูลเกิน 7 ตัวอักษร"
+          }
+          validateInputAll.value = true
+        }
+        else {
+          if (vrf_Existing.vrf_Existing_det[index].errors && vrf_Existing.vrf_Existing_det[index].errors[field]) {
+            const { [field]: removed, ...rest } = vrf_Existing.vrf_Existing_det[index].errors
+            vrf_Existing.vrf_Existing_det[index].errors = { ...rest }
+          }
+          validateInputAll.value = false
+        }
+      }
+    }
+    // const edit_validateInput = (field, index, errorMessage) => {
+    //   if (!vrf_Existing.vrf_Existing_det[index][field]) {
+    //     vrf_Existing.vrf_Existing_det[index].errors = {
+    //       ...vrf_Existing.vrf_Existing_det[index].errors,
+    //       [field]: errorMessage
+    //     }
+    //   } else {
+    //     if (
+    //       vrf_Existing.vrf_Existing_det[index].errors &&
+    //       vrf_Existing.vrf_Existing_det[index].errors[field]
+    //     ) {
+    //       const { [field]: removed, ...rest } =
+    //         vrf_Existing.vrf_Existing_det[index].errors
+    //       vrf_Existing.vrf_Existing_det[index].errors = { ...rest }
+    //     }
+    //   }
+    // }
+    //-------------------edit_validateAllInputs
+    const edit_validateAllInputs = () => {
+      vrf_Existing.vrf_Existing_det.forEach((data, index) => {
+        edit_fieldsToValidate.forEach((field) => {
+          edit_validateInput(field, index, 'กรุณาใส่ข้อมูล')
+        })
+      })
+    }
     const editVRF_validateInput = async (e) => {
       edit_validateAllInputs()
       const target = e.target
@@ -3519,6 +3591,7 @@ export default defineComponent({
         file.value = target.files[0]
       }
       let isError = false
+      isError = validateInputAll.value
       if (vrf_Existing.vrf_Existing_det.length === 0) {
         isError = true
         //message_addManual.value = "กรุณาเพิ่มรายการ"
@@ -3586,11 +3659,16 @@ export default defineComponent({
       }
       if (isError) {
         console.log('isError: ', isError)
+        validateInputAll.value = true
         return false
       } //--------------call addManualVRF
       else {
         console.log('isError: ', isError)
-        editVRF()
+        if (!validateInputAll.value) {
+          if (confirm('คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ ?')) {
+            editVRF()
+          }
+        }        
       }
     }
     const editVRF_Urgentcase_validateInput = async (e) => {
