@@ -317,7 +317,7 @@
                         <tr
                           v-for="(data, index) in vrf_Existing.vrf_Existing_det"
                           :key="data.id"
-                          :class="getRowClass(data)"
+                          :class="['tr-align-middle', getRowClass(data)]"  
                         >
                           <td
                             scope="col"
@@ -453,7 +453,7 @@
                                     index
                                   )
                               "
-                              style="cursor: pointer; font-size: small"
+                              style="cursor: pointer; font-size:large; font-weight: bold;"
                             >
                               เข้า &nbsp;|&nbsp;
                             </span>
@@ -467,7 +467,7 @@
                                     'In'
                                   )
                               "
-                              style="cursor: pointer; font-size: small"
+                              style="cursor: pointer; font-size:large; font-weight: bold;"
                             >
                               ยกเลิก &nbsp;&nbsp;
                             </span>
@@ -481,7 +481,7 @@
                                     index
                                   )
                               "
-                              style="cursor: pointer; font-size: small"
+                              style="cursor: pointer; font-size:large; font-weight: bold;"
                             >
                               ออก &nbsp;|&nbsp;
                             </span>
@@ -495,20 +495,11 @@
                                     'Out'
                                   )
                               "
-                              style="cursor: pointer; font-size: small"
+                              style="cursor: pointer;  font-size:large; font-weight: bold;"
                             >
                               ยกเลิก
                             </span>
-                            <!-- <span @click="
-                              deleteData(
-                                vrf_Existing.vrf_Existing_det[index].id
-                              )
-                              " style="cursor: pointer">
-                              <i class="fa fa-minus-square align-middle" aria-hidden="true"></i>
-                            </span> -->
-                            <!-- &nbsp;|&nbsp;<span
-                                @click.prevent="addItem()" class="text-decoration-none text-gray fs-7"
-                                style="cursor: pointer"><i class="fa fa-plus-circle align-middle" /></span> -->
+
                           </td>
                         </tr>
                       </tbody>
@@ -644,10 +635,9 @@
                 <div class="align-top pt-1 d-flex justify-content-center">
                   <button
                     class="btn btn-success"
-                    style="width: 4rem; height: 2rem"
+                    style="width: 5rem; height: 2rem; font-size: large;"
                     @click.prevent="setCheckInOut"
-                  >
-                    {{ check_vrf_inout.label }}
+                  >{{ check_vrf_inout.label }}
                   </button>
                   <!-- <button class="btn btn-danger" data-bs-dismiss="modal" type="reset" style="width: 4rem; height: 2rem"
                     id="ClosemyModalNew" @click="CloseEditModal">
@@ -794,10 +784,6 @@ export default defineComponent({
       comment: ''
     })
     const setCheckInOut = async (e) => {
-      // alert( vrf_Existing.orderId )
-      //let type_ = check_vrf_inout.type === 'check_in' ? 'เข้า' : 'ออก'
-      //if (confirm(`คุณต้องการลงเวลา${type_}พื้นที่ ?`)) {
-      //if (confirm(`คุณต้องการลงเวลา${type_}พื้นที่ ?`)) {
       const params = {
         Id: vrf_Existing.id,
         Type_: check_vrf_inout.type,
@@ -2542,11 +2528,13 @@ export default defineComponent({
   }
 })
 </script>
-
 <style scoped>
 @import '../assets/css/style.css';
 @import '../../node_modules/vue-multiselect/dist/vue-multiselect.css';
 
+.tr-align-middle td, .tr-align-middle th {
+    vertical-align: middle;
+}
 .row-orange {
   background-color: rgb(172, 138, 75);
 }
@@ -2792,7 +2780,6 @@ export default defineComponent({
     width: 80px;
   } */
 </style>
-  
 <!-- <style scoped>
 @import '../assets/css/style.css';
 @import '../../node_modules/vue-multiselect/dist/vue-multiselect.css';

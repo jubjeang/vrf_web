@@ -945,7 +945,6 @@ export default defineComponent({
     }
     const update_vrf_trans_status_all = (type__) => {
       //ฟังก์ชั่นนี้เรืยก const confirmDialog = async () => {
-
       isOpen_alert_popup.value = true
       function_selected.value = 'update_vrf_trans_status_all'
       update_vrf_trans_status_all_type.value = type__
@@ -1009,8 +1008,11 @@ export default defineComponent({
               (res) => {
                 // success callback
                 let obj = JSON.parse(JSON.stringify(res.data))
+                //console.log(obj[0])
                 // router.push('/listorder')
-                alert('รายการถูกอนุมัติเรียบร้อยแล้ว')
+                //obj[""] ? alert('รายการถูกอนุมัติไปก่อนแล้ว') : alert('รายการถูกอนุมัติเรียบร้อยแล้ว')
+                obj[0].approve_status === 'approved' ? alert('รายการถูกอนุมัติไปก่อนแล้ว') : alert('รายการถูกอนุมัติเรียบร้อยแล้ว');                
+                //console.log(obj[0].approve_status)
                 location.reload()
               },
               (res) => {
@@ -2110,7 +2112,6 @@ export default defineComponent({
     /* ซ่อน scrollbar */
   }
 }
-
 .error-message {
   color: red;
 }
@@ -2121,21 +2122,18 @@ export default defineComponent({
   width: 120rem;
   text-align: center;
 }
-
 .modalcustom_advancesearch {
   max-width: 50rem;
   /* กำหนดความกว้างของโมดัลเป็น 800px */
   width: 120rem;
   text-align: center;
 }
-
 .modalcustomtb {
   max-width: 100%;
   /* กำหนดความกว้างของโมดัลเป็น 800px */
   width: 100%;
   text-align: center;
 }
-
 /* set .modal-body  full width */
 .modal-body {
   width: 100%;
@@ -2156,25 +2154,21 @@ export default defineComponent({
   width: 100%;
   text-align: center;
 }
-
 .colwidth10 {
   width: 10%;
   /* กำหนดความกว้างของโมดัลเป็น 800px */
   text-align: center;
 }
-
 .colwidth25 {
   width: 25%;
   /* กำหนดความกว้างของโมดัลเป็น 800px */
   text-align: center;
 }
-
 .colwidth20 {
   width: 20%;
   /* กำหนดความกว้างของโมดัลเป็น 800px */
   align-items: center;
 }
-
 .colwidth5 {
   width: 5%;
   /* กำหนดความกว้างของโมดัลเป็น 800px */
@@ -2281,22 +2275,5 @@ export default defineComponent({
 #button_alert_popup_cancel :hover {
   background-color: #2980b9;
 }
-
-/* .input-group-text {
-      cursor: pointer;
-    }
-    
-    .form-control:disabled, .form-control[readonly] {
-      background-color: #fff;
-      opacity: 0;
-    } */
-/* #formFile::before {
-      content: "Pick file";
-      position: absolute;
-      z-index: 2;
-      display: block;
-      background-color: #eee;
-      width: 80px;
-    } */
 </style>
     

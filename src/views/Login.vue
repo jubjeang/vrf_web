@@ -31,15 +31,18 @@
                 placeholder="กรอกชื่อผู้ใช้" />
             </div>
             <!-- Password input -->
-            <div class="form-group text-center pt-4 position-relative position-relative">
-              <input :type="passwordFieldType" id="password" ref="password" v-model="password" class="form-control form-control-lg" placeholder="กรอกรหัสผ่าน"/>
-              <button type="button" @mousedown="showPassword" @mouseup="hidePassword" @mouseleave="hidePassword" 
+            <div class="form-group pt-1">
+              
+              <input :type="passwordFieldType" id="password" ref="password" v-model="password"
+                class="form-control form-control-lg" placeholder="กรอกรหัสผ่าน">
+              <button type="button" @mousedown="showPassword" @mouseup="hidePassword" @mouseleave="hidePassword"
                 @touchstart.prevent="showPassword" @touchend.prevent="hidePassword"
-                class="btn btn-sm btn-secondary position-absolute password-toggle"                 
-                >
+                class="btn btn-sm btn-secondary password-toggle">
                 แสดง
               </button>
             </div>
+
+
             <!-- <div class="form-outline mb-3 text-center ps-4 position-relative" style=" width: 22rem;">
               <input :type="passwordFieldType" id="password" ref="password" v-model="password"
                 class="form-control form-control-lg" placeholder="กรอกรหัสผ่าน"
@@ -240,14 +243,31 @@ export default {
     hidePassword() {
       this.passwordFieldType = 'password';
     },
+    handleResize() {
+      this.$nextTick(() => {
+        // โค้ดสำหรับปรับแต่งสไตล์หรือการเรนเดอร์ใหม่ คุณอาจต้องการตั้งค่าตัวแปรหรือใช้ DOM API โดยตรง
+        // ตัวอย่างเช่น:
+        const passwordInput = document.getElementById('password');
+        const showButton = document.querySelector('.password-toggle');
+        if (passwordInput && showButton) {
+          const height = passwordInput.offsetHeight + 'px';
+          showButton.style.height = height;
+        }
+      });
+    },
   },
   mounted() {
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize(); // ตรวจจับขนาดของหน้าจอเมื่อเพจโหลด
     let externalScript = document.createElement('script')
     externalScript.setAttribute(
       'src',
       'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js'
     )
     document.head.appendChild(externalScript)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
   },
   created() {
     try {
@@ -293,8 +313,10 @@ export default {
 /* You might need to adjust padding of the input field to prevent text overlap */
 .form-control-lg {
   padding-right: 50px;
-  width: 80%; /* full width */
-  margin: 0 auto; /* centers the input field */
+  width: 80%;
+  /* full width */
+  margin: 0 auto;
+  /* centers the input field */
   /* Adjust as needed */
 }
 
@@ -319,38 +341,46 @@ export default {
   }
 }
 
-
 .position-relative {
   position: relative;
 }
 
+
+.form-group {
+  display: flex;
+  align-items: stretch; /* ให้อินพุตและปุ่มมีความสูงเท่ากัน */
+  width: 100%; /* ให้เต็มความกว้างของ container */
+}
+
+.form-control.form-control-lg {
+  flex: 1; /* ให้อินพุตยืดขยาย */
+  border-radius: 0.25rem 0 0 0.25rem;
+
+}
+.form-group .form-control.form-control-lg:last-of-type {
+  border-radius: 0.25rem 0 0.25rem 0; /* กำหนดรูปแบบขอบมนสำหรับด้านขวาของอินพุตสุดท้าย */
+}
+
 .password-toggle {
-  position: absolute;
-  left: 10%;
-  right: -30px; /* Adjust this value as needed to move the button to the left */
-  top: 40%;
-  transform: translateY(-50%);
-  height: 70%;
-  background-color: gray;
-  color: white;
-  width: 50px;
+  flex: none; /* ปุ่มจะไม่ยืดขยาย */
+  cursor: pointer;
+  padding: 0.375rem 0.75rem; /* ปรับขนาดให้เหมาะสม */
+
 }
+
+/* Media query สำหรับหน้าจอขนาดใหญ่ */
 @media (min-width: 992px) {
-  .password-toggle { 
-  left: 80%;
-  position: absolute;
-  right: -30px; /* Adjust this value as needed to move the button to the left */
-  top: 68%;
-  transform: translateY(-50%);
-  height: 70%;
-  background-color: gray;
-  color: white;
-  width: 50px;
-}
-}
-@media (max-width: 767px) {
-  .form-control-lg {
-    padding-right: 30px; /* adjust padding for smaller screens */
+  .form-group {
+    max-width: 500px;
+    /* จำกัดความกว้างสูงสุด */
+    margin: 0 auto;
+    /* จัดกลาง */
   }
 }
-</style>
+
+@media (max-width: 767px) {
+  .form-control-lg {
+    padding-right: 30px;
+    /* adjust padding for smaller screens */
+  }
+}</style>

@@ -674,7 +674,8 @@ export default defineComponent({
                 // success callback
                 let obj = JSON.parse(JSON.stringify(res.data))
                 // router.push('/listorder')
-                alert('รายการถูกอนุมัติเรียบร้อยแล้ว')
+                obj[0].approve_status === 'approved' ? alert('รายการถูกอนุมัติไปก่อนแล้ว') : alert('รายการถูกอนุมัติเรียบร้อยแล้ว');                
+                
                 location.reload()
               },
               (res) => {

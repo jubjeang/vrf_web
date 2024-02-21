@@ -135,9 +135,10 @@ export default {
     </SidebarLink>
     <SidebarLink v-if="out_put.length" to="/requestvrflst" icon="fa fa-list-alt" class="nav-link align-middle"
       v-show="out_put[0].request_vrf === '1'">รายการขอเข้าพื้นที่
-
     </SidebarLink>
-
+    <SidebarLink v-if="out_put.length" to="/requestvrflst" icon="fa fa-list-alt" class="nav-link align-middle"
+      v-show="out_put[0].vrf_requert_approve === '1'">รายการขอเข้าพื้นที่
+    </SidebarLink>
     <SidebarLink v-if="out_put.length" to="/approvevrflst" icon="fa fa-list-alt" class="nav-link align-middle"
       v-show="out_put[0].vrf_requert_approve === '1'">
       <div class="link-content-wrapper">
@@ -175,6 +176,7 @@ export default {
     <SidebarLink v-if="out_put.length" to="/vrfusermgmtbydept" icon="fa fa-tasks" class="nav-link align-middle"
       v-show="out_put[0].vrf_user_mgmt_by_dept === '1'">จัดการข้อมูลผู้ใช้
     </SidebarLink>
+    <SidebarLink  to="/vrfdoc" icon="fa fa-book" class="nav-link align-middle">คู่มือ</SidebarLink>    
     <!-- <SidebarLink to="/ordertracking" icon="fa fa-user-circle">บัญชีผู้ใช้</SidebarLink> -->
     <span class="collapse-icon" :class="{ 'rotate-180': collapsed }" @click="toggleSidebar">
       <i class="fas fa-angle-double-left" style="cursor: pointer;" />

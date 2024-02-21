@@ -1606,7 +1606,7 @@ export default defineComponent({
       // 'ddlvehicle_brand',
       // 'tbVehicle_Registration',
       // 'ddlvehicle_color',
-      'tbCardNo'
+      //'tbCardNo'
     ]
     const validateAllInputs = () => {
       rowData.value.forEach((data, index) => {
@@ -1642,32 +1642,32 @@ export default defineComponent({
           validateInputAll.value = false
         }
       }
-      else if (field === 'tbCardNo')//เลขบัตร
-      {
-        const isDuplicate = rowData.value.some((item, idx) =>
-          idx !== index && item.tbCardNo === rowData.value[index].tbCardNo);
-        if (isDuplicate) {
-          rowData.value[index].errors = {
-            ...rowData.value[index].errors,
-            [field]: "ข้อมูลบัตรซ้ำกัน"
-          };
-          validateInputAll.value = true
-        }
-        else if (!rowData.value[index].tbCardNo) {
-          rowData.value[index].errors = {
-            ...rowData.value[index].errors,
-            [field]: "กรุณาใส่ข้อมูล"
-          }
-          validateInputAll.value = true
-        }
-        else {
-          if (rowData.value[index].errors && rowData.value[index].errors[field]) {
-            const { [field]: removed, ...rest } = rowData.value[index].errors;
-            rowData.value[index].errors = { ...rest };
-          }
-          validateInputAll.value = false
-        }
-      }
+      // else if (field === 'tbCardNo')//เลขบัตร
+      // {
+      //   const isDuplicate = rowData.value.some((item, idx) =>
+      //     idx !== index && item.tbCardNo === rowData.value[index].tbCardNo);
+      //   if (isDuplicate) {
+      //     rowData.value[index].errors = {
+      //       ...rowData.value[index].errors,
+      //       [field]: "ข้อมูลบัตรซ้ำกัน"
+      //     };
+      //     validateInputAll.value = true
+      //   }
+      //   else if (!rowData.value[index].tbCardNo) {
+      //     rowData.value[index].errors = {
+      //       ...rowData.value[index].errors,
+      //       [field]: "กรุณาใส่ข้อมูล"
+      //     }
+      //     validateInputAll.value = true
+      //   }
+      //   else {
+      //     if (rowData.value[index].errors && rowData.value[index].errors[field]) {
+      //       const { [field]: removed, ...rest } = rowData.value[index].errors;
+      //       rowData.value[index].errors = { ...rest };
+      //     }
+      //     validateInputAll.value = false
+      //   }
+      // }
       else if (field === 'tbVehicle_Registration')//ทะเบียนรถ 
       {
         if (rowData.value[index]['tbVehicle_Registration'].length > 7) {
@@ -1799,7 +1799,7 @@ export default defineComponent({
       else {
         console.log('isError: ', isError)
         if (!validateInputAll.value) {
-          if (confirm('คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ ?')) {
+          if (confirm('คุณต้องการบันทึกรายการขอเข้าพื้นที่ ?')) {
             addManualVRF()
           }
         }
@@ -1932,7 +1932,7 @@ export default defineComponent({
     //-------------------edit validate add vrf-------------------
     const edit_fieldsToValidate = [
       'fullname',
-      'card_no'
+      //'card_no'
     ]    
     const edit_validateInput = (field, index, errorMessage) => {
       // ตรวจสอบความยาวข้อมูล
@@ -1960,32 +1960,32 @@ export default defineComponent({
           validateInputAll.value = false
         }
       }
-      else if (field === 'card_no')//เลขบัตร
-      {
-        const isDuplicate = templete_vrf_Existing.templete_vrf_Existing_det.some((item, idx) =>
-          idx !== index && item.card_no === templete_vrf_Existing.templete_vrf_Existing_det[index].card_no);
-        if (isDuplicate) {
-          templete_vrf_Existing.templete_vrf_Existing_det[index].errors = {
-            ...templete_vrf_Existing.templete_vrf_Existing_det[index].errors,
-            [field]: "ข้อมูลบัตรซ้ำกัน"
-          };
-          validateInputAll.value = true
-        }
-        else if (!templete_vrf_Existing.templete_vrf_Existing_det[index].card_no) {
-          templete_vrf_Existing.templete_vrf_Existing_det[index].errors = {
-            ...templete_vrf_Existing.templete_vrf_Existing_det[index].errors,
-            [field]: "กรุณาใส่ข้อมูล"
-          }
-          validateInputAll.value = true
-        }
-        else {
-          if (templete_vrf_Existing.templete_vrf_Existing_det[index].errors && templete_vrf_Existing.templete_vrf_Existing_det[index].errors[field]) {
-            const { [field]: removed, ...rest } = templete_vrf_Existing.templete_vrf_Existing_det[index].errors;
-            templete_vrf_Existing.templete_vrf_Existing_det[index].errors = { ...rest };
-          }
-          validateInputAll.value = false
-        }
-      }
+      // else if (field === 'card_no')//เลขบัตร
+      // {
+      //   const isDuplicate = templete_vrf_Existing.templete_vrf_Existing_det.some((item, idx) =>
+      //     idx !== index && item.card_no === templete_vrf_Existing.templete_vrf_Existing_det[index].card_no);
+      //   if (isDuplicate) {
+      //     templete_vrf_Existing.templete_vrf_Existing_det[index].errors = {
+      //       ...templete_vrf_Existing.templete_vrf_Existing_det[index].errors,
+      //       [field]: "ข้อมูลบัตรซ้ำกัน"
+      //     };
+      //     validateInputAll.value = true
+      //   }
+      //   else if (!templete_vrf_Existing.templete_vrf_Existing_det[index].card_no) {
+      //     templete_vrf_Existing.templete_vrf_Existing_det[index].errors = {
+      //       ...templete_vrf_Existing.templete_vrf_Existing_det[index].errors,
+      //       [field]: "กรุณาใส่ข้อมูล"
+      //     }
+      //     validateInputAll.value = true
+      //   }
+      //   else {
+      //     if (templete_vrf_Existing.templete_vrf_Existing_det[index].errors && templete_vrf_Existing.templete_vrf_Existing_det[index].errors[field]) {
+      //       const { [field]: removed, ...rest } = templete_vrf_Existing.templete_vrf_Existing_det[index].errors;
+      //       templete_vrf_Existing.templete_vrf_Existing_det[index].errors = { ...rest };
+      //     }
+      //     validateInputAll.value = false
+      //   }
+      // }
       else if (field === 'vehicle_registration')//ทะเบียนรถ 
       {
         if (templete_vrf_Existing.templete_vrf_Existing_det[index]['vehicle_registration'].length > 7) {
@@ -2206,7 +2206,8 @@ export default defineComponent({
 
         // โค้ดสำหรับการตั้งค่า date_to หากวันที่ที่เลือกถูกต้อง
         const dateLimit = new Date(selectedDate);
-        dateLimit.setDate(dateLimit.getDate() + 30);
+        // dateLimit.setDate(dateLimit.getDate() + 30);
+        dateLimit.setDate(dateLimit.getDate() + 1);
         NewVrf.date_to = dateLimit;
       }
     }

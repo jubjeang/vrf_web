@@ -50,6 +50,11 @@ const routes = [
     path: '/vrfusermgmtbydept',
     name: 'vrfusermgmtbydept',
     component: () => import('../views/VRF_usermgmtbydept.vue')
+  },  
+  {
+    path: '/vrfdoc',
+    name: 'vrfdoc',
+    component: () => import('../views/VRF_Doc.vue')
   }, 
   {
     path: '/main',
