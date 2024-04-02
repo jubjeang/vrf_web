@@ -28,7 +28,7 @@
             </div> -->
             <div class="form-group text-center">
               <input type="text" id="jobid" ref="jobid" v-model="jobid" class="form-control form-control-lg"
-                placeholder="กรอกชื่อผู้ใช้" />
+                placeholder="กรอกชื่อผู้ใช้" style="border-radius: 0.5rem;" />
             </div>
             <!-- Password input -->
             <div class="form-group pt-1">
@@ -354,11 +354,11 @@ export default {
 
 .form-control.form-control-lg {
   flex: 1; /* ให้อินพุตยืดขยาย */
-  border-radius: 0.25rem 0 0 0.25rem;
+
 
 }
 .form-group .form-control.form-control-lg:last-of-type {
-  border-radius: 0.25rem 0 0.25rem 0; /* กำหนดรูปแบบขอบมนสำหรับด้านขวาของอินพุตสุดท้าย */
+  border-radius: 0.5rem 0 0 0.5rem ; /* กำหนดรูปแบบขอบมนสำหรับด้านขวาของอินพุตสุดท้าย */
 }
 
 .password-toggle {

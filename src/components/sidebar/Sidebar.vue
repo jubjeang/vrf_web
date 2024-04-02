@@ -128,7 +128,7 @@ export default {
     </span>
     <span v-else>
       <h1 @click="gotoMainPage" style="cursor: pointer;"><img src="@/assets/images/sl_logo.png"
-          style="display: block; max-width: auto height: auto;" /></h1>
+          style="display: block; max-width: auto; height: auto;" /></h1>
     </span>
     <SidebarLink v-if="out_put.length" to="/templatevrflst" icon="fas fa-wallet" class="nav-link align-middle"
       v-show="out_put[0].template_vrf === '1'">รายการแม่แบบ
@@ -152,8 +152,6 @@ export default {
         รายการทั้งหมด        
       </div>
     </SidebarLink>
-
-
     <SidebarLink v-if="out_put.length" to="/vrflstforsecurity" icon="fa fa-list-alt" class="nav-link align-middle"
       v-show="out_put[0].security_vrf === '1'">
       <div class="link-content-wrapper">
@@ -161,7 +159,6 @@ export default {
         <span v-if="isNewData" class="badge">new</span>
       </div>
     </SidebarLink>
-
     <!-- <SidebarLink v-if="out_put.length" to="/vrflstforsecurity" icon="fa fa-list-alt" class="nav-link align-middle"
       v-show="out_put[0].security_vrf === '1'">รายการขอเข้าพื้นที่
     </SidebarLink> -->
@@ -190,7 +187,6 @@ export default {
   display: flex;
   align-items: center;
 }
-
 .badge {
   background-color: red;
   color: white;
@@ -205,31 +201,24 @@ export default {
   transform: translate(50%, -50%);
   /* Adjust the position to be exactly at the corner */
 }
-
 .fade-enter-from {
   opacity: 0;
 }
-
 .fade-enter-to {
   opacity: 1;
 }
-
 .fade-enter-active {
   transition: all 1s ease;
 }
-
 .fade-leave-from {
   opacity: 1;
 }
-
 .fade-leave-to {
   opacity: 0;
 }
-
 .fade-leave-active {
   transition: all 0.4s ease;
 }
-
 .sidebar {
   color: white;
   background-color: var(--sidebar-bg-color);
@@ -244,11 +233,9 @@ export default {
   display: flex;
   flex-direction: column;
 }
-
 .sidebar h1 {
   height: 2.5em;
 }
-
 .collapse-icon {
   position: absolute;
   bottom: 0;
@@ -256,7 +243,6 @@ export default {
   color: rgba(255, 255, 255, 0.7);
   transition: 0.2s linear;
 }
-
 .rotate-180 {
   transform: rotate(180deg);
   transition: 0.2s linear;

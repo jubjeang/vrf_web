@@ -1631,7 +1631,7 @@ export default defineComponent({
                         function_selected.value = 'update_user_vrf_status'
                         // handle confirmation logic here
                         let message_ = ''
-                        message_ = 'คุณต้องการยกเลิกรายการขอเข้าพื้นที่?'
+                        message_ = 'คุณต้องการยกเลิกรายการผู้ใช้?'
                         alert_popup_message_inside.value = message_
                     })
                 }
@@ -1643,7 +1643,7 @@ export default defineComponent({
                         function_selected.value = 'update_user_vrf_status'
                         // handle confirmation logic here
                         let message_ = ''
-                        message_ = 'คุณต้องการยกเลิกรายการขอเข้าพื้นที่?'
+                        message_ = 'คุณต้องการยกเลิกรายการผู้ใช้?'
                         alert_popup_message_inside.value = message_
                         // }
                     })

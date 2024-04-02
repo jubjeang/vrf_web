@@ -44,16 +44,6 @@
       </div>
       <div class="col-10 d-flex justify-content-end">
         <div style="text-align: right">
-          <!-- <span data-bs-target="#myModalNew_with_templete" data-bs-toggle="modal"
-              style="cursor: pointer">สร้างรายการจากแม่แบบ</span>&nbsp;|&nbsp; -->
-          <!-- <span
-            data-bs-target="#myModalNew"
-            data-bs-toggle="modal"
-            style="cursor: pointer"
-          >
-            สร้างรายการขอเข้าพื้นที่
-          </span>
-          &nbsp;|&nbsp; -->
           <label>
             <span
               style="cursor: pointer"
@@ -83,9 +73,7 @@
           @return-checked-rows="updateCheckedRows"
           class="table table-striped table-hover"
         ></table-lite>
-        <!-- <table-lite :is-static-mode="true" :has-checkbox="false" :is-loading="table.isLoading" :columns="table.columns"
-          :rows="rowsWithClass" :total="table.totalRecordCount" :sortable="table.sortable"
-          @is-finished="tableLoadingFinish" @return-checked-rows="updateCheckedRows" class="table"></table-lite> -->
+        
       </div>
     </div>
     <!-- </div> -->
@@ -328,9 +316,7 @@
                               type="text"
                               class="form-control"
                               style="width: 10rem; display: inline-block"
-                              v-model="
-                                vrf_Existing.vrf_Existing_det[index].fullname
-                              "
+                              v-model="vrf_Existing.vrf_Existing_det[index].fullname"
                               readonly
                             />
                           </td>
@@ -339,10 +325,7 @@
                               type="text"
                               class="form-control"
                               style="width: 7rem; display: inline-block"
-                              v-model="
-                                vrf_Existing.vrf_Existing_det[index]
-                                  .vehicle_brand
-                              "
+                              v-model="vrf_Existing.vrf_Existing_det[index].vehicle_brand"
                               readonly
                             />
                           </td>
@@ -351,10 +334,7 @@
                               type="text"
                               class="form-control"
                               style="width: 7rem; display: inline-block"
-                              v-model="
-                                vrf_Existing.vrf_Existing_det[index]
-                                  .vehicle_registration
-                              "
+                              v-model="vrf_Existing.vrf_Existing_det[index].vehicle_registration"
                               readonly
                             />
                           </td>
@@ -363,10 +343,7 @@
                               type="text"
                               class="form-control"
                               style="width: 7rem; display: inline-block"
-                              v-model="
-                                vrf_Existing.vrf_Existing_det[index]
-                                  .vehicle_color
-                              "
+                              v-model="vrf_Existing.vrf_Existing_det[index].vehicle_color"
                               readonly
                             />
                           </td>
@@ -379,9 +356,7 @@
                               type="text"
                               class="form-control"
                               style="width: 15rem; display: inline-block"
-                              v-model="
-                                vrf_Existing.vrf_Existing_det[index].card_no
-                              "
+                              v-model="vrf_Existing.vrf_Existing_det[index].card_no"
                               readonly
                             />
                           </td>
@@ -399,10 +374,7 @@
                                 text-align: center;
                                 padding: 0;
                               "
-                              v-model="
-                                vrf_Existing.vrf_Existing_det[index]
-                                  .checkin_date
-                              "
+                              v-model="vrf_Existing.vrf_Existing_det[index].checkin_date"
                               readonly
                             />
                           </td>
@@ -610,39 +582,47 @@
                     </div>
                     <div class="col-md-2 text-end">แนบไฟล์:</div>
                     <div class="col-md-2 text-start">
-                      <a :href="fileUrl" target="_blank">
+                      <!-- <a :href="fileUrl" target="_blank">
                         <i class="fa fa-address-card" aria-hidden="true"></i>
-                      </a>
+                      </a> -->
+                      <a :href="fileUrl" target="_blank" v-show="fileUrl">
+      <i class="fa fa-address-card" aria-hidden="true"></i>
+    </a>
+    <label style="width: 1rem; display: inline-block" v-show="!fileUrl">
+      -
+    </label>
                     </div>
                   </div>
 
                   <!-- แถวที่ 4 -->
                   <div class="row p-2">
                     <div class="col-md-2 text-end">หมายเหตุ:</div>
-                    <div class="col-md-10">
+                    <div class="col-md-10 d-flex">
                       <input
                         type="text"
-                        id="comment"
+                        id="comment" 
                         class="form-control"
                         v-model="vrf_Existing.comment"
                         style="width: 70%"
-                      />
+                      />&nbsp; <button
+                        class="btn btn-success" type="button"
+                        style="width: 9rem; height: 2rem; font-size: large;"
+                        @click="setCheckInOut"
+                      >บันทึกหมายเหตุ
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="modal-footer pt-0 justify-content-center">
                 <div class="align-top pt-1 d-flex justify-content-center">
-                  <button
-                    class="btn btn-success"
-                    style="width: 5rem; height: 2rem; font-size: large;"
-                    @click.prevent="setCheckInOut"
-                  >{{ check_vrf_inout.label }}
-                  </button>
-                  <!-- <button class="btn btn-danger" data-bs-dismiss="modal" type="reset" style="width: 4rem; height: 2rem"
-                    id="ClosemyModalNew" @click="CloseEditModal">
-                    ยกเลิก
-                  </button> -->
+                  <button type="button" 
+                    class="btn btn-danger"
+                    style="width: 5rem; height: 2rem; font-size: large;"     
+                    data-bs-dismiss="modal"                
+                    @click="CloseEditModal"
+                  >ปิด
+                  </button>                
                 </div>
               </div>
             </div>
@@ -800,7 +780,7 @@ export default defineComponent({
               // success callback
               let obj = JSON.parse(JSON.stringify(res.data))
               // router.push('/listorder')
-              location.reload()
+              //location.reload()
               // addEditItem
             },
             (res) => {
@@ -1376,6 +1356,19 @@ export default defineComponent({
         )
       //location.reload()
     }
+    const CloseEditModalOnly = async () => {
+      check_vrf_inout.label = ''
+      check_vrf_inout.id = null
+      check_vrf_inout.type = ''
+      AdvSearch.tbDateF = ''
+      AdvSearch.tbDateT = ''
+      AdvSearch.contactor = ''
+      AdvSearch.requestor_id = 0
+      AdvSearch.area_id = 0
+      AdvSearch.requestor_dept_id = 0
+      AdvSearch.requestor = ''
+      AdvSearch.card_no = ''      
+    }
     //-----check session
     hasLocalStorage.value = window.localStorage.getItem('user_id')
     if (
@@ -1659,7 +1652,7 @@ export default defineComponent({
                 x.no.includes(keyword) ||
                 x.contactor.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.fullname.toLowerCase().includes(keyword.toLowerCase()) ||
-                x.card_no.toLowerCase().includes(keyword.toLowerCase()) ||
+                //x.card_no.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.navigator.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.meeting_area.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.reason.toLowerCase().includes(keyword.toLowerCase()) ||
@@ -1715,7 +1708,6 @@ export default defineComponent({
               // '<button type="button" data-id="' +
               // row.id +
               // '" class="btn btn-warning is-rows-el vrfout" style="margin-top: 0.2rem; width: 6rem; height:2rem" data-bs-target="#ModalCheckVRF_inout" data-bs-toggle="modal">ออก</button></div>'
-
               '<button type="button" data-id="' +
               row.id +
               '" class="btn btn-warning is-rows-el vrf" style="margin-top: 0.2rem; width: 6rem; height:2rem" data-bs-target="#ModalCheckVRF_inout" data-bs-toggle="modal">ดำเนินการ</button></div>'
@@ -1947,7 +1939,10 @@ export default defineComponent({
                 .finally(() => {
                   //
                 })
-              fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}`
+              // fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}`
+              vrf_Existing.attach_file ?
+        fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}` : fileUrl.value = null
+
             } catch (err) {
               console.log(err)
             }
@@ -1985,15 +1980,13 @@ export default defineComponent({
         }
       })
     }
-    // function stripTimeFromDate(date) {
-    //   return new Date(date.getFullYear(), date.getMonth(), date.getDate())
-    // }
     const AdvSearch_ = async () => {
       if (
         AdvSearch.tbDateF &&
         AdvSearch.tbDateT &&
         new Date(AdvSearch.tbDateF) > new Date(AdvSearch.tbDateT)
-      ) {
+      )
+       {
         alert('กรุณาเลือก จากวันที่ น้อยกว่า ถึงวันที่')
         return // Exit the function early without making the API call
       }
@@ -2262,7 +2255,6 @@ export default defineComponent({
         errors: {}
       })
     }
-
     const deleteData = (index) => {
       console.log(index)
       rowData.value.splice(index, 1)
@@ -2449,7 +2441,8 @@ export default defineComponent({
         return 'row-blue'
       }
     }
-    return {
+    return { 
+      CloseEditModalOnly,
       ClosemyModalAdvanceSearch,
       check_approve,
       ResetCheckin_out,

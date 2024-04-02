@@ -47,11 +47,11 @@
         </div>
       </div>
     </div>
-    <div class="row p-0 scrollable-table">
-      <div class="col-12">
+    <div class="row p-0">
+      <div class="col-12  scrollable-table">
         <table-lite :is-static-mode="true" :has-checkbox="true" :is-loading="table.isLoading" :columns="table.columns"
           :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable" @is-finished="tableLoadingFinish"
-          @return-checked-rows="updateCheckedRows" class="table table-striped table-hover"></table-lite>
+          @return-checked-rows="updateCheckedRows"  ref="tableElement" class="table table-striped table-hover"></table-lite>
       </div>
     </div>
     <!-- </div> -->
@@ -216,7 +216,7 @@
               <div class="modal-body modalcustom">
                 <div class="container modalcustom">
                   <!---Loop Manual Edit VRF------>
-                  <div class="row ms-4 ps-4 pe-3 me-3 modalcustom">
+                  <div class="row ms-4 ps-4 pe-3 me-3 modalcustom  scrollable-container">
                     <table class="table table-hover modalcustomtb">
                       <thead>
                         <tr>
@@ -235,14 +235,8 @@
                       <tbody>
                         <tr v-for="(data, index) in vrf_Existing.vrf_Existing_det" :key="data.id">
                           <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center">
-                            <input type="text" class="form-control" style="width: 20rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index].fullname
-                              " @blur="
-    edit_validateInput(
-      'fullname',
-      index,
-      'กรุณาใส่ข้อมูล'
-    )
-    " readonly />
+                            <input type="text" class="form-control" style="width: 20rem; display: inline-block"
+                             v-model="vrf_Existing.vrf_Existing_det[index].fullname" readonly />
                             <p class="error-message" v-if="data.errors && data.errors.fullname">
                               {{ data.errors.fullname }}
                             </p>
@@ -250,13 +244,7 @@
                           <td scope="col" class="colwidth10">
                             <select class="form-select form-select-sm" v-model="vrf_Existing.vrf_Existing_det[index]
                               .vehicle_brand_id
-                              " @change="
-    edit_validateInput(
-      'vehicle_brand_id',
-      index,
-      'กรุณาเลือกยี่ห้อรถ'
-    )
-    " disabled>
+                              "  disabled>
                               <option v-for="option in data_ddl.vehicle_brand" :value="option.id" :key="option.id">
                                 {{ option.vehicle_brand }}
                               </option>
@@ -266,30 +254,17 @@
                             </p>
                           </td>
                           <td scope="col" class="colwidth10">
-                            <input type="text" class="form-control" style="width: 10rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index]
-                              .vehicle_registration
-                              " @blur="
-    edit_validateInput(
-      'vehicle_registration',
-      index,
-      'กรุณาใส่ข้อมูล'
-    )
-    " readonly />
+                            <input type="text" class="form-control" style="width: 10rem; display: inline-block" 
+                            v-model="vrf_Existing.vrf_Existing_det[index].vehicle_registration"  readonly />
                             <p class="error-message" v-if="data.errors && data.errors.vehicle_registration
                               ">
                               {{ data.errors.vehicle_registration }}
                             </p>
                           </td>
                           <td scope="col" class="colwidth10">
-                            <select class="form-select form-select-sm" v-model="vrf_Existing.vrf_Existing_det[index]
-                              .vehicle_color_id
-                              " @change="
-    edit_validateInput(
-      'vehicle_color_id',
-      index,
-      'กรุณาเลือกสีรถ'
-    )
-    " disabled>
+                            <select class="form-select form-select-sm" 
+                            v-model="vrf_Existing.vrf_Existing_det[index].vehicle_color_id" 
+                             disabled>
                               <option v-for="option in data_ddl.vehicle_color" :value="option.id" :key="option.id">
                                 {{ option.vehicle_color }}
                               </option>
@@ -299,14 +274,8 @@
                             </p>
                           </td>
                           <td scope="col" class="colwidth25" style="text-align: center">
-                            <input type="text" class="form-control" style="width: 20rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index].card_no
-                              " @blur="
-    edit_validateInput(
-      'card_no',
-      index,
-      'กรุณาใส่ข้อมูล'
-    )
-    " readonly />
+                            <input type="text" class="form-control" style="width: 20rem; display: inline-block"
+                             v-model="vrf_Existing.vrf_Existing_det[index].card_no"  readonly />
                             <p class="error-message" v-if="data.errors && data.errors.card_no">
                               {{ data.errors.card_no }}
                             </p>
@@ -338,10 +307,7 @@
                     <div class="col">จากวันที่:</div>
                     <div class="col">
                       <datepicker class="form-control" v-model="vrf_Existing.date_from" style="width: 7rem"
-                        inputFormat="dd/MM/yyyy" :disabled="true" />
-                      <p v-if="VRF_error.date_from && !vrf_Existing.date_from" class="error-message">
-                        กรุณาเลือกข้อมูล
-                      </p>
+                        inputFormat="dd/MM/yyyy" :disabled="true" />                      
                     </div>
                     <div class="col">ถึงวันที่:</div>
                     <div class="col">
@@ -385,25 +351,17 @@
                           :close-on-select="true" :value="id" track-by="id" placeholder="เลือก"
                           :deselectLabel=null>
                         </VueMultiselect> -->
-                      <p v-if="VRF_error.area && !vrf_Existing.area_id" class="error-message">
-                        กรุณาเลือกข้อมูล
-                      </p>
                     </div>
                     <div class="col">เหตุผลในการเข้าพบ:</div>
                     <div class="col">
                       <input type="text" id="reason" class="form-control" style="width: 15rem"
                         v-model="vrf_Existing.reason" readonly />
-                      <p v-if="VRF_error.reason && !vrf_Existing.reason" class="error-message">
-                        กรุณากรอกข้อมูล
-                      </p>
                     </div>
                     <div class="col">ชื่อบริษัทผู้มาติดต่อ:</div>
                     <div class="col">
                       <input type="text" id="contactor" class="form-control" style="width: 15rem"
                         v-model="vrf_Existing.contactor" readonly />
-                      <p v-if="VRF_error.contactor && !vrf_Existing.contactor" class="error-message">
-                        กรุณากรอกข้อมูล
-                      </p>
+
                     </div>
                   </div>
                   <div class="row p-2">
@@ -427,10 +385,6 @@
                           {{ option.first_name }}
                         </option>
                       </select>
-
-                      <p v-if="VRF_error.requestor && !vrf_Existing.requestor" class="error-message">
-                        กรุณาเลือกข้อมูล
-                      </p>
                     </div>
                     <div class="col">ตำแหน่งผู้ร้องขอ:</div>
                     <div class="col">
@@ -447,11 +401,7 @@
                           }" v-model="vrf_Existing.requestor_position_id" :select-label="null" :allow-empty="true"
                           :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
                         </VueMultiselect> -->
-                      <p v-if="VRF_error.requestor_position_id &&
-                        !vrf_Existing.requestor_position_id
-                        " class="error-message">
-                        กรุณาเลือกข้อมูล
-                      </p>
+
                     </div>
                     <div class="col">แผนกผู้ร้องขอ:</div>
                     <div class="col">
@@ -469,23 +419,14 @@
                           }" v-model="vrf_Existing.requestor_dept_id" :select-label="null" :allow-empty="true"
                           :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
                         </VueMultiselect> -->
-                      <p v-if="VRF_error.requestor_dept &&
-                        !vrf_Existing.requestor_dept_id
-                        " class="error-message">
-                        กรุณาเลือกข้อมูล
-                      </p>
+
                     </div>
                   </div>
                   <div class="row p-2">
                     <div class="col">เบอร์โทรผู้ร้องขอ:</div>
                     <div class="col">
                       <input type="text" id="requestor_phone" class="form-control" style="width: 15rem"
-                        v-model="vrf_Existing.requestor_phone" readonly />
-                      <p v-if="VRF_error.requestor_phone &&
-                        !vrf_Existing.requestor_phone
-                        " class="error-message">
-                        กรุณากรอกข้อมูล
-                      </p>
+                        v-model="vrf_Existing.requestor_phone" readonly />                      
                     </div>
                     <div class="col">ชื่อผู้นำพา:</div>
                     <div class="col">
@@ -495,43 +436,27 @@
                           {{ option.first_name }}
                         </option>
                       </select>
-                      <!-- <select
-                        class="form-select form-select-sm"
-                        v-model="vrf_Existing.navigator_id"
-                        style="width: 15rem; height: 2.5rem"
-                        disabled
-                      >
-                        <option
-                          v-for="option in data_ddl.navigator"
-                          :value="option.user_id"
-                          :key="option.user_id"
-                        >
-                          {{ option.fullname }}
-                        </option>
-                      </select> -->
-                      <!-- <VueMultiselect name="navigator" id="navigator" :options="data_ddl.navigator"
-                          class="form-select form-select-sm p-0" label="fullname" :style="{
-                            width: '15rem'
-                            , height: '0.5rem'
-                          }" v-model="vrf_Existing.navigator" :select-label="null" :allow-empty="true"
-                          :close-on-select="true" :value="user_id" track-by="user_id" placeholder="เลือก"
-                          :deselectLabel=null>
-                        </VueMultiselect> -->
                     </div>
                     <div class="col">แนบไฟล์:</div>
                     <div class="col text-start">
                       <label class="input-group-text" for="formFile_edt"
-                        style="width: 0.5rem; height: 0.5rem; display: inline">
+                        style="width: 0.5rem; height: 0.5rem; display: inline" v-show="fileUrl">
                         เลือกไฟล์
                       </label>
                       <input type="file" class="form-control" id="formFile_edt" @change="selectFile_edt"
-                        style="display: none" disabled />
+                        style="display: none" disabled v-show="fileUrl" />
                       <input type="text" class="form-control" id="formFileText_edt" style="width: 10rem; display: inline"
-                        v-model="vrf_Existing.attach_file" readonly />
+                        v-model="vrf_Existing.attach_file" readonly v-show="fileUrl" />
                       &nbsp;
-                      <a :href="fileUrl" target="_blank">
+                      <!-- <a :href="fileUrl" target="_blank">
                         <i class="fa fa-address-card" aria-hidden="true"></i>
-                      </a>
+                      </a> -->
+                      <a :href="fileUrl" target="_blank" v-show="fileUrl">
+      <i class="fa fa-address-card" aria-hidden="true"></i>
+    </a>
+    <label style="width: 1rem; display: inline-block" v-show="!fileUrl">
+      -
+    </label>
                     </div>
                   </div>
                 </div>
@@ -575,6 +500,7 @@
 </template>
 <script>
 import Sidebar from '../components/sidebar/Sidebar'
+import  * as common  from '../components/common'
 import {
   collapsed,
   toggleSidebar,
@@ -603,7 +529,8 @@ export default defineComponent({
     toggleSidebar,
     sidebarWidth,
     VueMultiselect,
-    Datepicker
+    Datepicker,
+    common
   },
   setup() {
     const fileUrl = ref('')
@@ -1243,7 +1170,7 @@ export default defineComponent({
           sortable: true,
           isKey: true,
           display: function (row) {
-            return `<div style="text-align: center;">${row.id
+            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: center;">${row.id
               .toString()
               .padStart(6, '0')}</div>`
           }
@@ -1255,7 +1182,7 @@ export default defineComponent({
           sortable: true,
           isKey: true,
           display: function (row) {
-            return `<div style="text-align: center;">${dateTime(
+            return `<div  data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: center;">${dateTime(
               row.date_from
             )}</div>`
           }
@@ -1266,7 +1193,7 @@ export default defineComponent({
           width: '5%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: center;">${dateTime(
+            return `<div  data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: center;">${dateTime(
               row.date_to
             )}</div>`
           }
@@ -1277,7 +1204,7 @@ export default defineComponent({
           width: '15%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: left;">${row.contactor}</div>`
+            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">${row.contactor}</div>`
           }
         },
         {
@@ -1286,7 +1213,7 @@ export default defineComponent({
           width: '13%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: left;">${row.requestor}</div>`
+            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">${row.requestor}</div>`
           }
         },
         {
@@ -1295,7 +1222,7 @@ export default defineComponent({
           width: '15%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: left;">${row.reason}</div>`
+            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">${row.reason}</div>`
           }
         },
         {
@@ -1304,7 +1231,7 @@ export default defineComponent({
           width: '10%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: left;">${row.meeting_area}</div>`
+            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">${row.meeting_area}</div>`
           }
         },
         {
@@ -1314,8 +1241,20 @@ export default defineComponent({
           sortable: true,
           display: function (row) {
             return row.approve_status === null
-              ? `<div style="text-align: left;">สร้างรายการ VRF</div>`
-              : `<div style="text-align: left;">${row.approve_status}</div>`
+              ? `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">สร้างรายการ VRF</div>`
+              : `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">${row.approve_status}</div>`
+          }
+        },
+        {
+          label: 'ผู้อนุมัติล่าสุด',
+          field: 'us_approver',
+          width: '12%',
+          sortable: true,
+          display: function (row) { 
+            if (row.approve_date)
+             return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">${row.us_approver}&nbsp;(${common.formatDate(row.approve_date)})</div>`
+            else
+              return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">-</div>`
           }
         },
         {
@@ -1324,7 +1263,7 @@ export default defineComponent({
           width: '7%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: center;">${row.urgentcase_vrf !== null ? row.urgentcase_vrf : ''}</div>`
+            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: center;">${row.urgentcase_vrf !== null ? row.urgentcase_vrf : ''}</div>`
           }
         },        
         {
@@ -1334,7 +1273,7 @@ export default defineComponent({
           width: '15%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: left;">${row.reason_of_reject !== null ? row.reason_of_reject : ''}</div>`
+            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">${row.reason_of_reject !== null ? row.reason_of_reject : ''}</div>`
           }
         },
         {
@@ -1343,7 +1282,7 @@ export default defineComponent({
           width: '15%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: left;">${row.user_create}</div>`
+            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">${row.user_create}</div>`
           }
         },
         {
@@ -1358,7 +1297,7 @@ export default defineComponent({
               '" class="btn btn-danger is-rows-el rejectvrf" data-bs-target="#ModalRejectVRF"  data-bs-toggle="modal" style="margin-top: 0.2rem; width: 5rem; height:2rem">ไม่อนุมัติ</button>&nbsp; ' +
               '<button type="button" data-id="' +
               row.id +
-              '" class="btn btn-info is-rows-el editvrf" style="margin-top: 0.2rem; width: 6rem; height:2rem" data-bs-target="#ModalEditvrf" data-bs-toggle="modal">รายละเอียด</button></div>'
+              '" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="btn btn-info is-rows-el editvrf" style="margin-top: 0.2rem; width: 6rem; height:2rem">รายละเอียด</button></div>'
             )
           }
         }
@@ -1460,7 +1399,10 @@ export default defineComponent({
                 .finally(() => {
                   //
                 })
-              fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}`
+                vrf_Existing.attach_file ?
+        fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}` : fileUrl.value = null
+
+              //fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}`
              
             } catch (err) {
               console.log(err)
@@ -2096,6 +2038,11 @@ export default defineComponent({
 @import '../assets/css/style.css';
 @import '../../node_modules/vue-multiselect/dist/vue-multiselect.css';
 
+.scrollable-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 15rem; /* กำหนดความสูงสูงสุดตามต้องการ */
+}
 /* ตั้งค่าทั่วไปสำหรับ .scrollable-table */
 .scrollable-table {
   width: 100%;
@@ -2103,6 +2050,7 @@ export default defineComponent({
   /* แสดง scrollbar เมื่อจำเป็น */
   white-space: nowrap;
   /* ป้องกันการ wrap text */
+
 }
 
 /* ซ่อน scrollbar เมื่อหน้าจอกว้างเพียงพอ (เช่น 768px หรือมากกว่า) */

@@ -163,7 +163,7 @@
               <div class="modal-body modalcustom">
                 <div class="container modalcustom">
                   <!---Loop Manual New Order------>
-                  <div class="row  ms-4 ps-4 pe-3 me-3 modalcustom">
+                  <div class="row  ms-4 ps-4 pe-3 me-3 modalcustom  scrollable-container">
                     <table class="table table-hover modalcustomtb ">
                       <thead>
                         <tr>
@@ -1864,7 +1864,7 @@ export default defineComponent({
           , tbSname: ''
           , tbFullName: ''          
           , tbVehicle_Registration: ''
-          , ddlvehicle_brand: ''
+          , ddlvehicle_brand: 1
           , ddlvehicle_color: ''
           , tbCardNo: ''
           , errors: {}
@@ -2100,7 +2100,7 @@ export default defineComponent({
       else {
         console.log('isError: ', isError)
         if (!validateInputAll.value) {
-          if (confirm('คุณต้องการส่งอนุมัติรายการขอเข้าพื้นที่ ?')) {
+          if (confirm('คุณต้องการบันทึกรายการขอเข้าพื้นที่ ?')) {
             editVRF()
           }
         }        
@@ -2318,6 +2318,11 @@ export default defineComponent({
 @import '../assets/css/style.css';
 @import '../../node_modules/vue-multiselect/dist/vue-multiselect.css';
 
+.scrollable-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 300px; /* กำหนดความสูงสูงสุดตามต้องการ */
+}
 .orange-text {
     color: orange;
 }

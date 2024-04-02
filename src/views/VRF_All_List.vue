@@ -1,57 +1,62 @@
 <template>
-    <Header />
-    <Sidebar :probs_isVisible="true" :probs_isVisible2="false" :probs_isVisible3="false" />
-    <!------------------------------------------List main--------------------------------------------------->
-    <div :style="{ 'margin-left': sidebarWidth }" class="row ps-4">
-      <!-- <div class="container p-0" style="width: 200rem"> -->
-      <div class="row p-1" style="width: 100%">
-        <div class="col text-left">&nbsp;</div>
+  <Header />
+  <Sidebar :probs_isVisible="true" :probs_isVisible2="false" :probs_isVisible3="false" />
+  <!------------------------------------------List main--------------------------------------------------->
+  <div :style="{ 'margin-left': sidebarWidth }" class="row ps-4">
+    <!-- <div class="container p-0" style="width: 200rem"> -->
+    <div class="row p-1" style="width: 100%">
+      <div class="col text-left">&nbsp;</div>
+    </div>
+    <div class="row p-1" style="width: 100%">
+      <div class="col text-left">
+        <h3>รายการขอเข้าพื้นที่ทั้งหมด</h3>
       </div>
-      <div class="row p-1" style="width: 100%">
-        <div class="col text-left">
-          <h3>รายการขอเข้าพื้นที่ทั้งหมด</h3>
-        </div>
-      </div>
-      <div class="row p-1" style="width: 100%">
-        <div class="col d-flex justify-content-end">
-          &nbsp;
-          <!-- <h4 data-bs-target="#myModalNew" data-bs-toggle="modal" class="text-decoration-none text-gray fs-5"
+    </div>
+    <div class="row p-1" style="width: 100%">
+      <div class="col d-flex justify-content-end">
+        &nbsp;
+        <!-- <h4 data-bs-target="#myModalNew" data-bs-toggle="modal" class="text-decoration-none text-gray fs-5"
             style="cursor: pointer">สร้างแม่แบบ</h4> -->
-        </div>
       </div>
-      <div class="row p-0" style="width: 100%">
-        <div class="col-2 ps-4" style="text-align: left">
- 
-        </div>
-        <div class="col-10">
-          <div style="text-align: right">
-            <!-- <span data-bs-target="#myModalNew_with_templete" data-bs-toggle="modal"
+    </div>
+    <div class="row p-0" style="width: 100%">
+      <div class="col-2 ps-4" style="text-align: left">
+
+      </div>
+      <div class="col-10">
+        <div style="text-align: right">
+          <!-- <span data-bs-target="#myModalNew_with_templete" data-bs-toggle="modal"
               style="cursor: pointer">สร้างรายการจากแม่แบบ</span>&nbsp;|&nbsp; -->
-            <!-- <span data-bs-target="#myModalNew" data-bs-toggle="modal" style="cursor: pointer">
+          <!-- <span data-bs-target="#myModalNew" data-bs-toggle="modal" style="cursor: pointer">
               สร้างรายการขอเข้าพื้นที่
             </span>
             &nbsp;|&nbsp; -->
-            <label>
-              <span style="cursor: pointer" data-bs-target="#ModalAdvSearch" data-bs-toggle="modal">
-                ค้นหาขั้นสูง
-              </span>
-              &nbsp;|&nbsp;ค้นหาโดย:
-            </label>
-            &nbsp;&nbsp;
-            <input v-model="searchTerm" />
-          </div>
+          <label>
+            <span style="cursor: pointer" data-bs-target="#ModalAdvSearch" data-bs-toggle="modal">
+              ค้นหาขั้นสูง
+            </span>
+            &nbsp;|&nbsp;ค้นหาโดย:
+          </label>
+          &nbsp;&nbsp;
+          <input v-model="searchTerm" />
         </div>
       </div>
-      <div class="row p-0 scrollable-table">
-        <div class="col-12">
-          <table-lite :is-static-mode="true" :is-loading="table.isLoading" :columns="table.columns"
-            :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable" @is-finished="tableLoadingFinish"
-            @return-checked-rows="updateCheckedRows" ref="tableElement"
-            class="table table-striped table-hover"></table-lite>
-        </div>
-      </div>
-      <!-- </div> -->
     </div>
+    <div class="row p-0 scrollable-table">
+      <div class="col-12">
+        <table-lite :is-static-mode="true" :is-loading="table.isLoading" :columns="table.columns" :rows="table.rows"
+          :total="table.totalRecordCount" :sortable="table.sortable" @is-finished="tableLoadingFinish"
+          @return-checked-rows="updateCheckedRows" ref="tableElement" class="table table-striped table-hover">
+          <template #row="{ row }">
+            <tr @click="handleRowClick(row)">
+              <!-- การแสดงข้อมูลแถวในตาราง -->
+            </tr>
+          </template>
+        </table-lite>
+      </div>
+    </div>
+    <!-- </div> -->
+  </div>
   <!---------------------------------------------------------------------------------------------------------------------Modal AdvSearch--->
   <div class="container py-2">
     <div class="py-2">
@@ -110,21 +115,25 @@
                   <div class="row p-2">
                     <div class="col-sm-2">สถานะ</div>
                     <div class="col-sm-2 ps-0">
-                      <select class="form-select form-select-sm" style="width: 9rem;" v-model="AdvSearch.approve_status">
+                      <select class="form-select form-select-sm" style="width: 9rem;"
+                        v-model="AdvSearch.approve_status">
                         <option></option>
                         <option value="ตีกลับ">ตีกลับ</option>
                         <option value="สร้างรายการ">สร้างรายการ</option>
                         <option value="รอหัวหน้าอนุมัติ">รอหัวหน้าอนุมัติ</option>
                         <option value="รอ ผจก. พื้นที่มั่นคงอนุมัติ">รอ ผจก. พื้นที่มั่นคงอนุมัติ</option>
-                        <option value="รอ SU อนุมัติ">รอ SU อนุมัติ</option>
+                        <option value="รอ NCC ตรวจสอบ">รอ NCC ตรวจสอบ</option>
                         <option value="รอหัวหน้าความมั่นคงอนุมัติ">รอหัวหน้าความมั่นคงอนุมัติ</option>
                         <option value="อนุมัติแล้ว">อนุมัติแล้ว</option>
                         <option value="">ทั้งหมด</option>
                       </select>
                     </div>
                     <div class="col-sm-2"></div>
-                    <div class="col-sm-2"><!-- แผนกผู้ร้องขอ --></div>
+                    <div class="col-sm-2">ชื่อผู้มาติดต่อ</div>
                     <div class="col-sm-2 ps-0">
+                      <input type="text" id="contactor" class="form-control" style="width: 15rem"
+                       placeholder="ชื่อผู้มาติดต่อ"
+                        v-model="AdvSearch.contactor" />
                       <!-- <VueMultiselect
                         name="requestor_dept"
                         id="requestor_dept"
@@ -205,7 +214,7 @@
       </form>
     </div>
   </div>
-      <!-----------------------------------------------------------modal Edit Vrf--->
+  <!-----------------------------------------------------------modal Edit Vrf--->
   <div class="container py-2">
     <div class="py-2">
       <form @submit.prevent="editVRF_validateInput" id="form2">
@@ -220,7 +229,7 @@
               <div class="modal-body modalcustom">
                 <div class="container modalcustom">
                   <!---Loop Manual Edit VRF------>
-                  <div class="row ms-4 ps-4 pe-3 me-3 modalcustom">
+                  <div class="row ms-4 ps-4 pe-3 me-3 modalcustom scrollable-container">
                     <table class="table table-hover modalcustomtb">
                       <thead>
                         <tr>
@@ -252,28 +261,20 @@
 
                           </td>
                           <td scope="col" class="colwidth10">
-                            <input type="text" class="form-control" style="width: 10rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index].vehicle_registration" :disabled="true" />
+                            <input type="text" class="form-control" style="width: 10rem; display: inline-block"
+                              v-model="vrf_Existing.vrf_Existing_det[index].vehicle_registration" :disabled="true" />
                           </td>
                           <td scope="col" class="colwidth10">
-                            <select class="form-select form-select-sm" v-model="vrf_Existing.vrf_Existing_det[index]
-                              .vehicle_color_id
-                              " @change="
-    edit_validateInput(
-      'vehicle_color_id',
-      index,
-      'กรุณาเลือกสีรถ'
-    )
-    " :disabled="true">
+                            <select class="form-select form-select-sm"
+                              v-model="vrf_Existing.vrf_Existing_det[index].vehicle_color_id" :disabled="true">
                               <option v-for="option in data_ddl.vehicle_color" :value="option.id" :key="option.id">
                                 {{ option.vehicle_color }}
                               </option>
                             </select>
-                            <p class="error-message" v-if="data.errors && data.errors.vehicle_color_id">
-                              {{ data.errors.ddlvehicle_color }}
-                            </p>
                           </td>
                           <td scope="col" class="colwidth25" style="text-align: center">
-                            <input type="text" class="form-control" style="width: 20rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index].card_no" disabled />
+                            <input type="text" class="form-control" style="width: 20rem; display: inline-block"
+                              v-model="vrf_Existing.vrf_Existing_det[index].card_no" disabled />
                           </td>
                           <td scope="col" class="colwidth25" style="text-align: center">
                             <input type="text" class="form-control" style="width: 15rem; display: inline-block"
@@ -301,20 +302,14 @@
                     <div class="col-md-2 text-end">จากวันที่:</div>
                     <div class="col-md-2">
                       <datepicker class="form-control" v-model="vrf_Existing.date_from" style="width: 7rem"
-                        inputFormat="dd/MM/yyyy" @update:model-value="setToDate('date_from_edit')"
-                        :disabled="true" />
-                      <p v-if="VRF_error.date_from && !vrf_Existing.date_from" class="error-message">
-                        กรุณาเลือกข้อมูล
-                      </p>
+                        inputFormat="dd/MM/yyyy" @update:model-value="setToDate('date_from_edit')" :disabled="true" />
+
                     </div>
                     <div class="col-md-2 text-end">ถึงวันที่:</div>
                     <div class="col-md-2">
                       <datepicker class="form-control" v-model="vrf_Existing.date_to" style="width: 7rem"
-                        inputFormat="dd/MM/yyyy" @update:model-value="setFromDate('date_to_edit')"
-                        :disabled="true" />
-                      <p v-if="VRF_error.date_to && !vrf_Existing.date_to" class="error-message">
-                        กรุณาเลือกข้อมูล
-                      </p>
+                        inputFormat="dd/MM/yyyy" @update:model-value="setFromDate('date_to_edit')" :disabled="true" />
+
                     </div>
                     <div class="col-md-2 text-end">
                       <input type="text" class="form-control" style="width: 15rem; display: none" />
@@ -375,9 +370,15 @@
                     <div class="col-md-2 text-end">แนบไฟล์:</div>
                     <div class="col-md-2 text-start" style="padding-left: 0; margin-left: 0">
                       &nbsp;
-                      <a :href="fileUrl" target="_blank">
+                      <!-- <a :href="fileUrl" target="_blank">
+                        <i class="fa fa-address-card" aria-hidden="true"></i>
+                      </a> -->
+                      <a :href="fileUrl" target="_blank" v-show="fileUrl">
                         <i class="fa fa-address-card" aria-hidden="true"></i>
                       </a>
+                      <label style="width: 1rem; display: inline-block" v-show="!fileUrl">
+                        -
+                      </label>
 
                     </div>
                   </div>
@@ -385,7 +386,6 @@
               </div>
               <div class="modal-footer pt-0 justify-content-center">
                 <div class="align-top pt-1 d-flex justify-content-center">
-
                   <button class="btn btn-danger" data-bs-dismiss="modal" type="reset" style="width: 4rem; height: 2rem"
                     id="ClosemyModalNew" @click="ClosemyModalNew_">
                     ปิด
@@ -398,27 +398,27 @@
       </form>
     </div>
   </div>
-  
-    <!-- Loading-->
-    <Loading v-if="loading" />
-    <Alert_popup :message="Alert_popup_message" v-if="Alert_popup" />
-    <div class="alert-popup" v-if="isOpen_alert_popup">
-      <div class="alert-box">
-        <div class="alert-header"></div>
-        <div class="alert-body">{{ alert_popup_message_inside }}</div>
-        <div class="alert-footer">
-          <!-- <button @click="onClose">ยกเลิก</button>
+
+  <!-- Loading-->
+  <Loading v-if="loading" />
+  <Alert_popup :message="Alert_popup_message" v-if="Alert_popup" />
+  <div class="alert-popup" v-if="isOpen_alert_popup">
+    <div class="alert-box">
+      <div class="alert-header"></div>
+      <div class="alert-body">{{ alert_popup_message_inside }}</div>
+      <div class="alert-footer">
+        <!-- <button @click="onClose">ยกเลิก</button>
             <button @click="onConfirm">ตกลง</button> -->
-          <button id="button_alert_popup_submit" @click="confirmDialog">
-            ตกลง
-          </button>
-          <button id="button_alert_popup_cancel" @click="isOpen_alert_popup = false">
-            ยกเลิก
-          </button>
-        </div>
+        <button id="button_alert_popup_submit" @click="confirmDialog">
+          ตกลง
+        </button>
+        <button id="button_alert_popup_cancel" @click="isOpen_alert_popup = false">
+          ยกเลิก
+        </button>
       </div>
     </div>
-  </template>
+  </div>
+</template>
   <script>
   import Sidebar from '../components/sidebar/Sidebar'
   import {
@@ -436,6 +436,7 @@
   import VueMultiselect from 'vue-multiselect'
   import Loading from '../components/Loading.vue'
   import Alert_popup from '../components/Alert_popup.vue'
+  import  * as common  from '../components/common' 
   export default defineComponent({
     name: 'Request_All_List',
     components: {
@@ -448,7 +449,8 @@
       toggleSidebar,
       sidebarWidth,
       VueMultiselect,
-      Datepicker
+      Datepicker,
+      common
     },
     setup() {
       const fileUrl = ref('')
@@ -689,6 +691,7 @@
         area_id: 0,
         requestor_dept_id: 0,
         approve_status: '',
+        contactor: '',
       })
       const VueMultiselect_ = reactive({
         BranchOriginBG_Color: '',
@@ -706,6 +709,9 @@
       const options = ['list', 'of', 'options']
       const hasLocalStorage = ref(null)
       const send_approve_status = ref(false)
+      const handleRowClick = (rowData) => {
+        console.log('handleRowClick rowData:', rowData)
+      };
   
       //-------------------edit validate add vrf-------------------
       const edit_fieldsToValidate = [
@@ -1155,6 +1161,7 @@
         AdvSearch.area_id = 0
         AdvSearch.requestor_dept_id = 0
         AdvSearch.approve_status = ''
+        AdvSearch.contactor = ''
         console.log("After reset:");
         //---------------------------
       }
@@ -1540,7 +1547,9 @@
             sortable: true,
             isKey: true,
             display: function (row) {
-              return `<div style="text-align: center;">${row.id
+              return `<div data-id="` +
+                row.id +
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: center;">${row.id
                 .toString()
                 .padStart(6, '0')}</div>`
             }
@@ -1552,7 +1561,9 @@
             width: '3%',
             sortable: true,
             display: function (row) {
-              return `<div style="text-align: left;">${row.date_from ? dateTime(row.date_from) : ''
+              return `<div  data-id="` +
+                row.id +
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left;">${row.date_from ? dateTime(row.date_from) : ''
                 }</div>`
             }
           },
@@ -1562,7 +1573,9 @@
             width: '3%',
             sortable: true,
             display: function (row) {
-              return `<div style="text-align: left;">${row.date_to ? dateTime(row.date_to) : ''
+              return `<div  data-id="` +
+                row.id +
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left;">${row.date_to ? dateTime(row.date_to) : ''
                 }</div>`
             }
           },
@@ -1572,7 +1585,9 @@
             width: '12%',
             sortable: true,
             display: function (row) {
-              return `<div style="text-align: left;">${row.contactor}</div>`
+              return `<div  data-id="` +
+                row.id +
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left;">${row.contactor}</div>`
             }
           },
           {
@@ -1581,7 +1596,9 @@
             width: '18%',
             sortable: true,
             display: function (row) {
-              return `<div style="text-align: left;">${row.requestor}</div>`
+              return `<div  data-id="` +
+                row.id +
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left;">${row.requestor}</div>`
             }
           },
           {
@@ -1590,7 +1607,9 @@
             width: '15%',
             sortable: true,
             display: function (row) {
-              return `<div style="text-align: left;">${row.reason}</div>`
+              return `<div  data-id="` +
+                row.id +
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left;">${row.reason}</div>`
             }
           },
           {
@@ -1599,7 +1618,9 @@
             width: '10%',
             sortable: true,
             display: function (row) {
-              return `<div style="text-align: left;">${row.meeting_area}</div>`
+              return `<div data-id="` +
+                row.id +
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal"  style="text-align: left;">${row.meeting_area}</div>`
             }
           },
           {
@@ -1609,10 +1630,27 @@
             sortable: true,
             display: function (row) {
               return row.approve_status === null
-                ? `<div style="text-align: left;">สร้างรายการ VRF</div>`
-                : `<div style="text-align: left;">${row.approve_status}</div>`
+                ? `<div data-id="` +
+                row.id +
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left;">สร้างรายการ VRF</div>`
+                : `<div data-id="` +
+                row.id +
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left;">${row.approve_status}</div>`
             }
           },
+          {
+          label: 'ผู้อนุมัติล่าสุด',
+          field: 'us_approver',
+          width: '12%',
+          sortable: true,
+          display: function (row) { 
+            if (row.approve_date)
+              return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">${row.us_approver}&nbsp;(${common.formatDate(row.approve_date)})</div>`
+            else
+              return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">-</div>`
+            
+          }
+        },
           {
             // label: 'เหตุผลในการตีกลับ',
             label: 'รายการเพิ่มเติม',
@@ -1620,7 +1658,9 @@
             width: '15%',
             sortable: true,
             display: function (row) {
-              return `<div style="text-align: center;">${row.req_urgentcase_by !== null ? 'เคสด่วน' : ''}</div>`
+              return `<div  data-id="` +
+                row.id +
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: center;">${row.req_urgentcase_by !== null ? 'เคสด่วน' : ''}</div>`
             }
           },
           {
@@ -1630,7 +1670,9 @@
             width: '15%',
             sortable: true,
             display: function (row) {
-              return `<div style="text-align: left;">${row.reason_of_reject !== null ? row.reason_of_reject : ''}</div>`
+              return `<div  data-id="` +
+                row.id +
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left;">${row.reason_of_reject !== null ? row.reason_of_reject : ''}</div>`
             }
           },
           {
@@ -1639,7 +1681,9 @@
             width: '15%',
             sortable: true,
             display: function (row) {
-              return `<div style="text-align: left;">${row.user_create}</div>`
+              return `<div  data-id="` +
+                row.id +
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left;">${row.user_create}</div>`
             }
           },
           {
@@ -1653,17 +1697,10 @@
               let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
               let wording_edit = row.approve_status_ === 0 ? 'แก้ไข' : 'รายละเอียด'
               return (
-                '<div style="display: flex;">' +
-                //  ' <button type="button" data-id="' +
-                // row.id +
-                // '" class="btn btn-danger is-rows-el cancelvrf" ' + cancelButtonDisabled(row.approve_status_) + ' style="margin-top: 0.2rem; width: 5rem; height:2rem">ยกเลิก</button>&nbsp; ' +
+                '<div style="display: flex;">' +                
                 '<button type="button" data-id="' +
                 row.id +
-                '" class="btn btn-info is-rows-el editvrf" style="margin-top: 0.2rem; width: 6rem; height:2rem" data-bs-target="#ModalEditvrf" data-bs-toggle="modal">รายละเอียด</button>&nbsp;'
-                //+
-                // '<button type="button" data-id="' +
-                // row.id +
-                // '" class="btn btn-success is-rows-el urgentcase" ' + urgentButtonDisabled(row.approve_status_, row.req_urgentcase_by) + ' style="margin-top: 0.2rem; width: 5rem; height:2rem" data-bs-target="#ModalUrgentvrf" data-bs-toggle="modal">เคสด่วน</button>&nbsp;'
+                '" class="btn btn-info is-rows-el editvrf" style="margin-top: 0.2rem; width: 6rem; height:2rem" data-bs-target="#ModalEditvrf" data-bs-toggle="modal">รายละเอียด</button>&nbsp;'                
                 +
                 ' </div>'
               )
@@ -1827,7 +1864,10 @@
                   .finally(() => {
                     //
                   })
-                fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}`
+                // fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}`
+                vrf_Existing.attach_file ?
+        fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}` : fileUrl.value = null
+
   
               } catch (err) {
                 console.log(err)
@@ -2081,7 +2121,8 @@
           department_id: department_id.value,
           branch_id: localStorage.getItem('user_branch_id'),
           checkin_status: null,
-          approve_status: AdvSearch.approve_status !== '' ? AdvSearch.approve_status : null
+          approve_status: AdvSearch.approve_status !== '' ? AdvSearch.approve_status : null,
+          contactor: AdvSearch.contactor !== '' ? AdvSearch.contactor : null
         }
         console.log('params: ', params)
   
@@ -2888,6 +2929,7 @@
         }
       }
       return {
+        handleRowClick,
         edit_validateInput_vrfurgentcase,
         editVRF_Urgentcase_validateInput,
         VRF_Urgentcase_validateInput,
@@ -2982,11 +3024,17 @@
   <style scoped>
   @import '../assets/css/style.css';
   @import '../../node_modules/vue-multiselect/dist/vue-multiselect.css';
-  
+
+  .scrollable-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 300px; /* กำหนดความสูงสูงสุดตามต้องการ */
+}
+
   .orange-text {
     color: orange;
   }
-  
+
   /* ตั้งค่าทั่วไปสำหรับ .scrollable-table */
   .scrollable-table {
     width: 100%;
@@ -2995,7 +3043,7 @@
     white-space: nowrap;
     /* ป้องกันการ wrap text */
   }
-  
+
   /* ซ่อน scrollbar เมื่อหน้าจอกว้างเพียงพอ (เช่น 768px หรือมากกว่า) */
   @media (min-width: 768px) {
     .scrollable-table {
@@ -3003,7 +3051,7 @@
       /* ซ่อน scrollbar */
     }
   }
-  
+
   .autocomplete-results {
     position: absolute;
     left: 1;
@@ -3014,85 +3062,85 @@
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
   }
-  
+
   .autocomplete-item {
     padding: 10px 12px;
     cursor: pointer;
   }
-  
+
   .autocomplete-item:hover {
     background-color: #f1f1f1;
   }
-  
+
   .error-message {
     color: red;
   }
-  
+
   .modalcustom_advancesearch {
     max-width: 50rem;
     /* กำหนดความกว้างของโมดัลเป็น 800px */
     width: 120rem;
     text-align: center;
   }
-  
+
   .modalcustomtb {
     max-width: 100%;
     /* กำหนดความกว้างของโมดัลเป็น 800px */
     width: 100%;
     text-align: center;
   }
-  
+
   /* set .modal-body  full width */
   .modal-body {
     width: 100%;
     height: 100%;
     padding: 0rem;
   }
-  
+
   .modal-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
   }
-  
+
   .modalcustom {
     max-width: 100%;
     /* กำหนดความกว้างของโมดัลเป็น 800px */
     width: 100%;
     text-align: center;
   }
-  
+
   .colwidth10 {
     width: 10%;
     /* กำหนดความกว้างของโมดัลเป็น 800px */
     text-align: center;
   }
-  
+
   .colwidth25 {
     width: 25%;
     /* กำหนดความกว้างของโมดัลเป็น 800px */
     text-align: center;
   }
-  
+
   .colwidth20 {
     width: 10%;
     /* กำหนดความกว้างของโมดัลเป็น 800px */
     align-items: center;
   }
-  
+
   .colwidth5 {
     width: 5%;
     /* กำหนดความกว้างของโมดัลเป็น 800px */
     text-align: center;
   }
-  
+
   .colwidth30 {
     width: 30%;
     /* กำหนดความกว้างของโมดัลเป็น 800px */
     text-align: center;
   }
-  
+
   #formFile::before {
     content: 'เลือกไฟล์';
     position: absolute;
@@ -3101,7 +3149,7 @@
     background-color: #eee;
     width: 1rem;
   }
-  
+
   #formFile_edt::before {
     content: 'เลือกไฟล์';
     position: absolute;
@@ -3110,7 +3158,7 @@
     background-color: #eee;
     width: 1rem;
   }
-  
+
   .alert-popup {
     position: fixed;
     top: 0;
@@ -3122,7 +3170,7 @@
     justify-content: center;
     align-items: center;
   }
-  
+
   .alert-box {
     background-color: white;
     border-radius: 1rem;
@@ -3134,7 +3182,7 @@
     padding-right: 3rem;
     padding-left: 3rem;
   }
-  
+
   .alert-header {
     font-size: 2rem;
     font-weight: bold;
@@ -3146,19 +3194,19 @@
     align-items: left;
     padding-bottom: 1rem;
   }
-  
+
   .alert-body {
     font-size: 20px;
     line-height: 1.5rem;
     margin-bottom: auto;
     padding-bottom: 2rem;
   }
-  
+
   .alert-footer {
     display: flex;
     justify-content: center;
   }
-  
+
   #button_alert_popup_cancel {
     margin-left: 10px;
     padding: 10px 20px;
@@ -3170,7 +3218,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
   }
-  
+
   #button_alert_popup_submit {
     margin-left: 10px;
     padding: 10px 20px;
@@ -3182,12 +3230,12 @@
     cursor: pointer;
     transition: all 0.3s ease;
   }
-  
+
   #button_alert_popup_submit,
   #button_alert_popup_cancel :hover {
     background-color: #2980b9;
   }
-  
+
   /* .input-group-text {
       cursor: pointer;
     }
@@ -3204,5 +3252,5 @@
       background-color: #eee;
       width: 80px;
     } */
-  </style>
+</style>
     

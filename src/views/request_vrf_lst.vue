@@ -49,8 +49,8 @@
         </div>
       </div>
     </div>
-    <div class="row p-0 scrollable-table">
-      <div class="col-12">
+    <div class="row p-0">
+      <div class="col-12 scrollable-table">
         <table-lite :is-static-mode="true" :has-checkbox="true" :is-loading="table.isLoading" :columns="table.columns"
           :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable" @is-finished="tableLoadingFinish"
           @return-checked-rows="updateCheckedRows" ref="tableElement"
@@ -123,7 +123,7 @@
                         <option value="สร้างรายการ">สร้างรายการ</option>
                         <option value="รอหัวหน้าอนุมัติ">รอหัวหน้าอนุมัติ</option>
                         <option value="รอ ผจก. พื้นที่มั่นคงอนุมัติ">รอ ผจก. พื้นที่มั่นคงอนุมัติ</option>
-                        <option value="รอ SU อนุมัติ">รอ SU อนุมัติ</option>
+                        <option value="รอ NCC ตรวจสอบ">รอ NCC ตรวจสอบ</option>
                         <option value="รอหัวหน้าความมั่นคงอนุมัติ">รอหัวหน้าความมั่นคงอนุมัติ</option>
                         <option value="อนุมัติแล้ว">อนุมัติแล้ว</option>
                         <option value="">ทั้งหมด</option>
@@ -132,67 +132,8 @@
                     <div class="col-sm-2"></div>
                     <div class="col-sm-2"><!-- แผนกผู้ร้องขอ --></div>
                     <div class="col-sm-2 ps-0">
-                      <!-- <VueMultiselect
-                        name="requestor_dept"
-                        id="requestor_dept"
-                        :options="data_ddl.dept"
-                        class="form-select form-select-sm p-0"
-                        label="department"
-                        :style="{
-                          width: '15rem',
-                          height: '0.5rem'
-                        }"
-                        v-model="AdvSearch.requestor_dept_id"
-                        :select-label="null"
-                        :allow-empty="true"
-                        :close-on-select="true"
-                        :value="id"
-                        track-by="id"
-                        placeholder="เลือก"
-                        :deselectLabel="null"
-                      ></VueMultiselect> -->
                     </div>
                   </div>
-                  <!-- <div class="row p-2">
-                    <div class="col-sm-2">แผนกผู้ร้องขอ</div>
-                    <div class="col-sm-2 ps-0">
-                      <VueMultiselect
-                        name="requestor_dept"
-                        id="requestor_dept"
-                        :options="data_ddl.dept"
-                        class="form-select form-select-sm p-0"
-                        label="department"
-                        :style="{
-                          width: '15rem',
-                          height: '0.5rem'
-                        }"
-                        v-model="AdvSearch.requestor_dept_id"
-                        :select-label="null"
-                        :allow-empty="true"
-                        :close-on-select="true"
-                        :value="id"
-                        track-by="id"
-                        placeholder="เลือก"
-                        :deselectLabel="null"
-                      ></VueMultiselect>
-                    </div>
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-2">สถานะ</div>
-                    <div class="col-sm-2">
-                      <select class="form-select form-select-sm"
-                       v-model="AdvSearch.approve_status">
-                            <option></option>
-                            <option value="ตีกลับ">ตีกลับ</option>
-                            <option value="สร้างรายการ">สร้างรายการ</option>
-                            <option value="รอหัวหน้าอนุมัติ">รอหัวหน้าอนุมัติ</option>                            
-                            <option value="รอ ผจก. พื้นที่มั่นคงอนุมัติ">รอ ผจก. พื้นที่มั่นคงอนุมัติ</option>
-                            <option value="รอ SU อนุมัติ">รอ SU อนุมัติ</option>
-                            <option value="รอหัวหน้าความมั่นคงอนุมัติ">รอหัวหน้าความมั่นคงอนุมัติ</option>
-                            <option value="อนุมัติแล้ว">อนุมัติแล้ว</option>
-                            <option value="">ทั้งหมด</option>
-                          </select>
-                    </div>
-                  </div> -->
                 </div>
               </div>
               <div class="modal-footer pt-0 justify-content-center">
@@ -225,7 +166,7 @@
                   @click="ClosemyModalNew_"></button>
               </div>
               <div class="modal-body">
-                <!--------------------------------------------------------------create by templete-->
+                <!--------------------------------------------------------------session create by templete-->
                 <div class="row p-2">
                   <div class="col">เลือก templete:</div>
                   <div class="col">
@@ -245,7 +186,7 @@
                   <div class="col">&nbsp;</div>
                 </div>
                 <!---Loop Manual New Order------>
-                <div class="row p-0 m-0 modalcustom">
+                <div class="row p-0 m-0 modalcustom scrollable-container">
                   <table class="table table-hover modalcustomtb">
                     <thead>
                       <tr>
@@ -566,6 +507,7 @@
       </form>
     </div>
   </div>
+  <!---------------------------------------------------------------------------->
   <!-----------------------------------------------------------modal Edit Vrf--->
   <div class="container py-2">
     <div class="py-2">
@@ -579,9 +521,9 @@
                   @click="ClosemyModalNew_"></button>
               </div>
               <div class="modal-body modalcustom">
-                <div class="container modalcustom">
+                <div class="container modalcustom ">
                   <!---Loop Manual Edit VRF------>
-                  <div class="row ms-4 ps-4 pe-3 me-3 modalcustom">
+                  <div class="row ms-4 ps-4 pe-3 me-3 modalcustom scrollable-container">
                     <table class="table table-hover modalcustomtb">
                       <thead>
                         <tr>
@@ -862,11 +804,14 @@
                       </p>
                     </div>
                     <div class="col-md-2 text-end">แนบไฟล์:</div>
-                    <div class="col-md-2" style="padding-left: 0; margin-left: 0">
+                    <div class="col-md-2 text-left" style="padding-left: 0; margin-left: 0">
                       &nbsp;
-                      <a :href="fileUrl" target="_blank">
+                      <a v-show="fileUrl" :href="fileUrl" target="_blank">
                         <i class="fa fa-address-card" aria-hidden="true"></i>
-                      </a>
+                      </a>&nbsp;
+                      <label v-show="!fileUrl">
+                        -
+                      </label>
                       <!-- <label for="formFile_edt"
                         style="width: auto; height: 2rem; display: inline">
                         {{ vrf_Existing.attach_file }}
@@ -911,7 +856,7 @@
               <div class="modal-body modalcustom">
                 <div class="container modalcustom">
                   <!---Loop Manual Edit VRF------>
-                  <div class="row ms-4 ps-4 pe-3 me-3 modalcustom">
+                  <div class="row ms-4 ps-4 pe-3 me-3 modalcustom scrollable-container">
                     <table class="table table-hover modalcustomtb">
                       <thead>
                         <tr>
@@ -949,7 +894,6 @@
                                 {{ option.vehicle_brand }}
                               </option>
                             </select>
-
                           </td>
                           <td scope="col" class="colwidth10">
                             <input type="text" class="form-control" style="width: 10rem; display: inline-block" v-model="vrf_Existing.vrf_Existing_det[index]
@@ -1239,7 +1183,6 @@
       </form>
     </div>
   </div>
-
   <!-- Loading-->
   <Loading v-if="loading" />
   <Alert_popup :message="Alert_popup_message" v-if="Alert_popup" />
@@ -1277,6 +1220,7 @@ import Datepicker from 'vue3-datepicker'
 import VueMultiselect from 'vue-multiselect'
 import Loading from '../components/Loading.vue'
 import Alert_popup from '../components/Alert_popup.vue'
+import  * as common  from '../components/common'
 export default defineComponent({
   name: 'Request_VRF_Lst',
   components: {
@@ -1289,7 +1233,8 @@ export default defineComponent({
     toggleSidebar,
     sidebarWidth,
     VueMultiselect,
-    Datepicker
+    Datepicker,
+    common 
   },
   setup() {
     const fileUrl = ref('')
@@ -1780,32 +1725,6 @@ export default defineComponent({
           validateInputAll.value = false
         }
       }
-      // else if (field === 'tbCardNo')//เลขบัตร
-      // {
-      //   const isDuplicate = rowData.value.some((item, idx) =>
-      //     idx !== index && item.tbCardNo === rowData.value[index].tbCardNo);
-      //   if (isDuplicate) {
-      //     rowData.value[index].errors = {
-      //       ...rowData.value[index].errors,
-      //       [field]: "ข้อมูลบัตรซ้ำกัน"
-      //     };
-      //     validateInputAll.value = true
-      //   }
-      //   else if (!rowData.value[index].tbCardNo) {
-      //     rowData.value[index].errors = {
-      //       ...rowData.value[index].errors,
-      //       [field]: "กรุณาใส่ข้อมูล"
-      //     }
-      //     validateInputAll.value = true
-      //   }
-      //   else {
-      //     if (rowData.value[index].errors && rowData.value[index].errors[field]) {
-      //       const { [field]: removed, ...rest } = rowData.value[index].errors;
-      //       rowData.value[index].errors = { ...rest };
-      //     }
-      //     validateInputAll.value = false
-      //   }
-      // }
       else if (field === 'tbVehicle_Registration')//ทะเบียนรถ 
       {
         if (rowData.value[index]['tbVehicle_Registration'].length > 7) {
@@ -1823,20 +1742,6 @@ export default defineComponent({
           validateInputAll.value = false
         }
       }
-      //  else if (!rowData.value[index][field]) { 
-      //   console.log( 'aaa: ',rowData.value[index][field] )
-      //   rowData.value[index].errors = {
-      //     ...rowData.value[index].errors,
-      //     [field]: errorMessage
-      //   }
-      //   validateInputAll.value = true
-      // } else { 
-      //   console.log( 'bbb: ',rowData.value[index][field] )
-      //   if (rowData.value[index].errors && rowData.value[index].errors[field]) {
-      //     const { [field]: removed, ...rest } = rowData.value[index].errors
-      //     rowData.value[index].errors = { ...rest }
-      //   }
-      // }
     }
     const addManualVRF_validateInput = (e) => {
       validateAllInputs()
@@ -2489,26 +2394,16 @@ export default defineComponent({
     const table = reactive({
       isLoading: false,
       columns: [
-        // {
-        //   label: 'ลำดับที่',
-        //   field: 'id',
-        //   width: '2%',
-        //   sortable: true,
-        //   isKey: true,
-        //   display: function (row) {
-        //     //shouldShowCheckbox(row)
-        //     return `<div style="text-align: center;">${row.no}</div>`
-        //     // return `<div style="text-align: right;">${row.no}</div>`
-        //   }
-        // },
         {
           label: 'VRF No',
           field: 'id',
           width: '2%',
           sortable: true,
           isKey: true,
-          display: function (row) {
-            return `<div style="text-align: center;">${row.id
+          display: function (row) { 
+            let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
+            let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: center;">${row.id
               .toString()
               .padStart(6, '0')}</div>`
           }
@@ -2519,8 +2414,10 @@ export default defineComponent({
           isKey: true,
           width: '3%',
           sortable: true,
-          display: function (row) {
-            return `<div style="text-align: left;">${row.date_from ? dateTime(row.date_from) : ''
+          display: function (row) { 
+            let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
+            let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.date_from ? dateTime(row.date_from) : ''
               }</div>`
           }
         },
@@ -2529,8 +2426,10 @@ export default defineComponent({
           field: 'date_to',
           width: '3%',
           sortable: true,
-          display: function (row) {
-            return `<div style="text-align: left;">${row.date_to ? dateTime(row.date_to) : ''
+          display: function (row) { 
+            let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
+            let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.date_to ? dateTime(row.date_to) : ''
               }</div>`
           }
         },
@@ -2539,8 +2438,10 @@ export default defineComponent({
           field: 'contactor',
           width: '12%',
           sortable: true,
-          display: function (row) {
-            return `<div style="text-align: left;">${row.contactor}</div>`
+          display: function (row) { 
+            let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
+            let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.contactor}</div>`
           }
         },
         {
@@ -2548,8 +2449,10 @@ export default defineComponent({
           field: 'requestor',
           width: '18%',
           sortable: true,
-          display: function (row) {
-            return `<div style="text-align: left;">${row.requestor}</div>`
+          display: function (row) { 
+            let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
+            let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.requestor}</div>`
           }
         },
         {
@@ -2557,8 +2460,10 @@ export default defineComponent({
           field: 'reason',
           width: '15%',
           sortable: true,
-          display: function (row) {
-            return `<div style="text-align: left;">${row.reason}</div>`
+          display: function (row) { 
+            let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
+            let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.reason}</div>`
           }
         },
         {
@@ -2566,8 +2471,10 @@ export default defineComponent({
           field: 'meeting_area',
           width: '10%',
           sortable: true,
-          display: function (row) {
-            return `<div style="text-align: left;">${row.meeting_area}</div>`
+          display: function (row) { 
+            let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
+            let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.meeting_area}</div>`
           }
         },
         {
@@ -2575,20 +2482,37 @@ export default defineComponent({
           field: 'approve_status',
           width: '12%',
           sortable: true,
-          display: function (row) {
+          display: function (row) { 
+            let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
+            let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
             return row.approve_status === null
-              ? `<div style="text-align: left;">สร้างรายการ VRF</div>`
-              : `<div style="text-align: left;">${row.approve_status}</div>`
+              ? `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">สร้างรายการ VRF</div>`
+              : `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.approve_status}&nbsp; </div>`
           }
         },
+        {
+          label: 'ผู้อนุมัติล่าสุด',
+          field: 'us_approver',
+          width: '12%',
+          sortable: true,
+          display: function (row) { 
+            let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
+            let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
+            return row.approve_status === null
+              ? `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">-</div>`
+              : `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.us_approver}&nbsp;(${common.formatDate(row.approve_date)})</div>`
+          }
+        },        
         {
           // label: 'เหตุผลในการตีกลับ',
           label: 'รายการเพิ่มเติม',
           field: 'req_urgentcase_by',
           width: '15%',
           sortable: true,
-          display: function (row) {
-            return `<div style="text-align: center;">${row.req_urgentcase_by !== null ? 'เคสด่วน' : ''}</div>`
+          display: function (row) { 
+            let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
+            let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: center;">${row.req_urgentcase_by !== null ? 'เคสด่วน' : ''}</div>`
           }
         },
         {
@@ -2597,8 +2521,10 @@ export default defineComponent({
           field: 'reason_of_reject',
           width: '15%',
           sortable: true,
-          display: function (row) {
-            return `<div style="text-align: left;">${row.reason_of_reject !== null ? row.reason_of_reject : ''}</div>`
+          display: function (row) { 
+            let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
+            let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.reason_of_reject !== null ? row.reason_of_reject : ''}</div>`
           }
         },
         {
@@ -2606,8 +2532,10 @@ export default defineComponent({
           field: 'user_create',
           width: '15%',
           sortable: true,
-          display: function (row) {
-            return `<div style="text-align: left;">${row.user_create}</div>`
+          display: function (row) { 
+            let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
+            let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.user_create}</div>`
           }
         },
         {
@@ -2793,7 +2721,10 @@ export default defineComponent({
                 .finally(() => {
                   //
                 })
-              fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}`
+              // fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}`
+              vrf_Existing.attach_file ?
+        fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}` : fileUrl.value = null
+
 
             } catch (err) {
               console.log(err)
@@ -3334,7 +3265,7 @@ export default defineComponent({
           tbSname: '',
           tbFullName: '',
           tbVehicle_Registration: '',
-          ddlvehicle_brand: '',
+          ddlvehicle_brand: 1,
           ddlvehicle_color: '',
           tbCardNo: '',
           errors: {}
@@ -3959,6 +3890,12 @@ export default defineComponent({
 @import '../assets/css/style.css';
 @import '../../node_modules/vue-multiselect/dist/vue-multiselect.css';
 
+
+.scrollable-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 30rem; /* กำหนดความสูงสูงสุดตามต้องการ */
+}
 .orange-text {
   color: orange;
 }
@@ -3970,6 +3907,7 @@ export default defineComponent({
   /* แสดง scrollbar เมื่อจำเป็น */
   white-space: nowrap;
   /* ป้องกันการ wrap text */
+
 }
 
 /* ซ่อน scrollbar เมื่อหน้าจอกว้างเพียงพอ (เช่น 768px หรือมากกว่า) */
@@ -4163,22 +4101,5 @@ export default defineComponent({
 #button_alert_popup_cancel :hover {
   background-color: #2980b9;
 }
-
-/* .input-group-text {
-    cursor: pointer;
-  }
-  
-  .form-control:disabled, .form-control[readonly] {
-    background-color: #fff;
-    opacity: 0;
-  } */
-/* #formFile::before {
-    content: "Pick file";
-    position: absolute;
-    z-index: 2;
-    display: block;
-    background-color: #eee;
-    width: 80px;
-  } */
 </style>
   

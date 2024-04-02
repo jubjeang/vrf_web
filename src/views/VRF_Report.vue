@@ -862,7 +862,10 @@ export default {
                 .finally(() => {
                   //
                 })
-              fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}`
+              // fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}`
+              vrf_Existing.attach_file ?
+        fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}` : fileUrl.value = null
+
               
             } catch (err) {
               console.log(err)
@@ -899,41 +902,7 @@ export default {
         }
       })
     }
-    // const AdvSearch_ = async () => {
-    //   const params = {
-    //     tbDateF: AdvSearch.tbDateF !== '' ? AdvSearch.tbDateF : null,
-    //     tbDateT: AdvSearch.tbDateT !== '' ? AdvSearch.tbDateT : null,
-    //     requestor_id:
-    //       AdvSearch.requestor_id.user_id !== 0 ? AdvSearch.requestor_id.user_id : null,
-    //     area_id: AdvSearch.area_id.id !== 0 ? AdvSearch.area_id.id : null,
-    //     requestor_dept_id:
-    //       AdvSearch.requestor_dept_id.id !== 0
-    //         ? AdvSearch.requestor_dept_id.id
-    //         : null,
-    //     department_id: department_id.value,
-    //     branch_id: localStorage.getItem('user_branch_id'),
-    //     checkin_status: AdvSearch.checkin_status.id !== 0 ? AdvSearch.checkin_status.id : null,
-    //   }
-    //   console.log('AdvSearch_ params: ', params)
-    //   await axios
-    //     .get(process.env.VUE_APP_API_URL + '/get_search_vrf_trans', { params })
-    //     .then(
-    //       (res) => {
-    //         // let output = JSON.parse(JSON.stringify(res.data))
-    //         // data.rows = output       
-    //         console.log('res.data: ', res.data)
-    //         Data_.value = JSON.parse(JSON.stringify(res.data))
-    //         data.rows = Data_.value
 
-    //       },
-    //       (res) => {
-    //         // error callback
-    //         console.log('error: ', res.data)
-
-    //       }
-    //     )
-    //   document.getElementById('CloseModalAdvSearch').click() //************************** */
-    // }
     const AdvSearch_ = async () => {
         if (AdvSearch.tbDateF && AdvSearch.tbDateT && new Date(AdvSearch.tbDateF) > new Date(AdvSearch.tbDateT)) {
           alert('กรุณาเลือก จากวันที่ น้อยกว่า ถึงวันที่');

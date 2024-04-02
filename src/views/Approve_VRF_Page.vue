@@ -63,7 +63,7 @@
         <h4>รายการอนุมัติขอเข้าพื้นที่</h4>
       </div>
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive scrollable-container">
       <table class="table table-hover modalcustomtb">
         <thead>
           <tr>
@@ -116,7 +116,6 @@
       <div class="col text-end">จากวันที่:</div>
       <div class="col">
         <label style="width: 10rem; display: inline-block">{{ formattedDateFrom(vrf_Existing.date_from) }}</label>
-
       </div>
       <div class="col text-end">ถึงวันที่:</div>
       <div class="col">
@@ -183,10 +182,13 @@
       </div>
       <div class="col text-end">แนบไฟล์:</div>
       <div class="col text-start">
-        <a :href="fileUrl" target="_blank">
-          <i class="fa fa-address-card" aria-hidden="true"></i>
-        </a>
-      </div>
+    <a :href="fileUrl" target="_blank" v-show="fileUrl">
+      <i class="fa fa-address-card" aria-hidden="true"></i>
+    </a>
+    <label style="width: 1rem; display: inline-block" v-show="!fileUrl">
+      -
+    </label>
+  </div>
     </div>
     <div class="align-top pt-1 d-flex justify-content-center" v-if="vrf_Existing.approve_action === 'True'">
 
@@ -827,7 +829,8 @@ export default defineComponent({
           .finally(() => {
             //
           })
-        fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}`
+          vrf_Existing.attach_file ?
+        fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}` : fileUrl.value = null
 
       } catch (err) {
         console.log(err)
@@ -1628,6 +1631,11 @@ export default defineComponent({
 @import '../assets/css/style.css';
 @import '../../node_modules/vue-multiselect/dist/vue-multiselect.css';
 
+.scrollable-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 300px; /* กำหนดความสูงสูงสุดตามต้องการ */
+}
 .rounded-border {
   border: 2px solid #000;
   /* Adjust the color and size as needed */
