@@ -2403,7 +2403,7 @@ export default defineComponent({
           display: function (row) { 
             let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
             let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
-            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: center;">${row.id
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: center; cursor: pointer;">${row.id
               .toString()
               .padStart(6, '0')}</div>`
           }
@@ -2417,7 +2417,7 @@ export default defineComponent({
           display: function (row) { 
             let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
             let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
-            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.date_from ? dateTime(row.date_from) : ''
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.date_from ? dateTime(row.date_from) : ''
               }</div>`
           }
         },
@@ -2429,7 +2429,7 @@ export default defineComponent({
           display: function (row) { 
             let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
             let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
-            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.date_to ? dateTime(row.date_to) : ''
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.date_to ? dateTime(row.date_to) : ''
               }</div>`
           }
         },
@@ -2441,7 +2441,7 @@ export default defineComponent({
           display: function (row) { 
             let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
             let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
-            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.contactor}</div>`
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.contactor}</div>`
           }
         },
         {
@@ -2452,7 +2452,7 @@ export default defineComponent({
           display: function (row) { 
             let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
             let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
-            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.requestor}</div>`
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.requestor}</div>`
           }
         },
         {
@@ -2463,7 +2463,7 @@ export default defineComponent({
           display: function (row) { 
             let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
             let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
-            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.reason}</div>`
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.reason}</div>`
           }
         },
         {
@@ -2474,7 +2474,7 @@ export default defineComponent({
           display: function (row) { 
             let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
             let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
-            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.meeting_area}</div>`
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.meeting_area}</div>`
           }
         },
         {
@@ -2486,8 +2486,8 @@ export default defineComponent({
             let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
             let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
             return row.approve_status === null
-              ? `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">สร้างรายการ VRF</div>`
-              : `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.approve_status}&nbsp; </div>`
+              ? `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">สร้างรายการ VRF</div>`
+              : `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.approve_status}&nbsp; </div>`
           }
         },
         {
@@ -2499,8 +2499,8 @@ export default defineComponent({
             let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
             let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
             return row.approve_status === null
-              ? `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">-</div>`
-              : `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.us_approver}&nbsp;(${common.formatDate(row.approve_date)})</div>`
+              ? `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">-</div>`
+              : `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.us_approver}&nbsp;(${common.formatDate(row.approve_date)})</div>`
           }
         },        
         {
@@ -2512,7 +2512,7 @@ export default defineComponent({
           display: function (row) { 
             let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
             let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
-            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: center;">${row.req_urgentcase_by !== null ? 'เคสด่วน' : ''}</div>`
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: center; cursor: pointer;">${row.req_urgentcase_by !== null ? 'เคสด่วน' : ''}</div>`
           }
         },
         {
@@ -2524,7 +2524,7 @@ export default defineComponent({
           display: function (row) { 
             let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
             let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
-            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.reason_of_reject !== null ? row.reason_of_reject : ''}</div>`
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.reason_of_reject !== null ? row.reason_of_reject : ''}</div>`
           }
         },
         {
@@ -2535,7 +2535,7 @@ export default defineComponent({
           display: function (row) { 
             let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
             let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
-            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left;">${row.user_create}</div>`
+            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.user_create}</div>`
           }
         },
         {
@@ -2551,14 +2551,14 @@ export default defineComponent({
             return (
               '<div style="display: flex;"><button type="button" data-id="' +
               row.id +
-              '" class="btn btn-danger is-rows-el cancelvrf" ' + cancelButtonDisabled(row.approve_status_) + ' style="margin-top: 0.2rem; width: 5rem; height:2rem">ยกเลิก</button>&nbsp; ' +
+              '" class="btn btn-danger is-rows-el cancelvrf" ' + cancelButtonDisabled(row.approve_status_) + ' style="margin-top: 0.2rem; width: 5rem; height:2rem; cursor: pointer;">ยกเลิก</button>&nbsp; ' +
               '<button type="button" data-id="' +
               row.id +
-              '" class="btn btn-info is-rows-el ' + type_event_edit + '" style="margin-top: 0.2rem; width: 6rem; height:2rem" data-bs-target="#' + type_modal_edit + '" data-bs-toggle="modal">' + wording_edit + '</button>&nbsp;'
+              '" class="btn btn-info is-rows-el ' + type_event_edit + '" style="margin-top: 0.2rem; width: 6rem; height:2rem; cursor: pointer;" data-bs-target="#' + type_modal_edit + '" data-bs-toggle="modal">' + wording_edit + '</button>&nbsp;'
               +
               '<button type="button" data-id="' +
               row.id +
-              '" class="btn btn-success is-rows-el urgentcase" ' + urgentButtonDisabled(row.approve_status_, row.req_urgentcase_by) + ' style="margin-top: 0.2rem; width: 5rem; height:2rem" data-bs-target="#ModalUrgentvrf" data-bs-toggle="modal">เคสด่วน</button>&nbsp;'
+              '" class="btn btn-success is-rows-el urgentcase" ' + urgentButtonDisabled(row.approve_status_, row.req_urgentcase_by) + ' style="margin-top: 0.2rem; width: 5rem; height:2rem; cursor: pointer;" data-bs-target="#ModalUrgentvrf" data-bs-toggle="modal">เคสด่วน</button>&nbsp;'
               +
               ' </div>'
             )

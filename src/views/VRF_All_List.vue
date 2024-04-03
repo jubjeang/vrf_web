@@ -1527,19 +1527,7 @@
       // Table config
       const table = reactive({
         isLoading: false,
-        columns: [
-          // {
-          //   label: 'ลำดับที่',
-          //   field: 'id',
-          //   width: '2%',
-          //   sortable: true,
-          //   isKey: true,
-          //   display: function (row) {
-          //     //shouldShowCheckbox(row)
-          //     return `<div style="text-align: center;">${row.no}</div>`
-          //     // return `<div style="text-align: right;">${row.no}</div>`
-          //   }
-          // },
+        columns: [          
           {
             label: 'VRF No',
             field: 'id',
@@ -1549,7 +1537,7 @@
             display: function (row) {
               return `<div data-id="` +
                 row.id +
-                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: center;">${row.id
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: center; cursor: pointer;">${row.id
                 .toString()
                 .padStart(6, '0')}</div>`
             }
@@ -1563,7 +1551,7 @@
             display: function (row) {
               return `<div  data-id="` +
                 row.id +
-                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left;">${row.date_from ? dateTime(row.date_from) : ''
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.date_from ? dateTime(row.date_from) : ''
                 }</div>`
             }
           },
@@ -1575,7 +1563,7 @@
             display: function (row) {
               return `<div  data-id="` +
                 row.id +
-                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left;">${row.date_to ? dateTime(row.date_to) : ''
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.date_to ? dateTime(row.date_to) : ''
                 }</div>`
             }
           },
@@ -1587,7 +1575,7 @@
             display: function (row) {
               return `<div  data-id="` +
                 row.id +
-                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left;">${row.contactor}</div>`
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.contactor}</div>`
             }
           },
           {
@@ -1598,7 +1586,7 @@
             display: function (row) {
               return `<div  data-id="` +
                 row.id +
-                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left;">${row.requestor}</div>`
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.requestor}</div>`
             }
           },
           {
@@ -1609,7 +1597,7 @@
             display: function (row) {
               return `<div  data-id="` +
                 row.id +
-                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left;">${row.reason}</div>`
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.reason}</div>`
             }
           },
           {
@@ -1620,7 +1608,7 @@
             display: function (row) {
               return `<div data-id="` +
                 row.id +
-                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal"  style="text-align: left;">${row.meeting_area}</div>`
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal"  style="text-align: left; cursor: pointer;">${row.meeting_area}</div>`
             }
           },
           {
@@ -1632,10 +1620,10 @@
               return row.approve_status === null
                 ? `<div data-id="` +
                 row.id +
-                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left;">สร้างรายการ VRF</div>`
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">สร้างรายการ VRF</div>`
                 : `<div data-id="` +
                 row.id +
-                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left;">${row.approve_status}</div>`
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.approve_status}</div>`
             }
           },
           {
@@ -1660,7 +1648,7 @@
             display: function (row) {
               return `<div  data-id="` +
                 row.id +
-                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: center;">${row.req_urgentcase_by !== null ? 'เคสด่วน' : ''}</div>`
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: center; cursor: pointer;">${row.req_urgentcase_by !== null ? 'เคสด่วน' : ''}</div>`
             }
           },
           {
@@ -1672,7 +1660,7 @@
             display: function (row) {
               return `<div  data-id="` +
                 row.id +
-                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left;">${row.reason_of_reject !== null ? row.reason_of_reject : ''}</div>`
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.reason_of_reject !== null ? row.reason_of_reject : ''}</div>`
             }
           },
           {
@@ -1683,7 +1671,7 @@
             display: function (row) {
               return `<div  data-id="` +
                 row.id +
-                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left;">${row.user_create}</div>`
+                `" class="is-rows-el editvrf" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.user_create}</div>`
             }
           },
           {
@@ -1700,7 +1688,7 @@
                 '<div style="display: flex;">' +                
                 '<button type="button" data-id="' +
                 row.id +
-                '" class="btn btn-info is-rows-el editvrf" style="margin-top: 0.2rem; width: 6rem; height:2rem" data-bs-target="#ModalEditvrf" data-bs-toggle="modal">รายละเอียด</button>&nbsp;'                
+                '" class="btn btn-info is-rows-el editvrf" style="margin-top: 0.2rem; width: 6rem; height:2rem; cursor: pointer;" data-bs-target="#ModalEditvrf" data-bs-toggle="modal">รายละเอียด</button>&nbsp;'                
                 +
                 ' </div>'
               )

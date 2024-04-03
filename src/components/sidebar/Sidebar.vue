@@ -1,7 +1,7 @@
 <script>
 import SidebarLink from './SidebarLink'
 import { collapsed, toggleSidebar, sidebarWidth } from './state'
-import { ref, nextTick } from "vue";
+import { ref } from "vue";
 import { useRouter } from 'vue-router'
 import { io } from 'socket.io-client';
 import axios from 'axios'

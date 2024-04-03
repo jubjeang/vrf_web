@@ -278,7 +278,7 @@
               <div class="modal-body modalcustom">
                 <div class="container modalcustom">
                   <!---Loop Manual Edit VRF------>
-                  <div class="row ms-4 ps-4 pe-3 me-3 modalcustom">
+                  <div class="row ms-4 ps-4 pe-3 me-3 modalcustom scrollable-container">
                     <table class="table modalcustomtb">
                       <thead>
                         <tr>
@@ -1647,17 +1647,29 @@ export default defineComponent({
           // Remove setTimeout() and change to your Axios request or AJAX request on here.
           setTimeout(() => {
             table.isLoading = false
+            // let newData = Data_.value.filter(
+            //   (x) =>
+            //     x.no.includes(keyword) ||
+            //     x.contactor.toLowerCase().includes(keyword.toLowerCase()) ||
+            //     x.fullname.toLowerCase().includes(keyword.toLowerCase()) ||
+            //     //x.card_no.toLowerCase().includes(keyword.toLowerCase()) ||
+            //     x.navigator.toLowerCase().includes(keyword.toLowerCase()) ||
+            //     x.meeting_area.toLowerCase().includes(keyword.toLowerCase()) ||
+            //     x.reason.toLowerCase().includes(keyword.toLowerCase()) ||
+            //     x.checkin_date.toLowerCase().includes(keyword.toLowerCase()) ||
+            //     x.checkout_date.toLowerCase().includes(keyword.toLowerCase())
+            // )
             let newData = Data_.value.filter(
               (x) =>
                 x.no.includes(keyword) ||
-                x.contactor.toLowerCase().includes(keyword.toLowerCase()) ||
-                x.fullname.toLowerCase().includes(keyword.toLowerCase()) ||
-                //x.card_no.toLowerCase().includes(keyword.toLowerCase()) ||
-                x.navigator.toLowerCase().includes(keyword.toLowerCase()) ||
-                x.meeting_area.toLowerCase().includes(keyword.toLowerCase()) ||
-                x.reason.toLowerCase().includes(keyword.toLowerCase()) ||
-                x.checkin_date.toLowerCase().includes(keyword.toLowerCase()) ||
-                x.checkout_date.toLowerCase().includes(keyword.toLowerCase())
+                (x.contactor ? x.contactor.toLowerCase() : '').includes(keyword.toLowerCase()) ||
+                (x.fullname ? x.fullname.toLowerCase() : '').includes(keyword.toLowerCase()) ||
+                (x.card_no ? x.card_no.toLowerCase() : '').includes(keyword.toLowerCase()) ||
+                (x.navigator ? x.navigator.toLowerCase() : '').includes(keyword.toLowerCase()) ||
+                (x.meeting_area ? x.meeting_area.toLowerCase() : '').includes(keyword.toLowerCase()) ||
+                (x.reason ? x.reason.toLowerCase() : '').includes(keyword.toLowerCase()) ||
+                (x.checkin_date ? x.checkin_date.toLowerCase() : '').includes(keyword.toLowerCase()) ||
+                (x.checkout_date ? x.checkout_date.toLowerCase() : '').includes(keyword.toLowerCase())
             )
             resolve(newData)
           }, 100)
@@ -1669,45 +1681,15 @@ export default defineComponent({
     } //const myRequest = async (keyword) => {
     // Table config
     const table = reactive({
-      isLoading: false,
-      // rowClasses: (row) => {
-      //   if (row.checkin_date === '-' && row.checkout_date === '-') {
-      //     return { backgroundColor: 'orange' }
-      //   } else if (
-      //     row.checkin_date !== '-' &&
-      //     (!row.checkout_date || row.checkout_date === '')
-      //   ) {
-      //     return { backgroundColor: 'green' }
-      //   } else if (row.checkin_date !== '-' && row.checkout_date !== '-') {
-      //     return { backgroundColor: 'blue' }
-      //   } else {
-      //     return {}
-      //   }
-      // },
-      columns: [
-        // {
-        //   label: 'ลำดับที่',
-        //   field: 'id',
-        //   width: '2%',
-        //   sortable: true,
-        //   isKey: true,
-        //   display: function (row) {
-        //     return `<div style="text-align: center;">${row.no}</div>`
-        //   }
-        // },
+      isLoading: false,      
+      columns: [        
         {
           label: '',
           //field: "quick",
           width: '10%',
           height: '1%',
           display: function (row) {
-            return (
-              // '<div style="display: flex;"><button type="button" data-id="' +
-              // row.id +
-              // '" class="btn btn-success is-rows-el vrfin" data-bs-target="#ModalCheckVRF_inout"  data-bs-toggle="modal" style="margin-top: 0.2rem; width: 5rem; height:2rem">เข้า</button>&nbsp; ' +
-              // '<button type="button" data-id="' +
-              // row.id +
-              // '" class="btn btn-warning is-rows-el vrfout" style="margin-top: 0.2rem; width: 6rem; height:2rem" data-bs-target="#ModalCheckVRF_inout" data-bs-toggle="modal">ออก</button></div>'
+            return (              
               '<button type="button" data-id="' +
               row.id +
               '" class="btn btn-warning is-rows-el vrf" style="margin-top: 0.2rem; width: 6rem; height:2rem" data-bs-target="#ModalCheckVRF_inout" data-bs-toggle="modal">ดำเนินการ</button></div>'
@@ -1721,7 +1703,7 @@ export default defineComponent({
           sortable: true,
           isKey: true,
           display: function (row) {
-            return `<div style="text-align: center;">${row.id
+            return `<div  data-id="${row.id}" class="is-rows-el vrf"  data-bs-target="#ModalCheckVRF_inout" data-bs-toggle="modal" style="text-align: center; cursor: pointer;">${row.id
               .toString()
               .padStart(6, '0')}</div>`
           }
@@ -1732,7 +1714,7 @@ export default defineComponent({
           width: '8%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: left;">${dateTime(
+            return `<div data-id="${row.id}" class="is-rows-el vrf"  data-bs-target="#ModalCheckVRF_inout" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${dateTime(
               row.date_from
             )}</div>`
           }
@@ -1743,7 +1725,7 @@ export default defineComponent({
           width: '8%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: left;">${dateTime(
+            return `<div data-id="${row.id}" class="is-rows-el vrf"  data-bs-target="#ModalCheckVRF_inout" data-bs-toggle="modal"  style="text-align: left; cursor: pointer;">${dateTime(
               row.date_to
             )}</div>`
           }
@@ -1754,7 +1736,7 @@ export default defineComponent({
           width: '8%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: center;">${row.checkin_date}</div>`
+            return `<div  data-id="${row.id}" class="is-rows-el vrf"  data-bs-target="#ModalCheckVRF_inout" data-bs-toggle="modal" style="text-align: center; cursor: pointer;">${row.checkin_date}</div>`
           }
         },
         {
@@ -1763,7 +1745,7 @@ export default defineComponent({
           width: '8%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: center;">${row.checkout_date}</div>`
+            return `<div  data-id="${row.id}" class="is-rows-el vrf"  data-bs-target="#ModalCheckVRF_inout" data-bs-toggle="modal" style="text-align: center; cursor: pointer;">${row.checkout_date}</div>`
           }
         },
         {
@@ -1772,7 +1754,7 @@ export default defineComponent({
           width: '11%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: left;">${row.contactor}</div>`
+            return `<div data-id="${row.id}" class="is-rows-el vrf"  data-bs-target="#ModalCheckVRF_inout" data-bs-toggle="modal"  style="text-align: left; cursor: pointer;">${row.contactor}</div>`
           }
         },
         {
@@ -1781,7 +1763,7 @@ export default defineComponent({
           width: '11%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: left;">${row.fullname}</div>`
+            return `<div  data-id="${row.id}" class="is-rows-el vrf"  data-bs-target="#ModalCheckVRF_inout" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.fullname}</div>`
           }
         },
         {
@@ -1798,7 +1780,7 @@ export default defineComponent({
               )}XXXXXX</div>`
             } else {
               // ถ้าไม่ใช่ ให้แสดง card_no ตามปกติ
-              return `<div style="text-align: left;">${row.card_no}</div>`
+              return `<div  data-id="${row.id}" class="is-rows-el vrf"  data-bs-target="#ModalCheckVRF_inout" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.card_no}</div>`
             }
           }
         },
@@ -1808,7 +1790,7 @@ export default defineComponent({
           width: '10%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: left;">${row.navigator}</div>`
+            return `<div data-id="${row.id}" class="is-rows-el vrf"  data-bs-target="#ModalCheckVRF_inout" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.navigator}</div>`
           }
         },
         {
@@ -1817,7 +1799,7 @@ export default defineComponent({
           width: '25%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: left;">${row.meeting_area}</div>`
+            return `<div data-id="${row.id}" class="is-rows-el vrf"  data-bs-target="#ModalCheckVRF_inout" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.meeting_area}</div>`
           }
         },
         {
@@ -1826,7 +1808,7 @@ export default defineComponent({
           width: '20%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: left;">${row.reason}</div>`
+            return `<div data-id="${row.id}" class="is-rows-el vrf"  data-bs-target="#ModalCheckVRF_inout" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.reason}</div>`
           }
         },
         {
@@ -1836,7 +1818,7 @@ export default defineComponent({
           width: '15%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: center;">${row.req_urgentcase_by !== null ? 'เคสด่วน' : ''}</div>`
+            return `<div data-id="${row.id}" class="is-rows-el vrf"  data-bs-target="#ModalCheckVRF_inout" data-bs-toggle="modal" style="text-align: center; cursor: pointer;">${row.req_urgentcase_by !== null ? 'เคสด่วน' : ''}</div>`
           }
         },
         {
@@ -1845,7 +1827,7 @@ export default defineComponent({
           width: '15%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: left;">${row.requestor}</div>`
+            return `<div data-id="${row.id}" class="is-rows-el vrf"  data-bs-target="#ModalCheckVRF_inout" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.requestor}</div>`
           }
         },
         {
@@ -1854,7 +1836,7 @@ export default defineComponent({
           width: '15%',
           sortable: true,
           display: function (row) {
-            return `<div style="text-align: left;">${row.department}</div>`
+            return `<div data-id="${row.id}" class="is-rows-el vrf"  data-bs-target="#ModalCheckVRF_inout" data-bs-toggle="modal"  style="text-align: left; cursor: pointer;">${row.department}</div>`
           }
         }
       ],
@@ -2525,6 +2507,12 @@ export default defineComponent({
 @import '../assets/css/style.css';
 @import '../../node_modules/vue-multiselect/dist/vue-multiselect.css';
 
+
+.scrollable-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 300px; /* กำหนดความสูงสูงสุดตามต้องการ */
+}
 .tr-align-middle td, .tr-align-middle th {
     vertical-align: middle;
 }

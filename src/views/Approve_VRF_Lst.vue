@@ -516,6 +516,7 @@ import Datepicker from 'vue3-datepicker'
 import VueMultiselect from 'vue-multiselect'
 import Loading from '../components/Loading.vue'
 import Alert_popup from '../components/Alert_popup.vue'
+import { io } from 'socket.io-client';
 
 export default defineComponent({
   name: 'Approve_VRF_Lst',
@@ -1148,21 +1149,51 @@ export default defineComponent({
         }
       })
     } //const myRequest = async (keyword) => {
+    // เชื่อมต่อไปยัง Socket.IO server
+    const socket = io(process.env.VUE_APP_API_URL);
+    // socket.on('new_vrf_send_approve', async ({ message, Id, user_id, role_id, approve_status }) => {
+    socket.on('new_vrf_send_approve', async ({ Id }) => {
+      // Await the function and then assign its value
+      const responseData = await get_data_approve_list(Id, 'new_vrf_send_approve');
+      console.log('Response Data:', responseData);  // Check what responseData contains
+      //Data_.value = responseData || [];
+      data.rows = JSON.parse(JSON.stringify(responseData));
+      console.log('Data_.value:', Data_.value);  // Check the assigned Data_.value
+    });
+
+    const get_data_approve_list = async (Id, type) => {
+      const user_id = ref(localStorage.getItem('user_id'))
+      const department_id = ref(localStorage.getItem('user_department_id'))
+      const position_id = ref(localStorage.getItem('position_id'))
+      const params = {
+        user_id: user_id.value,
+        department_id: department_id.value,
+        position_id: position_id.value,
+        employee_id: localStorage.getItem('user_employee_id'),
+        division_id: localStorage.getItem('user_division_id'),
+        branch_id: localStorage.getItem('user_branch_id'),
+        work_flow_id: localStorage.getItem('user_work_flow_id'),
+        role_id: localStorage.getItem('user_role_id')
+      }
+      let url = type === 'new_vrf_send_approve' ? '/get_vrf_approve_list' : '/get_data_approve_list_for_security'
+      try {
+        const response = await axios.get(process.env.VUE_APP_API_URL + url, { params });
+        if (response.data && !response.data.error) {
+          return JSON.parse(JSON.stringify(response.data));
+        } else {
+          console.error('Error in response:', response.data.error);
+          return [];  // Return an empty array in case of an error in response
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        return [];  // Return an empty array in case of an error during fetching
+      }
+    }
+
     // Table config
     const table = reactive({
       isLoading: false,
       columns: [
-        // {
-        //   label: 'ลำดับที่',
-        //   field: 'id',
-        //   width: '5%',
-        //   sortable: true,
-        //   isKey: true,
-        //   display: function (row) {
-        //     return `<div style="text-align: center;">${row.no}</div>`
-        //     // return `<div style="text-align: right;">${row.no}</div>`
-        //   }
-        // },
         {
           label: 'VRF No',
           field: 'id',
@@ -1170,7 +1201,7 @@ export default defineComponent({
           sortable: true,
           isKey: true,
           display: function (row) {
-            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: center;">${row.id
+            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: center; cursor: pointer;">${row.id
               .toString()
               .padStart(6, '0')}</div>`
           }
@@ -1182,7 +1213,7 @@ export default defineComponent({
           sortable: true,
           isKey: true,
           display: function (row) {
-            return `<div  data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: center;">${dateTime(
+            return `<div  data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: center; cursor: pointer;">${dateTime(
               row.date_from
             )}</div>`
           }
@@ -1193,7 +1224,7 @@ export default defineComponent({
           width: '5%',
           sortable: true,
           display: function (row) {
-            return `<div  data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: center;">${dateTime(
+            return `<div  data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: center; cursor: pointer;">${dateTime(
               row.date_to
             )}</div>`
           }
@@ -1204,7 +1235,7 @@ export default defineComponent({
           width: '15%',
           sortable: true,
           display: function (row) {
-            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">${row.contactor}</div>`
+            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left; cursor: pointer;">${row.contactor}</div>`
           }
         },
         {
@@ -1213,7 +1244,7 @@ export default defineComponent({
           width: '13%',
           sortable: true,
           display: function (row) {
-            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">${row.requestor}</div>`
+            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left; cursor: pointer;">${row.requestor}</div>`
           }
         },
         {
@@ -1222,7 +1253,7 @@ export default defineComponent({
           width: '15%',
           sortable: true,
           display: function (row) {
-            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">${row.reason}</div>`
+            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left; cursor: pointer;">${row.reason}</div>`
           }
         },
         {
@@ -1231,7 +1262,7 @@ export default defineComponent({
           width: '10%',
           sortable: true,
           display: function (row) {
-            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">${row.meeting_area}</div>`
+            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left; cursor: pointer;">${row.meeting_area}</div>`
           }
         },
         {
@@ -1241,8 +1272,8 @@ export default defineComponent({
           sortable: true,
           display: function (row) {
             return row.approve_status === null
-              ? `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">สร้างรายการ VRF</div>`
-              : `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">${row.approve_status}</div>`
+              ? `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left; cursor: pointer;">สร้างรายการ VRF</div>`
+              : `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left; cursor: pointer;">${row.approve_status}</div>`
           }
         },
         {
@@ -1252,9 +1283,9 @@ export default defineComponent({
           sortable: true,
           display: function (row) { 
             if (row.approve_date)
-             return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">${row.us_approver}&nbsp;(${common.formatDate(row.approve_date)})</div>`
+             return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left; cursor: pointer;">${row.us_approver}&nbsp;(${common.formatDate(row.approve_date)})</div>`
             else
-              return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">-</div>`
+              return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left; cursor: pointer;">-</div>`
           }
         },
         {
@@ -1263,7 +1294,7 @@ export default defineComponent({
           width: '7%',
           sortable: true,
           display: function (row) {
-            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: center;">${row.urgentcase_vrf !== null ? row.urgentcase_vrf : ''}</div>`
+            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: center; cursor: pointer;">${row.urgentcase_vrf !== null ? row.urgentcase_vrf : ''}</div>`
           }
         },        
         {
@@ -1273,7 +1304,7 @@ export default defineComponent({
           width: '15%',
           sortable: true,
           display: function (row) {
-            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">${row.reason_of_reject !== null ? row.reason_of_reject : ''}</div>`
+            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left; cursor: pointer;">${row.reason_of_reject !== null ? row.reason_of_reject : ''}</div>`
           }
         },
         {
@@ -1282,7 +1313,7 @@ export default defineComponent({
           width: '15%',
           sortable: true,
           display: function (row) {
-            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left;">${row.user_create}</div>`
+            return `<div data-id="${row.id}" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="is-rows-el editvrf" style="text-align: left; cursor: pointer;">${row.user_create}</div>`
           }
         },
         {
@@ -1294,10 +1325,10 @@ export default defineComponent({
             return (
               '<div style="display: flex;"><button type="button" data-id="' +
               row.id +
-              '" class="btn btn-danger is-rows-el rejectvrf" data-bs-target="#ModalRejectVRF"  data-bs-toggle="modal" style="margin-top: 0.2rem; width: 5rem; height:2rem">ไม่อนุมัติ</button>&nbsp; ' +
+              '" class="btn btn-danger is-rows-el rejectvrf" data-bs-target="#ModalRejectVRF"  data-bs-toggle="modal" style="margin-top: 0.2rem; width: 5rem; height:2rem; cursor: pointer;">ไม่อนุมัติ</button>&nbsp; ' +
               '<button type="button" data-id="' +
               row.id +
-              '" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="btn btn-info is-rows-el editvrf" style="margin-top: 0.2rem; width: 6rem; height:2rem">รายละเอียด</button></div>'
+              '" data-bs-target="#ModalEditvrf" data-bs-toggle="modal" class="btn btn-info is-rows-el editvrf" style="margin-top: 0.2rem; width: 6rem; height:2rem; cursor: pointer;">รายละเอียด</button></div>'
             )
           }
         }
