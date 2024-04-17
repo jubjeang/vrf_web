@@ -80,8 +80,9 @@ export default {
         work_flow_id: localStorage.getItem('user_work_flow_id'),
         role_id: localStorage.getItem('user_role_id'),
         Id: Id
-      }
-      let url = type === 'new_vrf_send_approve' ? '/get_data_approve_list' : '/get_data_approve_list_for_security'
+      }///get_vrf_approve_list
+      //let url = type === 'new_vrf_send_approve' ? '/get_data_approve_list' : '/get_data_approve_list_for_security'
+      let url = type === 'new_vrf_send_approve' ? '/get_vrf_approve_list' : '/get_data_approve_list_for_security'
       console.log('params myRequest: ', params)
       console.log('localStorage.getItem(user_role_id) :', localStorage.getItem('user_role_id'));
       try {

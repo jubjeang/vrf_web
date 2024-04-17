@@ -1907,19 +1907,16 @@ export default defineComponent({
       } //if (function_selected.value === "update_vrf_trans_status_all")
       if (function_selected.value === 'update_vrf_trans_status') {
         loading.value = true;
-
         const params = {
           Id: update_vrf_trans_status_param.Id,
           Type_: update_vrf_trans_status_param.Type_,
           user_id: user_id.value,
           attach_file_primitive: vrf_Existing.attach_file_primitive
         };
-
         try {
           const response = await axios.get(process.env.VUE_APP_API_URL + '/update_vrf_trans_status', {
             params
           });
-
         } catch (err) {
           console.error(err);
           console.log(err.response.data);
@@ -1940,11 +1937,9 @@ export default defineComponent({
           } catch (err) {
             console.error(err);
             console.log(err.response.data);
-
             message_addManual.value = 'Something went wrong: ' + err;
             error_addManual.value = true;
           }
-
         }
         let message_;
         if (update_vrf_trans_status_all_type.value === 'cancel') {
@@ -2498,9 +2493,13 @@ export default defineComponent({
           display: function (row) { 
             let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
             let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
-            return row.approve_status === null
-              ? `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">-</div>`
-              : `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.us_approver}&nbsp;(${common.formatDate(row.approve_date)})</div>`
+            if (row.approve_date)
+              return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.us_approver}&nbsp;(${common.formatDate(row.approve_date)})</div>`
+            else
+              return`<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">-</div>`          
+            // return row.approve_status === null
+            //   ? `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">-</div>`
+            //   : `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: left; cursor: pointer;">${row.us_approver}&nbsp;(${common.formatDate(row.approve_date)})</div>`
           }
         },        
         {
@@ -3056,14 +3055,6 @@ export default defineComponent({
         NewVrf.date_to = dateLimit;
       }
     }
-    // const setToDateAdd = (type) => {
-    //   if (type === 'date_from_edit' && NewVrf.date_from) {
-    //     const dateFrom = new Date(NewVrf.date_from)
-    //     const dateLimit = new Date(dateFrom)
-    //     dateLimit.setUTCDate(dateLimit.getUTCDate() + 30)
-    //     NewVrf.date_to = dateLimit
-    //   }
-    // }
     const setToDateAdd = (type) => {
       if (type === 'date_to_edit' && NewVrf.date_from && NewVrf.date_to) {
         const dateFrom = new Date(NewVrf.date_from)

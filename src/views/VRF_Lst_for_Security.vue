@@ -671,6 +671,7 @@ import Datepicker from 'vue3-datepicker'
 import VueMultiselect from 'vue-multiselect'
 import Loading from '../components/Loading.vue'
 import Alert_popup from '../components/Alert_popup.vue'
+import { io } from 'socket.io-client';
 
 export default defineComponent({
   name: 'VRF_Lst_for_Security',
@@ -1679,6 +1680,50 @@ export default defineComponent({
         }
       })
     } //const myRequest = async (keyword) => {
+
+    // เชื่อมต่อไปยัง Socket.IO server
+    const socket = io(process.env.VUE_APP_API_URL);
+    // socket.on('new_vrf_send_approve', async ({ message, Id, user_id, role_id, approve_status }) => {
+
+    socket.on('new_vrf_for_security', async ({ Id }) => {
+      // Await the function and then assign its value
+      const responseData = await get_data_approve_list(Id,'new_vrf_for_security');
+      console.log('Response Data:', responseData);  // Check what responseData contains
+      data.rows = JSON.parse(JSON.stringify(responseData));
+      console.log('socket work Data_.value:', Data_.value);  // Check the assigned Data_.value
+    });    
+    const get_data_approve_list = async (Id,type) => {
+      const user_id = ref(localStorage.getItem('user_id'))
+      const department_id = ref(localStorage.getItem('user_department_id'))
+      const position_id = ref(localStorage.getItem('position_id'))
+      const params = {
+        user_id: user_id.value,
+        department_id: department_id.value,
+        position_id: position_id.value,
+        employee_id: localStorage.getItem('user_employee_id'),
+        division_id: localStorage.getItem('user_division_id'),
+        branch_id: localStorage.getItem('user_branch_id'),
+        work_flow_id: localStorage.getItem('user_work_flow_id'),
+        role_id: localStorage.getItem('user_role_id')
+      }
+      //let url = type === 'new_vrf_send_approve' ? '/get_data_approve_list' : '/get_data_approve_list_for_security'
+      let url = type === 'new_vrf_send_approve' ? '/get_vrf_approve_list' : '/get_vrf_lst_for_security'
+      console.log('params myRequest: ', params)
+      console.log('localStorage.getItem(user_role_id) :', localStorage.getItem('user_role_id'));
+      try {
+        const response = await axios.get(process.env.VUE_APP_API_URL + url, { params });
+        if (response.data && !response.data.error) {
+          return JSON.parse(JSON.stringify(response.data));
+        } else {
+          console.error('Error in response:', response.data.error);
+          return [];  // Return an empty array in case of an error in response
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        return [];  // Return an empty array in case of an error during fetching
+      }
+    }
+
     // Table config
     const table = reactive({
       isLoading: false,      

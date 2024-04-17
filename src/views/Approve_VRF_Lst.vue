@@ -546,16 +546,6 @@ export default defineComponent({
       area: '',
       reject_reason: ''
     })
-    // const VRF_error = reactive({
-    //   reason: '',
-    //   contactor: '',
-    //   requestor: '',
-    //   requestor_position: '',
-    //   requestor_dept: '',
-    //   requestor_phone: '',
-    //   navigator: '',
-    //   area: '',
-    // })
     const data_ddl_edt = reactive({
       userlist: [],
       position: [],
@@ -681,6 +671,8 @@ export default defineComponent({
     })
     const options = ['list', 'of', 'options']
     const hasLocalStorage = ref(null)
+        // เชื่อมต่อไปยัง Socket.IO server
+    const socket = io(process.env.VUE_APP_API_URL);
     //-------------------edit validate add vrf-------------------
     const edit_fieldsToValidate = [
       'tbDateF',
@@ -749,8 +741,7 @@ export default defineComponent({
             .finally(() => {
               //
             })
-          table.isLoading = false
-
+          table.isLoading = false 
         } catch (err) {
           console.log(err)
         }
@@ -1149,8 +1140,6 @@ export default defineComponent({
         }
       })
     } //const myRequest = async (keyword) => {
-    // เชื่อมต่อไปยัง Socket.IO server
-    const socket = io(process.env.VUE_APP_API_URL);
     // socket.on('new_vrf_send_approve', async ({ message, Id, user_id, role_id, approve_status }) => {
     socket.on('new_vrf_send_approve', async ({ Id }) => {
       // Await the function and then assign its value
@@ -1158,7 +1147,7 @@ export default defineComponent({
       console.log('Response Data:', responseData);  // Check what responseData contains
       //Data_.value = responseData || [];
       data.rows = JSON.parse(JSON.stringify(responseData));
-      console.log('Data_.value:', Data_.value);  // Check the assigned Data_.value
+      console.log('socket work Data_.value:', Data_.value);  // Check the assigned Data_.value
     });
 
     const get_data_approve_list = async (Id, type) => {
