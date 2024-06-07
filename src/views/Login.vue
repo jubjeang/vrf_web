@@ -42,25 +42,11 @@
               </button>
             </div>
 
-
-            <!-- <div class="form-outline mb-3 text-center ps-4 position-relative" style=" width: 22rem;">
-              <input :type="passwordFieldType" id="password" ref="password" v-model="password"
-                class="form-control form-control-lg" placeholder="กรอกรหัสผ่าน"
-                style="width: 20rem;padding-right: 50px; height: 100%; box-sizing: border-box;" />
-              <button type="button" @mousedown="showPassword" @mouseup="hidePassword" @mouseleave="hidePassword"
-                @touchstart.prevent="showPassword" @touchend.prevent="hidePassword"
-                class="btn btn-sm btn-secondary position-absolute"
-                style="width: 50px; right: 0; top: 50%; transform: translateY(-50%); height: 100%; background-color: gray; color: white;">
-                แสดง
-              </button>
-            </div> -->
             <div class="text-center mt-4 pt-2">
               <button type="button" class="btn btn-primary btn-lg"
                 style="padding-left: 2.5rem; padding-right: 2.5rem;  padding-top: 0.2rem; display:inline;" @click="login">
                 เข้าสู่ระบบ
               </button>
-              <!-- <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
-                class="link-danger">Register</a></p> -->
             </div>
           </form>
         </div>
@@ -71,9 +57,6 @@
   <Alert_popup :message="Alert_popup_message" v-if="Alert_popup" />
 </template>
 <script>
-// import * as site from '../assets/js/site.js';
-// import * as bundle from '../assets/js/bootstrap.bundle.min.js';
-// import { ref } from "vue";
 import axios from 'axios'
 import Loading from "../components/Loading.vue";
 import Alert_popup from "../components/Alert_popup.vue";

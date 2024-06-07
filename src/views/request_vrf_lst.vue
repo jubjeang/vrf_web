@@ -207,20 +207,30 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(data, index) in rowData" :key="data.Id">
-                        <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center">
+                      <tr v-for="(data, index) in rowData" :key="data.Id" style="overflow-y: auto; max-height: 15rem;">
+                        <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center;">
                           <input type="text" class="form-control" style="width: 20rem; display: inline-block"
-                            v-model="data.tbFullName" @blur="
+                            v-model="data.tbFullName" 
+                            @input="complete_word_FullName('tbFullName', index)" 
+                            @blur="
                               validateInput(
                                 'tbFullName',
                                 index,
                                 'กรุณาใส่ข้อมูล'
                               )
                               " />
+                              <div  v-if="index === activeIndex" class="autocomplete-results-tbFullName "
+                                @mouseleave="clear_search_results('tbFullName')">
+                                <div  v-for="result in result_search_complete_word.tbFullName" class="autocomplete-item"
+                                  :key="result.id" @click="selectResult_search_FullName(result, 'tbFullName',index)">
+                                  {{ result.result }}
+                                </div>
+                              </div>                              
                           <p class="error-message" v-if="data.errors && data.errors.tbFullName">
                             {{ data.errors.tbFullName }}
                           </p>
                         </td>
+
                         <td scope="col" class="colwidth10">
                           <select class="form-select form-select-sm" v-model="data.ddlvehicle_brand" @change="
                             validateInput(
@@ -333,7 +343,6 @@
                     <input type="text" class="form-control" style="width: 15rem; display: none" />
                   </div>
                 </div>
-
                 <div class="row p-2">
                   <div class="col">พื้นที่เข้าพบ:</div>
                   <div class="col">
@@ -1213,7 +1222,7 @@ import {
 import Header from '../components/Header'
 import axios from 'axios'
 import moment from 'moment'
-import { defineComponent, reactive, ref, computed, watch } from 'vue'
+import { defineComponent, reactive, ref, computed, watch,nextTick  } from 'vue'
 import TableLite from '../components/TableLite.vue'
 import { useRouter } from 'vue-router'
 import Datepicker from 'vue3-datepicker'
@@ -1266,68 +1275,9 @@ export default defineComponent({
     })
     const result_search_complete_word = reactive({
       contactor: [],
-      reason: []
+      reason: [],
+      tbFullName: []
     })
-    const clear_search_results = (type) => {
-      if (type === 'contactor') {
-        result_search_complete_word.contactor = []
-      }
-      if (type === 'reason') {
-        result_search_complete_word.reason = []
-      }
-    }
-    const complete_word = async (type) => {
-      if (type === 'contactor') {
-        if (NewVrf.contactor.length > 0) {
-          try {
-            const response = await axios.get(
-              process.env.VUE_APP_API_URL + '/get_complete_word',
-              {
-                params: {
-                  search: NewVrf.contactor,
-                  type: 'contactor'
-                }
-              }
-            )
-            result_search_complete_word.contactor = response.data
-          } catch (err) {
-            console.error(err)
-          }
-        } else {
-          result_search_complete_word.contactor = []
-        }
-      }
-      if (type === 'reason') {
-        if (NewVrf.reason.length > 0) {
-          try {
-            const response = await axios.get(
-              process.env.VUE_APP_API_URL + '/get_complete_word',
-              {
-                params: {
-                  search: NewVrf.reason,
-                  type: 'reason'
-                }
-              }
-            )
-            result_search_complete_word.reason = response.data
-          } catch (err) {
-            console.error(err)
-          }
-        } else {
-          result_search_complete_word.reason = []
-        }
-      }
-    }
-    const selectResult_search = (result, type) => {
-      if (type === 'contactor') {
-        NewVrf.contactor = result.result
-        result_search_complete_word.contactor = []
-      }
-      if (type === 'reason') {
-        NewVrf.reason = result.result
-        result_search_complete_word.reason = []
-      }
-    }
     const data_ddl_edt = reactive({
       userlist: [],
       position: [],
@@ -1598,22 +1548,6 @@ export default defineComponent({
           }
         }
       } 
-      // else if (field === 'card_no') {
-      //   const isDuplicate = vrf_urgent.vrf_Existing_det.some((item, idx) =>
-      //     idx !== index && item.card_no === vrf_urgent.vrf_Existing_det[index].card_no);
-      //   if (isDuplicate) {
-      //     vrf_urgent.vrf_Existing_det[index].errors = {
-      //       ...vrf_urgent.vrf_Existing_det[index].errors,
-      //       card_no: "ข้อมูลบัตรซ้ำกัน"
-      //     };
-      //     return
-      //   } else {
-      //     if (vrf_urgent.vrf_Existing_det[index].errors && vrf_urgent.vrf_Existing_det[index].errors.card_no) {
-      //       const { card_no: removed, ...rest } = vrf_urgent.vrf_Existing_det[index].errors;
-      //       vrf_urgent.vrf_Existing_det[index].errors = { ...rest };
-      //     }
-      //   }
-      // }
       else if (field === 'vehicle_registration') {
         if (vrf_urgent.vrf_Existing_det[index]['vehicle_registration']) {
           if (vrf_urgent.vrf_Existing_det[index]['vehicle_registration'].length > 7) {
@@ -1942,7 +1876,8 @@ export default defineComponent({
           }
         }
         let message_;
-        if (update_vrf_trans_status_all_type.value === 'cancel') {
+        // if (update_vrf_trans_status_all_type.value === 'cancel') {
+        if (update_vrf_trans_status_param.Type_ === 'cancel') {
           message_ = 'คุณยกเลิกรายการขอเข้าพื้นที่เรียบร้อยแล้ว';
         } else {
           message_ = 'คุณส่งอนุมัติรายการขอเข้าพื้นที่เเรียบร้อยแล้ว';
@@ -2365,7 +2300,8 @@ export default defineComponent({
             table.isLoading = false
             let newData = Data_.value.filter(
               (x) =>
-                x.no.includes(keyword) ||
+                //x.no.includes(keyword) || 
+                x.id.toString().padStart(6, '0').includes(keyword)  || 
                 x.requestor.toLowerCase().includes(keyword.toLowerCase()) ||
                 dateTime(x.date_from).includes(keyword) ||
                 dateTime(x.date_to).includes(keyword) ||
@@ -3245,6 +3181,100 @@ export default defineComponent({
         errors: {}
       })
     }
+    const clear_search_results = (type) => {
+      if (type === 'contactor') {
+        result_search_complete_word.contactor = []
+      }
+      if (type === 'reason') {
+        result_search_complete_word.reason = []
+      }
+      if (type === 'tbFullName') {
+        result_search_complete_word.tbFullName = []
+      }
+    }
+    const complete_word_FullName = async (type,index) => {
+      if (type === 'tbFullName') {
+        if (rowData.value[index].tbFullName.length > 0) {
+          try {
+            const response = await axios.get(
+              process.env.VUE_APP_API_URL + '/get_complete_word',
+              {
+                params: {
+                  search: rowData.value[index].tbFullName,
+                  type: 'tbFullName'
+                }
+              }
+            )
+            result_search_complete_word.tbFullName = response.data
+          } catch (err) {
+            console.error(err)
+          }
+        } else {
+          console.log('rowData.value[index].tbFullName: ', rowData.value[index].tbFullName);
+          result_search_complete_word.tbFullName = []
+        }
+      }
+      activeIndex.value = index;  // Set the active index to current row
+    }    
+    const complete_word = async (type) => {
+      if (type === 'contactor') {
+        if (NewVrf.contactor.length > 0) {
+          try {
+            const response = await axios.get(
+              process.env.VUE_APP_API_URL + '/get_complete_word',
+              {
+                params: {
+                  search: NewVrf.contactor,
+                  type: 'contactor'
+                }
+              }
+            )
+            result_search_complete_word.contactor = response.data
+          } catch (err) {
+            console.error(err)
+          }
+        } else {
+          result_search_complete_word.contactor = []
+        }
+      }
+      if (type === 'reason') {
+        if (NewVrf.reason.length > 0) {
+          try {
+            const response = await axios.get(
+              process.env.VUE_APP_API_URL + '/get_complete_word',
+              {
+                params: {
+                  search: NewVrf.reason,
+                  type: 'reason'
+                }
+              }
+            )
+            result_search_complete_word.reason = response.data
+          } catch (err) {
+            console.error(err)
+          }
+        } else {
+          result_search_complete_word.reason = []
+        }
+      }
+    }
+    const selectResult_search_FullName = (result, type,index) => {
+      if (type === 'tbFullName') {
+        rowData.value[index].tbFullName = result.result
+        result_search_complete_word.tbFullName = []
+      }
+    }    
+    const selectResult_search = (result, type) => {
+      if (type === 'contactor') {
+        NewVrf.contactor = result.result
+        result_search_complete_word.contactor = []
+      }
+      if (type === 'reason') {
+        NewVrf.reason = result.result
+        result_search_complete_word.reason = []
+      }
+    }
+    const activeIndex = ref(null);
     const addItem = async () => {
       validateAllInputs()
       Id.value++
@@ -3275,6 +3305,9 @@ export default defineComponent({
           errors: {}
         })
       }
+      nextTick(() => {
+        activeIndex.value = rowData.length - 1;  // Update active index to new row
+      });
     }
     // const addItem = async () => {
     //   validateAllInputs()
@@ -3439,32 +3472,6 @@ export default defineComponent({
           validateInputAll.value = false
         }
       }
-      // else if (field === 'card_no')//เลขบัตร
-      // {
-      //   const isDuplicate = vrf_Existing.vrf_Existing_det.some((item, idx) =>
-      //     idx !== index && item.card_no === vrf_Existing.vrf_Existing_det[index].card_no);
-      //   if (isDuplicate) {
-      //     vrf_Existing.vrf_Existing_det[index].errors = {
-      //       ...vrf_Existing.vrf_Existing_det[index].errors,
-      //       [field]: "ข้อมูลบัตรซ้ำกัน"
-      //     };
-      //     validateInputAll.value = true
-      //   }
-      //   else if (!vrf_Existing.vrf_Existing_det[index].card_no) {
-      //     vrf_Existing.vrf_Existing_det[index].errors = {
-      //       ...vrf_Existing.vrf_Existing_det[index].errors,
-      //       [field]: "กรุณาใส่ข้อมูล"
-      //     }
-      //     validateInputAll.value = true
-      //   }
-      //   else {
-      //     if (vrf_Existing.vrf_Existing_det[index].errors && vrf_Existing.vrf_Existing_det[index].errors[field]) {
-      //       const { [field]: removed, ...rest } = vrf_Existing.vrf_Existing_det[index].errors;
-      //       vrf_Existing.vrf_Existing_det[index].errors = { ...rest };
-      //     }
-      //     validateInputAll.value = false
-      //   }
-      // }
       else if (field === 'vehicle_registration')//ทะเบียนรถ 
       {
         if (vrf_Existing.vrf_Existing_det[index]['vehicle_registration'].length > 7) {
@@ -3785,7 +3792,10 @@ export default defineComponent({
         }
       }
     }
-    return {
+    return { 
+      activeIndex,
+      complete_word_FullName,      
+      selectResult_search_FullName,
       edit_validateInput_vrfurgentcase,
       editVRF_Urgentcase_validateInput,
       VRF_Urgentcase_validateInput,
@@ -3918,6 +3928,21 @@ export default defineComponent({
   border: 1px solid #cccccc;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  overflow: auto;
+  max-height: 20rem;
+}
+
+.autocomplete-results-tbFullName {
+  position: absolute;
+  left: 7rem;
+  width: 15rem;  
+  text-align: left;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  overflow: auto;
+  max-height: 20rem;
 }
 
 .autocomplete-item {

@@ -1122,7 +1122,8 @@ export default defineComponent({
             table.isLoading = false
             let newData = Data_.value.filter(
               (x) =>
-                x.no.includes(keyword) ||
+              //x.no.includes(keyword) ||
+                x.id.toString().padStart(6, '0').includes(keyword)  ||
                 x.requestor.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.contactor.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.reason.toLowerCase().includes(keyword.toLowerCase()) ||

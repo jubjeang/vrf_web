@@ -1736,6 +1736,11 @@
   "resolved" "https://registry.npmjs.org/alphanum-sort/-/alphanum-sort-1.0.2.tgz"
   "version" "1.0.2"
 
+"and@^0.0.3":
+  "integrity" "sha512-ns0tgq+jQFbDhAu5wrE+M7V87E4L3N8ZTJfRKVxafi7g0BSEM6JnwhL57HyR1XMHBeRfGPWZxq+SH1bZeUTiTw=="
+  "resolved" "https://registry.npmjs.org/and/-/and-0.0.3.tgz"
+  "version" "0.0.3"
+
 "ansi-colors@^3.0.0":
   "integrity" "sha512-hHUXGagefjN2iRrID63xckIvotOXOojhQKWIPUZ4mNUZ9nLZW+7FMNoE1lOkEhNWYsx/7ysGIuJYCiMAA9FnrA=="
   "resolved" "https://registry.npmjs.org/ansi-colors/-/ansi-colors-3.2.4.tgz"

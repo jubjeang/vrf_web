@@ -15,51 +15,139 @@
     <div class="row p-1" style="width: 100%">
       <div class="col d-flex justify-content-end">
         &nbsp;
+        <!-- <h4 data-bs-target="#myModalNew" data-bs-toggle="modal" class="text-decoration-none text-gray fs-5"
+              style="cursor: pointer">สร้างแม่แบบ</h4> -->
       </div>
     </div>
     <div class="row p-0" style="width: 100%">
       <div class="col-1 ps-4" style="text-align: left">
         &nbsp;
       </div>
-      <div class="col-5"><!-- Form  -->
-          <div class="container">
-            <div class="row">
-              <div class="col ps-4 d-flex">
-                <h5 class="ps-1 text-gray">&nbsp;</h5>
-              </div>
-            </div>
-            <div class="row p-2">
-              <div class="col-sm-2 pe-0">จากวันที่</div>
-              <div class="col-sm-2 ps-0">
-                <datepicker class="form-control" v-model="AdvSearch.tbDateF" style="width: 7rem"
-                  inputFormat="dd/MM/yyyy" />
-              </div>
-              <div class="col-sm-2"></div>
-              <div class="col-sm-2 pe-0">ถึงวันที่</div>
-              <div class="col-sm-2 ps-0">
-                <datepicker class="form-control" v-model="AdvSearch.tbDateT" style="width: 7rem"
-                  inputFormat="dd/MM/yyyy" />
-              </div>
-            </div>
-            <div class="row p-2">
-              <div class="col-sm-11">
-                <div class="align-top pt-1 d-flex justify-content-center">
-                  <button class="btn btn-primary" style="width: 4rem; height: 2rem" @click="downloadExcel" type="button">
-                    ค้นหา
-                  </button>&nbsp;
-                  <button class="btn btn-secondary"  type="reset"
-                    style="width: 4rem; height: 2rem" id="CloseModalAdvSearch" >
-                    ยกเลิก
-                  </button>
-                </div>
-              </div>
-
-            </div>
-          </div>
+      <div class="col-11">
+        <div style="text-align: right">
+          <label>
+            <span style="cursor: pointer" @click="downloadExcel">
+              ดาวน์โหลดรายงาน
+            </span>
+            &nbsp;|&nbsp;
+            <span style="cursor: pointer" data-bs-target="#ModalAdvSearch" data-bs-toggle="modal">
+              ค้นหาขั้นสูง
+            </span>
+            &nbsp;|&nbsp;ค้นหาโดย:
+          </label>
+          &nbsp;&nbsp;
+          <input v-model="searchTerm" />
+        </div>
+      </div>
+    </div>
+    <div class="row p-0" style="width: 100%">
+      <div class="col-12">
+        <table-lite :is-static-mode="true" :has-checkbox="true" :is-loading="table.isLoading" :columns="table.columns"
+          :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable" @is-finished="tableLoadingFinish"
+          @return-checked-rows="updateCheckedRows" class="table table-striped table-hover"></table-lite>
       </div>
     </div>
     <!-- </div> -->
   </div>
+  <!---------------------------------------------------------------------------------------------Modal AdvSearch--->
+  <div class="container py-2">
+    <div class="py-2">
+      <form id="form3">
+        <div class="modal fade" id="ModalAdvSearch">
+          <!-- <div class="modal-dialog  modal-lg"> -->
+          <div class="modal-dialog modalcustom_advancesearch">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">ค้นหาขั้นสูง</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                  @click="ClosemyModalNew_"></button>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+                  <div class="row">
+                    <div class="col ps-4 d-flex">
+                      <h5 class="ps-1 text-gray">&nbsp;</h5>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-sm-2 pe-0">จากวันที่</div>
+                    <div class="col-sm-2 ps-0">
+                      <datepicker class="form-control" v-model="AdvSearch.tbDateF" style="width: 7rem"
+                        inputFormat="dd/MM/yyyy" />
+                    </div>
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-2 pe-0">ถึงวันที่</div>
+                    <div class="col-sm-2 ps-0">
+                      <datepicker class="form-control" v-model="AdvSearch.tbDateT" style="width: 7rem"
+                        inputFormat="dd/MM/yyyy" />
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-sm-2">ชื่อผู้ร้องขอ</div>
+                    <div class="col-sm-2 ps-0">
+                      <VueMultiselect name="requestor" id="requestor" :options="data_ddl.userlist"
+                        class="form-select form-select-sm p-0" label="first_name" :style="{
+                          width: '15rem',
+                          height: '0.5rem'
+                        }" v-model="AdvSearch.requestor_id" :select-label="null" :allow-empty="true"
+                        :close-on-select="true" :value="user_id" placeholder="เลือก" :deselectLabel="null">
+                      </VueMultiselect>
+                    </div>
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-2">พื้นที่เข้าพบ</div>
+                    <div class="col-sm-2 ps-0">
+                      <VueMultiselect name="area" id="area" :options="data_ddl.area"
+                        class="form-select form-select-sm p-0" label="meeting_area" :style="{
+                          width: '15rem',
+                          height: '0.5rem'
+                        }" v-model="AdvSearch.area_id" :select-label="null" :allow-empty="true" :close-on-select="true"
+                        :value="id" placeholder="เลือก" :deselectLabel="null">
+                      </VueMultiselect>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-sm-2">แผนกผู้ร้องขอ</div>
+                    <div class="col-sm-2 ps-0">
+                      <VueMultiselect name="requestor_dept" id="requestor_dept" :options="data_ddl.dept"
+                        class="form-select form-select-sm p-0" label="department" :style="{
+                          width: '15rem',
+                          height: '0.5rem'
+                        }" v-model="AdvSearch.requestor_dept_id" :select-label="null" :allow-empty="true"
+                        :close-on-select="true" :value="id" placeholder="เลือก" :deselectLabel="null">
+                      </VueMultiselect>
+                    </div>
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-2">การเข้าพื้นที่</div>
+                    <div class="col-sm-2 ps-0">
+                      <VueMultiselect :options="data_ddl.checkin_status" class="form-select form-select-sm p-0"
+                        label="text" :style="{
+                          width: '15rem',
+                          height: '0.5rem'
+                        }" v-model="AdvSearch.checkin_status" :select-label="null" :allow-empty="true"
+                        :close-on-select="true" :value="id" placeholder="เลือก" :deselectLabel="null">
+                      </VueMultiselect>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer pt-0 justify-content-center">
+                <div class="align-top pt-1 d-flex justify-content-center">
+                  <button class="btn btn-primary" style="width: 4rem; height: 2rem" @click="AdvSearch_" type="button">
+                    ค้นหา
+                  </button>
+                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" style="width: 4rem; height: 2rem"
+                    id="CloseModalAdvSearch" @click="ClosemyModalNew_">
+                    ยกเลิก
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Loading-->
   <Loading v-if="loading" />
   <Alert_popup :message="Alert_popup_message" v-if="Alert_popup" />
@@ -382,22 +470,22 @@ export default {
       // console.log('file: ', file);
       // Do something with the selected file
     }
-    // const downloadExcel = async () => {
-    //   try {
-    //     console.log('data.rows: ', data.rows)
-    //     loading.value = true
-    //     const response = await axios.post(`${process.env.VUE_APP_API_URL}/downloadExcel`, data.rows, {
-    //       responseType: 'blob',
-    //     });
-    //     setTimeout(() => {
-    //       loading.value = false
-    //       const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    //       saveAs(blob, 'report.xlsx');
-    //     }, 500)
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
+    const downloadExcel = async () => {
+      try {
+        console.log('data.rows: ',data.rows)
+        loading.value = true
+        const response = await axios.post(`${process.env.VUE_APP_API_URL}/downloadExcel`, data.rows, {
+          responseType: 'blob',
+        });
+        setTimeout(() => {
+          loading.value = false
+          const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+          saveAs(blob, 'report.xlsx');
+        }, 500)
+      } catch (error) {
+        console.log(error);
+      }
+    };
     const selectFile = (e) => {
       // file.value = this.$refs.file.files[0]
       file.value = e.target.files[0]
@@ -591,8 +679,7 @@ export default {
             table.isLoading = false
             let newData = Data_.value.filter(
               (x) =>
-                // x.no.includes(keyword) ||
-                x.id.toString().padStart(6, '0').includes(keyword)  || 
+                x.no.includes(keyword) ||
                 x.requestor.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.contactor.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.reason.toLowerCase().includes(keyword.toLowerCase()) ||
@@ -777,9 +864,9 @@ export default {
                 })
               // fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}`
               vrf_Existing.attach_file ?
-                fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}` : fileUrl.value = null
+        fileUrl.value = `${process.env.VUE_APP_API_URL}/get_vrf_file/${vrf_Existing.attach_file}` : fileUrl.value = null
 
-
+              
             } catch (err) {
               console.log(err)
             }
@@ -807,7 +894,7 @@ export default {
                 .finally(() => {
                   //
                 })
-
+              
             } catch (err) {
               console.log(err)
             }
@@ -815,68 +902,34 @@ export default {
         }
       })
     }
-    // const AdvSearch_ = async () => {
-    //   if (AdvSearch.tbDateF && AdvSearch.tbDateT && new Date(AdvSearch.tbDateF) > new Date(AdvSearch.tbDateT)) {
-    //     alert('กรุณาเลือก จากวันที่ น้อยกว่า ถึงวันที่');
-    //     return;  // Exit the function early without making the API call
-    //   }
-    //   loading.value = true;
-    //   const params = {
-    //     tbDateF: AdvSearch.tbDateF !== '' ? AdvSearch.tbDateF : null,
-    //     tbDateT: AdvSearch.tbDateT !== '' ? AdvSearch.tbDateT : null        
-    //   }
-    //   console.log('AdvSearch_ params: ', params)
-    //   setTimeout(() => {
-    //       loading.value = false 
-    //     }, 1000)
-    //   try {
-    //     const res = await axios.get(process.env.VUE_APP_API_URL + '/get_search_vrf_trans', { params });
-    //     data.rows = JSON.parse(JSON.stringify(res.data));
-    //     console.log('JSON.parse(JSON.stringify(res.data): ', JSON.parse(JSON.stringify(res.data)));
-    //   } catch (error) {
-    //     console.log(error.data);
-    //   }
-    // }
-    const downloadExcel = async () => {
-      if (AdvSearch.tbDateF && AdvSearch.tbDateT && new Date(AdvSearch.tbDateF) > new Date(AdvSearch.tbDateT)) {
-        alert('กรุณาเลือก จากวันที่ น้อยกว่า ถึงวันที่');
-        return;//Exit the function early without making the API call
-      }
-      loading.value = true;
-      const params = {
-        tbDateF: AdvSearch.tbDateF !== '' ? AdvSearch.tbDateF : null,
-        tbDateT: AdvSearch.tbDateT !== '' ? AdvSearch.tbDateT : null        
-      }
-      console.log('AdvSearch_ params: ', params)
-      setTimeout(() => {
-          loading.value = false 
-        }, 1000)
-      try {
 
-        const response = await axios.get('/get_vrf_reports', {
-          params: {
-            tbDateF: '2023-01-01',
-            tbDateT: '2023-12-31'
-          },
-          responseType: 'blob' // Important to specify responseType as blob
-        });
-        const res = await axios.get(process.env.VUE_APP_API_URL + '/get_vrf_reports'
-        , { params 
-          , responseType: 'blob'
+    const AdvSearch_ = async () => {
+        if (AdvSearch.tbDateF && AdvSearch.tbDateT && new Date(AdvSearch.tbDateF) > new Date(AdvSearch.tbDateT)) {
+          alert('กรุณาเลือก จากวันที่ น้อยกว่า ถึงวันที่');
+          return;  // Exit the function early without making the API call
+        }        
+        const params = {
+          tbDateF: AdvSearch.tbDateF !== '' ? AdvSearch.tbDateF : null,
+          tbDateT: AdvSearch.tbDateT !== '' ? AdvSearch.tbDateT : null,
+          requestor_id: AdvSearch.requestor_id !== 0 ? AdvSearch.requestor_id.user_id : null,
+          area_id: AdvSearch.area_id !== 0 ? AdvSearch.area_id.id : null,
+          requestor_dept_id: AdvSearch.requestor_dept_id !== 0 ? AdvSearch.requestor_dept_id.id : null,
+          department_id: department_id.value,
+          branch_id: localStorage.getItem('user_branch_id'),
+          role_id: localStorage.getItem('user_role_id'),
+          checkin_status: AdvSearch.checkin_status.id,
+          approve_status: AdvSearch.approve_status !== '' ? AdvSearch.approve_status : null
         }
-      );
-      console.log('res.data: ',res.data)
-      setTimeout(() => {
-          loading.value = false
-          const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-          saveAs(blob, 'report.xlsx');
-        }, 500)
-        console.log('downloadExcel res.data: ', res.data)
-        data.rows = JSON.parse(JSON.stringify(res.data));
-        console.log('JSON.parse(JSON.stringify(res.data): ', JSON.parse(JSON.stringify(res.data)));
-      } catch (error) {
-        console.log(error.data);
-      }
+        console.log('AdvSearch_ params: ', params)
+        
+        try {
+          const res = await axios.get(process.env.VUE_APP_API_URL + '/get_search_vrf_trans', { params });
+          data.rows = JSON.parse(JSON.stringify(res.data));
+          console.log('JSON.parse(JSON.stringify(res.data): ', JSON.parse(JSON.stringify(res.data)));
+        } catch (error) {
+          console.log(error.data);
+        }
+        document.getElementById('CloseModalAdvSearch').click();
     }    
     // Get data on first rendering
     myRequest('').then((newData) => {
@@ -937,7 +990,7 @@ export default {
       VueMultiselect_,
       selected,
       options,
-      // AdvSearch_,
+      AdvSearch_,
       AdvSearch,
       ActitySelectd,
       searchTerm,

@@ -356,8 +356,7 @@
                               type="text"
                               class="form-control"
                               style="width: 15rem; display: inline-block"
-                              v-model="vrf_Existing.vrf_Existing_det[index].card_no"
-                              readonly
+                              v-model="vrf_Existing.vrf_Existing_det[index].card_no"                               
                             />
                           </td>
                           <td
@@ -900,18 +899,7 @@ export default defineComponent({
         )
       console.log('item.checkout_date: ', item.checkout_date)
       item.isCheckedIn = item.isCheckedIn || false
-      item.isCheckedOut = item.isCheckedOut || false
-      // if (item.isCheckedIn && !item.isCheckedOut) {
-      //   alert('คุณได้ทำการเข้าแล้ว กรุณาคลิกออกก่อนที่จะเข้าใหม่')
-      //   return
-      // }
-      // else if(item.checkout_date === currentDate_)
-      // { 
-      //   console.log('เวลาเข้าไม่สามารถเท่ากับเวลาเข้าได้')
-      //   alert('เวลาเข้าไม่สามารถเท่ากับเวลาเข้าได้')
-      //   return
-      // } 
-      // else 
+      item.isCheckedOut = item.isCheckedOut || false  
       if(item.checkout_date==="-" && item.checkin_date !=="-"){
         alert('คุณได้ทำการเข้าแล้ว กรุณาคลิกออกก่อนที่จะเข้าใหม่')
         return
@@ -961,9 +949,6 @@ export default defineComponent({
         })
       item.isCheckedIn = item.isCheckedIn || false
       item.isCheckedOut = item.isCheckedOut || false
-      //ถ้า item.isCheckedIn มีค่าที่เป็น "truthy" (เช่น true, ไม่ใช่ null หรือ undefined หรือค่าว่างอื่นๆ) ค่านี้จะถูกเลือก
-      //ถ้า item.isCheckedIn มีค่าที่เป็น "falsy" (เช่น false, null, undefined, 0, "" ฯลฯ) ค่า false จะถูกเลือกแทน
-      // สร้างวันที่ขึ้นมาใหม่ (ใช้วันปัจจุบันแต่เปลี่ยนเวลา)
         let checkinDate_Time = new Date();
         checkinDate_Time.setHours(item.checkin_date.split(':')[0]);
         checkinDate_Time.setMinutes(item.checkin_date.split(':')[1]);
@@ -985,18 +970,6 @@ export default defineComponent({
         console.log('item.checkin_date === ')
         return
       }
-      // else if (item.checkin_date !== '-' && item.checkout_date !=='-')
-      // {
-      //   console.log('(item.checkin_date !== - && item.checkout_date !==-)',item.checkin_date !== '-' && item.checkout_date !=='-')
-      //   alert('คุณได้ทำการคลิกออกแล้ว กรุณาคลิกเข้าก่อนที่จะออกใหม่')
-      //   return
-      // }
-      // else if (checkinDate > checkoutDate && item.checkout_date !== '-') 
-      // {
-      //   console.log('เวลาออกไม่สามารถน้อยกว่าเวลาเข้าได้')
-      //   alert('เวลาออกไม่สามารถน้อยกว่าเวลาเข้าได้')
-      //   return
-      // }
       else if (item.checkin_date === currentDate_)
       {
         console.log('เวลาออกไม่สามารถเท่ากับเวลาเข้าได้')
@@ -1099,7 +1072,8 @@ export default defineComponent({
         const params = {
           Id: vrf_det_id,
           Type_: check_vrf_inout.type,
-          user_id: user_id.value
+          user_id: user_id.value,
+          card_no: vrf_Existing.vrf_Existing_det[index].card_no
           // comment: vrf_Existing.comment
         }
         console.log('params: ', params)
@@ -1125,11 +1099,7 @@ export default defineComponent({
                   : (vrf_Existing.vrf_Existing_det[index].checkout_id =
                       obj[0].checkincheckout_det_out_id) 
                 console.log('vrf_Existing.vrf_Existing_det[index].checkin_id: ', vrf_Existing.vrf_Existing_det[index].checkin_id)
-                console.log('vrf_Existing.vrf_Existing_det[index].checkout_id: ', vrf_Existing.vrf_Existing_det[index].checkout_id)
-               
-                // router.push('/listorder')
-                //location.reload()
-                // addEditItem
+                console.log('vrf_Existing.vrf_Existing_det[index].checkout_id: ', vrf_Existing.vrf_Existing_det[index].checkout_id) 
               },
               (res) => {
                 // error callback
@@ -1662,7 +1632,7 @@ export default defineComponent({
             // )
             let newData = Data_.value.filter(
               (x) =>
-                x.no.includes(keyword) ||
+                x.id.toString().padStart(6, '0').includes(keyword) ||
                 (x.contactor ? x.contactor.toLowerCase() : '').includes(keyword.toLowerCase()) ||
                 (x.fullname ? x.fullname.toLowerCase() : '').includes(keyword.toLowerCase()) ||
                 (x.card_no ? x.card_no.toLowerCase() : '').includes(keyword.toLowerCase()) ||

@@ -32,7 +32,7 @@ export default {
     }
     const load_permission_access = async () => {
       const data = await get_permission_access()
-      return JSON.parse(JSON.stringify(data))
+      return JSON.parse( JSON.stringify( data ) )
     }
     out_put.value = load_permission_access().then(data => out_put.value = data)
     const router = useRouter()
