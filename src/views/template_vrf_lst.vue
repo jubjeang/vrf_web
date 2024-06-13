@@ -148,7 +148,7 @@
       </form>
     </div>
   </div>
-  <!-----------------------------------------------------------modal Add Vrf Manual--->
+  <!-----------------------------------------------------------modal Add Vrf Template Manual--->
   <div class="container py-2">
     <div class="py-2">
       <form @submit.prevent="addManualVRF_validateInput" enctype="multipart/form-data" id="form1">
@@ -181,6 +181,11 @@
                       <tbody>
                         <tr v-for="data, index in rowData" :key="data.Id">
                           <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center;">
+                            <select class="form-select form-select-sm" v-model="data.ddlprefix"
+                              @change="validateInput('ddlprefix', index, 'กรุณาเลือกยี่ห้อรถ')">
+                              <option v-for="option in data_ddl.prefix" :value="option.id" :key="option.id">{{
+                                option.prefix }}</option>
+                            </select>
                             <input type="text" class="form-control" style="width: 20rem; display: inline-block;"
                               v-model="data.tbFullName" @blur="validateInput('tbFullName', index, 'กรุณาใส่ข้อมูล')" />
                             <p class="error-message" v-if="data.errors && data.errors.tbFullName">
@@ -856,6 +861,7 @@ export default defineComponent({
       area: [],
       vehicle_brand: [],
       vehicle_color: [],
+      ddlprefix: [],
     })
     const data_ddl = reactive({
       userlist: [],
@@ -866,6 +872,7 @@ export default defineComponent({
       area: [],
       vehicle_brand: [],
       vehicle_color: [],
+      ddlprefix: [],
     })
     const userlist = ref(null)
     const NewVrf = reactive({
@@ -1216,6 +1223,14 @@ export default defineComponent({
         }, (res) => {
           // error callback          
         });
+        await axios.get(process.env.VUE_APP_API_URL + '/get_prefix')
+        .then((res) => {
+          // success callback     
+          data_ddl.ddlprefix = res.data
+        }, (res) => {
+          // error callback          
+        });
+        
       return await new Promise((resolve, reject) => {
         try {
           table.isLoading = true;
@@ -1864,6 +1879,7 @@ export default defineComponent({
           , tbSname: ''
           , tbFullName: ''          
           , tbVehicle_Registration: ''
+          , ddlprefix: ''
           , ddlvehicle_brand: 1
           , ddlvehicle_color: ''
           , tbCardNo: ''
@@ -1878,6 +1894,7 @@ export default defineComponent({
           , tbSname: ''
           , tbFullName: ''          
           , tbVehicle_Registration: rowData.value[0].tbVehicle_Registration
+          , ddlprefix: rowData.value[0].ddlprefix
           , ddlvehicle_brand: rowData.value[0].ddlvehicle_brand
           , ddlvehicle_color: rowData.value[0].ddlvehicle_color
           , tbCardNo: ''
@@ -1897,6 +1914,7 @@ export default defineComponent({
           , tbFullName: ''
           , tbSname: ''
           , tbVehicle_Registration: ''
+          , ddlprefix: ''
           , ddlvehicle_brand: ''
           , ddlvehicle_color: ''
           , tbCardNo: ''
@@ -1912,6 +1930,7 @@ export default defineComponent({
           , tbFullName: ''
           , tbSname: ''
           , tbVehicle_Registration: ''
+          , ddlprefix: ''
           , ddlvehicle_brand: ''
           , ddlvehicle_color: ''
           , tbCardNo: ''
