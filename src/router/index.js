@@ -7,6 +7,11 @@ const routes = [
     component: () => import('../views/Login.vue')
   },
   {
+    path: '/ddl',
+    name: 'ddl',
+    component: () => import('../views/ddl.vue')
+  },
+  {
     path: '/vrfalllist',
     name: 'VRF_All_List',
     component: () => import('../views/VRF_All_List.vue')
