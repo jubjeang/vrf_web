@@ -154,266 +154,289 @@
       <form @submit.prevent="addManualVRF_validateInput" enctype="multipart/form-data" id="form1">
         <div class="modal fade" id="myModalNew">
           <div class="modal-dialog modalcustom">
-            <div class="modal-content">
+            <div class="modal-content p-0 m-0">
               <div class="modal-header">
                 <h5 class="modal-title">สร้างแม่แบบรายการขอเข้าพบ</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                   @click="ClosemyModalNew_"></button>
               </div>
-              <div class="modal-body modalcustom">
-                <div class="container modalcustom">
-                  <!---Loop Manual New Order------>
-                  <div class="row  ms-4 ps-4 pe-3 me-3 modalcustom  scrollable-container">
-                    <table class="table table-hover modalcustomtb ">
-                      <thead>
-                        <tr>
-                          <th scope="col" class="colwidth25">ชื่อ-นามสกุล</th>
-                          <th scope="col" class="colwidth10">ยี่ห้อรถ</th>
-                          <th scope="col" class="colwidth10">ทะเบียน</th>
-                          <th scope="col" class="colwidth10">สีรถ</th>
-                          <th scope="col" class="colwidth25">หมายเลขบัตร ประชาชน/ใบขับขี่/พนักงาน</th>
-                          <th scope="col" class="colwidth10">ดำเนินการ <span @click.prevent="addItem()"
-                              class="text-decoration-none text-gray fs-7" style="cursor: pointer"><i
-                                class="fa fa-plus-circle align-middle" />
-                            </span></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="data, index in rowData" :key="data.Id">
-                          <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center;">
-                            <div style="display: flex; align-items: center; justify-content: center;">
-                              <select class="form-select form-select-sm" v-model="data.ddlprefix"
-                                style="width: 7rem; margin-right: 0.5rem;"
-                                @change="validateInput('prefix', index, 'กรุณาคำนำหน้า')">
-                                <option v-for="option in data_ddl.prefix" :value="option.id" :key="option.id">{{
+              <div class="modal-body">
+                <!-- <div class="container "> -->
+                <!---Loop Manual New Order------>
+                <div class="row  ms-4 ps-4 pe-3 me-3 modalcustom  scrollable-container">
+                  <table class="table table-hover modalcustomtb ">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="colwidth25">ชื่อ-นามสกุล</th>
+                        <th scope="col" class="colwidth10">ยี่ห้อรถ</th>
+                        <th scope="col" class="colwidth10">ทะเบียน</th>
+                        <th scope="col" class="colwidth10">สีรถ</th>
+                        <th scope="col" class="colwidth25">หมายเลขบัตร ประชาชน/ใบขับขี่/พนักงาน</th>
+                        <th scope="col" class="colwidth10">ดำเนินการ <span @click.prevent="addItem()"
+                            class="text-decoration-none text-gray fs-7" style="cursor: pointer"><i
+                              class="fa fa-plus-circle align-middle" />
+                          </span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="data, index in rowData" :key="data.Id">
+                        <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center;">
+                          <div style="display: flex; align-items: center; justify-content: center;">
+                            <select class="form-select form-select-sm" v-model="data.ddlprefix"
+                              style="width: 7rem; margin-right: 0.5rem;"
+                              @change="validateInput('prefix', index, 'กรุณาคำนำหน้า')">
+                              <option v-for="option in data_ddl.prefix" :value="option.id" :key="option.id">{{
     option.prefix }}</option>
-                              </select>
-                              <input type="text" class="form-control" style="width: 17rem; display: inline-block;"
-                                v-model="data.tbFullName"
-                                @blur="validateInput('tbFullName', index, 'กรุณาใส่ข้อมูล')" />
-                            </div>
-                            <p class="error-message" v-if="data.errors && data.errors.tbFullName">
-                              {{ data.errors.tbFullName }}
-                            </p>
-                          </td>
-                          <td scope="col" class="colwidth10">
-                            <select class="form-select form-select-sm" v-model="data.ddlvehicle_brand"
-                              @change="validateInput('ddlvehicle_brand', index, 'กรุณาเลือกยี่ห้อรถ')">
-                              <option v-for="option in data_ddl.vehicle_brand" :value="option.id" :key="option.id">{{
+                            </select>
+                            <input type="text" class="form-control" style="width: 17rem; display: inline-block;"
+                              v-model="data.tbFullName" @blur="validateInput('tbFullName', index, 'กรุณาใส่ข้อมูล')" />
+                          </div>
+                          <p class="error-message" v-if="data.errors && data.errors.tbFullName">
+                            {{ data.errors.tbFullName }}
+                          </p>
+                        </td>
+                        <td scope="col" class="colwidth10">
+                          <select class="form-select form-select-sm" v-model="data.ddlvehicle_brand"
+                            @change="validateInput('ddlvehicle_brand', index, 'กรุณาเลือกยี่ห้อรถ')">
+                            <option v-for="option in data_ddl.vehicle_brand" :value="option.id" :key="option.id">{{
     option.vehicle_brand }}</option>
-                            </select>
-                            <p class="error-message" v-if="data.errors && data.errors.ddlvehicle_brand">
-                              {{ data.errors.ddlvehicle_brand }}
-                            </p>
-                          </td>
-                          <td scope="col" class="colwidth10">
-                            <input type="text" class="form-control" style="width: 10rem; display: inline-block;"
-                              v-model="data.tbVehicle_Registration"
-                              @blur="validateInput('tbVehicle_Registration', index, 'กรุณาใส่ข้อมูล')" />
-                            <p class="error-message" v-if="data.errors && data.errors.tbVehicle_Registration">
-                              {{ data.errors.tbVehicle_Registration }}
-                            </p>
-                          </td>
-                          <td scope="col" class="colwidth10">
-                            <select class="form-select form-select-sm" v-model="data.ddlvehicle_color"
-                              @change="validateInput('ddlvehicle_color', index, 'กรุณาเลือกสีรถ')">
-                              <option v-for="option in data_ddl.vehicle_color" :value="option.id" :key="option.id">{{
+                          </select>
+                          <p class="error-message" v-if="data.errors && data.errors.ddlvehicle_brand">
+                            {{ data.errors.ddlvehicle_brand }}
+                          </p>
+                        </td>
+                        <td scope="col" class="colwidth10">
+                          <input type="text" class="form-control" style="width: 10rem; display: inline-block;"
+                            v-model="data.tbVehicle_Registration"
+                            @blur="validateInput('tbVehicle_Registration', index, 'กรุณาใส่ข้อมูล')" />
+                          <p class="error-message" v-if="data.errors && data.errors.tbVehicle_Registration">
+                            {{ data.errors.tbVehicle_Registration }}
+                          </p>
+                        </td>
+                        <td scope="col" class="colwidth10">
+                          <select class="form-select form-select-sm" v-model="data.ddlvehicle_color"
+                            @change="validateInput('ddlvehicle_color', index, 'กรุณาเลือกสีรถ')">
+                            <option v-for="option in data_ddl.vehicle_color" :value="option.id" :key="option.id">{{
     option.vehicle_color }}</option>
-                            </select>
-                            <p class="error-message" v-if="data.errors && data.errors.ddlvehicle_color">
-                              {{ data.errors.ddlvehicle_color }}
-                            </p>
-                          </td>
-                          <td scope="col" class="colwidth25" style="text-align: center;">
-                            <input type="text" class="form-control" style="width: 20rem; display: inline-block;"
-                              v-model="data.tbCardNo" @blur="validateInput('tbCardNo', index, 'กรุณาใส่ข้อมูล')" />
-                            <p class="error-message" v-if="data.errors && data.errors.tbCardNo">
-                              {{ data.errors.tbCardNo }}
-                            </p>
-                          </td>
-                          <td scope="col" class="colwidth10"><span @click="deleteData(index)" style="cursor: pointer;">
-                              <i class="fa fa-minus-square align-middle"
-                                aria-hidden="true"></i></span>&nbsp;|&nbsp;<span @click.prevent="addItem()"
-                              class="text-decoration-none text-gray fs-7" style="cursor: pointer"><i
-                                class="fa fa-plus-circle align-middle" /></span></td>
-                        </tr>
-                      </tbody>
-                    </table>
+                          </select>
+                          <p class="error-message" v-if="data.errors && data.errors.ddlvehicle_color">
+                            {{ data.errors.ddlvehicle_color }}
+                          </p>
+                        </td>
+                        <td scope="col" class="colwidth25" style="text-align: center;">
+                          <input type="text" class="form-control" style="width: 20rem; display: inline-block;"
+                            v-model="data.tbCardNo" @blur="validateInput('tbCardNo', index, 'กรุณาใส่ข้อมูล')" />
+                          <p class="error-message" v-if="data.errors && data.errors.tbCardNo">
+                            {{ data.errors.tbCardNo }}
+                          </p>
+                        </td>
+                        <td scope="col" class="colwidth10"><span @click="deleteData(index)" style="cursor: pointer;">
+                            <i class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>&nbsp;|&nbsp;<span
+                            @click.prevent="addItem()" class="text-decoration-none text-gray fs-7"
+                            style="cursor: pointer"><i class="fa fa-plus-circle align-middle" /></span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!---End Loop Manual New Order------>
+                <div class="row p-2">
+                  <div class="col ps-4 d-flex">
+                    <h5 class="ps-1 text-gray">&nbsp;</h5>
                   </div>
-                  <!---End Loop Manual New Order------>
-                  <div class="row p-2">
-                    <div class="col ps-4 d-flex">
-                      <h5 class="ps-1 text-gray">&nbsp;</h5>
+                </div>
+                <div class="row p-2" v-if="message_addManual">
+                  <div class="col">
+                    <div :class="`alert ${error_addManual ? 'alert-danger' : 'alert-success'}`">{{ message_addManual }}
                     </div>
                   </div>
-                  <div class="row p-2" v-if="message_addManual">
-                    <div class="col">
-                      <div :class="`alert ${error_addManual ? 'alert-danger' : 'alert-success'}`">{{
-    message_addManual
-  }}</div>
-                    </div>
+                </div>
+                <!-- <div class="row p-2 pe-2 me-2">
+                  <div class="col-md-2 text-right">
+                    เลือกพื้นที่เข้าพบ:
                   </div>
+                  <div class="col-md-10 text-left">
+                  </div>
+                </div> -->
 
-                  <div class="row p-2">
-                    <div class="col">
-                      จากวันที่:
-                    </div>
-                    <div class="col">
-                      <datepicker class="form-control" v-model="NewVrf.date_from" style="width:7rem;"
-                        inputFormat="dd/MM/yyyy" @update:model-value="setFromDateAdd" />
-                      <p v-if="VRF_error.date_from && !NewVrf.date_from" class="error-message">กรุณาเลือกข้อมูล</p>
-                    </div>
-                    <div class="col">
-                      ถึงวันที่:
-                    </div>
-                    <div class="col">
-                      <datepicker class="form-control" v-model="NewVrf.date_to" style="width:7rem;"
-                        inputFormat="dd/MM/yyyy" @update:model-value="setToDateAdd('date_to_edit')" />
-                      <p v-if="VRF_error.date_to && !NewVrf.date_to" class="error-message">กรุณาเลือกข้อมูล</p>
-                    </div>
-                    <div class="col">
-                      <input type="text" class="form-control" style="width: 15rem; display: none;" />
-                    </div>
-                    <div class="col">
-                      <input type="text" class="form-control" style="width: 15rem; display: none;" />
-                    </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col">
-                      ชื่อแม่แบบ:
-                    </div>
-                    <div class="col">
-                      <input type="text" id="template_name" class="form-control" style="width:15rem;"
-                        v-model="NewVrf.template_name" />
-                      <p v-if="VRF_error.template_name && !NewVrf.template_name" class="error-message">กรุณากรอกข้อมูล
-                      </p>
-                    </div>
-                    <div class="col">
-                      เหตุผลในการเข้าพบ:
-                    </div>
-                    <div class="col">
-                      <input type="text" id="reason" class="form-control" style="width:15rem;" v-model="NewVrf.reason"
-                        @input="complete_word('reason')" />
-                      <div v-if="result_search_complete_word.reason.length > 0" class="autocomplete-results"
-                        @mouseleave="clear_search_results('reason')">
-                        <div class="autocomplete-item" v-for="result in result_search_complete_word.reason"
-                          :key="result.id" @click="selectResult_search(result, 'reason')">
-                          {{ result.result }}
-                        </div>
-                      </div>
-                      <p v-if="VRF_error.reason && !NewVrf.reason" class="error-message">กรุณากรอกข้อมูล</p>
-                    </div>
-                    <div class="col">
-                      ชื่อบริษัทผู้มาติดต่อ:
-                    </div>
-                    <div class="col">
-                      <input type="text" id="contactor" class="form-control" style="width:15rem;"
-                        v-model="NewVrf.contactor" @input="complete_word('contactor')" />
-                      <div v-if="result_search_complete_word.contactor.length > 0" class="autocomplete-results"
-                        @mouseleave="clear_search_results('contactor')">
-                        <div class="autocomplete-item" v-for="result in result_search_complete_word.contactor"
-                          :key="result.id" @click="selectResult_search(result, 'contactor')">
-                          {{ result.result }}
-                        </div>
-                      </div>
-                      <p v-if="VRF_error.contactor && !NewVrf.contactor" class="error-message">กรุณากรอกข้อมูล</p>
 
-                    </div>
+
+                <!-- First MeetingArea component -->
+                <div class="row p-2 pe-2 me-2">
+                  <div class="col-md-2 text-right">
+                    เลือกพื้นที่เข้าพบ:
                   </div>
-                  <div class="row p-2">
-                    <div class="col-md-2">
-                      พื้นที่เข้าพบ:
-                    </div>
-                    <div class="col-md-10 text-left ps-0 ms-0">
-                      <MeetingArea :items="MeetingArea_items" :categoryLabels="categoryAreas"
-                        @update:selectedItems="updateSelectedItems" class="p-0 m-0" style="width: auto" />
-                      <ul class="selected-items-list w-100">
-                        <li v-for="item in selectedItems" :key="item.id" class="selected-item ">
-                          {{ item.name }}
-                          <button @click="removeSelectedItem(item)" class="remove-button">&times;</button>
-                        </li>
-                      </ul>
-                    </div>
+                  <div class="col-md-10 text-left">
+                    <!-- <p v-if="VRF_error.controlarea && !MeetingAreas_selectedItems.value && VRF_error.area && !MeetingAreas_selectedControlItems.value" class="error-message">กรุณาเลือกข้อมูลพื้นที่เข้าพบ</p> -->
+                    <p v-if="VRF_error.area && !MeetingAreas_selectedItems.length && VRF_error.area && !MeetingAreas_selectedControlItems.length"
+                      class="error-message">กรุณาเลือกข้อมูลพื้นที่เข้าพบ</p>
+                    <MeetingArea :items="MeetingArea_items" :categoryLabels="categoryAreas"
+                      @update:selectedItems="updateSelectedItems" class="p-0 m-0" style="width: auto"
+                      :controlLabel="'พื้นที่ทั่วไป'" :showSelectAll="false" />
+                    <ul class="selected-items-list w-100">
+                      <li v-for="item in MeetingAreas_selectedItems" :key="item.id" class="selected-item">
+                        {{ item.name }}
+                        <button @click="removeSelectedItem(item)" class="remove-button">&times;</button>
+                      </li>
+                    </ul>
+                    <!-- <p v-if="VRF_error.area && !NewVrf.area" class="error-message">กรุณาเลือกข้อมูล</p> -->
                   </div>
-                  <div class="row p-2">
-                    <div class="col">
-                      ผู้ร้องขอ:
+                </div>
+                <!-- Second MeetingControlArea component -->
+                <div class="row p-2 pe-2 me-2">
+                  <div class="col-md-2 text-right">
+                  </div>
+                  <div class="col-md-10 text-left">
+                    <MeetingArea :items="MeetingControlArea_items" :categoryLabels="categoryControlAreas"
+                      @update:selectedItems="updateSelectedControlItems" class="p-0 m-0" style="width: auto"
+                      :controlLabel="'พื้นที่ควบคุม'" :showSelectAll="true" />
+                    <ul class="selected-items-list w-100">
+                      <li v-for="item in MeetingAreas_selectedControlItems" :key="item.id" class="selected-item">
+                        {{ item.name }}
+                        <button @click="removeSelectedControlItem(item)" class="remove-button">&times;</button>
+                      </li>
+                    </ul>
+
+                  </div>
+                </div>
+                <div class="row p-2 pe-2 me-2">
+                  <div class="col-md-2 text-right">
+                    จากวันที่:
+                  </div>
+                  <div class="col-md-2 text-left">
+                    <datepicker class="form-control" v-model="NewVrf.date_from" style="width: 7rem;"
+                      inputFormat="dd/MM/yyyy" @update:model-value="setFromDateAdd" />
+                    <p v-if="VRF_error.date_from && !NewVrf.date_from" class="error-message">กรุณาเลือก</p>
+                  </div>
+                  <div class="col-md-2 text-right">
+                    ถึงวันที่:
+                  </div>
+                  <div class="col-md-2 text-left">
+                    <datepicker class="form-control" v-model="NewVrf.date_to" style="width: 7rem;"
+                      inputFormat="dd/MM/yyyy" @update:model-value="setToDateAdd('date_to_edit')" />
+                    <p v-if="VRF_error.date_to && !NewVrf.date_to" class="error-message">กรุณาเลือกข้อมูล</p>
+                  </div>
+                </div>
+                <div class="row p-2 pe-2 me-2">
+                  <div class="col-md-2 text-right">
+                    ชื่อแม่แบบ:
+                  </div>
+                  <div class="col-md-2 text-left">
+                    <input type="text" id="template_name" class="form-control" style="width: 100%;"
+                      v-model="NewVrf.template_name" />
+                    <p v-if="VRF_error.template_name && !NewVrf.template_name" class="error-message">กรุณากรอกข้อมูล
+                    </p>
+                  </div>
+                  <div class="col-md-2 text-right">
+                    เหตุผลในการเข้าพบ:
+                  </div>
+                  <div class="col-md-2 text-left">
+                    <input type="text" id="reason" class="form-control" style="width: 100%;" v-model="NewVrf.reason"
+                      @input="complete_word('reason')" />
+                    <div v-if="result_search_complete_word.reason.length > 0" class="autocomplete-results"
+                      @mouseleave="clear_search_results('reason')">
+                      <div class="autocomplete-item" v-for="result in result_search_complete_word.reason"
+                        :key="result.id" @click="selectResult_search(result, 'reason')">
+                        {{ result.result }}
+                      </div>
                     </div>
-                    <div class="col">
-                      <VueMultiselect name="requestor" id="requestor" :options="data_ddl.userlist"
-                        class="form-select form-select-sm p-0" label="first_name" :style="{
+                    <p v-if="VRF_error.reason && !NewVrf.reason" class="error-message">กรุณากรอกข้อมูล</p>
+                  </div>
+                  <div class="col-md-2 text-right">
+                    ชื่อบริษัทผู้มาติดต่อ:
+                  </div>
+                  <div class="col-md-2 text-left">
+                    <input type="text" id="contactor" class="form-control" style="width:  100%;"
+                      v-model="NewVrf.contactor" @input="complete_word('contactor')" />
+                    <div v-if="result_search_complete_word.contactor.length > 0" class="autocomplete-results"
+                      @mouseleave="clear_search_results('contactor')">
+                      <div class="autocomplete-item" v-for="result in result_search_complete_word.contactor"
+                        :key="result.id" @click="selectResult_search(result, 'contactor')">
+                        {{ result.result }}
+                      </div>
+                    </div>
+                    <p v-if="VRF_error.contactor && !NewVrf.contactor" class="error-message">กรุณากรอกข้อมูล</p>
+
+                  </div>
+                </div>
+                <div class="row p-2 pe-2 me-2">
+                  <div class="col-md-2 text-right">
+                    ผู้ร้องขอ:
+                  </div>
+                  <div class="col-md-2 text-left">
+                    <VueMultiselect name="requestor" id="requestor" :options="data_ddl.userlist"
+                      class="form-select form-select-sm p-0" label="first_name" :style="{
     width: '15rem'
     , height: '0.5rem'
   }" v-model="NewVrf.requestor" :select-label="null" :allow-empty="true" :close-on-select="true" :value="user_id"
-                        track-by="user_id" placeholder="เลือก" :deselectLabel=null>
-                      </VueMultiselect>
-                      <p v-if="VRF_error.requestor && !NewVrf.requestor" class="error-message">กรุณาเลือกข้อมูล</p>
-                    </div>
-                    <div class="col">
-                      ตำแหน่งผู้ร้องขอ:
-                    </div>
-                    <div class="col">
-                      <VueMultiselect name="requestor_position" id="requestor_position" :options="data_ddl.position"
-                        class="form-select form-select-sm p-0" label="position" :style="{
+                      track-by="user_id" placeholder="เลือก" :deselectLabel=null>
+                    </VueMultiselect>
+                    <p v-if="VRF_error.requestor && !NewVrf.requestor" class="error-message">กรุณาเลือกข้อมูล</p>
+                  </div>
+                  <div class="col-md-2 text-right">
+                    ตำแหน่งผู้ร้องขอ:
+                  </div>
+                  <div class="col-md-2 text-left">
+                    <VueMultiselect name="requestor_position" id="requestor_position" :options="data_ddl.position"
+                      class="form-select form-select-sm p-0" label="position" :style="{
     width: '15rem'
     , height: '0.5rem'
   }" v-model="NewVrf.requestor_position" :select-label="null" :allow-empty="true" :close-on-select="true" :value="id"
-                        track-by="id" placeholder="เลือก" :deselectLabel=null>
-                      </VueMultiselect>
-                      <p v-if="VRF_error.requestor_position && !NewVrf.requestor_position" class="error-message">
-                        กรุณาเลือกข้อมูล</p>
-                    </div>
-                    <div class="col">
-                      แผนกผู้ร้องขอ:
-                    </div>
-                    <div class="col">
-                      <VueMultiselect name="requestor_dept" id="requestor_dept" :options="data_ddl.dept"
-                        class="form-select form-select-sm p-0" label="department" :style="{
+                      track-by="id" placeholder="เลือก" :deselectLabel=null>
+                    </VueMultiselect>
+                    <p v-if="VRF_error.requestor_position && !NewVrf.requestor_position" class="error-message">
+                      กรุณาเลือกข้อมูล</p>
+                  </div>
+                  <div class="col-md-2 text-right">
+                    แผนกผู้ร้องขอ:
+                  </div>
+                  <div class="col-md-2 text-left">
+                    <VueMultiselect name="requestor_dept" id="requestor_dept" :options="data_ddl.dept"
+                      class="form-select form-select-sm p-0" label="department" :style="{
     width: '15rem'
     , height: '0.5rem'
   }" v-model="NewVrf.requestor_dept" :select-label="null" :allow-empty="true" :close-on-select="true" :value="id"
-                        track-by="id" placeholder="เลือก" :deselectLabel=null>
-                      </VueMultiselect>
-                      <p v-if="VRF_error.requestor_dept && !NewVrf.requestor_dept" class="error-message">
-                        กรุณาเลือกข้อมูล</p>
-                    </div>
+                      track-by="id" placeholder="เลือก" :deselectLabel=null>
+                    </VueMultiselect>
+                    <p v-if="VRF_error.requestor_dept && !NewVrf.requestor_dept" class="error-message">
+                      กรุณาเลือกข้อมูล</p>
                   </div>
-                  <div class="row p-2">
-                    <div class="col">
-                      เบอร์โทรผู้ร้องขอ:
-                    </div>
-                    <div class="col">
-                      <input type="text" id="requestor_phone" class="form-control" style="width:15rem;"
-                        v-model="NewVrf.requestor_phone" />
-                      <p v-if="VRF_error.requestor_phone && !NewVrf.requestor_phone" class="error-message">
-                        กรุณากรอกข้อมูล</p>
-                    </div>
-                    <div class="col">
-                      ชื่อผู้นำพา:
-                    </div>
-                    <div class="col">
-                      <VueMultiselect name="navigator" id="navigator" :options="data_ddl.navigator"
-                        class="form-select form-select-sm p-0" label="fullname" :style="{
+                </div>
+                <div class="row p-2 pe-2 me-2">
+                  <div class="col-md-2 text-right">
+                    เบอร์โทรผู้ร้องขอ:
+                  </div>
+                  <div class="col-md-2 text-left">
+                    <input type="text" id="requestor_phone" class="form-control" style="width: 100%;"
+                      v-model="NewVrf.requestor_phone" />
+                    <p v-if="VRF_error.requestor_phone && !NewVrf.requestor_phone" class="error-message">
+                      กรุณากรอกข้อมูล</p>
+                  </div>
+                  <div class="col-md-2 text-right">
+                    ชื่อผู้นำพา:
+                  </div>
+                  <div class="col-md-2 text-left">
+                    <VueMultiselect name="navigator" id="navigator" :options="data_ddl.navigator"
+                      class="form-select form-select-sm p-0" label="fullname" :style="{
     width: '15rem'
     , height: '0.5rem'
   }" v-model="NewVrf.navigator" :select-label="null" :allow-empty="true" :close-on-select="true" :value="user_id"
-                        track-by="user_id" placeholder="เลือก" :deselectLabel=null>
-                      </VueMultiselect>
-                      <p v-if="VRF_error.navigator && !NewVrf.navigator" class="error-message">กรุณาเลือกข้อมูล</p>
-                    </div>
-                    <div class="col">
-                      พื้นที่เข้าพบ:
-                    </div>
-                    <div class="col">
-                      <!--can't get id-->
-                      <!-- <VueMultiselect name="area" id="area" :options="data_ddl.area"
+                      track-by="user_id" placeholder="เลือก" :deselectLabel=null>
+                    </VueMultiselect>
+                    <p v-if="VRF_error.navigator && !NewVrf.navigator" class="error-message">กรุณาเลือกข้อมูล</p>
+                  </div>
+                  <div class="col-md-2 text-right">
+
+                  </div>
+                  <div class="col-md-2 text-left">
+                    <!--can't get id-->
+                    <!-- <VueMultiselect name="area" id="area" :options="data_ddl.area"
                         class="form-select form-select-sm p-0" label="meeting_area" :style="{
                           width: '15rem'
                           , height: '0.5rem'
                         }" v-model="NewVrf.area" :select-label="null" :allow-empty="true" :close-on-select="true"
                         :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
                       </VueMultiselect> -->
-                      <!-- <VueMultiselect
+                    <!-- <VueMultiselect
                             name="area"
                             id="area"
                             :options="data_ddl.area"
@@ -430,10 +453,10 @@
                             </template>
 </VueMultiselect> -->
 
-                      <!-- <p v-if="VRF_error.area && !NewVrf.area" class="error-message">กรุณาเลือกข้อมูล</p> -->
-                    </div>
+                    <!-- <p v-if="VRF_error.area && !NewVrf.area" class="error-message">กรุณาเลือกข้อมูล</p> -->
                   </div>
                 </div>
+                <!-- </div> -->
               </div>
               <div class="modal-footer pt-0 justify-content-center">
                 <div class="align-top pt-1 d-flex justify-content-center">
@@ -448,6 +471,7 @@
       </form>
     </div>
   </div>
+
   <!-----------------------------------------------------------modal Edit Vrf--->
   <div class="container py-2">
     <div class="py-2">
@@ -719,7 +743,7 @@
                         style="width: 15rem; height: 2.5rem;">
                         <option v-for="option in data_ddl.area" :value="option.id" :key="option.id"
                           :class="{ 'orange-text': option.type_meeting_area === 'พื้นที่ความมั่นคง' }">{{
-                          option.meeting_area }}</option>
+    option.meeting_area }}</option>
                       </select>
                       <!--can't get id-->
                       <!-- <VueMultiselect name="area" id="area" :options="data_ddl.area"
@@ -765,8 +789,6 @@
       <div class="alert-header"></div>
       <div class="alert-body">{{ alert_popup_message_inside }}</div>
       <div class="alert-footer">
-        <!-- <button @click="onClose">ยกเลิก</button>
-          <button @click="onConfirm">ตกลง</button> -->
         <button id="button_alert_popup_submit" @click="confirmDialog">ตกลง</button>
         <button id="button_alert_popup_cancel" @click="isOpen_alert_popup = false">ยกเลิก</button>
       </div>
@@ -779,7 +801,7 @@ import { collapsed, toggleSidebar, sidebarWidth } from '../components/sidebar/st
 import Header from '../components/Header'
 import axios from 'axios'
 import moment from 'moment'
-import { defineComponent, reactive, ref, computed, watch,onMounted } from "vue";
+import { defineComponent, reactive, ref, computed, watch, onMounted } from "vue";
 import TableLite from "../components/TableLite.vue";
 import { useRouter } from 'vue-router'
 import Datepicker from 'vue3-datepicker'
@@ -787,7 +809,7 @@ import VueMultiselect from 'vue-multiselect'
 import Loading from "../components/Loading.vue";
 import Alert_popup from "../components/Alert_popup.vue";
 import MeetingArea from '../components/MeetingArea.vue';
-
+import  * as common  from '../components/common'
 export default defineComponent({
   name: 'Template_VRF_Lst',
   components: {
@@ -797,6 +819,8 @@ export default defineComponent({
     , VueMultiselect
     , Datepicker
     , MeetingArea
+    , useRouter
+    ,common
   },
   setup() {
     const result_search_complete_word = reactive({
@@ -867,6 +891,7 @@ export default defineComponent({
       requestor_phone: '',
       navigator: '',
       area: '',
+      controlarea: '',
       date_from: null,
       date_to: null
     })
@@ -903,6 +928,7 @@ export default defineComponent({
       requestor_phone: "",
       navigator: "",
       area: "",
+      controlarea: '',
       date_from: null,
       date_to: null
     })
@@ -983,9 +1009,14 @@ export default defineComponent({
       , date_from: null
       , date_to: null
     })
-    const selectedItems = ref([]);
+    //-----meetingarea
+    //-----meetingarea
+    const MeetingAreas_selectedItems = ref([]);
+    const MeetingAreas_selectedControlItems = ref([]);
     const MeetingArea_items = ref({});
+    const MeetingControlArea_items = ref({});
     const categoryAreas = ref({});
+    const categoryControlAreas = ref({});
     const fetchMeetingAreas = async () => {
       try {
         const response = await axios.get(process.env.VUE_APP_API_URL + '/get_Group_MeetingAreas', { params });
@@ -999,11 +1030,9 @@ export default defineComponent({
             name: item.meeting_area,
             selected: false
           };
-
           if (!items[group]) {
             items[group] = [];
           }
-
           items[group].push(meetingArea);
         });
 
@@ -1012,75 +1041,162 @@ export default defineComponent({
         console.log(error);
       }
     };
+    const fetchMeetingControlAreas = async () => {
+      try {
+        const response = await axios.get(process.env.VUE_APP_API_URL + '/get_Group_MeetingControlAreas', { params });
+        const data = response.data;
+        const items = {};
+
+        data.forEach(item => {
+          const group = item.group_meeting_area;
+          const meetingArea = {
+            id: item.ma_id,
+            name: item.meeting_area,
+            selected: false
+          };
+          if (!items[group]) {
+            items[group] = [];
+          }
+          items[group].push(meetingArea);
+        });
+
+        MeetingControlArea_items.value = items;
+      } catch (error) {
+        console.log(error);
+      }
+    };
     const updateSelectedItems = (item) => {
-      const categoryKey = Object.keys(MeetingArea_items.value).find(key => 
+      const categoryKey = Object.keys(MeetingArea_items.value).find(key =>
         MeetingArea_items.value[key].some(meetingAreaItem => meetingAreaItem.id === item.id)
       );
-
       if (item.selected) {
         if (categoryKey && MeetingArea_items.value[categoryKey].every(meetingAreaItem => meetingAreaItem.selected)) {
-          selectedItems.value = selectedItems.value.filter(selectedItem => 
+          MeetingAreas_selectedItems.value = MeetingAreas_selectedItems.value.filter(selectedItem =>
             !MeetingArea_items.value[categoryKey].some(meetingAreaItem => meetingAreaItem.id === selectedItem.id)
           );
-          if (!selectedItems.value.some(selectedItem => selectedItem.id === categoryKey)) {
-            selectedItems.value.push({
+          if (!MeetingAreas_selectedItems.value.some(selectedItem => selectedItem.id === categoryKey)) {
+            MeetingAreas_selectedItems.value.push({
               id: categoryKey,
               name: `${categoryAreas.value[categoryKey]} ทั้งหมด`,
               isCategory: true
             });
           }
         } else {
-          if (!selectedItems.value.some(selectedItem => selectedItem.id === item.id)) {
-            selectedItems.value.push(item);
+          if (!MeetingAreas_selectedItems.value.some(selectedItem => selectedItem.id === item.id)) {
+            MeetingAreas_selectedItems.value.push(item);
           }
         }
       } else {
-        selectedItems.value = selectedItems.value.filter(selectedItem => selectedItem.id !== item.id);
+        MeetingAreas_selectedItems.value = MeetingAreas_selectedItems.value.filter(selectedItem => selectedItem.id !== item.id);
         if (categoryKey) {
-          selectedItems.value = selectedItems.value.filter(selectedItem => selectedItem.id !== categoryKey);
+          MeetingAreas_selectedItems.value = MeetingAreas_selectedItems.value.filter(selectedItem => selectedItem.id !== categoryKey);
           MeetingArea_items.value[categoryKey].forEach(meetingAreaItem => {
             if (meetingAreaItem.selected) {
-              selectedItems.value.push(meetingAreaItem);
+              MeetingAreas_selectedItems.value.push(meetingAreaItem);
             }
           });
         }
       }
     };
+    const updateSelectedControlItems = (item) => {
+      const categoryKey = Object.keys(MeetingControlArea_items.value).find(key =>
+        MeetingControlArea_items.value[key].some(meetingAreaItem => meetingAreaItem.id === item.id)
+      );
 
+      if (item.selected) {
+        if (categoryKey && MeetingControlArea_items.value[categoryKey].every(meetingAreaItem => meetingAreaItem.selected)) {
+          MeetingAreas_selectedControlItems.value = MeetingAreas_selectedControlItems.value.filter(selectedItem =>
+            !MeetingControlArea_items.value[categoryKey].some(meetingAreaItem => meetingAreaItem.id === selectedItem.id)
+          );
+          if (!MeetingAreas_selectedControlItems.value.some(selectedItem => selectedItem.id === categoryKey)) {
+            MeetingAreas_selectedControlItems.value.push({
+              id: categoryKey,
+              name: `${categoryControlAreas.value[categoryKey]} ทั้งหมด`,
+              isCategory: true
+            });
+          }
+        } else {
+          if (!MeetingAreas_selectedControlItems.value.some(selectedItem => selectedItem.id === item.id)) {
+            MeetingAreas_selectedControlItems.value.push(item);
+          }
+        }
+      } else {
+        MeetingAreas_selectedControlItems.value = MeetingAreas_selectedControlItems.value.filter(selectedItem => selectedItem.id !== item.id);
+        if (categoryKey) {
+          MeetingAreas_selectedControlItems.value = MeetingAreas_selectedControlItems.value.filter(selectedItem => selectedItem.id !== categoryKey);
+          MeetingControlArea_items.value[categoryKey].forEach(meetingAreaItem => {
+            if (meetingAreaItem.selected) {
+              MeetingAreas_selectedControlItems.value.push(meetingAreaItem);
+            }
+          });
+        }
+      }
+    };
     const removeSelectedItem = (item) => {
       if (item.isCategory) {
         const categoryKey = item.id;
         MeetingArea_items.value[categoryKey].forEach(meetingAreaItem => {
           meetingAreaItem.selected = false;
         });
-        selectedItems.value = selectedItems.value.filter(selectedItem => selectedItem.id !== categoryKey);
+        MeetingAreas_selectedItems.value = MeetingAreas_selectedItems.value.filter(selectedItem => selectedItem.id !== categoryKey);
       } else {
         item.selected = false;
-        selectedItems.value = selectedItems.value.filter(selectedItem => selectedItem.id !== item.id);
-        const categoryKey = Object.keys(MeetingArea_items.value).find(key => 
+        MeetingAreas_selectedItems.value = MeetingAreas_selectedItems.value.filter(selectedItem => selectedItem.id !== item.id);
+        const categoryKey = Object.keys(MeetingArea_items.value).find(key =>
           MeetingArea_items.value[key].some(meetingAreaItem => meetingAreaItem.id === item.id)
         );
         if (categoryKey && !MeetingArea_items.value[categoryKey].every(meetingAreaItem => !meetingAreaItem.selected)) {
-          selectedItems.value = selectedItems.value.filter(selectedItem => selectedItem.id !== categoryKey);
+          MeetingAreas_selectedItems.value = MeetingAreas_selectedItems.value.filter(selectedItem => selectedItem.id !== categoryKey);
           MeetingArea_items.value[categoryKey].forEach(meetingAreaItem => {
             if (meetingAreaItem.selected) {
-              selectedItems.value.push(meetingAreaItem);
+              MeetingAreas_selectedItems.value.push(meetingAreaItem);
             }
           });
         }
       }
     };
-
+    const removeSelectedControlItem = (item) => {
+      if (item.isCategory) {
+        const categoryKey = item.id;
+        MeetingControlArea_items.value[categoryKey].forEach(meetingAreaItem => {
+          meetingAreaItem.selected = false;
+        });
+        MeetingAreas_selectedControlItems.value = MeetingAreas_selectedControlItems.value.filter(selectedItem => selectedItem.id !== categoryKey);
+      } else {
+        item.selected = false;
+        MeetingAreas_selectedControlItems.value = MeetingAreas_selectedControlItems.value.filter(selectedItem => selectedItem.id !== item.id);
+        const categoryKey = Object.keys(MeetingControlArea_items.value).find(key =>
+          MeetingControlArea_items.value[key].some(meetingAreaItem => meetingAreaItem.id === item.id)
+        );
+        if (categoryKey && !MeetingControlArea_items.value[categoryKey].every(meetingAreaItem => !meetingAreaItem.selected)) {
+          MeetingAreas_selectedControlItems.value = MeetingAreas_selectedControlItems.value.filter(selectedItem => selectedItem.id !== categoryKey);
+          MeetingControlArea_items.value[categoryKey].forEach(meetingAreaItem => {
+            if (meetingAreaItem.selected) {
+              MeetingAreas_selectedControlItems.value.push(meetingAreaItem);
+            }
+          });
+        }
+      }
+    };
     const uniqueSelectedItems = computed(() => {
-      return selectedItems.value.reduce((uniqueItems, item) => {
+      return MeetingAreas_selectedItems.value.reduce((uniqueItems, item) => {
         if (!uniqueItems.some(uniqueItem => uniqueItem.id === item.id)) {
           uniqueItems.push(item);
         }
         return uniqueItems;
       }, []);
     });
-    onMounted(async() => {
+    const uniqueSelectedControlItems = computed(() => {
+      return MeetingAreas_selectedControlItems.value.reduce((uniqueItems, item) => {
+        if (!uniqueItems.some(uniqueItem => uniqueItem.id === item.id)) {
+          uniqueItems.push(item);
+        }
+        return uniqueItems;
+      }, []);
+    });
+    onMounted(async () => {
       fetchMeetingAreas();
+      fetchMeetingControlAreas();
       await axios.get(process.env.VUE_APP_API_URL + '/get_categoryAreas', { params })
         .then((res) => {
           JSON.parse(JSON.stringify(res.data)).forEach(item => {
@@ -1090,7 +1206,17 @@ export default defineComponent({
         }, (res) => {
           console.log(res.data);
         });
+      await axios.get(process.env.VUE_APP_API_URL + '/get_categoryControlAreas', { params })
+        .then((res) => {
+          JSON.parse(JSON.stringify(res.data)).forEach(item => {
+            const key = item.group_meeting_area;
+            categoryControlAreas.value[key] = key;
+          });
+        }, (res) => {
+          console.log(res.data);
+        });
     });
+    //-----end meetingarea    
     const confirmDialog = async () => {
       if (function_selected.value === "update_vrfstatus_all") {
         const params = {
@@ -1168,6 +1294,7 @@ export default defineComponent({
       VRF_error.requestor_phone = ''
       VRF_error.navigator = ''
       VRF_error.area = ''
+      VRF_error.controlarea = ''
       VRF_error.date_from = null
       VRF_error.date_to = null
       //------------------------------------------
@@ -1180,6 +1307,7 @@ export default defineComponent({
       NewVrf.requestor_phone = ""
       NewVrf.navigator = ""
       NewVrf.area = ""
+      NewVrf.controlarea = ''
       NewVrf.date_from = null
       NewVrf.date_to = null
       //------------------------------------------  
@@ -1211,6 +1339,9 @@ export default defineComponent({
       AdvSearch.area_id = 0
       AdvSearch.requestor_dept_id = 0
       //---------------------------
+      MeetingAreas_selectedItems.value = [];
+      MeetingAreas_selectedControlItems.value = [];
+
     }
     //-----check session
     hasLocalStorage.value = window.localStorage.getItem('user_id');
@@ -1268,17 +1399,17 @@ export default defineComponent({
     /**
      * Get server data request
      */
-     const params = {
-        user_id: user_id.value,
-        department_id: department_id.value,
-        position_id: position_id.value,
-        employee_id: localStorage.getItem('user_employee_id'),
-        division_id: localStorage.getItem('user_division_id'),
-        branch_id: localStorage.getItem('user_branch_id'),
-        work_flow_id: localStorage.getItem('user_work_flow_id'),
-        role_id: localStorage.getItem('user_role_id')
-      }
-     const myRequest = async (keyword) => {
+    const params = {
+      user_id: user_id.value,
+      department_id: department_id.value,
+      position_id: position_id.value,
+      employee_id: localStorage.getItem('user_employee_id'),
+      division_id: localStorage.getItem('user_division_id'),
+      branch_id: localStorage.getItem('user_branch_id'),
+      work_flow_id: localStorage.getItem('user_work_flow_id'),
+      role_id: localStorage.getItem('user_role_id')
+    }
+    const myRequest = async (keyword) => {
       //const fakeData = [];    
       await axios.get(process.env.VUE_APP_API_URL + '/get_templete_vrf_list', { params })
         .then((res) => {
@@ -1684,32 +1815,32 @@ export default defineComponent({
       formData.append('requestor_dept', NewVrf.requestor_dept.id)
       formData.append('requestor_phone', NewVrf.requestor_phone)
       formData.append('navigator', NewVrf.navigator.user_id)
-      formData.append('area', NewVrf.area.id)
+      formData.append('area', JSON.stringify(MeetingAreas_selectedItems.value)); // แปลงเป็น JSON String
+      formData.append('controlarea', JSON.stringify(MeetingAreas_selectedControlItems.value)); // แปลงเป็น JSON String      
       formData.append('date_from', NewVrf.date_from)
       formData.append('date_to', NewVrf.date_to)
       formData.append('user_id', user_id.value)
-
-      // rowData.value.forEach((value, key) => console.log('rowData value: ', value, 'rowData key: ', key))
+      console.log('MeetingAreas_selectedItems: ', MeetingAreas_selectedItems.value)
+      console.log('MeetingAreas_selectedControlItems: ', MeetingAreas_selectedControlItems.value)
       let object_formData = {}
       formData.forEach((value, key) => object_formData[key] = value)
       var json_formData = JSON.stringify(object_formData)
+      console.log('addManualVRF json_formData: ', json_formData)
       let id
       try {
-        await axios.post(process.env.VUE_APP_API_URL + '/set_manual_add_vrf', json_formData)
+        await axios.post(process.env.VUE_APP_API_URL + '/set_manual_add_vrf_template', json_formData)
           .then((res) => {
-            // success callback  
-
             id = res.data
+            console.log('/set_manual_add_vrf_template response id: ', id)
           }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          }).finally(() => {
-
+            console.error('/set_manual_add_vrf_template error callback', res.data.message)
+          })
+          .catch((err) => {
+            console.error('/set_manual_add_vrf_template catch error', err)
           });
         error_addManual.value = false
-      }
-      catch (err) {
-        console.log(err)
+      } catch (err) {
+        console.error('catch error', err)
         message_addManual.value = "Something went wrong: " + err
         error_addManual.value = true
       }
@@ -1717,30 +1848,113 @@ export default defineComponent({
       rowData.value.forEach((value, key) => object_det[key] = value)
       object_det.newid = id
       var json_object_det = JSON.stringify(object_det)
+      console.log('set_manual_add_vrf_template_det json_object_det : ', json_object_det)
       try {
-        await axios.post(process.env.VUE_APP_API_URL + '/set_manual_add_vrf_det', json_object_det)
+        await axios.post(process.env.VUE_APP_API_URL + '/set_manual_add_vrf_template_det', json_object_det)
           .then((res) => {
-            // success callback  
-            // console.log('set_manual_add_vrf_det res.data.state:' + res.data.state)           
+            console.log('set_manual_add_vrf_template_det success: ', res.data)
           }, (res) => {
-            // error callback
-            console.log(res.data.message)
+            console.error('set_manual_add_vrf_template_det error callback', res.data.message)
             message_addManual.value = res.data.message
-          }).finally(() => {
-            router.push('/templatevrflst')
+          })
+          .catch((err) => {
+            console.error('set_manual_add_vrf_template_det catch error', err)
+          })
+          .finally(() => {
+            //router.push('/templatevrflst')
           });
         error_addManual.value = false
-      }
-      catch (err) {
-        console.log(err)
+      } catch (err) {
+        console.error('catch error', err)
         message_addManual.value = "Something went wrong: " + err
         error_addManual.value = true
-      }
-      finally {
-        //  router.push('/templatevrflst')
-        location.reload()
+      } finally {        
+        //location.reload()        
+        //common.navigateToTemplateVRFList(router, '/templatevrflst', 'ClosemyModalNew');
       }
     }
+    // const addManualVRF = async () => {
+    //   const formData = new FormData()
+    //   formData.append('template_name', NewVrf.template_name)
+    //   formData.append('reason', NewVrf.reason)
+    //   formData.append('contactor', NewVrf.contactor)
+    //   formData.append('requestor', NewVrf.requestor.user_id)
+    //   formData.append('requestor_position', NewVrf.requestor_position.id)
+    //   formData.append('requestor_dept', NewVrf.requestor_dept.id)
+    //   formData.append('requestor_phone', NewVrf.requestor_phone)
+    //   formData.append('navigator', NewVrf.navigator.user_id)
+    //   formData.append('area', NewVrf.area.id)
+    //   formData.append('date_from', NewVrf.date_from)
+    //   formData.append('date_to', NewVrf.date_to)
+    //   formData.append('user_id', user_id.value)
+
+    //   console.log('MeetingAreas_selectedItems: ', MeetingAreas_selectedItems.value)
+    //   console.log('MeetingAreas_selectedControlItems: ', MeetingAreas_selectedControlItems.value)
+
+    //   // rowData.value.forEach((value, key) => console.log('rowData value: ', value, 'rowData key: ', key))
+    //   let object_formData = {}
+    //   formData.forEach((value, key) => object_formData[key] = value)
+    //   var json_formData = JSON.stringify(object_formData)
+    //   console.log('addManualVRF json_formData: ', json_formData)
+    //   let id
+    //   try {
+    //     await axios.post(process.env.VUE_APP_API_URL + '/set_manual_add_vrf_template', json_formData)
+    //       .then((res) => {
+    //         // success callback  
+    //         id = res.data 
+    //         console.log('/set_manual_add_vrf_template error id: ', id)
+    //       }, (res) => {
+    //         // error callback
+    //         console.log(res.data.message)
+    //         console.log('/set_manual_add_vrf_template: error callback')
+    //       }).finally(() => { 
+    //         console.log('/set_manual_add_vrf_template error finally', json_formData)
+
+    //       });
+    //     error_addManual.value = false
+    //   }
+    //   catch (err) {
+    //     console.log(err)
+    //     message_addManual.value = "Something went wrong: " + err
+    //     error_addManual.value = true
+    //     console.log('json_formData: ', json_formData)
+    //   }
+
+    //   let object_det = {}
+    //   rowData.value.forEach((value, key) => object_det[key] = value)
+    //   object_det.newid = id
+    //   var json_object_det = JSON.stringify(object_det)
+    //   console.log('/set_manual_add_vrf_template_det json_object_det : ', json_object_det)
+    //   try {
+    //     await axios.post(process.env.VUE_APP_API_URL + '/set_manual_add_vrf_template_det', json_object_det)
+    //       .then((res) => {
+    //         // success callback       
+    //         console.log('set_manual_add_vrf_template_det success: ')
+    //       }, (res) => {
+    //         // error callback
+    //         console.log(res.data.message)
+    //         message_addManual.value = res.data.message
+    //         console.log('set_manual_add_vrf_template_det error callback: ')
+    //       }).finally(() => { 
+    //         console.log('await axios.post Navigating to templatevrflst');
+    //         console.log('await axios.post Router instance:', router);
+    //         router.push('/templatevrflst')
+    //       });
+    //     error_addManual.value = false
+    //   }
+    //   catch (err) {
+    //     console.log(err)
+    //     message_addManual.value = "Something went wrong: " + err
+    //     error_addManual.value = true
+    //   }
+    //   finally {
+    //     //  router.push('/templatevrflst')
+    //     console.log('Navigating to templatevrflst');
+    //     console.log('Router instance:', router);
+    //     //location.reload()
+    //   }
+
+    // }
     //-------------------validate add vrf-------------------
     const fieldsToValidate = [
       // 'tbDateF',
@@ -1862,76 +2076,99 @@ export default defineComponent({
       } else {
         VRF_error.template_name = '';
       }
-      if (!NewVrf.reason) {
-        VRF_error.reason = 'กรุณาใส่ข้อมูล'
-        isError = true
-        console.log('NewVrf.reason error isError: ', isError)
-      } else {
-        VRF_error.reason = ''
-      }
-      if (!NewVrf.contactor) {
-        VRF_error.contactor = 'กรุณาใส่ข้อมูล'
-        isError = true
-        console.log('NewVrf.contactor error isError: ', isError)
-      } else {
-        VRF_error.contactor = ''
-      }
-      if (!NewVrf.requestor) {
-        VRF_error.requestor = 'กรุณาใส่ข้อมูล'
-        isError = true
-        console.log('NewVrf.requestor error isError: ', isError)
-      } else {
-        VRF_error.requestor = ''
-      }
-      if (!NewVrf.requestor_position) {
-        VRF_error.requestor_position = 'กรุณาใส่ข้อมูล'
-        isError = true
-        console.log('NewVrf.requestor_position error isError: ', isError)
-      } else {
-        VRF_error.requestor_position = ''
-      }
-      if (!NewVrf.requestor_dept) {
-        VRF_error.requestor_dept = 'กรุณาใส่ข้อมูล'
-        isError = true
-        console.log('NewVrf.requestor_dept error isError: ', isError)
-      } else {
-        VRF_error.requestor_dept = ''
-      }
-      if (!NewVrf.requestor_phone) {
-        VRF_error.requestor_phone = 'กรุณาใส่ข้อมูล'
-        isError = true
-        console.log('NewVrf.requestor_phone error isError: ', isError)
-      } else {
-        VRF_error.requestor_phone = ''
-      }
-      if (!NewVrf.navigator) {
-        VRF_error.navigator = 'กรุณาใส่ข้อมูล'
-        isError = true
-        console.log('NewVrf.navigator error isError: ', isError)
-      } else {
-        VRF_error.navigator = ''
-      }
-      if (!NewVrf.area) {
+      // if (!NewVrf.reason) {
+      //   VRF_error.reason = 'กรุณาใส่ข้อมูล'
+      //   isError = true
+      //   console.log('NewVrf.reason error isError: ', isError)
+      // } else {
+      //   VRF_error.reason = ''
+      // }
+      // if (!NewVrf.contactor) {
+      //   VRF_error.contactor = 'กรุณาใส่ข้อมูล'
+      //   isError = true
+      //   console.log('NewVrf.contactor error isError: ', isError)
+      // } else {
+      //   VRF_error.contactor = ''
+      // }
+      // if (!NewVrf.requestor) {
+      //   VRF_error.requestor = 'กรุณาใส่ข้อมูล'
+      //   isError = true
+      //   console.log('NewVrf.requestor error isError: ', isError)
+      // } else {
+      //   VRF_error.requestor = ''
+      // }
+      // if (!NewVrf.requestor_position) {
+      //   VRF_error.requestor_position = 'กรุณาใส่ข้อมูล'
+      //   isError = true
+      //   console.log('NewVrf.requestor_position error isError: ', isError)
+      // } else {
+      //   VRF_error.requestor_position = ''
+      // }
+      // if (!NewVrf.requestor_dept) {
+      //   VRF_error.requestor_dept = 'กรุณาใส่ข้อมูล'
+      //   isError = true
+      //   console.log('NewVrf.requestor_dept error isError: ', isError)
+      // } else {
+      //   VRF_error.requestor_dept = ''
+      // }
+      // if (!NewVrf.requestor_phone) {
+      //   VRF_error.requestor_phone = 'กรุณาใส่ข้อมูล'
+      //   isError = true
+      //   console.log('NewVrf.requestor_phone error isError: ', isError)
+      // } else {
+      //   VRF_error.requestor_phone = ''
+      // }
+      // if (!NewVrf.navigator) {
+      //   VRF_error.navigator = 'กรุณาใส่ข้อมูล'
+      //   isError = true
+      //   console.log('NewVrf.navigator error isError: ', isError)
+      // } else {
+      //   VRF_error.navigator = ''
+      // }
+      // if (!NewVrf.area) {
+      //   VRF_error.area = 'กรุณาใส่ข้อมูล'
+      //   isError = true
+      //   console.log('NewVrf.area error isError: ', isError)
+      // } else {
+      //   VRF_error.area = ''
+      // }
+      if ((MeetingAreas_selectedItems.value.length === 0) && (MeetingAreas_selectedControlItems.value.length === 0)) {
+        console.log('MeetingAreas_selectedItems.length: ', MeetingAreas_selectedItems.value.length)
+        console.log('MeetingAreas_selectedControlItems.length: ', MeetingAreas_selectedControlItems.value.length)
         VRF_error.area = 'กรุณาใส่ข้อมูล'
         isError = true
-        console.log('NewVrf.area error isError: ', isError)
+        console.log('MeetingAreas error isError: ', isError)
       } else {
         VRF_error.area = ''
       }
-      if (!NewVrf.date_from) {
-        VRF_error.date_from = 'กรุณาเลือกข้อมูล'
-        isError = true
-        console.log('NewVrf.date_from error isError: ', isError)
-      } else {
-        VRF_error.date_from = ''
-      }
-      if (!NewVrf.date_to) {
-        VRF_error.date_to = 'กรุณาเลือกข้อมูล'
-        isError = true
-        console.log('NewVrf.date_to error isError: ', isError)
-      } else {
-        VRF_error.date_to = ''
-      }
+      // if (!MeetingAreas_selectedControlItems.length) {
+      //   VRF_error.controlarea = 'กรุณาใส่ข้อมูล'
+      //   isError = true
+      //   console.log('NewVrf.controlarea error isError: ', isError)
+      // } else {
+      //   VRF_error.controlarea = ''
+      // }        
+      // if (!NewVrf.controlarea) {
+      //   VRF_error.controlarea = 'กรุณาใส่ข้อมูล'
+      //   isError = true
+      //   console.log('NewVrf.controlarea error isError: ', isError)
+      // } else {
+      //   VRF_error.controlarea = ''
+      // } 
+      // if (!NewVrf.date_from) {
+      //   VRF_error.date_from = 'กรุณาเลือกข้อมูล'
+      //   isError = true
+      //   console.log('NewVrf.date_from error isError: ', isError)
+      // } else {
+      //   VRF_error.date_from = ''
+      // }
+      // if (!NewVrf.date_to) {
+      //   VRF_error.date_to = 'กรุณาเลือกข้อมูล'
+      //   isError = true
+      //   console.log('NewVrf.date_to error isError: ', isError)
+      // } else {
+      //   VRF_error.date_to = ''
+      // }
       if (isError) {
 
         validateInputAll.value = true
@@ -1942,12 +2179,14 @@ export default defineComponent({
       else {
         console.log('isError: ', isError)
         if (!validateInputAll.value) {
-          if (confirm('คุณต้องการบันทึกรายการขอเข้าพื้นที่ ?')) {
+          if (confirm('คุณต้องการบันทึกแม่แบบขอเข้าพื้นที่ ?')) {
             addManualVRF()
           }
         }
       }
     }
+
+
     const calamount_orderEdit = (value) => {
       console.log(document.getElementById("ddlMoneyTypeEdit" + value).value)
       console.log(document.getElementById("ddlPackageMoneyTypeEdit" + value).value)
@@ -2422,12 +2661,18 @@ export default defineComponent({
 
     }
     return {
-      selectedItems,
+      MeetingAreas_selectedItems,
+      MeetingAreas_selectedControlItems,
       MeetingArea_items,
+      MeetingControlArea_items,
+      categoryControlAreas,
       categoryAreas,
       updateSelectedItems,
+      updateSelectedControlItems,
       removeSelectedItem,
+      removeSelectedControlItem,
       uniqueSelectedItems,
+      uniqueSelectedControlItems,
       setToDateAdd,
       setFromDateAdd,
       deleteExistingData,
@@ -2472,11 +2717,14 @@ export default defineComponent({
 @import '../assets/css/style.css';
 @import '../../node_modules/vue-multiselect/dist/vue-multiselect.css';
 
+/* ตั้งค่า พื้นที่เข้าพบ */
+
 .MeetingArea-container {
   font-family: Arial, sans-serif;
   max-width: 600px;
   margin: auto;
 }
+
 .selected-items {
   margin-top: 20px;
   background-color: #ecf0f1;
@@ -2484,10 +2732,12 @@ export default defineComponent({
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 .selected-items h3 {
   margin-top: 0;
   margin-bottom: 15px;
 }
+
 .selected-items-list {
   list-style-type: none;
   padding: 0;
@@ -2495,15 +2745,17 @@ export default defineComponent({
   display: flex;
   flex-wrap: wrap;
 }
+
 .selected-item {
   display: flex;
   align-items: center;
   margin: 5px;
-  background-color: #fff;
+  background-color: aliceblue;
   padding: 3px 8px;
   border-radius: 3px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
+
 .selected-item button {
   background-color: #e74c3c;
   color: white;
@@ -2513,15 +2765,17 @@ export default defineComponent({
   padding: 0;
   border-radius: 3px;
   font-size: 14px;
-  width: 20px; /* ทำให้เป็นสี่เหลี่ยมจตุรัส */
-  height: 20px; /* ทำให้เป็นสี่เหลี่ยมจตุรัส */
+  width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .selected-item button:hover {
   background-color: #c0392b;
 }
+
 /* Responsive styles */
 @media (max-width: 768px) {
   .main-container {
@@ -2537,41 +2791,27 @@ export default defineComponent({
   }
 }
 
+/* end ตั้งค่า พื้นที่เข้าพบ */
 .scrollable-container {
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 300px;
-  /* กำหนดความสูงสูงสุดตามต้องการ */
+  max-height: 30rem;
 }
 
 .orange-text {
   color: orange;
 }
 
-/* ตั้งค่าทั่วไปสำหรับ .scrollable-table */
 .scrollable-table {
   width: 100%;
   overflow-x: auto;
-  /* แสดง scrollbar เมื่อจำเป็น */
   white-space: nowrap;
-  /* ป้องกันการ wrap text */
 }
 
-/* ซ่อน scrollbar เมื่อหน้าจอกว้างเพียงพอ (เช่น 768px หรือมากกว่า) */
 @media (min-width: 768px) {
   .scrollable-table {
     overflow-x: hidden;
-    /* ซ่อน scrollbar */
   }
-}
-
-.label-col {
-  width: 14rem;
-  /* ตั้งค่าความกว้างที่เหมาะสม */
-  max-width: 20rem;
-  /* ป้องกันไม่ให้ขยายตัว */
-  flex-shrink: 0;
-  /*ป้องกันไม่ให้ย่อตัว */
 }
 
 .autocomplete-results {
@@ -2583,6 +2823,21 @@ export default defineComponent({
   border: 1px solid #cccccc;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  overflow: auto;
+  max-height: 20rem;
+}
+
+.autocomplete-results-tbFullName {
+  position: absolute;
+  left: 7rem;
+  width: 15rem;
+  text-align: left;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  overflow: auto;
+  max-height: 20rem;
 }
 
 .autocomplete-item {
@@ -2594,65 +2849,77 @@ export default defineComponent({
   background-color: #f1f1f1;
 }
 
-
 .error-message {
   color: red;
 }
 
 .modalcustom_advancesearch {
   max-width: 50rem;
-  /* กำหนดความกว้างของโมดัลเป็น 800px */
   width: 120rem;
   text-align: center;
 }
 
 .modalcustomtb {
   max-width: 100%;
-  /* กำหนดความกว้างของโมดัลเป็น 800px */
   width: 100%;
   text-align: center;
 }
 
+.modal-body {
+  width: 100%;
+  height: 100%;
+  padding: 0rem;
+}
+
+.modal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 .modalcustom {
   max-width: 100%;
-  /* กำหนดความกว้างของโมดัลเป็น 800px */
   width: 100%;
   text-align: center;
 }
 
 .colwidth10 {
   width: 10%;
-  /* กำหนดความกว้างของโมดัลเป็น 800px */
   text-align: center;
 }
 
 .colwidth25 {
   width: 25%;
-  /* กำหนดความกว้างของโมดัลเป็น 800px */
   text-align: center;
-
 }
 
 .colwidth20 {
   width: 10%;
-  /* กำหนดความกว้างของโมดัลเป็น 800px */
   align-items: center;
 }
 
 .colwidth5 {
   width: 5%;
-  /* กำหนดความกว้างของโมดัลเป็น 800px */
   text-align: center;
 }
 
 .colwidth30 {
   width: 30%;
-  /* กำหนดความกว้างของโมดัลเป็น 800px */
   text-align: center;
 }
 
 #formFile::before {
-  content: "เลือกไฟล์";
+  content: 'เลือกไฟล์';
+  position: absolute;
+  z-index: 2;
+  display: block;
+  background-color: #eee;
+  width: 1rem;
+}
+
+#formFile_edt::before {
+  content: 'เลือกไฟล์';
   position: absolute;
   z-index: 2;
   display: block;
@@ -2736,21 +3003,4 @@ export default defineComponent({
 #button_alert_popup_cancel :hover {
   background-color: #2980b9;
 }
-
-/* .input-group-text {
-    cursor: pointer;
-  }
-  
-  .form-control:disabled, .form-control[readonly] {
-    background-color: #fff;
-    opacity: 0;
-  } */
-/* #formFile::before {
-    content: "Pick file";
-    position: absolute;
-    z-index: 2;
-    display: block;
-    background-color: #eee;
-    width: 80px;
-  } */
 </style>

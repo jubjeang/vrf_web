@@ -3,7 +3,7 @@
   <Sidebar :probs_isVisible="true" :probs_isVisible2="false" :probs_isVisible3="false" />
   <!---------------------------------------------------------------List main-------------------------------------------------------------------------->
   <div :style="{ 'margin-left': sidebarWidth }" class="row ps-4">
-    <!-- <div class="container p-0" style="width: 200rem"> -->
+    <!-- <div class="container p-0" style="width: 200rem;"> -->
     <div class="row p-1" style="width: 100%">
       <div class="col text-left">&nbsp;</div>
     </div>
@@ -21,12 +21,12 @@
     </div>
     <div class="row p-0" style="width: 100%">
       <div class="col-2 ps-4" style="text-align: left">
-        <button type="button" class="btn btn-danger" style="width: 5rem; height: 2rem"
+        <button type="button" class="btn btn-danger" style="width: 5rem; height: 2rem;"
           @click="update_vrf_trans_status_all('cancel')">
           ยกเลิก
         </button>
         &nbsp;
-        <!-- <button class="btn btn-primary" @click="update_vrf_trans_status_all('approve')" style="width: 5rem; height: 2rem">
+        <!-- <button class="btn btn-primary" @click="update_vrf_trans_status_all('approve')" style="width: 5rem; height: 2rem;">
           ส่งอนุมัติ
         </button> -->
       </div>
@@ -82,13 +82,13 @@
                   <div class="row p-2">
                     <div class="col-sm-2 pe-0">จากวันที่</div>
                     <div class="col-sm-2 ps-0">
-                      <datepicker class="form-control" v-model="AdvSearch.tbDateF" style="width: 7rem"
+                      <datepicker class="form-control" v-model="AdvSearch.tbDateF" style="width: 7rem;"
                         inputFormat="dd/MM/yyyy" />
                     </div>
                     <div class="col-sm-2"></div>
                     <div class="col-sm-2 pe-0">ถึงวันที่</div>
                     <div class="col-sm-2 ps-0">
-                      <datepicker class="form-control" v-model="AdvSearch.tbDateT" style="width: 7rem"
+                      <datepicker class="form-control" v-model="AdvSearch.tbDateT" style="width: 7rem;"
                         inputFormat="dd/MM/yyyy" />
                     </div>
                   </div>
@@ -138,11 +138,11 @@
               </div>
               <div class="modal-footer pt-0 justify-content-center">
                 <div class="align-top pt-1 d-flex justify-content-center">
-                  <button class="btn btn-primary" style="width: 4rem; height: 2rem" @click="AdvSearch_" type="button">
+                  <button class="btn btn-primary" style="width: 4rem; height: 2rem;" @click="AdvSearch_" type="button">
                     ค้นหา
                   </button>
                   <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="CloseModalAdvSearch"
-                    style="width: 4rem; height: 2rem" id="CloseModalAdvSearch" @click="ClosemyModalNew_">
+                    style="width: 4rem; height: 2rem;" id="CloseModalAdvSearch" @click="ClosemyModalNew_">
                     ยกเลิก
                   </button>
                 </div>
@@ -314,13 +314,12 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="row p-2">
                   <div class="col">จากวันที่:</div>
                   <div class="col">
                     <!-- <datepicker class="form-control" v-model="NewVrf.date_from" style="width:7rem;"
                       inputFormat="dd/MM/yyyy" @update:model-value="setToDate('date_from_add')" /> -->
-                    <datepicker class="form-control" v-model="NewVrf.date_from" style="width: 7rem"
+                    <datepicker class="form-control" v-model="NewVrf.date_from" style="width: 7rem;"
                       inputFormat="dd/MM/yyyy" @update:model-value="setFromDateAdd" />
                     <p v-if="VRF_error.date_from && !NewVrf.date_from" class="error-message">
                       กรุณาเลือกข้อมูล
@@ -328,7 +327,7 @@
                   </div>
                   <div class="col">ถึงวันที่:</div>
                   <div class="col">
-                    <datepicker class="form-control" v-model="NewVrf.date_to" style="width: 7rem" inputFormat="dd/MM/yyyy"
+                    <datepicker class="form-control" v-model="NewVrf.date_to" style="width: 7rem;" inputFormat="dd/MM/yyyy"
                       @update:model-value="setToDateAdd('date_to_edit')" />
                     <!-- <datepicker class="form-control" v-model="NewVrf.date_to" style="width:7rem;" inputFormat="dd/MM/yyyy"
                       @update:model-value="setFromDate('date_to_add')" /> -->
@@ -347,7 +346,7 @@
                   <div class="col">พื้นที่เข้าพบ:</div>
                   <div class="col">
                     <select class="form-select form-select-sm" v-model="NewVrf.area" name="area" id="area"
-                      style="width: 100%; height: 2.5rem">
+                      style="width: 100%; height: 2.5rem;">
                       <option value=""></option>
                       <option v-for="option in data_ddl.area" :value="option.id" :key="option.id"
                         :class="{ 'orange-text': option.type_meeting_area === 'พื้นที่ความมั่นคง' }">
@@ -403,7 +402,7 @@
                   <div class="col">ผู้ร้องขอ:</div>
                   <div class="col">
                     <select class="form-select form-select-sm" v-model="NewVrf.requestor" name="requestor" id="requestor"
-                      style="width: 100%; height: 2.5rem">
+                      style="width: 100%; height: 2.5rem;">
                       <option value=""></option>
                       <option v-for="option in data_ddl.userlist" :value="option.user_id" :key="option.user_id">
                         {{ option.first_name }}
@@ -423,7 +422,7 @@
                   <div class="col">ตำแหน่งผู้ร้องขอ:</div>
                   <div class="col">
                     <select class="form-select form-select-sm" v-model="NewVrf.requestor_position"
-                      name="requestor_position" id="requestor_position" style="width: 100%; height: 2.5rem">
+                      name="requestor_position" id="requestor_position" style="width: 100%; height: 2.5rem;">
                       <option value=""></option>
                       <option v-for="option in data_ddl.position" :value="option.id" :key="option.id">
                         {{ option.position }}
@@ -445,7 +444,7 @@
                   <div class="col">แผนกผู้ร้องขอ:</div>
                   <div class="col">
                     <select class="form-select form-select-sm" v-model="NewVrf.requestor_dept" name="requestor_position"
-                      id="requestor_position" style="width: 100%; height: 2.5rem">
+                      id="requestor_position" style="width: 100%; height: 2.5rem;">
                       <option value=""></option>
                       <option v-for="option in data_ddl.dept" :value="option.id" :key="option.id">
                         {{ option.department }}
@@ -475,7 +474,7 @@
                   <div class="col">ชื่อผู้นำพา:</div>
                   <div class="col">
                     <select class="form-select form-select-sm" v-model="NewVrf.navigator" name="navigator" id="navigator"
-                      style="width: 100%; height: 2.5rem">
+                      style="width: 100%; height: 2.5rem;">
                       <option value=""></option>
                       <option v-for="option in data_ddl.navigator" :value="option.user_id" :key="option.user_id">
                         {{ option.fullname }}
@@ -498,13 +497,13 @@
               </div>
               <div class="modal-footer pt-0 justify-content-center">
                 <div class="align-top pt-1 d-flex justify-content-center">
-                  <!-- <button class="btn btn-primary" style="width: 4rem; height: 2rem">
+                  <!-- <button class="btn btn-primary" style="width: 4rem; height: 2rem;">
                     บันทึก
                   </button> -->
-                  <button class="btn btn-success" style="width: 5rem; height: 2rem">
+                  <button class="btn btn-success" style="width: 5rem; height: 2rem;">
                     ส่งอนุมัติ
                   </button>
-                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" style="width: 4rem; height: 2rem"
+                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" style="width: 4rem; height: 2rem;"
                     id="ClosemyModalNew" @click="ClosemyModalNew_">
                     ยกเลิก
                   </button>
@@ -516,7 +515,6 @@
       </form>
     </div>
   </div>
-  <!---------------------------------------------------------------------------->
   <!-----------------------------------------------------------modal Edit Vrf--->
   <div class="container py-2">
     <div class="py-2">
@@ -639,7 +637,7 @@
                   <div class="row p-2">
                     <div class="col-md-2 text-end">จากวันที่:</div>
                     <div class="col-md-2">
-                      <datepicker class="form-control" v-model="vrf_Existing.date_from" style="width: 7rem"
+                      <datepicker class="form-control" v-model="vrf_Existing.date_from" style="width: 7rem;"
                         inputFormat="dd/MM/yyyy" @update:model-value="setToDate('date_from_edit')"
                         :disabled="!checkstatus_send_to_approve" />
                       <p v-if="VRF_error.date_from && !vrf_Existing.date_from" class="error-message">
@@ -648,7 +646,7 @@
                     </div>
                     <div class="col-md-2 text-end">ถึงวันที่:</div>
                     <div class="col-md-2">
-                      <datepicker class="form-control" v-model="vrf_Existing.date_to" style="width: 7rem"
+                      <datepicker class="form-control" v-model="vrf_Existing.date_to" style="width: 7rem;"
                         inputFormat="dd/MM/yyyy" @update:model-value="setFromDate('date_to_edit')"
                         :disabled="!checkstatus_send_to_approve" />
                       <p v-if="VRF_error.date_to && !vrf_Existing.date_to" class="error-message">
@@ -666,7 +664,7 @@
                     <div class="col-md-2 text-end">พื้นที่เข้าพบ:</div>
                     <div class="col-md-2">
                       <select class="form-select form-select-sm" v-model="vrf_Existing.area_id"
-                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
+                        style="width: 15rem; height: 2.5rem;" :disabled="!checkstatus_send_to_approve">
                         <option v-for="option in data_ddl.area" :value="option.id" :key="option.id"
                           :class="{ 'orange-text': option.type_meeting_area === 'พื้นที่ความมั่นคง' }">
                           {{ option.meeting_area }}
@@ -696,7 +694,7 @@
                     </div>
                     <div class="col-md-2 text-end">เหตุผลในการเข้าพบ:</div>
                     <div class="col-md-2">
-                      <input type="text" id="reason" class="form-control" style="width: 15rem"
+                      <input type="text" id="reason" class="form-control" style="width: 15rem;"
                         v-model="vrf_Existing.reason" :disabled="!checkstatus_send_to_approve" />
                       <p v-if="VRF_error.reason && !vrf_Existing.reason" class="error-message">
                         กรุณากรอกข้อมูล
@@ -704,7 +702,7 @@
                     </div>
                     <div class="col-md-2 text-end">ชื่อบริษัทผู้มาติดต่อ:</div>
                     <div class="col-md-2">
-                      <input type="text" id="contactor" class="form-control" style="width: 15rem"
+                      <input type="text" id="contactor" class="form-control" style="width: 15rem;"
                         v-model="vrf_Existing.contactor" :disabled="!checkstatus_send_to_approve" />
                       <p v-if="VRF_error.contactor && !vrf_Existing.contactor" class="error-message">
                         กรุณากรอกข้อมูล
@@ -727,7 +725,7 @@
                       </VueMultiselect> -->
 
                       <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_id"
-                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
+                        style="width: 15rem; height: 2.5rem;" :disabled="!checkstatus_send_to_approve">
                         <option v-for="option in data_ddl.userlist" :value="option.user_id" :key="option.user_id">
                           {{ option.first_name }}
                         </option>
@@ -740,7 +738,7 @@
                     <div class="col-md-2 text-end">ตำแหน่งผู้ร้องขอ:</div>
                     <div class="col-md-2">
                       <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_position_id"
-                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
+                        style="width: 15rem; height: 2.5rem;" :disabled="!checkstatus_send_to_approve">
                         <option v-for="option in data_ddl.position" :value="option.id" :key="option.id">
                           {{ option.position }}
                         </option>
@@ -761,7 +759,7 @@
                     <div class="col-md-2 text-end">แผนกผู้ร้องขอ:</div>
                     <div class="col-md-2">
                       <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_dept_id"
-                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
+                        style="width: 15rem; height: 2.5rem;" :disabled="!checkstatus_send_to_approve">
                         <option v-for="option in data_ddl.dept" :value="option.id" :key="option.id">
                           {{ option.department }}
                         </option>
@@ -783,7 +781,7 @@
                   <div class="row p-2">
                     <div class="col-md-2 text-end">เบอร์โทรผู้ร้องขอ:</div>
                     <div class="col-md-2">
-                      <input type="text" id="requestor_phone" class="form-control" style="width: 15rem"
+                      <input type="text" id="requestor_phone" class="form-control" style="width: 15rem;"
                         v-model="vrf_Existing.requestor_phone" :disabled="!checkstatus_send_to_approve" />
                       <p v-if="VRF_error.requestor_phone &&
                         !vrf_Existing.requestor_phone
@@ -794,7 +792,7 @@
                     <div class="col-md-2 text-end">ชื่อผู้นำพา:</div>
                     <div class="col-md-2">
                       <select class="form-select form-select-sm" v-model="vrf_Existing.navigator_id"
-                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
+                        style="width: 15rem; height: 2.5rem;" :disabled="!checkstatus_send_to_approve">
                         <option v-for="option in data_ddl.navigator" :value="option.user_id" :key="option.user_id">
                           {{ option.fullname }}
                         </option>
@@ -831,14 +829,14 @@
               </div>
               <div class="modal-footer pt-0 justify-content-center">
                 <div class="align-top pt-1 d-flex justify-content-center">
-                  <button class="btn btn-primary" v-show="checkstatus_send_to_approve" style="width: 4rem; height: 2rem">
+                  <button class="btn btn-primary" v-show="checkstatus_send_to_approve" style="width: 4rem; height: 2rem;">
                     บันทึก
                   </button>
-                  <button class="btn btn-success" v-show="checkstatus_send_to_approve" style="width: 5rem; height: 2rem"
+                  <button class="btn btn-success" v-show="checkstatus_send_to_approve" style="width: 5rem; height: 2rem;"
                     @click.prevent="sendApprove($event, vrf_Existing.id)">
                     ส่งอนุมัติ
                   </button>
-                  <button class="btn btn-danger" data-bs-dismiss="modal" type="reset" style="width: 4rem; height: 2rem"
+                  <button class="btn btn-danger" data-bs-dismiss="modal" type="reset" style="width: 4rem; height: 2rem;"
                     id="ClosemyModalNew" @click="ClosemyModalNew_">
                     ยกเลิก
                   </button>
@@ -1030,7 +1028,7 @@
                   <div class="row p-2">
                     <div class="col">จากวันที่:</div>
                     <div class="col">
-                      <datepicker class="form-control" v-model="vrf_urgent.date_from" style="width: 7rem"
+                      <datepicker class="form-control" v-model="vrf_urgent.date_from" style="width: 7rem;"
                         inputFormat="dd/MM/yyyy" @update:model-value="setToDate('date_from_edit')"
                         :disabled="!checkstatus_send_to_approve" />
                       <p v-if="urgentcase_error.date_from && !vrf_urgent.date_from" class="error-message">
@@ -1039,7 +1037,7 @@
                     </div>
                     <div class="col">ถึงวันที่:</div>
                     <div class="col">
-                      <datepicker class="form-control" v-model="vrf_urgent.date_to" style="width: 7rem"
+                      <datepicker class="form-control" v-model="vrf_urgent.date_to" style="width: 7rem;"
                         inputFormat="dd/MM/yyyy" @update:model-value="setFromDate('date_to_edit')"
                         :disabled="!checkstatus_send_to_approve" />
                       <p v-if="urgentcase_error.date_to && !vrf_urgent.date_to" class="error-message">
@@ -1057,7 +1055,7 @@
                     <div class="col">พื้นที่เข้าพบ:</div>
                     <div class="col">
                       <select class="form-select form-select-sm" v-model="vrf_urgent.area_id"
-                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
+                        style="width: 15rem; height: 2.5rem;" :disabled="!checkstatus_send_to_approve">
                         <option v-for="option in data_ddl.area" :value="option.id" :key="option.id"
                           :class="{ 'orange-text': option.type_meeting_area === 'พื้นที่ความมั่นคง' }">
                           {{ option.meeting_area }}
@@ -1069,7 +1067,7 @@
                     </div>
                     <div class="col">เหตุผลในการเข้าพบ:</div>
                     <div class="col">
-                      <input type="text" id="reason" class="form-control" style="width: 15rem" v-model="vrf_urgent.reason"
+                      <input type="text" id="reason" class="form-control" style="width: 15rem;" v-model="vrf_urgent.reason"
                         :disabled="!checkstatus_send_to_approve" />
                       <p v-if="urgentcase_error.reason && !vrf_urgent.reason" class="error-message">
                         กรุณากรอกข้อมูล
@@ -1077,7 +1075,7 @@
                     </div>
                     <div class="col">ชื่อบริษัทผู้มาติดต่อ:</div>
                     <div class="col">
-                      <input type="text" id="contactor" class="form-control" style="width: 15rem"
+                      <input type="text" id="contactor" class="form-control" style="width: 15rem;"
                         v-model="vrf_urgent.contactor" :disabled="!checkstatus_send_to_approve" />
                       <p v-if="urgentcase_error.contactor && !vrf_urgent.contactor" class="error-message">
                         กรุณากรอกข้อมูล
@@ -1088,7 +1086,7 @@
                     <div class="col">ผู้ร้องขอ:</div>
                     <div class="col">
                       <select class="form-select form-select-sm" v-model="vrf_urgent.requestor_id"
-                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
+                        style="width: 15rem; height: 2.5rem;" :disabled="!checkstatus_send_to_approve">
                         <option v-for="option in data_ddl.userlist" :value="option.user_id" :key="option.user_id">
                           {{ option.first_name }}
                         </option>
@@ -1100,7 +1098,7 @@
                     <div class="col">ตำแหน่งผู้ร้องขอ:</div>
                     <div class="col">
                       <select class="form-select form-select-sm" v-model="vrf_urgent.requestor_position_id"
-                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
+                        style="width: 15rem; height: 2.5rem;" :disabled="!checkstatus_send_to_approve">
                         <option v-for="option in data_ddl.position" :value="option.id" :key="option.id">
                           {{ option.position }}
                         </option>
@@ -1114,7 +1112,7 @@
                     <div class="col">แผนกผู้ร้องขอ:</div>
                     <div class="col">
                       <select class="form-select form-select-sm" v-model="vrf_urgent.requestor_dept_id"
-                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
+                        style="width: 15rem; height: 2.5rem;" :disabled="!checkstatus_send_to_approve">
                         <option v-for="option in data_ddl.dept" :value="option.id" :key="option.id">
                           {{ option.department }}
                         </option>
@@ -1129,7 +1127,7 @@
                   <div class="row p-2">
                     <div class="col">เบอร์โทรผู้ร้องขอ:</div>
                     <div class="col">
-                      <input type="text" id="requestor_phone" class="form-control" style="width: 15rem"
+                      <input type="text" id="requestor_phone" class="form-control" style="width: 15rem;"
                         v-model="vrf_urgent.requestor_phone" :disabled="!checkstatus_send_to_approve" />
                       <p v-if="urgentcase_error.requestor_phone &&
                         !vrf_urgent.requestor_phone
@@ -1140,7 +1138,7 @@
                     <div class="col">ชื่อผู้นำพา:</div>
                     <div class="col">
                       <select class="form-select form-select-sm" v-model="vrf_urgent.navigator_id"
-                        style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
+                        style="width: 15rem; height: 2.5rem;" :disabled="!checkstatus_send_to_approve">
                         <option v-for="option in data_ddl.navigator" :value="option.user_id" :key="option.user_id">
                           {{ option.fullname }}
                         </option>
@@ -1157,7 +1155,7 @@
                         เลือกไฟล์
                       </label>
                       <input type="file" class="form-control" id="formFile_edt" @change="selectFile_edt"
-                        style="display: none; width: 5rem" :disabled="!checkstatus_send_to_approve" />
+                        style="display: none; width: 5rem;" :disabled="!checkstatus_send_to_approve" />
                       <input type="text" class="form-control" id="formFileText_edt" style="width: 9rem; display: inline"
                         v-model="vrf_urgent.attach_file" :disabled="!checkstatus_send_to_approve" />
                       &nbsp;
@@ -1174,13 +1172,13 @@
               </div>
               <div class="modal-footer pt-0 justify-content-center">
                 <div class="align-top pt-1 d-flex justify-content-center">
-                  <button class="btn btn-primary" style="width: 6rem; height: 2rem">
+                  <button class="btn btn-primary" style="width: 6rem; height: 2rem;">
                     ส่งอนุมัติ
                   </button>
-                  <!-- <button class="btn btn-success" style="width: 5rem; height: 2rem" @click.prevent="sendApprove">
+                  <!-- <button class="btn btn-success" style="width: 5rem; height: 2rem;" @click.prevent="sendApprove">
                     ส่งอนุมัติ
                   </button> -->
-                  <button class="btn btn-danger" data-bs-dismiss="modal" type="reset" style="width: 4rem; height: 2rem"
+                  <button class="btn btn-danger" data-bs-dismiss="modal" type="reset" style="width: 4rem; height: 2rem;"
                     id="ClosemyModalNew" @click="ClosemyModalNew_">
                     ยกเลิก
                   </button>

@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+// import TemplateVRFList from '../views/Template_VRF_Lst.vue';
 
 const routes = [
   {
@@ -26,6 +27,11 @@ const routes = [
     name: 'template_vrf_lst',
     component: () => import('../views/Template_VRF_Lst.vue')
   },
+  // {
+  //   path: '/templatevrflst',
+  //   name: 'TemplateVRFList',
+  //   component: TemplateVRFList
+  // },
   {
     path: '/approvevrflst',
     name: 'approve_vrf_lst',
@@ -73,5 +79,8 @@ const router = createRouter({
   // history: createWebHistory(process.env.BASE_URL),  
   routes
 })
-
+router.beforeEach((to, from, next) => {
+  console.log('Navigating to:', to.path);
+  next();
+});
 export default router

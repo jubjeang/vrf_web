@@ -1,11 +1,13 @@
 <template>
-  <div class="dropdown-container">
-    <button class="dropbtn" type="button" @click="toggleDropdown">เลือกพื้นที่ควบคุม</button>
-    <div v-show="dropdownVisible" class="dropdown-content">
+  <div class="dropdown-container" ref="dropdown">
+    <button class="dropbtn" type="button" @click="toggleDropdown">{{ controlLabel }}</button>
+    <div :class="['dropdown-content', { 'no-select-all': !showSelectAll }]" v-show="dropdownVisible">
       <div class="dropdown-category">
         <div class="dropdown-category-item">
-          <input type="checkbox" @change="toggleAllItems" :checked="isAllSelected" />
-          <span>ทั้งหมด</span>
+          <template v-if="showSelectAll">
+            <input type="checkbox" @change="toggleAllItems" :checked="isAllSelected" />
+            <span>ทั้งหมด</span>
+          </template>
         </div>
       </div>
       <div v-for="(category, categoryKey) in items" :key="categoryKey" class="dropdown-category">
@@ -42,12 +44,21 @@ export default {
     categoryLabels: {
       type: Object,
       required: true
+    },
+    controlLabel: {
+      type: String,
+      required: true
+    },
+    showSelectAll: {
+      type: Boolean,
+      default: true
     }
   },
   setup(props, { emit }) {
     const dropdownVisible = ref(false);
     const expandedCategories = ref([]);
     const isAllSelected = ref(false);
+    const dropdown = ref(null);
 
     const toggleDropdown = () => {
       dropdownVisible.value = !dropdownVisible.value;
@@ -105,12 +116,10 @@ export default {
     };
 
     const handleClickOutside = (event) => {
-      if (!dropdown.value.contains(event.target)) {
+      if (dropdown.value && !dropdown.value.contains(event.target)) {
         dropdownVisible.value = false;
       }
     };
-
-    const dropdown = ref(null);
 
     onMounted(() => {
       document.addEventListener('click', handleClickOutside);
@@ -154,6 +163,7 @@ export default {
   cursor: pointer;
   text-align: left;
   box-sizing: border-box;
+  border-radius: 5px;
 }
 
 .dropdown-content {
@@ -165,13 +175,18 @@ export default {
   width: auto;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
-  padding: 12px 16px;
+  padding: 0 16px; /* ปรับ padding เมื่อ showSelectAll เป็น false */
   border: 1px solid #ddd;
   box-sizing: border-box;
   left: 100%; /* ขยับมาให้ด้านขวาชนปุ่ม */
   top: 0;
   max-height: 400px; /* เพิ่มส่วนนี้ */
   overflow-y: auto; /* เพิ่มส่วนนี้ */
+  border-radius: 5px;
+}
+
+.dropdown-content.no-select-all {
+  padding-top: 0; /* ปรับ padding เมื่อ showSelectAll เป็น false */
 }
 
 .dropdown-container:hover .dropdown-content {
