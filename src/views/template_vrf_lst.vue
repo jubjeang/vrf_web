@@ -113,8 +113,7 @@
                         class="form-select form-select-sm p-0" label="meeting_area" :style="{
     width: '15rem'
     , height: '0.5rem'
-  }" v-model="AdvSearch.area_id" :select-label="null" :allow-empty="true" :close-on-select="true" :value="id"
-                        track-by="id" placeholder="เลือก" :deselectLabel=null>
+  }" v-model="AdvSearch.area_id" :select-label="null" :allow-empty="true" :close-on-select="true"                         track-by="id" placeholder="เลือก" :deselectLabel=null>
                       </VueMultiselect>
                     </div>
                   </div>
@@ -127,7 +126,8 @@
                         class="form-select form-select-sm p-0" label="department" :style="{
     width: '15rem'
     , height: '0.5rem'
-  }" v-model="AdvSearch.requestor_dept_id" :select-label="null" :allow-empty="true" :close-on-select="true" :value="id"
+  }" v-model="AdvSearch.requestor_dept_id" :select-label="null" :allow-empty="true" :close-on-select="true" 
+    
                         track-by="id" placeholder="เลือก" :deselectLabel=null>
                       </VueMultiselect>
                     </div>
@@ -257,47 +257,58 @@
                   <div class="col-md-10 text-left">
                   </div>
                 </div> -->
-
-
-
                 <!-- First MeetingArea component -->
                 <div class="row p-2 pe-2 me-2">
                   <div class="col-md-2 text-right">
                     เลือกพื้นที่เข้าพบ:
                   </div>
-                  <div class="col-md-10 text-left">
+                  <div class="col-md-10 text-left border border-gray ms-5 ps-5">
                     <!-- <p v-if="VRF_error.controlarea && !MeetingAreas_selectedItems.value && VRF_error.area && !MeetingAreas_selectedControlItems.value" class="error-message">กรุณาเลือกข้อมูลพื้นที่เข้าพบ</p> -->
-                    <p v-if="VRF_error.area && !MeetingAreas_selectedItems.length && VRF_error.area && !MeetingAreas_selectedControlItems.length"
-                      class="error-message">กรุณาเลือกข้อมูลพื้นที่เข้าพบ</p>
-                    <MeetingArea :items="MeetingArea_items" :categoryLabels="categoryAreas"
-                      @update:selectedItems="updateSelectedItems" class="p-0 m-0" style="width: auto"
-                      :controlLabel="'พื้นที่ทั่วไป'" :showSelectAll="false" />
                     <ul class="selected-items-list w-100">
                       <li v-for="item in MeetingAreas_selectedItems" :key="item.id" class="selected-item">
                         {{ item.name }}
                         <button @click="removeSelectedItem(item)" class="remove-button">&times;</button>
                       </li>
                     </ul>
+                  </div>
+                </div>
+                <div class="row p-2 pe-2 me-2">
+                  <div class="col-md-2 text-right">
+                    &nbsp;
+                  </div>
+                  <div class="col-md-10 text-left">
+                    <p v-if="VRF_error.area && !MeetingAreas_selectedItems.length && VRF_error.area && !MeetingAreas_selectedControlItems.length"
+                      class="error-message">กรุณาเลือกข้อมูลพื้นที่เข้าพบ</p>
+                    <MeetingArea :items="MeetingArea_items" :categoryLabels="categoryAreas" :selectedItems=[]
+                      @update:selectedItems="updateSelectedItems" class="p-0 m-0" style="width: auto"
+                      :controlLabel="'พื้นที่ทั่วไป'" :showSelectAll="false" />
                     <!-- <p v-if="VRF_error.area && !NewVrf.area" class="error-message">กรุณาเลือกข้อมูล</p> -->
                   </div>
                 </div>
                 <!-- Second MeetingControlArea component -->
                 <div class="row p-2 pe-2 me-2">
                   <div class="col-md-2 text-right">
+                    &nbsp;
                   </div>
-                  <div class="col-md-10 text-left">
-                    <MeetingArea :items="MeetingControlArea_items" :categoryLabels="categoryControlAreas"
-                      @update:selectedItems="updateSelectedControlItems" class="p-0 m-0" style="width: auto"
-                      :controlLabel="'พื้นที่ควบคุม'" :showSelectAll="true" />
+                  <div class="col-md-10 text-left border border-gray h-auto">
                     <ul class="selected-items-list w-100">
                       <li v-for="item in MeetingAreas_selectedControlItems" :key="item.id" class="selected-item">
                         {{ item.name }}
                         <button @click="removeSelectedControlItem(item)" class="remove-button">&times;</button>
                       </li>
                     </ul>
-
                   </div>
                 </div>
+                <div class="row p-2 pe-2 me-2">
+                  <div class="col-md-2 text-right">
+                  </div>
+                  <div class="col-md-10 text-left">
+                    <MeetingArea :items="MeetingControlArea_items" :categoryLabels="categoryControlAreas"
+                      @update:selectedItems="updateSelectedControlItems" class="p-0 m-0" style="width: auto"
+                      :controlLabel="'พื้นที่ควบคุม'" :showSelectAll="true" :selectedItems=[] />
+                  </div>
+                </div>
+                <!-- End Second MeetingControlArea component -->
                 <div class="row p-2 pe-2 me-2">
                   <div class="col-md-2 text-right">
                     จากวันที่:
@@ -380,7 +391,7 @@
                       class="form-select form-select-sm p-0" label="position" :style="{
     width: '15rem'
     , height: '0.5rem'
-  }" v-model="NewVrf.requestor_position" :select-label="null" :allow-empty="true" :close-on-select="true" :value="id"
+  }" v-model="NewVrf.requestor_position" :select-label="null" :allow-empty="true" :close-on-select="true" :value="NewVrf.requestor_position.id"
                       track-by="id" placeholder="เลือก" :deselectLabel=null>
                     </VueMultiselect>
                     <p v-if="VRF_error.requestor_position && !NewVrf.requestor_position" class="error-message">
@@ -394,7 +405,7 @@
                       class="form-select form-select-sm p-0" label="department" :style="{
     width: '15rem'
     , height: '0.5rem'
-  }" v-model="NewVrf.requestor_dept" :select-label="null" :allow-empty="true" :close-on-select="true" :value="id"
+  }" v-model="NewVrf.requestor_dept" :select-label="null" :allow-empty="true" :close-on-select="true" :value="NewVrf.requestor_dept.id"
                       track-by="id" placeholder="เลือก" :deselectLabel=null>
                     </VueMultiselect>
                     <p v-if="VRF_error.requestor_dept && !NewVrf.requestor_dept" class="error-message">
@@ -428,32 +439,7 @@
 
                   </div>
                   <div class="col-md-2 text-left">
-                    <!--can't get id-->
-                    <!-- <VueMultiselect name="area" id="area" :options="data_ddl.area"
-                        class="form-select form-select-sm p-0" label="meeting_area" :style="{
-                          width: '15rem'
-                          , height: '0.5rem'
-                        }" v-model="NewVrf.area" :select-label="null" :allow-empty="true" :close-on-select="true"
-                        :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
-                      </VueMultiselect> -->
-                    <!-- <VueMultiselect
-                            name="area"
-                            id="area"
-                            :options="data_ddl.area"
-                            class="form-select form-select-sm p-0"
-                            label="meeting_area"
-                            :style="{ width: '15rem', height: '0.5rem' }"
-                            v-model="NewVrf.area"
-                            track-by="id"
-                            placeholder="เลือก">
-                            <template #option="{ option }">
-                                <div :style="option.type_meeting_area === 'พื้นที่ความมั่นคง'? {color: 'orange'} : {}">
-                                    {{ option.meeting_area }}
-                                </div>
-                            </template>
-</VueMultiselect> -->
-
-                    <!-- <p v-if="VRF_error.area && !NewVrf.area" class="error-message">กรุณาเลือกข้อมูล</p> -->
+                   
                   </div>
                 </div>
                 <!-- </div> -->
@@ -471,8 +457,7 @@
       </form>
     </div>
   </div>
-
-  <!-----------------------------------------------------------modal Edit Vrf--->
+  <!-----------------------------------------------------------modal Edit Vrf Template--->
   <div class="container py-2">
     <div class="py-2">
       <form @submit.prevent="editVRF_validateInput" enctype="multipart/form-data" id="form2">
@@ -507,9 +492,17 @@
                       <tbody>
                         <tr v-for="data, index in templete_vrf_Existing.templete_vrf_Existing_det" :key="index">
                           <td scope="col" class="colwidth25" style="white-space: nowrap; text-align: center;">
-                            <input type="text" class="form-control" style="width: 20rem; display: inline-block;"
-                              v-model="templete_vrf_Existing.templete_vrf_Existing_det[index].fullname"
-                              @blur="edit_validateInput('fullname', index, 'กรุณาใส่ข้อมูล')" />
+                            <div style="display: flex; align-items: center; justify-content: center;">
+                                <select class="form-select form-select-sm" v-model="templete_vrf_Existing.templete_vrf_Existing_det[index].prefix_id"
+                                  style="width: 7rem; margin-right: 0.5rem;"
+                                  @change="validateInput('prefix_id', index, 'กรุณาคำนำหน้า')">
+                                  <option v-for="option in data_ddl.prefix" :value="option.id" :key="option.id">{{
+        option.prefix }}</option>
+                                </select>                            
+                              <input type="text" class="form-control" style="width: 17rem; display: inline-block;"
+                                v-model="templete_vrf_Existing.templete_vrf_Existing_det[index].fullname"
+                                @blur="edit_validateInput('fullname', index, 'กรุณาใส่ข้อมูล')" />
+                            </div>
                             <p class="error-message" v-if="data.errors && data.errors.fullname">
                               {{ data.errors.fullname }}
                             </p>
@@ -576,7 +569,60 @@
   }}</div>
                     </div>
                   </div>
-
+                  <!-- First MeetingArea component -->
+                  <div class="row p-2 pe-2 me-2">
+                    <div class="col-md-2 text-right">
+                      เลือกพื้นที่เข้าพบ:
+                    </div>
+                    <div class="col-md-10 text-left border border-gray h-auto">
+                      <!-- <p v-if="VRF_error.controlarea && !MeetingAreas_selectedItems.value && VRF_error.area && !MeetingAreas_selectedControlItems.value" class="error-message">กรุณาเลือกข้อมูลพื้นที่เข้าพบ</p> -->
+                      <ul class="selected-items-list w-100">
+                        <li v-for="item in MeetingAreas_selectedItems" :key="item.id" class="selected-item">
+                          {{ item.name }}
+                          <button @click="removeSelectedItem(item)" class="remove-button">&times;</button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row p-2 pe-2 me-2">
+                    <div class="col-md-2 text-right">
+                      &nbsp;
+                    </div>
+                    <div class="col-md-10 text-left">
+                      <p v-if="VRF_error.area && !MeetingAreas_selectedItems.length && VRF_error.area && !MeetingAreas_selectedControlItems.length"
+                        class="error-message">กรุณาเลือกข้อมูลพื้นที่เข้าพบ</p>
+                      <MeetingArea :items="MeetingArea_items" :categoryLabels="categoryAreas"
+                        :selectedItems="MeetingAreas_selectedItems" @update:selectedItems="updateSelectedItems"
+                        @remove:item="removeSelectedItem" class="p-0 m-0" style="width: auto"
+                        :controlLabel="'พื้นที่ทั่วไป'" :showSelectAll="false" />
+                      <!-- <p v-if="VRF_error.area && !NewVrf.area" class="error-message">กรุณาเลือกข้อมูล</p> -->
+                    </div>
+                  </div>
+                  <!-- Second MeetingControlArea component -->
+                  <div class="row p-2 pe-2 me-2">
+                    <div class="col-md-2 text-right">
+                      &nbsp;
+                    </div>
+                    <div class="col-md-10 text-left border border-gray h-auto">
+                      <ul class="selected-items-list w-100">
+                        <li v-for="item in MeetingAreas_selectedControlItems" :key="item.id" class="selected-item">
+                          {{ item.name }}
+                          <button @click="removeSelectedControlItem(item)" class="remove-button">&times;</button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row p-2 pe-2 me-2">
+                    <div class="col-md-2 text-right">
+                    </div>
+                    <div class="col-md-10 text-left">
+                      <MeetingArea :items="MeetingControlArea_items" :categoryLabels="categoryControlAreas"
+                        :selectedItems="MeetingAreas_selectedControlItems"
+                        @update:selectedItems="updateSelectedControlItems" @remove:item="removeSelectedControlItem"
+                        class="p-0 m-0" style="width: auto" :controlLabel="'พื้นที่ควบคุม'" :showSelectAll="true" />
+                    </div>
+                  </div>
+                  <!-- End Second MeetingControlArea component -->
                   <div class="row p-2">
                     <div class="col">
                       จากวันที่:
@@ -671,13 +717,6 @@
                         <option v-for="option in data_ddl.position" :value="option.id" :key="option.id">{{
     option.position }}</option>
                       </select>
-                      <!-- <VueMultiselect name="requestor_position" id="requestor_position" :options="data_ddl.position"
-                        class="form-select form-select-sm p-0" label="position" :style="{
-                          width: '15rem'
-                          , height: '0.5rem'
-                        }" v-model="templete_vrf_Existing.requestor_position_id" :select-label="null" :allow-empty="true"
-                        :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
-                      </VueMultiselect> -->
                       <p v-if="VRF_error.requestor_position_id && !templete_vrf_Existing.requestor_position_id"
                         class="error-message">
                         กรุณาเลือกข้อมูล</p>
@@ -697,7 +736,7 @@
                           width: '15rem'
                           , height: '0.5rem'
                         }" v-model="templete_vrf_Existing.requestor_dept_id" :select-label="null" :allow-empty="true"
-                        :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
+                        :close-on-select="true" :value="data_ddl.dept.id" track-by="id" placeholder="เลือก" :deselectLabel=null>
                       </VueMultiselect> -->
                       <p v-if="VRF_error.requestor_dept && !templete_vrf_Existing.requestor_dept_id"
                         class="error-message">
@@ -736,35 +775,10 @@
                         กรุณาเลือกข้อมูล</p>
                     </div>
                     <div class="col">
-                      พื้นที่เข้าพบ:
+                      
                     </div>
                     <div class="col">
-                      <select class="form-select form-select-sm" v-model="templete_vrf_Existing.area_id"
-                        style="width: 15rem; height: 2.5rem;">
-                        <option v-for="option in data_ddl.area" :value="option.id" :key="option.id"
-                          :class="{ 'orange-text': option.type_meeting_area === 'พื้นที่ความมั่นคง' }">{{
-    option.meeting_area }}</option>
-                      </select>
-                      <!--can't get id-->
-                      <!-- <VueMultiselect name="area" id="area" :options="data_ddl.area"
-                        class="form-select form-select-sm p-0" label="meeting_area" :style="{
-                          width: '15rem'
-                          , height: '0.5rem'
-                        }" v-model="templete_vrf_Existing.area" :select-label="null" :allow-empty="true"
-                        :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
-                      </VueMultiselect> -->
-                      <!-- 
-                      <VueMultiselect name="area" id="area"
-                        :options="data_ddl.area" class="form-select form-select-sm p-0"
-                        label="meeting_area" :style="{
-                          width: '15rem'
-                          , height: '0.5rem'
-                        }" v-model="templete_vrf_Existing.area" :select-label="null" :allow-empty="true"
-                        :close-on-select="true" :value="id" track-by="id" placeholder="เลือก"
-                        :deselectLabel=null>
-                      </VueMultiselect> -->
-                      <p v-if="VRF_error.area && !templete_vrf_Existing.area_id" class="error-message">กรุณาเลือกข้อมูล
-                      </p>
+
                     </div>
                   </div>
                 </div>
@@ -809,7 +823,7 @@ import VueMultiselect from 'vue-multiselect'
 import Loading from "../components/Loading.vue";
 import Alert_popup from "../components/Alert_popup.vue";
 import MeetingArea from '../components/MeetingArea.vue';
-import  * as common  from '../components/common'
+import * as common from '../components/common'
 export default defineComponent({
   name: 'Template_VRF_Lst',
   components: {
@@ -820,21 +834,13 @@ export default defineComponent({
     , Datepicker
     , MeetingArea
     , useRouter
-    ,common
+    , common
   },
   setup() {
     const result_search_complete_word = reactive({
       contactor: [],
       reason: []
     })
-    const clear_search_results = (type) => {
-      if (type === 'contactor') {
-        result_search_complete_word.contactor = [];
-      }
-      if (type === 'reason') {
-        result_search_complete_word.reason = [];
-      }
-    }
     const complete_word = async (type) => {
       if (type === 'contactor') {
         if (NewVrf.contactor.length > 0) {
@@ -964,8 +970,8 @@ export default defineComponent({
     const rowData = ref([]);
     const loading = ref(false)
     const AdvSearch = reactive({
-      tbDateF: ""
-      , tbDateT: ""
+      tbDateF: null
+      , tbDateT: null
       , requestor_id: 0
       , area_id: 0
       , requestor_dept_id: 0
@@ -1009,6 +1015,7 @@ export default defineComponent({
       , date_from: null
       , date_to: null
     })
+
     //-----meetingarea
     //-----meetingarea
     const MeetingAreas_selectedItems = ref([]);
@@ -1017,6 +1024,14 @@ export default defineComponent({
     const MeetingControlArea_items = ref({});
     const categoryAreas = ref({});
     const categoryControlAreas = ref({});
+    const clear_search_results = (type) => {
+      if (type === 'contactor') {
+        result_search_complete_word.contactor = [];
+      }
+      if (type === 'reason') {
+        result_search_complete_word.reason = [];
+      }
+    }
     const fetchMeetingAreas = async () => {
       try {
         const response = await axios.get(process.env.VUE_APP_API_URL + '/get_Group_MeetingAreas', { params });
@@ -1028,15 +1043,15 @@ export default defineComponent({
           const meetingArea = {
             id: item.ma_id,
             name: item.meeting_area,
-            selected: false
+            // selected: false
           };
           if (!items[group]) {
             items[group] = [];
           }
           items[group].push(meetingArea);
         });
-
         MeetingArea_items.value = items;
+        console.log('MeetingArea_items.value: ', MeetingArea_items.value)
       } catch (error) {
         console.log(error);
       }
@@ -1048,19 +1063,22 @@ export default defineComponent({
         const items = {};
 
         data.forEach(item => {
+          //console.log('data.forEach(item => {  item: ', item)
           const group = item.group_meeting_area;
           const meetingArea = {
             id: item.ma_id,
             name: item.meeting_area,
-            selected: false
+            // selected: false,
+            is_security_area: item.mag_type_meeting_area === 'พื้นที่ความมั่นคง' ? true : false,
+            is_area_group: item.mag_type_meeting_area === 'พื้นที่ความมั่นคง' ? true : false
           };
           if (!items[group]) {
             items[group] = [];
           }
           items[group].push(meetingArea);
         });
-
         MeetingControlArea_items.value = items;
+        console.log('MeetingControlArea_items.value: ', MeetingControlArea_items.value)
       } catch (error) {
         console.log(error);
       }
@@ -1112,7 +1130,8 @@ export default defineComponent({
             MeetingAreas_selectedControlItems.value.push({
               id: categoryKey,
               name: `${categoryControlAreas.value[categoryKey]} ทั้งหมด`,
-              isCategory: true
+              isCategory: true,
+              // is_area_group: is_area_group
             });
           }
         } else {
@@ -1145,13 +1164,15 @@ export default defineComponent({
         const categoryKey = Object.keys(MeetingArea_items.value).find(key =>
           MeetingArea_items.value[key].some(meetingAreaItem => meetingAreaItem.id === item.id)
         );
-        if (categoryKey && !MeetingArea_items.value[categoryKey].every(meetingAreaItem => !meetingAreaItem.selected)) {
-          MeetingAreas_selectedItems.value = MeetingAreas_selectedItems.value.filter(selectedItem => selectedItem.id !== categoryKey);
+        if (categoryKey) {
           MeetingArea_items.value[categoryKey].forEach(meetingAreaItem => {
-            if (meetingAreaItem.selected) {
-              MeetingAreas_selectedItems.value.push(meetingAreaItem);
+            if (meetingAreaItem.id === item.id) {
+              meetingAreaItem.selected = false;
             }
           });
+          if (MeetingArea_items.value[categoryKey].every(meetingAreaItem => !meetingAreaItem.selected)) {
+            MeetingAreas_selectedItems.value = MeetingAreas_selectedItems.value.filter(selectedItem => selectedItem.id !== categoryKey);
+          }
         }
       }
     };
@@ -1168,13 +1189,15 @@ export default defineComponent({
         const categoryKey = Object.keys(MeetingControlArea_items.value).find(key =>
           MeetingControlArea_items.value[key].some(meetingAreaItem => meetingAreaItem.id === item.id)
         );
-        if (categoryKey && !MeetingControlArea_items.value[categoryKey].every(meetingAreaItem => !meetingAreaItem.selected)) {
-          MeetingAreas_selectedControlItems.value = MeetingAreas_selectedControlItems.value.filter(selectedItem => selectedItem.id !== categoryKey);
+        if (categoryKey) {
           MeetingControlArea_items.value[categoryKey].forEach(meetingAreaItem => {
-            if (meetingAreaItem.selected) {
-              MeetingAreas_selectedControlItems.value.push(meetingAreaItem);
+            if (meetingAreaItem.id === item.id) {
+              meetingAreaItem.selected = false;
             }
           });
+          if (MeetingControlArea_items.value[categoryKey].every(meetingAreaItem => !meetingAreaItem.selected)) {
+            MeetingAreas_selectedControlItems.value = MeetingAreas_selectedControlItems.value.filter(selectedItem => selectedItem.id !== categoryKey);
+          }
         }
       }
     };
@@ -1320,7 +1343,7 @@ export default defineComponent({
       templete_vrf_Existing.requestor_id = ""
       templete_vrf_Existing.requestor_position_id = ""
       templete_vrf_Existing.position = "",
-        templete_vrf_Existing.requestor_dept_id = ""
+      templete_vrf_Existing.requestor_dept_id = ""
       templete_vrf_Existing.department = ""
       templete_vrf_Existing.requestor_phone = ""
       templete_vrf_Existing.navigator_id = ""
@@ -1333,8 +1356,8 @@ export default defineComponent({
       templete_vrf_Existing.date_from = null
       templete_vrf_Existing.date_to = null
       //---------------------------
-      AdvSearch.tbDateF = ""
-      AdvSearch.tbDateT = ""
+      AdvSearch.tbDateF = null
+      AdvSearch.tbDateT = null
       AdvSearch.requestor_id = 0
       AdvSearch.area_id = 0
       AdvSearch.requestor_dept_id = 0
@@ -1390,7 +1413,7 @@ export default defineComponent({
       date__ = moment(date_).format('DD/MM/YYYY')
       return date__;
     }
-    const searchTerm = ref(""); // Search text
+    const searchTerm = ref(''); // Search text
     // Fake data
     const data = reactive({
       rows: [],
@@ -1410,117 +1433,92 @@ export default defineComponent({
       role_id: localStorage.getItem('user_role_id')
     }
     const myRequest = async (keyword) => {
-      //const fakeData = [];    
-      await axios.get(process.env.VUE_APP_API_URL + '/get_templete_vrf_list', { params })
-        .then((res) => {
-          Data_.value = JSON.parse(JSON.stringify(res.data))
-          console.log("myRequest Data_: ", Data_)
-        }, (res) => {
-          // error callback
-          console.log(res.data)
-        })
-      await axios.get(process.env.VUE_APP_API_URL + '/get_dept', {
-        params: {
-          division_id: localStorage.getItem('user_division_id')
-          , branch_id: localStorage.getItem('user_branch_id')
-        }
-      })
-        .then((res) => {
-          data_ddl.dept = res.data
-        }, (res) => {
-          // error callback 
-          res.data.message
-        });
-      await axios.get(process.env.VUE_APP_API_URL + '/get_position')
-        .then((res) => {
-          data_ddl.position = res.data
-          //console.log('data_ddl.position: ', data_ddl.position);
-        }, (res) => {
-          // error callback          
-          // ActitySelectd.branchtobranch
-        });
-      await axios.get(process.env.VUE_APP_API_URL + '/get_user', { params: { department_id: localStorage.getItem('user_department_id') } })
-        .then((res) => {
-          data_ddl.userlist = res.data
-        }, (res) => {
-          // error callback          
-          // ActitySelectd.branchtobranch
-        });
-      await axios.get(process.env.VUE_APP_API_URL + '/get_navigator', { params: { user_id: localStorage.getItem('user_id') } })
-        .then((res) => {
-          data_ddl.navigator = res.data
+      table.isLoading = true;
+      try {
+        const res = await axios.get(process.env.VUE_APP_API_URL + '/get_templete_vrf_list', { params });
+        const fetchedData = JSON.parse(JSON.stringify(res.data));
+        // console.log('/get_templete_vrf_list fetchedData: ', fetchedData);
 
+        await axios.get(process.env.VUE_APP_API_URL + '/get_dept', {
+          params: {
+            division_id: localStorage.getItem('user_division_id'),
+            branch_id: localStorage.getItem('user_branch_id')
+          }
+        }).then((res) => { 
+          //console.log('/get_templete_vrf_list fetchedData: res.data: ', res.data);
+          data_ddl.dept = res.data;
         }, (res) => {
-          // error callback          
-          console.log(res.data.message)
-          console.log('console.log( res.data.message ): ', console.log(res.data.message))
-          // ActitySelectd.branchtobranch
-        });
-      await axios.get(process.env.VUE_APP_API_URL + '/get_meeting_area', { params: { user_id: localStorage.getItem('user_id') } })
-        .then((res) => {
-          data_ddl.area = res.data
-          //console.log('data_ddl.area: ', data_ddl.area);
-
-        }, (res) => {
-          // error callback          
-          // ActitySelectd.branchtobranch
-        });
-      await axios.get(process.env.VUE_APP_API_URL + '/get_vehicle_brand')
-        .then((res) => {
-          // success callback     
-          data_ddl.vehicle_brand = res.data
-        }, (res) => {
-          // error callback          
-        });
-      await axios.get(process.env.VUE_APP_API_URL + '/get_vehicle_color')
-        .then((res) => {
-          // success callback     
-          data_ddl.vehicle_color = res.data
-        }, (res) => {
-          // error callback          
-        });
-      await axios.get(process.env.VUE_APP_API_URL + '/get_prefix')
-        .then((res) => {
-          // success callback     
-          data_ddl.prefix = res.data
-          console.log('data_ddl.prefix: ', data_ddl.prefix);
-        }, (res) => {
-          // error callback          
+          console.log(res.data.message);
         });
 
+        await axios.get(process.env.VUE_APP_API_URL + '/get_position').then((res) => {
+          data_ddl.position = res.data;
+        }, (res) => {
+          console.log(res.data);
+        });
+
+        await axios.get(process.env.VUE_APP_API_URL + '/get_user', { params: { department_id: localStorage.getItem('user_department_id') } })
+          .then((res) => {
+            data_ddl.userlist = res.data;
+          }, (res) => {
+            console.log(res.data);
+          });
+
+        await axios.get(process.env.VUE_APP_API_URL + '/get_navigator', { params: { user_id: localStorage.getItem('user_id') } })
+          .then((res) => {
+            data_ddl.navigator = res.data;
+          }, (res) => {
+            console.log('/get_navigator res.data.message: ', res.data.message);
+            // console.log('console.log( res.data.message ): ', console.log(res.data.message));
+          });
+
+        await axios.get(process.env.VUE_APP_API_URL + '/get_meeting_area', { params: { user_id: localStorage.getItem('user_id') } })
+          .then((res) => {
+            data_ddl.area = res.data;
+          }, (res) => {
+            console.log(res.data);
+          });
+
+        await axios.get(process.env.VUE_APP_API_URL + '/get_vehicle_brand').then((res) => {
+          data_ddl.vehicle_brand = res.data;
+        }, (res) => {
+          console.log(res.data);
+        });
+
+        await axios.get(process.env.VUE_APP_API_URL + '/get_vehicle_color').then((res) => {
+          data_ddl.vehicle_color = res.data;
+        }, (res) => {
+          console.log(res.data);
+        });
+
+        await axios.get(process.env.VUE_APP_API_URL + '/get_prefix').then((res) => {
+          data_ddl.prefix = res.data;
+          // console.log('data_ddl.prefix: ', data_ddl.prefix);
+        }, (res) => {
+          console.log(res.data);
+        });
+
+        await populateAreaNames(fetchedData);//data at column พื้นที่เข้าพบ in grid table
+        const filteredData = fetchedData.filter((x) =>
+          (x.no && x.no.includes(keyword)) ||
+          (x.template_name && x.template_name.toLowerCase().includes(keyword.toLowerCase())) ||
+          (dateTime(x.date_from) && dateTime(x.date_from).includes(keyword)) ||
+          (dateTime(x.date_to) && dateTime(x.date_to).includes(keyword)) ||
+          (x.contactor && x.contactor.toLowerCase().includes(keyword.toLowerCase())) ||
+          (x.reason && x.reason.toLowerCase().includes(keyword.toLowerCase())) ||
+          (x.meeting_area && x.meeting_area.toLowerCase().includes(keyword.toLowerCase())) ||
+          (x.user_create && x.user_create.toLowerCase().includes(keyword.toLowerCase()))
+        );
 
 
-      return await new Promise((resolve, reject) => {
-        try {
-          table.isLoading = true;
-          // Remove setTimeout() and change to your Axios request or AJAX request on here.
-          setTimeout(() => {
-            table.isLoading = false;
-            console.log('Data_.value:', Data_.value);
-            let newData2 = Data_.value.filter((x) => {
-              console.log('Comparing:', x.date_from, 'with', keyword);
-              return x.date_from && x.date_from.includes(keyword);
-            });
-
-            let newData = Data_.value.filter((x) =>
-
-              (x.no && x.no.includes(keyword)) ||
-              (x.template_name && x.template_name.toLowerCase().includes(keyword.toLowerCase())) ||
-              (dateTime(x.date_from) && dateTime(x.date_from).includes(keyword)) ||
-              (dateTime(x.date_to) && dateTime(x.date_to).includes(keyword)) ||
-              (x.contactor && x.contactor.toLowerCase().includes(keyword.toLowerCase())) ||
-              (x.reason && x.reason.toLowerCase().includes(keyword.toLowerCase())) ||
-              (x.meeting_area && x.meeting_area.toLowerCase().includes(keyword.toLowerCase())) ||
-              (x.user_create && x.user_create.toLowerCase().includes(keyword.toLowerCase()))
-            );
-            resolve(newData);
-          }, 100);
-        } catch (error) {
-          console.log("Fetch error", error);
-          reject();
-        }
-      });
-    };//const myRequest = async (keyword) => {
+        data.rows = filteredData;
+        // console.log('data.rows: ', data.rows);
+      } catch (error) {
+        console.log("Fetch error", error);
+      } finally {
+        table.isLoading = false;
+      }
+    };
     // Table config
     const table = reactive({
       isLoading: false,
@@ -1533,7 +1531,10 @@ export default defineComponent({
           isKey: true,
           display: function (row) {
             // return (`<div style="text-align: right;">${row.no}</div>`);
-            return (`<div style="text-align: center;">${row.no}</div>`);
+            return (
+              `<div data-id="${row.id}" class="is-rows-el editvrf cursor-pointer" style="margin-top: 0.2rem; width: 5rem; height:2rem;  cursor: pointer;" data-bs-target="#ModalEditvrf" data-bs-toggle="modal">${row.no}</div>`
+              // `<div style="text-align: center;">${row.no}</div>`
+            );
           },
         },
         {
@@ -1542,7 +1543,9 @@ export default defineComponent({
           width: "15%",
           sortable: true,
           display: function (row) {
-            return (`<div style="text-align: left;">${row.template_name}</div>`
+            return (`
+            <div data-id="${row.id}" class="is-rows-el editvrf cursor-pointer" style="margin-top: 0.2rem; width: 5rem; height:2rem;  cursor: pointer;" data-bs-target="#ModalEditvrf" data-bs-toggle="modal">${row.template_name}</div>
+            `
             );
           },
         },
@@ -1552,8 +1555,9 @@ export default defineComponent({
           width: "9%",
           sortable: true,
           display: function (row) {
-            return (`<div style="text-align: left;">${row.date_from ? dateTime(row.date_from) : ''}</div>`
-            );
+            return (`
+            <div data-id="${row.id}" class="is-rows-el editvrf cursor-pointer" style="margin-top: 0.2rem; width: 5rem; height:2rem;  cursor: pointer;" data-bs-target="#ModalEditvrf" data-bs-toggle="modal">${row.date_from ? dateTime(row.date_from) : ''}</div>
+            `            );
           },
         },
         {
@@ -1562,7 +1566,8 @@ export default defineComponent({
           width: "9%",
           sortable: true,
           display: function (row) {
-            return (`<div style="text-align: left;">${row.date_to ? dateTime(row.date_to) : ''}</div>`
+            return (`<div data-id="${row.id}" class="is-rows-el editvrf cursor-pointer" style="margin-top: 0.2rem; width: 5rem; height:2rem;  cursor: pointer;" data-bs-target="#ModalEditvrf" data-bs-toggle="modal">${row.date_to ? dateTime(row.date_to) : ''}</div>
+            `
             );
           },
         },
@@ -1572,7 +1577,9 @@ export default defineComponent({
           width: "15%",
           sortable: true,
           display: function (row) {
-            return (`<div style="text-align: left;">${row.contactor}</div>`
+            return (`
+            <div data-id="${row.id}" class="is-rows-el editvrf cursor-pointer" style="margin-top: 0.2rem; width: 5rem; height:2rem;  cursor: pointer;" data-bs-target="#ModalEditvrf" data-bs-toggle="modal">${row.contactor}</div>            
+            `
             );
           },
         },
@@ -1582,7 +1589,9 @@ export default defineComponent({
           width: "15%",
           sortable: true,
           display: function (row) {
-            return (`<div style="text-align: left;">${row.reason}</div>`
+            return (`
+            <div data-id="${row.id}" class="is-rows-el editvrf cursor-pointer" style="margin-top: 0.2rem; width: 5rem; height:2rem;  cursor: pointer;" data-bs-target="#ModalEditvrf" data-bs-toggle="modal">${row.reason}</div>            
+            `
             );
           },
         },
@@ -1592,8 +1601,10 @@ export default defineComponent({
           width: "10%",
           sortable: true,
           display: function (row) {
-            return (`<div style="text-align: left;">${row.meeting_area}</div>`
-            );
+            return (`
+            <div data-id="${row.id}" class="is-rows-el editvrf cursor-pointer" style="text-align: left; cursor: pointer;" data-bs-target="#ModalEditvrf" data-bs-toggle="modal">${row.area_names ? row.area_names.join(', ') : ''}</div>
+            
+            `);
           },
         },
         {
@@ -1602,7 +1613,10 @@ export default defineComponent({
           width: "15%",
           sortable: true,
           display: function (row) {
-            return (`<div style="text-align: left;">${row.user_create}</div>`
+
+            return (`
+            <div data-id="${row.id}" class="is-rows-el editvrf cursor-pointer" style="text-align: left; cursor: pointer;" data-bs-target="#ModalEditvrf" data-bs-toggle="modal">${row.user_create}</div>
+            `
             );
           },
         },
@@ -1613,7 +1627,7 @@ export default defineComponent({
           height: "1%",
           display: function (row) {
             return (
-              '<div style="display: flex; j"><button type="button" data-id="' +
+              '<div style="display: flex;"><button type="button" data-id="' +
               row.id +
               '" class="btn btn-danger is-rows-el cancelvrf" style="margin-top: 0.2rem; width: 5rem; height:2rem">ยกเลิก</button>&nbsp; '
               +
@@ -1638,14 +1652,40 @@ export default defineComponent({
     /**
  * Use vue.js watch to watch your state's change
 */
+    // watch(
+    //   () => searchTerm.value,
+    //   (val) => {
+    //     myRequest(val).then((newData) => {
+    //       data.rows = newData;
+    //     });
+    //   }
+    // );
+    const fetchAreaNames = async (vrfId) => {
+      try {
+        const response = await axios.get(`${process.env.VUE_APP_API_URL}/get_area_names`, { params: { vrf_id: vrfId } });
+        // console.log(`Fetched area names for vrfId ${vrfId}:`, response.data);
+        return response.data.map(area => area.name);
+      } catch (error) {
+        console.error('Error fetching area names:', error);
+        return [];
+      }
+    };
+    const populateAreaNames = async (rows) => {
+      for (let row of rows) {
+        row.area_names = null; // กำหนดค่าเริ่มต้นเป็น null 
+        row.area_names = await fetchAreaNames(row.id);
+        // console.log('row.area_names:', row.area_names);
+      }
+    };
     watch(
       () => searchTerm.value,
       (val) => {
-        myRequest(val).then((newData) => {
-          data.rows = newData;
-        });
+        myRequest(val);
       }
     );
+    onMounted(() => {
+      myRequest("");
+    });
     const tableLoadingFinish = (elements) => {
       table.isLoading = false;
       Array.prototype.forEach.call(elements, function (element) {
@@ -1677,6 +1717,7 @@ export default defineComponent({
         //--------------------------------------------------------------------------------------------------------------------------------event click button edit
         if (element.classList.contains("editvrf")) {
           element.addEventListener("click", async function () {
+            console.log('editvrf this.dataset.id: ', this.dataset.id)
             const params = {
               Id: this.dataset.id
             };
@@ -1703,21 +1744,56 @@ export default defineComponent({
                   templete_vrf_Existing.area_id = obj[0].area_id
                   templete_vrf_Existing.meeting_area = obj[0].meeting_area
                   templete_vrf_Existing.user_create = obj[0].user_create
-                  console.log("obj[0], templete_vrf_Existing: ", templete_vrf_Existing)
+                  // console.log("obj[0], templete_vrf_Existing: ", templete_vrf_Existing)
                 }, (res) => {
                   // error callback
                   console.log(res.data)
                 }).finally(() => {
-                  //
-
                 });
-
             }
             catch (err) {
               console.log(err)
             }
-            console.log('param: ', params)
-            //---------------------------------get vrf detail---------------------------------------------
+            //---------------------------------get MeetingAreas_selectedItems detail---------------------------------------------
+            // let MeetingAreas_selectedItems_
+            try {
+              loading.value = true;
+              await axios.get(process.env.VUE_APP_API_URL + '/get_MeetingAreas_selectedItems', { params })
+                .then((res) => {
+                  // success callback
+                  //let obj = JSON.parse(JSON.stringify(res.data))
+                  let obj = res.data
+                  //templete_vrf_Existing.id = obj[0].id
+                  // MeetingAreas_selectedItems_ = obj;                 
+                  if (Array.isArray(obj)) {
+                    // console.log("obj is an array.");
+                    let innerArray = obj;
+                    // กรองข้อมูลสำหรับพื้นที่ทั่วไป
+                    const generalAreas = innerArray.filter(item => item.area_type === 'พื้นที่ทั่วไป');
+                    // กรองข้อมูลสำหรับพื้นที่ความมั่นคง
+                    const secureAreas = innerArray.filter(item => item.area_type === 'พื้นที่ความมั่นคง');
+                    // ตั้งค่า ref
+                    MeetingAreas_selectedItems.value = generalAreas;
+                    MeetingAreas_selectedControlItems.value = secureAreas;
+
+                    // แสดงผลลัพธ์
+                    console.log("MeetingAreas_selectedItems:", MeetingAreas_selectedItems.value);
+                    console.log("MeetingAreas_selectedControlItems:", MeetingAreas_selectedControlItems.value);
+                  } else {
+                    console.error("Fetched data is not an array.");
+                  }
+                }, (res) => {
+                  // error callback
+                  console.log(res.data)
+                }).finally(() => {
+                });
+            }
+            catch (err) {
+              console.log(err)
+            }
+
+            //---------------------------------get MeetingAreas_selectedControlItems detail--------------------------------------  
+            //---------------------------------get vrf detail---------------------------------------------            
             try {
               loading.value = true;
               await axios.get(process.env.VUE_APP_API_URL + '/get_templete_vrf_det', { params })
@@ -1732,7 +1808,7 @@ export default defineComponent({
                   loading.value = false;
                 }, (res) => {
                   // error callback
-                  console.log(res.data)
+                  // console.log(res.data)
                 }).finally(() => {
                   //
                 });
@@ -1760,21 +1836,22 @@ export default defineComponent({
         branch_id: localStorage.getItem('user_branch_id'),
         checkin_status: null,
       }
-      console.log("params: ", params)
+      // console.log("params: ", params)
       await axios.get(process.env.VUE_APP_API_URL + '/get_search_vrf_templete', { params })
         .then((res) => {
           data.rows = JSON.parse(JSON.stringify(res.data))
-          console.log("JSON.parse(JSON.stringify(res.data): ", JSON.parse(JSON.stringify(res.data)))
+          // console.log("JSON.parse(JSON.stringify(res.data): ", JSON.parse(JSON.stringify(res.data)))
         }, (res) => {
           // error callback
           console.log(res.data)
         })
       document.getElementById('CloseModalAdvSearch').click();//************************** */
     }
+    // myRequest("")
     // Get data on first rendering
-    myRequest("").then((newData) => {
-      data.rows = newData;
-    });
+    // myRequest("").then((newData) => {
+    //   data.rows = newData;
+    // });
     const formatPrice = (value) => {
       let val = (value / 1).toFixed(2)
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -1806,6 +1883,10 @@ export default defineComponent({
       return moment.utc(value).format("DD-MM-YYYY");
     }
     const addManualVRF = async () => {
+      // console.log('addManualVRF MeetingAreas_selectedItems.value: ', MeetingAreas_selectedItems.value)
+      // console.log('addManualVRF MeetingAreas_selectedControlItems.value: ', MeetingAreas_selectedControlItems.value)
+      // console.log('addManualVRF JSON.stringify(MeetingAreas_selectedItems.value): ', JSON.stringify(MeetingAreas_selectedItems.value) )
+      // console.log('addManualVRF JSON.stringify(MeetingAreas_selectedControlItems.value): ', JSON.stringify(MeetingAreas_selectedControlItems.value) )
       const formData = new FormData()
       formData.append('template_name', NewVrf.template_name)
       formData.append('reason', NewVrf.reason)
@@ -1820,23 +1901,21 @@ export default defineComponent({
       formData.append('date_from', NewVrf.date_from)
       formData.append('date_to', NewVrf.date_to)
       formData.append('user_id', user_id.value)
-      console.log('MeetingAreas_selectedItems: ', MeetingAreas_selectedItems.value)
-      console.log('MeetingAreas_selectedControlItems: ', MeetingAreas_selectedControlItems.value)
+      formData.append('vrf_type', 'vrf_template')
       let object_formData = {}
       formData.forEach((value, key) => object_formData[key] = value)
       var json_formData = JSON.stringify(object_formData)
-      console.log('addManualVRF json_formData: ', json_formData)
       let id
       try {
         await axios.post(process.env.VUE_APP_API_URL + '/set_manual_add_vrf_template', json_formData)
           .then((res) => {
             id = res.data
-            console.log('/set_manual_add_vrf_template response id: ', id)
+            json_formData.vrf_id = id;
           }, (res) => {
-            console.error('/set_manual_add_vrf_template error callback', res.data.message)
+            //console.error('/set_manual_add_vrf_template error callback', res.data.message)
           })
           .catch((err) => {
-            console.error('/set_manual_add_vrf_template catch error', err)
+            //console.error('/set_manual_add_vrf_template catch error', err)
           });
         error_addManual.value = false
       } catch (err) {
@@ -1847,12 +1926,13 @@ export default defineComponent({
       let object_det = {}
       rowData.value.forEach((value, key) => object_det[key] = value)
       object_det.newid = id
+      object_det.user_id = user_id.value
       var json_object_det = JSON.stringify(object_det)
-      console.log('set_manual_add_vrf_template_det json_object_det : ', json_object_det)
+      // console.log('set_manual_add_vrf_template_det json_object_det : ', json_object_det)
       try {
         await axios.post(process.env.VUE_APP_API_URL + '/set_manual_add_vrf_template_det', json_object_det)
           .then((res) => {
-            console.log('set_manual_add_vrf_template_det success: ', res.data)
+            // console.log('set_manual_add_vrf_template_det success: ', res.data)
           }, (res) => {
             console.error('set_manual_add_vrf_template_det error callback', res.data.message)
             message_addManual.value = res.data.message
@@ -1868,94 +1948,11 @@ export default defineComponent({
         console.error('catch error', err)
         message_addManual.value = "Something went wrong: " + err
         error_addManual.value = true
-      } finally {        
-        //location.reload()        
+      } finally {
+        location.reload()
         //common.navigateToTemplateVRFList(router, '/templatevrflst', 'ClosemyModalNew');
       }
     }
-    // const addManualVRF = async () => {
-    //   const formData = new FormData()
-    //   formData.append('template_name', NewVrf.template_name)
-    //   formData.append('reason', NewVrf.reason)
-    //   formData.append('contactor', NewVrf.contactor)
-    //   formData.append('requestor', NewVrf.requestor.user_id)
-    //   formData.append('requestor_position', NewVrf.requestor_position.id)
-    //   formData.append('requestor_dept', NewVrf.requestor_dept.id)
-    //   formData.append('requestor_phone', NewVrf.requestor_phone)
-    //   formData.append('navigator', NewVrf.navigator.user_id)
-    //   formData.append('area', NewVrf.area.id)
-    //   formData.append('date_from', NewVrf.date_from)
-    //   formData.append('date_to', NewVrf.date_to)
-    //   formData.append('user_id', user_id.value)
-
-    //   console.log('MeetingAreas_selectedItems: ', MeetingAreas_selectedItems.value)
-    //   console.log('MeetingAreas_selectedControlItems: ', MeetingAreas_selectedControlItems.value)
-
-    //   // rowData.value.forEach((value, key) => console.log('rowData value: ', value, 'rowData key: ', key))
-    //   let object_formData = {}
-    //   formData.forEach((value, key) => object_formData[key] = value)
-    //   var json_formData = JSON.stringify(object_formData)
-    //   console.log('addManualVRF json_formData: ', json_formData)
-    //   let id
-    //   try {
-    //     await axios.post(process.env.VUE_APP_API_URL + '/set_manual_add_vrf_template', json_formData)
-    //       .then((res) => {
-    //         // success callback  
-    //         id = res.data 
-    //         console.log('/set_manual_add_vrf_template error id: ', id)
-    //       }, (res) => {
-    //         // error callback
-    //         console.log(res.data.message)
-    //         console.log('/set_manual_add_vrf_template: error callback')
-    //       }).finally(() => { 
-    //         console.log('/set_manual_add_vrf_template error finally', json_formData)
-
-    //       });
-    //     error_addManual.value = false
-    //   }
-    //   catch (err) {
-    //     console.log(err)
-    //     message_addManual.value = "Something went wrong: " + err
-    //     error_addManual.value = true
-    //     console.log('json_formData: ', json_formData)
-    //   }
-
-    //   let object_det = {}
-    //   rowData.value.forEach((value, key) => object_det[key] = value)
-    //   object_det.newid = id
-    //   var json_object_det = JSON.stringify(object_det)
-    //   console.log('/set_manual_add_vrf_template_det json_object_det : ', json_object_det)
-    //   try {
-    //     await axios.post(process.env.VUE_APP_API_URL + '/set_manual_add_vrf_template_det', json_object_det)
-    //       .then((res) => {
-    //         // success callback       
-    //         console.log('set_manual_add_vrf_template_det success: ')
-    //       }, (res) => {
-    //         // error callback
-    //         console.log(res.data.message)
-    //         message_addManual.value = res.data.message
-    //         console.log('set_manual_add_vrf_template_det error callback: ')
-    //       }).finally(() => { 
-    //         console.log('await axios.post Navigating to templatevrflst');
-    //         console.log('await axios.post Router instance:', router);
-    //         router.push('/templatevrflst')
-    //       });
-    //     error_addManual.value = false
-    //   }
-    //   catch (err) {
-    //     console.log(err)
-    //     message_addManual.value = "Something went wrong: " + err
-    //     error_addManual.value = true
-    //   }
-    //   finally {
-    //     //  router.push('/templatevrflst')
-    //     console.log('Navigating to templatevrflst');
-    //     console.log('Router instance:', router);
-    //     //location.reload()
-    //   }
-
-    // }
-    //-------------------validate add vrf-------------------
     const fieldsToValidate = [
       // 'tbDateF',
       // 'tbDateT',
@@ -1972,7 +1969,6 @@ export default defineComponent({
         })
       })
     }
-
     const validateInput = (field, index, errorMessage) => {
       // ตรวจสอบความยาวข้อมูล
       if (field === 'tbFullName') {
@@ -1999,38 +1995,12 @@ export default defineComponent({
           validateInputAll.value = false
         }
       }
-      // else if (field === 'tbCardNo')//เลขบัตร
-      // {
-      //   const isDuplicate = rowData.value.some((item, idx) =>
-      //     idx !== index && item.tbCardNo === rowData.value[index].tbCardNo);
-      //   if (isDuplicate) {
-      //     rowData.value[index].errors = {
-      //       ...rowData.value[index].errors,
-      //       [field]: "ข้อมูลบัตรซ้ำกัน"
-      //     };
-      //     validateInputAll.value = true
-      //   }
-      //   else if (!rowData.value[index].tbCardNo) {
-      //     rowData.value[index].errors = {
-      //       ...rowData.value[index].errors,
-      //       [field]: "กรุณาใส่ข้อมูล"
-      //     }
-      //     validateInputAll.value = true
-      //   }
-      //   else {
-      //     if (rowData.value[index].errors && rowData.value[index].errors[field]) {
-      //       const { [field]: removed, ...rest } = rowData.value[index].errors;
-      //       rowData.value[index].errors = { ...rest };
-      //     }
-      //     validateInputAll.value = false
-      //   }
-      // }
       else if (field === 'tbVehicle_Registration')//ทะเบียนรถ 
       {
-        if (rowData.value[index]['tbVehicle_Registration'].length > 7) {
+        if (rowData.value[index]['tbVehicle_Registration'].length > 10) {
           rowData.value[index].errors = {
             ...rowData.value[index].errors,
-            [field]: "ห้ามใส่ข้อมูลเกิน 7 ตัวอักษร"
+            [field]: "ห้ามใส่ข้อมูลเกิน 10 ตัวอักษร"
           }
           validateInputAll.value = true
         }
@@ -2042,20 +2012,6 @@ export default defineComponent({
           validateInputAll.value = false
         }
       }
-      //  else if (!rowData.value[index][field]) { 
-      //   console.log( 'aaa: ',rowData.value[index][field] )
-      //   rowData.value[index].errors = {
-      //     ...rowData.value[index].errors,
-      //     [field]: errorMessage
-      //   }
-      //   validateInputAll.value = true
-      // } else { 
-      //   console.log( 'bbb: ',rowData.value[index][field] )
-      //   if (rowData.value[index].errors && rowData.value[index].errors[field]) {
-      //     const { [field]: removed, ...rest } = rowData.value[index].errors
-      //     rowData.value[index].errors = { ...rest }
-      //   }
-      // }
     }
     const addManualVRF_validateInput = (e) => {
       validateAllInputs()
@@ -2065,6 +2021,7 @@ export default defineComponent({
       }
       let isError = false
       isError = validateInputAll.value
+      // console.log('isError = validateInputAll.value', isError)
       if (rowData.value.length === 0) {
         isError = true
         //message_addManual.value = "กรุณาเพิ่มรายการ"
@@ -2076,55 +2033,55 @@ export default defineComponent({
       } else {
         VRF_error.template_name = '';
       }
-      // if (!NewVrf.reason) {
-      //   VRF_error.reason = 'กรุณาใส่ข้อมูล'
-      //   isError = true
-      //   console.log('NewVrf.reason error isError: ', isError)
-      // } else {
-      //   VRF_error.reason = ''
-      // }
-      // if (!NewVrf.contactor) {
-      //   VRF_error.contactor = 'กรุณาใส่ข้อมูล'
-      //   isError = true
-      //   console.log('NewVrf.contactor error isError: ', isError)
-      // } else {
-      //   VRF_error.contactor = ''
-      // }
-      // if (!NewVrf.requestor) {
-      //   VRF_error.requestor = 'กรุณาใส่ข้อมูล'
-      //   isError = true
-      //   console.log('NewVrf.requestor error isError: ', isError)
-      // } else {
-      //   VRF_error.requestor = ''
-      // }
-      // if (!NewVrf.requestor_position) {
-      //   VRF_error.requestor_position = 'กรุณาใส่ข้อมูล'
-      //   isError = true
-      //   console.log('NewVrf.requestor_position error isError: ', isError)
-      // } else {
-      //   VRF_error.requestor_position = ''
-      // }
-      // if (!NewVrf.requestor_dept) {
-      //   VRF_error.requestor_dept = 'กรุณาใส่ข้อมูล'
-      //   isError = true
-      //   console.log('NewVrf.requestor_dept error isError: ', isError)
-      // } else {
-      //   VRF_error.requestor_dept = ''
-      // }
-      // if (!NewVrf.requestor_phone) {
-      //   VRF_error.requestor_phone = 'กรุณาใส่ข้อมูล'
-      //   isError = true
-      //   console.log('NewVrf.requestor_phone error isError: ', isError)
-      // } else {
-      //   VRF_error.requestor_phone = ''
-      // }
-      // if (!NewVrf.navigator) {
-      //   VRF_error.navigator = 'กรุณาใส่ข้อมูล'
-      //   isError = true
-      //   console.log('NewVrf.navigator error isError: ', isError)
-      // } else {
-      //   VRF_error.navigator = ''
-      // }
+      if (!NewVrf.reason) {
+        VRF_error.reason = 'กรุณาใส่ข้อมูล'
+        isError = true
+        console.log('NewVrf.reason error isError: ', isError)
+      } else {
+        VRF_error.reason = ''
+      }
+      if (!NewVrf.contactor) {
+        VRF_error.contactor = 'กรุณาใส่ข้อมูล'
+        isError = true
+        console.log('NewVrf.contactor error isError: ', isError)
+      } else {
+        VRF_error.contactor = ''
+      }
+      if (!NewVrf.requestor) {
+        VRF_error.requestor = 'กรุณาใส่ข้อมูล'
+        isError = true
+        console.log('NewVrf.requestor error isError: ', isError)
+      } else {
+        VRF_error.requestor = ''
+      }
+      if (!NewVrf.requestor_position) {
+        VRF_error.requestor_position = 'กรุณาใส่ข้อมูล'
+        isError = true
+        console.log('NewVrf.requestor_position error isError: ', isError)
+      } else {
+        VRF_error.requestor_position = ''
+      }
+      if (!NewVrf.requestor_dept) {
+        VRF_error.requestor_dept = 'กรุณาใส่ข้อมูล'
+        isError = true
+        console.log('NewVrf.requestor_dept error isError: ', isError)
+      } else {
+        VRF_error.requestor_dept = ''
+      }
+      if (!NewVrf.requestor_phone) {
+        VRF_error.requestor_phone = 'กรุณาใส่ข้อมูล'
+        isError = true
+        console.log('NewVrf.requestor_phone error isError: ', isError)
+      } else {
+        VRF_error.requestor_phone = ''
+      }
+      if (!NewVrf.navigator) {
+        VRF_error.navigator = 'กรุณาใส่ข้อมูล'
+        isError = true
+        console.log('NewVrf.navigator error isError: ', isError)
+      } else {
+        VRF_error.navigator = ''
+      }
       // if (!NewVrf.area) {
       //   VRF_error.area = 'กรุณาใส่ข้อมูล'
       //   isError = true
@@ -2141,36 +2098,21 @@ export default defineComponent({
       } else {
         VRF_error.area = ''
       }
-      // if (!MeetingAreas_selectedControlItems.length) {
-      //   VRF_error.controlarea = 'กรุณาใส่ข้อมูล'
-      //   isError = true
-      //   console.log('NewVrf.controlarea error isError: ', isError)
-      // } else {
-      //   VRF_error.controlarea = ''
-      // }        
-      // if (!NewVrf.controlarea) {
-      //   VRF_error.controlarea = 'กรุณาใส่ข้อมูล'
-      //   isError = true
-      //   console.log('NewVrf.controlarea error isError: ', isError)
-      // } else {
-      //   VRF_error.controlarea = ''
-      // } 
-      // if (!NewVrf.date_from) {
-      //   VRF_error.date_from = 'กรุณาเลือกข้อมูล'
-      //   isError = true
-      //   console.log('NewVrf.date_from error isError: ', isError)
-      // } else {
-      //   VRF_error.date_from = ''
-      // }
-      // if (!NewVrf.date_to) {
-      //   VRF_error.date_to = 'กรุณาเลือกข้อมูล'
-      //   isError = true
-      //   console.log('NewVrf.date_to error isError: ', isError)
-      // } else {
-      //   VRF_error.date_to = ''
-      // }
+      if (!NewVrf.date_from) {
+        VRF_error.date_from = 'กรุณาเลือกข้อมูล'
+        isError = true
+        console.log('NewVrf.date_from error isError: ', isError)
+      } else {
+        VRF_error.date_from = ''
+      }
+      if (!NewVrf.date_to) {
+        VRF_error.date_to = 'กรุณาเลือกข้อมูล'
+        isError = true
+        console.log('NewVrf.date_to error isError: ', isError)
+      } else {
+        VRF_error.date_to = ''
+      }
       if (isError) {
-
         validateInputAll.value = true
         console.log('if (isError) {: ', isError)
         console.log('after validateInputAll.value: ', validateInputAll.value)
@@ -2185,51 +2127,10 @@ export default defineComponent({
         }
       }
     }
-
-
-    const calamount_orderEdit = (value) => {
-      console.log(document.getElementById("ddlMoneyTypeEdit" + value).value)
-      console.log(document.getElementById("ddlPackageMoneyTypeEdit" + value).value)
-      console.log(document.getElementById("tbQuantityEdit" + value).value)
-      console.log(document.getElementById("tbAmountEdit" + value).value)
-      let ddlMoneyType = parseFloat(document.getElementById("ddlMoneyTypeEdit" + value).value, 10)
-      let tbQuantity = parseFloat((document.getElementById("tbQuantityEdit" + value).value).replaceAll(',', ''), 10)
-      let ddlPackageMoneyType = document.getElementById("ddlPackageMoneyTypeEdit" + value).value
-      // let ddlQualityMoneyType = document.getElementById("ddlQualityMoneyTypeEdit" + value).value
-      if (ddlPackageMoneyType === 'Bundle') {
-        !isNaN(ddlMoneyType * tbQuantity * 1000) ? document.getElementById("tbAmountEdit" + value).value = formatPrice(ddlMoneyType * tbQuantity * 1000) : document.getElementById("tbAmountEdit" + value).value = ''
-      }
-      else if (ddlPackageMoneyType === 'Pack') {
-        !isNaN(ddlMoneyType * tbQuantity * 5000) ? document.getElementById("tbAmountEdit" + value).value = formatPrice(ddlMoneyType * tbQuantity * 5000) : document.getElementById("tbAmountEdit" + value).value = ''
-      }
-      else {
-        !isNaN(ddlMoneyType * tbQuantity) ? document.getElementById("tbAmountEdit" + value).value = formatPrice(ddlMoneyType * tbQuantity) : document.getElementById("tbAmountEdit" + value).value = ""
-      }
-    }
-    const calamount = (value) => {
-      console.log(document.getElementById("ddlMoneyType" + value).value)
-      console.log(document.getElementById("ddlPackageMoneyType" + value).value)
-      console.log(document.getElementById("tbQuantity" + value).value)
-      console.log(document.getElementById("tbAmount" + value).value)
-      let ddlMoneyType = parseFloat(document.getElementById("ddlMoneyType" + value).value, 10)
-      let tbQuantity = parseFloat((document.getElementById("tbQuantity" + value).value).replaceAll(',', ''), 10)
-      let ddlPackageMoneyType = document.getElementById("ddlPackageMoneyType" + value).value
-      let ddlQualityMoneyType = document.getElementById("ddlQualityMoneyType" + value).value
-      if (ddlPackageMoneyType === 'Bundle') {
-        !isNaN(ddlMoneyType * tbQuantity * 1000) ? document.getElementById("tbAmount" + value).value = formatPrice(ddlMoneyType * tbQuantity * 1000) : document.getElementById("tbAmount" + value).value = ''
-      }
-      else if (ddlPackageMoneyType === 'Pack') {
-        !isNaN(ddlMoneyType * tbQuantity * 5000) ? document.getElementById("tbAmount" + value).value = formatPrice(ddlMoneyType * tbQuantity * 5000) : document.getElementById("tbAmount" + value).value = ''
-      }
-      else {
-        !isNaN(ddlMoneyType * tbQuantity) ? document.getElementById("tbAmount" + value).value = formatPrice(ddlMoneyType * tbQuantity) : document.getElementById("tbAmount" + value).value = ""
-      }
-      console.log(ddlMoneyType * tbQuantity * 5000)
-    }
     const updateCheckedRows = (rowsKey) => {
       selecteall.value = null
       selecteall.value = rowsKey
-      console.log('rowsKey: ', rowsKey)
+      // console.log('rowsKey: ', rowsKey)
     };
     const formatPrice_noFixed = (value) => {
       let val = (value / 1)
@@ -2250,7 +2151,6 @@ export default defineComponent({
           , ddlvehicle_brand: 1
           , ddlvehicle_color: ''
           , tbCardNo: ''
-          , ddlprefix: ''
           , errors: {}
         });
       }
@@ -2307,12 +2207,12 @@ export default defineComponent({
       }
     }
     const deleteExistingData = (index) => {
-      console.log(index)
+      // console.log(index)
       templete_vrf_Existing.templete_vrf_Existing_det.splice(index, 1)
       Id.value--
     }
     const deleteData = (index) => {
-      console.log(index)
+      // console.log(index)
       rowData.value.splice(index, 1)
       Id.value--
     }
@@ -2347,38 +2247,12 @@ export default defineComponent({
           validateInputAll.value = false
         }
       }
-      // else if (field === 'card_no')//เลขบัตร
-      // {
-      //   const isDuplicate = templete_vrf_Existing.templete_vrf_Existing_det.some((item, idx) =>
-      //     idx !== index && item.card_no === templete_vrf_Existing.templete_vrf_Existing_det[index].card_no);
-      //   if (isDuplicate) {
-      //     templete_vrf_Existing.templete_vrf_Existing_det[index].errors = {
-      //       ...templete_vrf_Existing.templete_vrf_Existing_det[index].errors,
-      //       [field]: "ข้อมูลบัตรซ้ำกัน"
-      //     };
-      //     validateInputAll.value = true
-      //   }
-      //   else if (!templete_vrf_Existing.templete_vrf_Existing_det[index].card_no) {
-      //     templete_vrf_Existing.templete_vrf_Existing_det[index].errors = {
-      //       ...templete_vrf_Existing.templete_vrf_Existing_det[index].errors,
-      //       [field]: "กรุณาใส่ข้อมูล"
-      //     }
-      //     validateInputAll.value = true
-      //   }
-      //   else {
-      //     if (templete_vrf_Existing.templete_vrf_Existing_det[index].errors && templete_vrf_Existing.templete_vrf_Existing_det[index].errors[field]) {
-      //       const { [field]: removed, ...rest } = templete_vrf_Existing.templete_vrf_Existing_det[index].errors;
-      //       templete_vrf_Existing.templete_vrf_Existing_det[index].errors = { ...rest };
-      //     }
-      //     validateInputAll.value = false
-      //   }
-      // }
       else if (field === 'vehicle_registration')//ทะเบียนรถ 
       {
-        if (templete_vrf_Existing.templete_vrf_Existing_det[index]['vehicle_registration'].length > 7) {
+        if (templete_vrf_Existing.templete_vrf_Existing_det[index]['vehicle_registration'].length > 10) {
           templete_vrf_Existing.templete_vrf_Existing_det[index].errors = {
             ...templete_vrf_Existing.templete_vrf_Existing_det[index].errors,
-            [field]: "ห้ามใส่ข้อมูลเกิน 7 ตัวอักษร"
+            [field]: "ห้ามใส่ข้อมูลเกิน 10 ตัวอักษร"
           }
           validateInputAll.value = true
         }
@@ -2461,12 +2335,12 @@ export default defineComponent({
       } else {
         VRF_error.navigator = ''
       }
-      if (!templete_vrf_Existing.area_id) {
-        VRF_error.area = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.area = ''
-      }
+      // if (!templete_vrf_Existing.area_id) {
+      //   VRF_error.area = 'กรุณาใส่ข้อมูล'
+      //   isError = true
+      // } else {
+      //   VRF_error.area = ''
+      // }
       if (!templete_vrf_Existing.date_from) {
         VRF_error.date_from = 'กรุณาใส่ข้อมูล'
         isError = true
@@ -2487,7 +2361,7 @@ export default defineComponent({
       else {
         console.log('isError: ', isError)
         if (!validateInputAll.value) {
-          if (confirm('คุณต้องการบันทึกรายการขอเข้าพื้นที่ ?')) {
+          if (confirm('คุณต้องการบันทึกรายการแม่แบบขอเข้าพื้นที่ ?')) {
             editVRF()
           }
         }
@@ -2504,17 +2378,19 @@ export default defineComponent({
       formData.append('requestor_dept', templete_vrf_Existing.requestor_dept_id)
       formData.append('requestor_phone', templete_vrf_Existing.requestor_phone)
       formData.append('navigator', templete_vrf_Existing.navigator_id)
-      formData.append('area', templete_vrf_Existing.area_id)
+      //formData.append('area', templete_vrf_Existing.area_id)
+      formData.append('area', JSON.stringify(MeetingAreas_selectedItems.value)); // แปลงเป็น JSON String
+      formData.append('controlarea', JSON.stringify(MeetingAreas_selectedControlItems.value)); // แปลงเป็น JSON String            
       formData.append('date_from', templete_vrf_Existing.date_from)
       formData.append('date_to', templete_vrf_Existing.date_to)
       formData.append('user_id', user_id.value)
       let object_formData = {}
       formData.forEach((value, key) => object_formData[key] = value)
       var json_formData = JSON.stringify(object_formData)
-      let id
       console.log('json_formData: ', json_formData)
       try {
-        await axios.post(process.env.VUE_APP_API_URL + '/set_manual_update_vrf', json_formData)
+        // await axios.post(process.env.VUE_APP_API_URL + '/set_manual_update_vrf', json_formData)
+        await axios.post(process.env.VUE_APP_API_URL + '/set_update_vrf_template', json_formData)
           .then((res) => {
             // success callback  
             //id = res.data
@@ -2535,6 +2411,7 @@ export default defineComponent({
       for (let index in templete_vrf_Existing.templete_vrf_Existing_det) {
         object_det.push({
           id: templete_vrf_Existing.id
+          , prefix: templete_vrf_Existing.templete_vrf_Existing_det[index].prefix_id
           , fullname: templete_vrf_Existing.templete_vrf_Existing_det[index].fullname
           , vrf_id: templete_vrf_Existing.id
           , vehicle_brand_id: templete_vrf_Existing.templete_vrf_Existing_det[index].vehicle_brand_id
@@ -2545,9 +2422,9 @@ export default defineComponent({
         })
       }
       var json_object_det = JSON.stringify(object_det)
-      console.log('json_object_det: ', json_object_det)
+      console.log('/set_update_vrf_template_det object_det: ', object_det)
       try {
-        await axios.post(process.env.VUE_APP_API_URL + '/set_manual_update_vrf_det', json_object_det)
+        await axios.post(process.env.VUE_APP_API_URL + '/set_update_vrf_template_det', json_object_det)
           .then((res) => {
             // success callback  
             // console.log('set_manual_add_vrf_det res.data.state:' + res.data.state)           
@@ -2567,7 +2444,7 @@ export default defineComponent({
       }
       finally {
         //  router.push('/templatevrflst')
-        location.reload()
+        //location.reload()
       }
     }
     const setFromDateAdd = () => {
@@ -2607,7 +2484,6 @@ export default defineComponent({
         let newDate = new Date(templete_vrf_Existing.date_from);
         templete_vrf_Existing.date_to = new Date(newDate.getFullYear(), newDate.getMonth() + 1, newDate.getDate() - 1);
       }
-
     }
     const setToDateAdd = (type) => {
       if (type === 'date_to_edit' && NewVrf.date_from && NewVrf.date_to) {
@@ -2658,7 +2534,6 @@ export default defineComponent({
           templete_vrf_Existing.date_to = newDateT;
         }
       }
-
     }
     return {
       MeetingAreas_selectedItems,
@@ -2707,8 +2582,8 @@ export default defineComponent({
       , templete_vrf_Existing
       , editVRF_validateInput, formatPrice, router, format_date, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder
       , JobDate
-      , user_id, department_id, position_id, formatdate_show, formatPrice_noFixed, addItem, deleteData, addManualVRF, calamount, rowData, Id
-      , calamount_orderEdit, checkstatus_send_to_checker
+      , user_id, department_id, position_id, formatdate_show, formatPrice_noFixed, addItem, deleteData, addManualVRF, rowData, Id
+      , checkstatus_send_to_checker
     }
   },
 })
@@ -2744,7 +2619,10 @@ export default defineComponent({
   margin: 0;
   display: flex;
   flex-wrap: wrap;
+  min-height: 2.5rem; /* กำหนดความสูงขั้นต่ำเป็น 5rem */
+  height: auto; /* ให้ขยายได้ตามเนื้อหา */
 }
+
 
 .selected-item {
   display: flex;

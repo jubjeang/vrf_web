@@ -111,7 +111,7 @@
                           width: '15rem',
                           height: '0.5rem'
                         }" v-model="AdvSearch.area_id" :select-label="null" :allow-empty="true" :close-on-select="true"
-                        :value="id" track-by="id" placeholder="เลือก" :deselectLabel="null"></VueMultiselect>
+                         track-by="id" placeholder="เลือก" :deselectLabel="null"></VueMultiselect>
                     </div>
                   </div>
                   <div class="row p-2">
@@ -235,7 +235,7 @@
                         width: '100%',
                         height: '2%'
                       }" v-model="templete_vrf" :select-label="null" :allow-empty="true" :close-on-select="true"
-                      :value="id" track-by="id" placeholder="เลือก" :deselectLabel="null"></VueMultiselect>
+                       track-by="id" placeholder="เลือก" :deselectLabel="null"></VueMultiselect>
                     <!-- :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null @click="set_vrf_frm_templete"> 
                         <p v-if="VRF_error.area && !NewVrf.area" class="error-message">กรุณาเลือกข้อมูล</p> -->
                   </div>

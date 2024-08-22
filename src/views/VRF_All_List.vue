@@ -109,7 +109,7 @@
     width: '15rem',
     height: '0.5rem'
   }" v-model="AdvSearch.area_id" :select-label="null" :allow-empty="true" :close-on-select="true"
-                        :value="id" track-by="id" placeholder="เลือก" :deselectLabel="null"></VueMultiselect>
+                         track-by="id" placeholder="เลือก" :deselectLabel="null"></VueMultiselect>
                     </div>
                   </div>
                   <div class="row p-2">
@@ -947,10 +947,10 @@ export default defineComponent({
           }
         }
       } else if (field === 'vehicle_registration') {
-        if (vrf_urgent.vrf_Existing_det[index]['vehicle_registration'].length > 7) {
+        if (vrf_urgent.vrf_Existing_det[index]['vehicle_registration'].length > 10) {
           vrf_urgent.vrf_Existing_det[index].errors = {
             ...vrf_urgent.vrf_Existing_det[index].errors,
-            vehicle_registration: "ห้ามใส่ข้อมูลเกิน 7 ตัวอักษร"
+            vehicle_registration: "ห้ามใส่ข้อมูลเกิน 10 ตัวอักษร"
           }
         } else {
           if (vrf_urgent.vrf_Existing_det[index].errors && vrf_urgent.vrf_Existing_det[index].errors.vehicle_registration) {
@@ -1057,10 +1057,10 @@ export default defineComponent({
           }
         }
       } else if (field === 'tbVehicle_Registration') {
-        if (rowData.value[index]['tbVehicle_Registration'].length > 7) {
+        if (rowData.value[index]['tbVehicle_Registration'].length > 10) {
           rowData.value[index].errors = {
             ...rowData.value[index].errors,
-            [field]: "ห้ามใส่ข้อมูลเกิน 7 ตัวอักษร"
+            [field]: "ห้ามใส่ข้อมูลเกิน 10 ตัวอักษร"
           }
           validateInputAll.value = true
         }

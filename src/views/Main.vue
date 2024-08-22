@@ -1,7 +1,7 @@
 <template>
   <div>
     <HeaderMain />
-    <Sidebar />
+    <Sidebar :probs_isVisible=true :probs_isVisible2=false :probs_isVisible3=false  />
     <div :style="{ 'margin-left': sidebarWidth }" class="row ps-4">
       <div class="row p-1" style="width: 100%">
         <div class="col text-left">&nbsp;</div>
@@ -11,7 +11,6 @@
       </div>
       <div class="row p-1" style="width: 100%">
         <div class="col text-center">
-
           <!-- <iframe title="Home" width="100%" height="700%" :src="data.pbi_url" frameborder="0" allowFullScreen="true" ></iframe> -->
         </div>
       </div>

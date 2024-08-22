@@ -165,7 +165,7 @@
                           width: '15rem',
                           height: '0.5rem'
                         }" v-model="AdvSearch.area_id" :select-label="null" :allow-empty="true" :close-on-select="true"
-                        :value="id" track-by="id" placeholder="เลือก" :deselectLabel="null"></VueMultiselect>
+                         track-by="id" placeholder="เลือก" :deselectLabel="null"></VueMultiselect>
                     </div>
                   </div>
                   <div class="row p-2" v-show="setRole">
@@ -333,24 +333,6 @@
                           {{ option.meeting_area }}
                         </option>
                       </select>
-                      <!--can't get id-->
-                      <!-- <VueMultiselect name="area" id="area" :options="data_ddl.area"
-                          class="form-select form-select-sm p-0" label="meeting_area" :style="{
-                            width: '15rem'
-                            , height: '0.5rem'
-                          }" v-model="vrf_Existing.area" :select-label="null" :allow-empty="true"
-                          :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
-                        </VueMultiselect> -->
-                      <!-- 
-                        <VueMultiselect name="area" id="area"
-                          :options="data_ddl.area" class="form-select form-select-sm p-0"
-                          label="meeting_area" :style="{
-                            width: '15rem'
-                            , height: '0.5rem'
-                          }" v-model="vrf_Existing.area" :select-label="null" :allow-empty="true"
-                          :close-on-select="true" :value="id" track-by="id" placeholder="เลือก"
-                          :deselectLabel=null>
-                        </VueMultiselect> -->
                     </div>
                     <div class="col">เหตุผลในการเข้าพบ:</div>
                     <div class="col">
@@ -367,18 +349,6 @@
                   <div class="row p-2">
                     <div class="col">ผู้ร้องขอ:</div>
                     <div class="col">
-                      <!-- <input type="text" class="form-control" style="width:15rem;"
-                          v-model="vrf_Existing.requestor_id" /> -->
-                      <!----why can't set default selected-->
-                      <!-- <VueMultiselect :options="data_ddl_edt.userlist"
-                          class="form-select form-select-sm p-0" label="first_name" :style="{
-                            width: '15rem'
-                            , height: '0.5rem'
-                          }" v-model="vrf_Existing.requestor_id" :select-label="null" :allow-empty="true"
-                          :close-on-select="true" :value="user_id" track-by="user_id" placeholder="เลือก"
-                          :deselectLabel=null>
-                        </VueMultiselect> -->
-
                       <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_id"
                         style="width: 15rem; height: 2.5rem" disabled>
                         <option v-for="option in data_ddl.userlist" :value="option.user_id" :key="option.user_id">
@@ -394,14 +364,6 @@
                           {{ option.position }}
                         </option>
                       </select>
-                      <!-- <VueMultiselect name="requestor_position" id="requestor_position" :options="data_ddl.position"
-                          class="form-select form-select-sm p-0" label="position" :style="{
-                            width: '15rem'
-                            , height: '0.5rem'
-                          }" v-model="vrf_Existing.requestor_position_id" :select-label="null" :allow-empty="true"
-                          :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
-                        </VueMultiselect> -->
-
                     </div>
                     <div class="col">แผนกผู้ร้องขอ:</div>
                     <div class="col">
@@ -411,15 +373,6 @@
                           {{ option.department }}
                         </option>
                       </select>
-
-                      <!-- <VueMultiselect name="requestor_dept" id="requestor_dept" :options="data_ddl.dept"
-                          class="form-select form-select-sm p-0" label="department" :style="{
-                            width: '15rem'
-                            , height: '0.5rem'
-                          }" v-model="vrf_Existing.requestor_dept_id" :select-label="null" :allow-empty="true"
-                          :close-on-select="true" :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
-                        </VueMultiselect> -->
-
                     </div>
                   </div>
                   <div class="row p-2">
@@ -448,9 +401,6 @@
                       <input type="text" class="form-control" id="formFileText_edt" style="width: 10rem; display: inline"
                         v-model="vrf_Existing.attach_file" readonly v-show="fileUrl" />
                       &nbsp;
-                      <!-- <a :href="fileUrl" target="_blank">
-                        <i class="fa fa-address-card" aria-hidden="true"></i>
-                      </a> -->
                       <a :href="fileUrl" target="_blank" v-show="fileUrl">
       <i class="fa fa-address-card" aria-hidden="true"></i>
     </a>
@@ -1002,6 +952,7 @@ export default defineComponent({
       console.log('Number(localStorage.getItem(user_role_id)) :', Number(localStorage.getItem('user_role_id')) >= 8);
       return Number(localStorage.getItem('user_role_id')) >= 8;
     });
+    /*************************************************************** myRequest*/
     /**
      * Get server data request
      */
@@ -1141,7 +1092,7 @@ export default defineComponent({
         }
       })
     } //const myRequest = async (keyword) => {
-    // socket.on('new_vrf_send_approve', async ({ message, Id, user_id, role_id, approve_status }) => {
+    
     socket.on('new_vrf_send_approve', async ({ Id }) => {
       // Await the function and then assign its value
       const responseData = await get_data_approve_list(Id, 'new_vrf_send_approve');

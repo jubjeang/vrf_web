@@ -111,7 +111,7 @@
                           width: '15rem',
                           height: '0.5rem'
                         }" v-model="AdvSearch.area_id" :select-label="null" :allow-empty="true" :close-on-select="true"
-                        :value="id" track-by="id" placeholder="เลือก" :deselectLabel="null"></VueMultiselect>
+                        track-by="id" placeholder="เลือก" :deselectLabel="null"></VueMultiselect>
                     </div>
                   </div>
                   <div class="row p-2">
@@ -176,7 +176,7 @@
                         width: '100%',
                         height: '2%'
                       }" v-model="templete_vrf" :select-label="null" :allow-empty="true" :close-on-select="true"
-                      :value="id" track-by="id" placeholder="เลือก" :deselectLabel="null"></VueMultiselect>
+                      track-by="id" placeholder="เลือก" :deselectLabel="null"></VueMultiselect>
                     <!-- :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null @click="set_vrf_frm_templete"> 
                         <p v-if="VRF_error.area && !NewVrf.area" class="error-message">กรุณาเลือกข้อมูล</p> -->
                   </div>
@@ -1548,10 +1548,10 @@ export default defineComponent({
       } 
       else if (field === 'vehicle_registration') {
         if (vrf_urgent.vrf_Existing_det[index]['vehicle_registration']) {
-          if (vrf_urgent.vrf_Existing_det[index]['vehicle_registration'].length > 7) {
+          if (vrf_urgent.vrf_Existing_det[index]['vehicle_registration'].length > 10) {
             vrf_urgent.vrf_Existing_det[index].errors = {
               ...vrf_urgent.vrf_Existing_det[index].errors,
-              vehicle_registration: "ห้ามใส่ข้อมูลเกิน 7 ตัวอักษร"
+              vehicle_registration: "ห้ามใส่ข้อมูลเกิน 10 ตัวอักษร"
             }
             return
           } else {
@@ -1659,10 +1659,10 @@ export default defineComponent({
       }
       else if (field === 'tbVehicle_Registration')//ทะเบียนรถ 
       {
-        if (rowData.value[index]['tbVehicle_Registration'].length > 7) {
+        if (rowData.value[index]['tbVehicle_Registration'].length > 10) {
           rowData.value[index].errors = {
             ...rowData.value[index].errors,
-            [field]: "ห้ามใส่ข้อมูลเกิน 7 ตัวอักษร"
+            [field]: "ห้ามใส่ข้อมูลเกิน 10 ตัวอักษร"
           }
           validateInputAll.value = true
         }
@@ -2332,7 +2332,7 @@ export default defineComponent({
           display: function (row) { 
             let type_event_edit = row.req_urgentcase_by !== null ? 'edit_urgentcase_vrf' : 'editvrf'
             let type_modal_edit = row.req_urgentcase_by !== null ? 'ModalEditUrgentCaseVrf' : 'ModalEditvrf'
-            return `<div class="is-rows-el ${type_event_edit}" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: center; cursor: pointer;">${row.id
+            return `<div class="is-rows-el ${type_event_edit} cursor-pointer" data-id="${row.id}" data-bs-target="#${type_modal_edit}" data-bs-toggle="modal" style="text-align: center; cursor: pointer;">${row.id
               .toString()
               .padStart(6, '0')}</div>`
           }
@@ -3472,10 +3472,10 @@ export default defineComponent({
       }
       else if (field === 'vehicle_registration')//ทะเบียนรถ 
       {
-        if (vrf_Existing.vrf_Existing_det[index]['vehicle_registration'].length > 7) {
+        if (vrf_Existing.vrf_Existing_det[index]['vehicle_registration'].length > 10) {
           vrf_Existing.vrf_Existing_det[index].errors = {
             ...vrf_Existing.vrf_Existing_det[index].errors,
-            [field]: "ห้ามใส่ข้อมูลเกิน 7 ตัวอักษร"
+            [field]: "ห้ามใส่ข้อมูลเกิน 10 ตัวอักษร"
           }
           validateInputAll.value = true
         }
