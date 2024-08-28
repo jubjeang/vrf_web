@@ -1819,8 +1819,7 @@ export default defineComponent({
       MeetingAreas_selectedItems.value = items
     }
 
-    const updateSelectedControlItems = (items) => { 
-      console.log('updateSelectedControlItems items: ', items)  
+    const updateSelectedControlItems = (items) => {
       MeetingAreas_selectedControlItems.value = items
     }
     const removeSelectedItem = (item) => {
@@ -3279,7 +3278,7 @@ export default defineComponent({
         error_addManual.value = true
       } finally {
         //  router.push('/templatevrflst')
-        location.reload()
+        //location.reload()
       }
     }
     const setFromDateAdd = () => {

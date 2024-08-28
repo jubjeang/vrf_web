@@ -13,17 +13,17 @@
       <div v-for="(category, categoryKey) in items" :key="categoryKey" class="dropdown-category">
         <div class="dropdown-category-item">
           <input type="checkbox" @change="toggleCategory(categoryKey)"
-            :checked="isCategorySelected(categoryKey)" />
+            :checked="isCategorySelected(categoryKey, category)" />
           <span @click.stop="toggleItems(categoryKey)" class="category-label">
-            {{ categoryLabels[categoryKey] }} 
+            {{ categoryLabels[categoryKey]  }} 
             <span :class="{ 'arrow': true, 'expanded': expandedCategories.includes(categoryKey) }"></span>
           </span>
         </div>
         <div v-show="expandedCategories.includes(categoryKey)">
           <div v-for="item in category" :key="item.id" class="dropdown-item">
             <label>
-              <input type="checkbox" :checked="item.selected"
-                @change="toggleItemSelection(categoryKey, item)" />
+              <input type="checkbox" v-model="item.selected" :checked="isSelected(item,'normal')"
+                @change="updateSelectedItems(categoryKey, item)" />
               {{ item.name }} 
             </label>
           </div>
@@ -43,10 +43,6 @@ export default {
       type: Object,
       required: true
     },
-    controlItems: {
-      type: Object,
-      required: false
-    },
     categoryLabels: {
       type: Object,
       required: true
@@ -62,86 +58,26 @@ export default {
     selectedItems: {
       type: Array,
       required: true
-    },
-    selectedControlItems: {
-      type: Array,
-      default: () => []
     }
   },
-  emits: ['update:selectedItems', 'update:selectedControlItems'],
   setup(props, { emit }) {
     const dropdownVisible = ref(false);
     const expandedCategories = ref([]);
     const isAllSelected = ref(false);
     const dropdown = ref(null);
-
+    // console.log('Available keys in props.items:', Object.keys(props.items)); // แสดงคีย์ทั้งหมดใน props.items
+    // console.log('props.items:', props.items);
     const toggleDropdown = () => {
       dropdownVisible.value = !dropdownVisible.value;
     };
 
     const toggleCategory = (categoryKey) => {
-      const categoryItems = props.items[categoryKey];
-      const isSelected = categoryItems.every(item => item.selected);
-      categoryItems.forEach(item => {
+      const isSelected = props.items[categoryKey].every(item => item.selected);
+      props.items[categoryKey].forEach(item => {
         item.selected = !isSelected;
       });
-
-      updateSelectedItems();
+      updateSelectedItems(categoryKey);
       checkAllSelected();
-    };
-
-    const toggleItemSelection = (categoryKey, item) => {
-      item.selected = !item.selected;
-      updateSelectedItems();
-    };
-
-    const updateSelectedItems = () => {
-      const updatedSelectedItems = [];
-
-      for (let key in props.items) {
-        const categoryItems = props.items[key];
-        const categorySelectedItems = [];
-
-        let allSelected = true;
-        categoryItems.forEach(categoryItem => {
-          if (categoryItem.selected) {
-            categorySelectedItems.push(categoryItem);
-          } else {
-            allSelected = false;
-          }
-        });
-
-        if (allSelected && categoryItems.length > 0) {
-          updatedSelectedItems.push({
-            name: `${key} ทั้งหมด`,
-            is_area_group: true
-          });
-        } else {
-          updatedSelectedItems.push(...categorySelectedItems);
-        }
-      }
-
-      emit('update:selectedItems', updatedSelectedItems);
-      checkAllSelected();
-    };
-
-    const updateSelectedControlItems = () => {
-      const updatedSelectedControlItems = [];
-      for (let key in props.controlItems) {
-        props.controlItems[key].forEach(item => {
-          if (item.selected) {
-            updatedSelectedControlItems.push(item);
-          }
-        });
-      }
-      
-      emit('update:selectedControlItems', updatedSelectedControlItems);
-      checkAllControlSelected();
-    };
-
-    const isCategorySelected = (categoryKey) => {
-      const categoryItems = props.items[categoryKey];
-      return categoryItems.every(item => item.selected);
     };
 
     const toggleAllItems = () => {
@@ -155,29 +91,73 @@ export default {
       isAllSelected.value = !isSelected;
     };
 
-    const toggleAllControlItems = () => {
-      const isSelected = isAllSelected.value;
-      for (let categoryKey in props.controlItems) {
-        props.controlItems[categoryKey].forEach(item => {
-          item.selected = !isSelected;
-        });
-      }
-      updateSelectedControlItems();
-      isAllSelected.value = !isSelected;
-    };
-
     const checkAllSelected = () => {
       isAllSelected.value = Object.keys(props.items).every(categoryKey =>
         props.items[categoryKey].every(item => item.selected)
       );
     };
-
-    const checkAllControlSelected = () => {
-      isAllSelected.value = Object.keys(props.controlItems).every(categoryKey =>
-        props.controlItems[categoryKey].every(item => item.selected)
-      );
+    const updateSelectedItems = (categoryKey, item = null) => {
+      if (item && item.selected !== props.items[categoryKey].selected) {
+        emit('update:selectedItems', item);
+      } else {
+        for (let key in props.items) {
+          props.items[key].forEach(item => {
+            emit('update:selectedItems', item);
+          });
+        }
+      }
+      checkAllSelected();
     };
-
+    const isCategorySelected = (categoryKey, category) => {
+      if (categoryKey !== "พื้นที่ทั่วไป") {
+        return Array.isArray(props.selectedItems) && props.selectedItems.some(selectedItem => {
+          if (removeWord(selectedItem.name, " ทั้งหมด") === categoryKey) {
+            isSelected(categoryKey,'security')    
+            return true;
+          }
+          // else {
+          //    return false;            
+          // }
+        });
+      }
+      // else {
+      //   return true;
+      // }
+    };
+    const removeWord = (str, wordToRemove) => {
+      const regex = new RegExp(`\\s*${wordToRemove}\\s*`, 'g');
+      return str.replace(regex, '');
+    };
+    // const isCategorySelected = (categoryKey) => {
+    //   return props.items[categoryKey].every(item => item.selected);
+    // };
+    const isSelected = (item,type) => { 
+      
+      if (type === 'normal') { 
+        // console.log('isSelected  normal item: ',item) 
+        return Array.isArray(props.selectedItems) && props.selectedItems.some(selectedItem => {
+          return removeWord(selectedItem.name, " ทั้งหมด") === item.name;
+        });
+      }
+      else { 
+        // console.log('isSelected not normal item: ',item)
+        // return props.items[item].forEach(item_ => {
+        //   return true;
+        // });
+        return Array.isArray(props.items[item]) && props.items[item].some(selectedItem => { 
+          // console.log('isSelected not normal selectedItems: ',selectedItem);
+          return true;
+        });
+        // item.forEach(item_ => {
+        //   return item_.selected;
+        // });
+        
+        //return Array.isArray(props.selectedItems) && props.selectedItems.some(selectedItem => removeWord(selectedItem.name, " ทั้งหมด") === item.name);
+      }
+    };
+    // const isSelected = (item) => {
+    //   return Array.isArray(props.selectedItems) && props.selectedItems.some(selectedItem => selectedItem.name === item.name);
+    // };
     const toggleItems = (categoryKey) => {
       if (expandedCategories.value.includes(categoryKey)) {
         expandedCategories.value = expandedCategories.value.filter(key => key !== categoryKey);
@@ -185,53 +165,71 @@ export default {
         expandedCategories.value.push(categoryKey);
       }
     };
-
     const handleClickOutside = (event) => {
       if (dropdown.value && !dropdown.value.contains(event.target)) {
         dropdownVisible.value = false;
       }
     };
-
-    const setCheckedForCategorySelected = () => {
-      let needsUpdate = false;
-      props.selectedItems.forEach(selectedItem => {
-        if (selectedItem.is_area_group) {
-          const categoryName = selectedItem.name.replace(" ทั้งหมด", "");
-          if (props.items[categoryName]) {
-            props.items[categoryName].forEach(item => {
-              if (!item.selected) needsUpdate = true;
-              item.selected = true;
-            });
+    const removeItem = (item) => {
+      const categoryKey = Object.keys(props.items).find(key =>
+        props.items[key].some(meetingAreaItem => meetingAreaItem.id === item.id)
+      );
+      if (categoryKey) {
+        props.items[categoryKey].forEach(meetingAreaItem => {
+          if (meetingAreaItem.id === item.id) {
+            meetingAreaItem.selected = false;
           }
-        } else {
-          for (let key in props.items) {
-            const item = props.items[key].find(i => i.name === selectedItem.name);
-            if (item && !item.selected) {
-              needsUpdate = true;
-              item.selected = true;
-            }
-          }
-        }
-      });
-
-      if (needsUpdate) {
-        checkAllSelected();
+        });
+        emit('remove:item', item);
       }
     };
+    const setCheckedForCategorySelected = () => {
+      const trimmedCategoryNames = props.selectedItems
+        .filter(item => item.name.endsWith(" ทั้งหมด"))
+        .map(item => removeWord(item.name, " ทั้งหมด"));
+      // console.log('trimmedCategoryNames:',trimmedCategoryNames);
 
-    onMounted(() => {
+      trimmedCategoryNames.forEach(suKey => {
+        const suCategory = props.items[suKey];
+
+        if (suCategory) {
+          suCategory.forEach(item => { 
+            // console.log('suCategory:',suCategory);
+            // console.log('item:',item);
+            // if (!item.selected) {
+              item.selected = true;
+              // emit('update:selectedItems', item);
+            // }
+          });
+        } else {
+          console.log(`Key "${suKey}" not found in props.items.`);
+        }
+      });
+    };
+    onMounted(() => { 
       document.addEventListener('click', handleClickOutside);
-      setCheckedForCategorySelected();
     });
-
     onUnmounted(() => {
       document.removeEventListener('click', handleClickOutside);
     });
-
     watch(() => props.selectedItems, (newSelectedItems) => {
-      setCheckedForCategorySelected();
-    }, { immediate: true, deep: true });
-
+      if (newSelectedItems.length > 0) {
+        setCheckedForCategorySelected(); 
+      }
+    }, { immediate: true });
+    watch(() => props.items, (newItems) => {
+      if (Object.keys(newItems).length > 0) {
+        setCheckedForCategorySelected(); 
+        checkAllSelected(); 
+      }
+    }, { deep: true });
+    // watch(() => props.items, (newItems, oldItems) => {
+    //     // if (Object.keys(newItems).length > 0) {
+    //     //   console.log('Items loaded:', newItems);
+    //     //   setCheckedForCategorySelected();                   
+    //     // }
+    //     checkAllSelected(); // เรียกฟังก์ชัน checkAllSelected
+    //   }, { deep: true });
     return {
       dropdownVisible,
       dropdown,
@@ -239,15 +237,15 @@ export default {
       toggleDropdown,
       toggleCategory,
       toggleAllItems,
-      toggleAllControlItems,
       isCategorySelected,
       isAllSelected,
       toggleItems,
-      toggleItemSelection,
       updateSelectedItems,
-      updateSelectedControlItems
+      isSelected,
+      removeItem
     };
-  }
+  },
+  emits: ['update:selectedItems', 'remove:item']
 };
 </script>
 
@@ -314,7 +312,7 @@ export default {
   /* ปรับขนาดฟอนต์ให้เล็กลง */
 }
 
-.dropdown-category-item input[type='checkbox'] {
+.dropdown-category-item input[type="checkbox"] {
   margin-right: 8px;
 }
 
@@ -358,7 +356,7 @@ export default {
   align-items: center;
 }
 
-.dropdown-item input[type='checkbox'] {
+.dropdown-item input[type="checkbox"] {
   margin-right: 8px;
 }
 </style>
