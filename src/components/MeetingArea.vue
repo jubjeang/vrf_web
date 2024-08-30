@@ -32,7 +32,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 
@@ -192,9 +191,10 @@ export default {
       }
     };
 
-    const setCheckedForCategorySelected = () => {
+    const setCheckedForCategorySelected = () => { 
+      console.log('selectedItems: ', props.selectedItems); // เพิ่มบรรทัดนี้เพื่อดูข้อมูล selectedItems
       let needsUpdate = false;
-      props.selectedItems.forEach(selectedItem => {
+      props.selectedItems.forEach(selectedItem => { 
         if (selectedItem.is_area_group) {
           const categoryName = selectedItem.name.replace(" ทั้งหมด", "");
           if (props.items[categoryName]) {

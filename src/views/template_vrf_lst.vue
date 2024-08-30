@@ -1815,25 +1815,69 @@ export default defineComponent({
         console.log(error)
       }
     }
-    const updateSelectedItems = (items) => {
+    const updateSelectedItems = (items) => { 
+      console.log('updateSelectedItems items: ', items)
       MeetingAreas_selectedItems.value = items
     }
 
-    const updateSelectedControlItems = (items) => { 
-      console.log('updateSelectedControlItems items: ', items)  
+    const updateSelectedControlItems = (items) => {
+      console.log('updateSelectedControlItems items: ', items)
       MeetingAreas_selectedControlItems.value = items
     }
     const removeSelectedItem = (item) => {
       console.log('Removing item:', item)
       MeetingAreas_selectedItems.value =
         MeetingAreas_selectedItems.value.filter((i) => i.id !== item.id)
+
+      // Set the checkbox in MeetingArea_items to unchecked
+      for (let key in MeetingArea_items.value) {
+        const areaItem = MeetingArea_items.value[key].find(
+          (i) => i.id === item.area_id
+        )
+        if (areaItem) {
+          areaItem.selected = false
+          break
+        }
+      }
     }
 
     const removeSelectedControlItem = (item) => {
       console.log('Removing control item:', item)
       MeetingAreas_selectedControlItems.value =
         MeetingAreas_selectedControlItems.value.filter((i) => i.id !== item.id)
+
+      // Set the checkbox in MeetingControlArea_items to unchecked
+      for (let key in MeetingControlArea_items.value) {
+        const controlItem = MeetingControlArea_items.value[key].find(
+          (i) => i.id === item.area_id
+        )
+        if (controlItem) {
+          controlItem.selected = false
+          break
+        }
+      }
     }
+    const resetMeetingAreaSelections = () => {
+      // ลบรายการที่เลือกทั้งหมดจาก MeetingAreas_selectedItems และ MeetingAreas_selectedControlItems
+      MeetingAreas_selectedItems.value = [];
+      MeetingAreas_selectedControlItems.value = [];
+
+      // ตั้งค่า checkbox ใน MeetingArea_items เป็น "ไม่ถูกเลือก" (unchecked)
+      for (let key in MeetingArea_items.value) {
+        MeetingArea_items.value[key].forEach((item) => {
+          item.selected = false;
+        });
+      }
+
+      // ตั้งค่า checkbox ใน MeetingControlArea_items เป็น "ไม่ถูกเลือก" (unchecked)
+      for (let key in MeetingControlArea_items.value) {
+        MeetingControlArea_items.value[key].forEach((item) => {
+          item.selected = false;
+        });
+      }
+
+      console.log('Selections have been reset.');
+    };
 
     const uniqueSelectedItems = computed(() => {
       return MeetingAreas_selectedItems.value.reduce((uniqueItems, item) => {
@@ -1886,7 +1930,7 @@ export default defineComponent({
           }
         )
     })
-    //-----end meetingarea
+    //------------end meetingarea
     const confirmDialog = async () => {
       if (function_selected.value === 'update_vrfstatus_all') {
         const params = {
@@ -2018,6 +2062,7 @@ export default defineComponent({
       //---------------------------
       MeetingAreas_selectedItems.value = []
       MeetingAreas_selectedControlItems.value = []
+      resetMeetingAreaSelections()
     }
     //-----check session
     hasLocalStorage.value = window.localStorage.getItem('user_id')
@@ -2665,6 +2710,7 @@ export default defineComponent({
       let object_formData = {}
       formData.forEach((value, key) => (object_formData[key] = value))
       var json_formData = JSON.stringify(object_formData)
+      console.log('set_manual_add_vrf_template json_formData : ', json_formData)
       let id
       try {
         await axios

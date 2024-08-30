@@ -1417,8 +1417,8 @@ export default defineComponent({
     const validateInputAll = ref(false)
     const loading = ref(false)
     const AdvSearch = reactive({
-      tbDateF: '',
-      tbDateT: '',
+      tbDateF: null,
+      tbDateT: null,
       requestor_id: 0,
       area_id: 0,
       requestor_dept_id: 0,
@@ -1892,8 +1892,8 @@ export default defineComponent({
       rowData.value = []
       Id.value = 0
       VRF_error.reason = ''
-      VRF_error.date_from = ''
-      VRF_error.date_to = ''
+      VRF_error.date_from = null
+      VRF_error.date_to = null
       VRF_error.contactor = ''
       VRF_error.requestor = ''
       VRF_error.requestor_position = ''
@@ -1950,8 +1950,8 @@ export default defineComponent({
         (vrf_urgent.vrf_Existing_det = []),
         (vrf_urgent.errors = {})
       //---------------------------
-      AdvSearch.tbDateF = ''
-      AdvSearch.tbDateT = ''
+      AdvSearch.tbDateF = null
+      AdvSearch.tbDateT = null
       AdvSearch.requestor_id = 0
       AdvSearch.area_id = 0
       AdvSearch.requestor_dept_id = 0
@@ -3152,7 +3152,7 @@ export default defineComponent({
       Id.value++
       vrf_Existing.vrf_Existing_det.push({
         date_from: new Date(),
-        date_to: '',
+        date_to: null,
         fullname: '',
         vehicle_brand_id: null,
         vehicle_color_id: null,
@@ -3168,7 +3168,7 @@ export default defineComponent({
       console.log('addUrgentcaseItem vrf_urgent.vrf_Existing_det.length: ', vrf_urgent.vrf_Existing_det.length);
       vrf_urgent.vrf_Existing_det.push({
         date_from: new Date(),
-        date_to: '',
+        date_to: null,
         fullname: '',
         vehicle_brand_id: null,
         vehicle_registration: '',
