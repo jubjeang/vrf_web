@@ -12,22 +12,23 @@
       </div>
       <div v-for="(category, categoryKey) in items" :key="categoryKey" class="dropdown-category">
         <div class="dropdown-category-item">
-          <input type="checkbox" @change="toggleCategory(categoryKey)" :checked="isCategorySelected(categoryKey)" />
+          <input type="checkbox" @change="toggleCategory(categoryKey)"
+            :checked="isCategorySelected(categoryKey)" />
           <span @click.stop="toggleItems(categoryKey)" class="category-label">
-            {{ categoryLabels[categoryKey] }}
+            {{ categoryLabels[categoryKey] }} 
             <span :class="{ 'arrow': true, 'expanded': expandedCategories.includes(categoryKey) }"></span>
           </span>
         </div>
         <div v-show="expandedCategories.includes(categoryKey)">
           <div v-for="item in category" :key="item.id" class="dropdown-item">
             <label>
-              <input type="checkbox" :checked="item.selected" @change="toggleItemSelection(categoryKey, item)" />
-              {{ item.name }}
+              <input type="checkbox" :checked="item.selected"
+                @change="toggleItemSelection(categoryKey, item)" />
+              {{ item.name }} 
             </label>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -72,15 +73,13 @@ export default {
     const expandedCategories = ref([]);
     const isAllSelected = ref(false);
     const dropdown = ref(null);
-    // ทำให้ props.items เป็น reactive
-    const items = ref(JSON.parse(JSON.stringify(props.items))); // clone เพื่อทำให้ reactive
 
     const toggleDropdown = () => {
       dropdownVisible.value = !dropdownVisible.value;
     };
 
     const toggleCategory = (categoryKey) => {
-      const categoryItems = items.value[categoryKey];
+      const categoryItems = props.items[categoryKey];
       const isSelected = categoryItems.every(item => item.selected);
       categoryItems.forEach(item => {
         item.selected = !isSelected;
@@ -97,13 +96,12 @@ export default {
 
     const updateSelectedItems = () => {
       const updatedSelectedItems = [];
-      // const itemsCopy = JSON.parse(JSON.stringify(items.value)); // ใช้ deep copy
 
-      for (let key in items.value) {
-        const categoryItems = items.value[key];
+      for (let key in props.items) {
+        const categoryItems = props.items[key];
         const categorySelectedItems = [];
-        let allSelected = true;
 
+        let allSelected = true;
         categoryItems.forEach(categoryItem => {
           if (categoryItem.selected) {
             categorySelectedItems.push(categoryItem);
@@ -126,8 +124,6 @@ export default {
       checkAllSelected();
     };
 
-
-
     const updateSelectedControlItems = () => {
       const updatedSelectedControlItems = [];
       for (let key in props.controlItems) {
@@ -137,29 +133,26 @@ export default {
           }
         });
       }
-
+      
       emit('update:selectedControlItems', updatedSelectedControlItems);
       checkAllControlSelected();
     };
 
     const isCategorySelected = (categoryKey) => {
-      const categoryItems = items.value[categoryKey];
+      const categoryItems = props.items[categoryKey];
       return categoryItems.every(item => item.selected);
     };
 
     const toggleAllItems = () => {
       const isSelected = isAllSelected.value;
-      for (let categoryKey in items.value) {
-        items.value[categoryKey].forEach(item => {
-          item.selected = !isSelected; // เปลี่ยนสถานะของ item ทุกตัว
+      for (let categoryKey in props.items) {
+        props.items[categoryKey].forEach(item => {
+          item.selected = !isSelected;
         });
       }
-
-      updateSelectedItems(); // อัปเดตรายการที่ถูกเลือก
-      checkAllSelected(); // ตรวจสอบสถานะการเลือกทั้งหมดใหม่
-      isAllSelected.value = !isSelected; // เปลี่ยนสถานะของ "เลือกทั้งหมด"
+      updateSelectedItems();
+      isAllSelected.value = !isSelected;
     };
-
 
     const toggleAllControlItems = () => {
       const isSelected = isAllSelected.value;
@@ -173,8 +166,8 @@ export default {
     };
 
     const checkAllSelected = () => {
-      isAllSelected.value = Object.keys(items.value).every(categoryKey =>
-      items.value[categoryKey].every(item => item.selected)
+      isAllSelected.value = Object.keys(props.items).every(categoryKey =>
+        props.items[categoryKey].every(item => item.selected)
       );
     };
 
@@ -198,10 +191,10 @@ export default {
       }
     };
 
-    const setCheckedForCategorySelected = () => {
-      // console.log('selectedItems: ', props.selectedItems); // เพิ่มบรรทัดนี้เพื่อดูข้อมูล selectedItems
+    const setCheckedForCategorySelected = () => { 
+      console.log('selectedItems: ', props.selectedItems); // เพิ่มบรรทัดนี้เพื่อดูข้อมูล selectedItems
       let needsUpdate = false;
-      props.selectedItems.forEach(selectedItem => {
+      props.selectedItems.forEach(selectedItem => { 
         if (selectedItem.is_area_group) {
           const categoryName = selectedItem.name.replace(" ทั้งหมด", "");
           if (props.items[categoryName]) {
@@ -235,15 +228,11 @@ export default {
       document.removeEventListener('click', handleClickOutside);
     });
 
-    watch(() => props.items, (newItems) => {
-      items.value = JSON.parse(JSON.stringify(newItems)); // เมื่อ props เปลี่ยน, ทำให้ reactive ใหม่
-    }, { immediate: true, deep: true });
     watch(() => props.selectedItems, (newSelectedItems) => {
       setCheckedForCategorySelected();
     }, { immediate: true, deep: true });
 
     return {
-      items, // เพิ่ม items เพื่อให้ reactive
       dropdownVisible,
       dropdown,
       expandedCategories,
@@ -261,6 +250,7 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 .dropdown-container {
   position: relative;

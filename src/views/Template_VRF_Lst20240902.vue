@@ -469,7 +469,7 @@
                 <div class="row p-2 pe-2 me-2">
                   <div class="col-md-2 text-right">เลือกพื้นที่เข้าพบ:</div>
                   <div class="col-md-10 text-left h-auto">
-                    <ul class="selected-items-list w-100 border border-gray rounded-lg">
+                    <ul class="selected-items-list w-100 border border-gray">
                       <li
                         v-for="item in MeetingAreas_selectedItems"
                         :key="item.id"
@@ -517,7 +517,7 @@
                 <div class="row p-2 pe-2 me-2">
                   <div class="col-md-2 text-right">&nbsp;</div>
                   <div class="col-md-10 text-left h-auto">
-                    <ul class="selected-items-list w-100 border border-gray rounded-lg">
+                    <ul class="selected-items-list w-100 border border-gray">
                       <li
                         v-for="item in MeetingAreas_selectedControlItems"
                         :key="item.id"
@@ -1106,7 +1106,7 @@
                     <div class="col-md-2 text-right">เลือกพื้นที่เข้าพบ:</div>
                     <div class="col-md-10 text-left h-auto">
                       <!-- <p v-if="VRF_error.controlarea && !MeetingAreas_selectedItems.value && VRF_error.area && !MeetingAreas_selectedControlItems.value" class="error-message">กรุณาเลือกข้อมูลพื้นที่เข้าพบ</p> -->
-                      <ul class="selected-items-list w-100 border border-gray rounded-lg">
+                      <ul class="selected-items-list w-100 border border-gray">
                         <li
                           v-for="item in MeetingAreas_selectedItems"
                           :key="item.id"
@@ -1155,7 +1155,7 @@
                   <div class="row p-2 pe-2 me-2">
                     <div class="col-md-2 text-right">&nbsp;</div>
                     <div class="col-md-10 text-left h-auto">
-                      <ul class="selected-items-list w-100 border border-gray rounded-lg">
+                      <ul class="selected-items-list w-100 border border-gray">
                         <li
                           v-for="item in MeetingAreas_selectedControlItems"
                           :key="item.id"
@@ -1778,7 +1778,7 @@ export default defineComponent({
           items[group].push(meetingArea)
         })
         MeetingArea_items.value = items
-        // console.log('MeetingArea_items.value: ', MeetingArea_items.value)
+        console.log('MeetingArea_items.value: ', MeetingArea_items.value)
       } catch (error) {
         console.log(error)
       }
@@ -1820,16 +1820,16 @@ export default defineComponent({
           items[group].push(meetingArea)
         })
         MeetingControlArea_items.value = items
-        // console.log(
-        //   'MeetingControlArea_items.value: ',
-        //   MeetingControlArea_items.value
-        // )
+        console.log(
+          'MeetingControlArea_items.value: ',
+          MeetingControlArea_items.value
+        )
       } catch (error) {
         console.log(error)
       }
     }
     const updateSelectedItems = (items) => { 
-      // console.log('updateSelectedItems items: ', items)
+      console.log('updateSelectedItems items: ', items)
       MeetingAreas_selectedItems.value = items
     }
 
@@ -1889,7 +1889,7 @@ export default defineComponent({
         });
       }
 
-      // console.log('Selections have been reset.');
+      console.log('Selections have been reset.');
     };
 
     const uniqueSelectedItems = computed(() => {
@@ -1957,26 +1957,6 @@ export default defineComponent({
       console.error('API error:', error);
     });
     })
-    const fetchAreaNames = async (vrfId) => {
-      try {
-        const response = await axios.get(
-          `${process.env.VUE_APP_API_URL}/get_area_names`,
-          { params: { vrf_id: vrfId } }
-        )
-        // console.log(`Fetched area names for vrfId ${vrfId}:`, response.data);
-        return response.data.map((area) => area.name)
-      } catch (error) {
-        console.error('Error fetching area names:', error)
-        return []
-      }
-    }
-    const populateAreaNames = async (rows) => {
-      for (let row of rows) {
-        row.area_names = null // กำหนดค่าเริ่มต้นเป็น null
-        row.area_names = await fetchAreaNames(row.id)
-        // console.log('row.area_names:', row.area_names);
-      }
-    }
     //------------end meetingarea
     const confirmDialog = async () => {
       if (function_selected.value === 'update_vrfstatus_all') {
@@ -2190,6 +2170,7 @@ export default defineComponent({
         )
         const fetchedData = JSON.parse(JSON.stringify(res.data))
         // console.log('/get_templete_vrf_list fetchedData: ', fetchedData);
+
         await axios
           .get(process.env.VUE_APP_API_URL + '/get_dept', {
             params: {
@@ -2289,17 +2270,8 @@ export default defineComponent({
             console.log(res.data)
           }
         )
-        //---------------------------------------data at column พื้นที่เข้าพบ in grid table
+
         await populateAreaNames(fetchedData) //data at column พื้นที่เข้าพบ in grid table
-        // await populateAreaNames(Data_.value)
-        .then(() => {
-          // ส่วนนี้จะทำงานเมื่อ Promise สำเร็จ
-          console.log('Data populated successfully');
-        })
-        .catch((error) => {
-          // ส่วนนี้จะทำงานเมื่อ Promise เกิดข้อผิดพลาด
-          console.error('Error populateAreaNames data:', error);
-        });
         const filteredData = fetchedData.filter(
           (x) =>
             (x.no && x.no.includes(keyword)) ||
@@ -2470,7 +2442,26 @@ export default defineComponent({
     //     });
     //   }
     // );
-
+    const fetchAreaNames = async (vrfId) => {
+      try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}/get_area_names`,
+          { params: { vrf_id: vrfId } }
+        )
+        // console.log(`Fetched area names for vrfId ${vrfId}:`, response.data);
+        return response.data.map((area) => area.name)
+      } catch (error) {
+        console.error('Error fetching area names:', error)
+        return []
+      }
+    }
+    const populateAreaNames = async (rows) => {
+      for (let row of rows) {
+        row.area_names = null // กำหนดค่าเริ่มต้นเป็น null
+        row.area_names = await fetchAreaNames(row.id)
+        // console.log('row.area_names:', row.area_names);
+      }
+    }
     watch(
       () => searchTerm.value,
       (val) => {
@@ -2611,7 +2602,7 @@ export default defineComponent({
               console.log(err)
             }
 
-            //---------------------------------end get MeetingAreas_selectedControlItems detail--------------------------------------
+            //---------------------------------get MeetingAreas_selectedControlItems detail--------------------------------------
             //---------------------------------get vrf detail---------------------------------------------
             try {
               loading.value = true
@@ -2958,10 +2949,12 @@ export default defineComponent({
         MeetingAreas_selectedControlItems.value.length === 0
       ) {
         console.log(
-          'MeetingAreas_selectedItems.length: '
-          ,MeetingAreas_selectedItems.value.length
-          ,'MeetingAreas_selectedControlItems.length: '
-          ,MeetingAreas_selectedControlItems.value.length
+          'MeetingAreas_selectedItems.length: ',
+          MeetingAreas_selectedItems.value.length
+        )
+        console.log(
+          'MeetingAreas_selectedControlItems.length: ',
+          MeetingAreas_selectedControlItems.value.length
         )
         VRF_error.area = 'กรุณาใส่ข้อมูล'
         isError = true
@@ -3463,7 +3456,7 @@ export default defineComponent({
       }
     }
     return {
-      MeetingAreas_selectedItems,//-----meetingarea
+      MeetingAreas_selectedItems,
       MeetingAreas_selectedControlItems,
       MeetingArea_items,
       MeetingControlArea_items,
@@ -3474,7 +3467,7 @@ export default defineComponent({
       removeSelectedItem,
       removeSelectedControlItem,
       uniqueSelectedItems,
-      uniqueSelectedControlItems,//-----end meetingarea
+      uniqueSelectedControlItems,
       setToDateAdd,
       setFromDateAdd,
       deleteExistingData,
