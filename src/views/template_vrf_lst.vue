@@ -1800,6 +1800,7 @@ export default defineComponent({
           { params }
         )
         const data = response.data
+        //console.log('/get_Group_MeetingControlAreas data: ', data)
         const items = {}
 
         data.forEach((item) => {
@@ -1812,7 +1813,7 @@ export default defineComponent({
             is_security_area:
               item.mag_type_meeting_area === 'พื้นที่ความมั่นคง' ? true : false,
             is_area_group:
-              item.mag_type_meeting_area === 'พื้นที่ความมั่นคง' ? true : false
+              item.mag_type_meeting_area === 'พื้นที่ความมั่นคง' && item.meeting_area.includes(" ทั้งหมด") ? true : false
           }
           if (!items[group]) {
             items[group] = []
@@ -1820,16 +1821,16 @@ export default defineComponent({
           items[group].push(meetingArea)
         })
         MeetingControlArea_items.value = items
-        // console.log(
-        //   'MeetingControlArea_items.value: ',
-        //   MeetingControlArea_items.value
-        // )
+        //console.log(
+         // 'MeetingControlArea_items.value: ',
+          MeetingControlArea_items.value
+        //)
       } catch (error) {
         console.log(error)
       }
     }
     const updateSelectedItems = (items) => { 
-      // console.log('updateSelectedItems items: ', items)
+      console.log('updateSelectedItems items: ', items)
       MeetingAreas_selectedItems.value = items
     }
 
@@ -2721,10 +2722,8 @@ export default defineComponent({
       return moment.utc(value).format('DD-MM-YYYY')
     }
     const addManualVRF = async () => {
-      // console.log('addManualVRF MeetingAreas_selectedItems.value: ', MeetingAreas_selectedItems.value)
-      // console.log('addManualVRF MeetingAreas_selectedControlItems.value: ', MeetingAreas_selectedControlItems.value)
-      // console.log('addManualVRF JSON.stringify(MeetingAreas_selectedItems.value): ', JSON.stringify(MeetingAreas_selectedItems.value) )
-      // console.log('addManualVRF JSON.stringify(MeetingAreas_selectedControlItems.value): ', JSON.stringify(MeetingAreas_selectedControlItems.value) )
+       console.log('addManualVRF JSON.stringify(MeetingAreas_selectedItems.value): ', JSON.stringify(MeetingAreas_selectedItems.value) )
+       console.log('addManualVRF JSON.stringify(MeetingAreas_selectedControlItems.value): ', JSON.stringify(MeetingAreas_selectedControlItems.value) )
       const formData = new FormData()
       formData.append('template_name', NewVrf.template_name)
       formData.append('reason', NewVrf.reason)

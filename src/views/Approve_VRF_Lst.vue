@@ -212,7 +212,7 @@
           <div class="modal-dialog modalcustom">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">รายละเอียดการขอเข้าพื้นที่2</h5>
+                <h5 class="modal-title">รายละเอียดการขอเข้าพื้นที่</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                   @click="ClosemyModalNew_"></button>
               </div>
@@ -384,94 +384,38 @@
                   </div>
                   <!-- End Second MeetingControlArea component -->
                   <div class="row p-2">
-                    <div class="col">จากวันที่:</div>
-                    <div class="col">
+                    <div class="col-md-2">จากวันที่:</div>
+                    <div class="col-md-2">
                       <datepicker class="form-control" v-model="vrf_Existing.date_from" style="width: 7rem"
                         inputFormat="dd/MM/yyyy" :disabled="true" />
                     </div>
-                    <div class="col">ถึงวันที่:</div>
-                    <div class="col">
+                    <div class="col-md-2">ถึงวันที่:</div>
+                    <div class="col-md-2">
                       <datepicker class="form-control" v-model="vrf_Existing.date_to" style="width: 7rem"
                         inputFormat="dd/MM/yyyy" :disabled="true" />
                       <p v-if="VRF_error.date_to && !vrf_Existing.date_to" class="error-message">
                         กรุณาเลือกข้อมูล
                       </p>
                     </div>
-                    <div class="col">
+                    <div class="col-md-2">
                       <input type="text" class="form-control" style="width: 15rem; display: none" />
                     </div>
-                    <div class="col">
+                    <div class="col-md-2">
                       <input type="text" class="form-control" style="width: 15rem; display: none" />
                     </div>
                   </div>
                   <div class="row p-2">
-                    <div class="col">พื้นที่เข้าพบ:</div>
-                    <div class="col">
-                      <select class="form-select form-select-sm" v-model="vrf_Existing.area_id"
-                        style="width: 15rem; height: 2.5rem" disabled>
-                        <option v-for="option in data_ddl.area" :value="option.id" :key="option.id">
-                          {{ option.meeting_area }}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="col">เหตุผลในการเข้าพบ:</div>
-                    <div class="col">
+                    <div class="col-md-2">เหตุผลในการเข้าพบ:</div>
+                    <div class="col-md-2">
                       <input type="text" id="reason" class="form-control" style="width: 15rem"
                         v-model="vrf_Existing.reason" readonly />
                     </div>
-                    <div class="col">ชื่อบริษัทผู้มาติดต่อ:</div>
-                    <div class="col">
-                      <input type="text" id="contactor" class="form-control" style="width: 15rem"
-                        v-model="vrf_Existing.contactor" readonly />
-
+                    <div class="col-md-2">ชื่อบริษัทผู้มาติดต่อ:</div>
+                    <div class="col-md-2"><input type="text" id="contactor" class="form-control" style="width: 15rem"
+                      v-model="vrf_Existing.contactor" readonly />
                     </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col">ผู้ร้องขอ:</div>
-                    <div class="col">
-                      <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_id"
-                        style="width: 15rem; height: 2.5rem" disabled>
-                        <option v-for="option in data_ddl.userlist" :value="option.user_id" :key="option.user_id">
-                          {{ option.first_name }}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="col">ตำแหน่งผู้ร้องขอ:</div>
-                    <div class="col">
-                      <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_position_id"
-                        style="width: 15rem; height: 2.5rem" disabled>
-                        <option v-for="option in data_ddl.position" :value="option.id" :key="option.id">
-                          {{ option.position }}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="col">แผนกผู้ร้องขอ:</div>
-                    <div class="col">
-                      <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_dept_id"
-                        style="width: 15rem; height: 2.5rem" disabled>
-                        <option v-for="option in data_ddl.dept" :value="option.id" :key="option.id">
-                          {{ option.department }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col">เบอร์โทรผู้ร้องขอ:</div>
-                    <div class="col">
-                      <input type="text" id="requestor_phone" class="form-control" style="width: 15rem"
-                        v-model="vrf_Existing.requestor_phone" readonly />
-                    </div>
-                    <div class="col">ชื่อผู้นำพา:</div>
-                    <div class="col">
-                      <select class="form-select form-select-sm" v-model="vrf_Existing.navigator_id"
-                        style="width: 15rem; height: 2.5rem" disabled>
-                        <option v-for="option in data_ddl.userlist" :value="option.user_id" :key="option.user_id">
-                          {{ option.first_name }}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="col">แนบไฟล์:</div>
-                    <div class="col text-start">
+                    <div class="col-md-2">แนบไฟล์:</div>
+                    <div class="col-md-2">
                       <label class="input-group-text" for="formFile_edt"
                         style="width: 0.5rem; height: 0.5rem; display: inline" v-show="fileUrl">
                         เลือกไฟล์
@@ -488,6 +432,54 @@
                       <label style="width: 1rem; display: inline-block" v-show="!fileUrl">
                         -
                       </label>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-md-2">ผู้ร้องขอ:</div>
+                    <div class="col-md-2">
+                      <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_id"
+                        style="width: 15rem; height: 2.5rem" disabled>
+                        <option v-for="option in data_ddl.userlist" :value="option.user_id" :key="option.user_id">
+                          {{ option.first_name }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-md-2">ตำแหน่งผู้ร้องขอ:</div>
+                    <div class="col-md-2">
+                      <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_position_id"
+                        style="width: 15rem; height: 2.5rem" disabled>
+                        <option v-for="option in data_ddl.position" :value="option.id" :key="option.id">
+                          {{ option.position }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-md-2">แผนกผู้ร้องขอ:</div>
+                    <div class="col-md-2">
+                      <select class="form-select form-select-sm" v-model="vrf_Existing.requestor_dept_id"
+                        style="width: 15rem; height: 2.5rem" disabled>
+                        <option v-for="option in data_ddl.dept" :value="option.id" :key="option.id">
+                          {{ option.department }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-md-2">เบอร์โทรผู้ร้องขอ:</div>
+                    <div class="col-md-2">
+                      <input type="text" id="requestor_phone" class="form-control" style="width: 15rem"
+                        v-model="vrf_Existing.requestor_phone" readonly />
+                    </div>
+                    <div class="col-md-2">ชื่อผู้นำพา:</div>
+                    <div class="col-md-2">
+                      <select class="form-select form-select-sm" v-model="vrf_Existing.navigator_id"
+                        style="width: 15rem; height: 2.5rem" disabled>
+                        <option v-for="option in data_ddl.userlist" :value="option.user_id" :key="option.user_id">
+                          {{ option.first_name }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2 text-start">
                     </div>
                   </div>
                 </div>
@@ -975,8 +967,8 @@ export default defineComponent({
             // selected: false,
             is_security_area:
               item.mag_type_meeting_area === 'พื้นที่ความมั่นคง' ? true : false,
-            is_area_group:
-              item.mag_type_meeting_area === 'พื้นที่ความมั่นคง' ? true : false
+              is_area_group:
+              item.mag_type_meeting_area === 'พื้นที่ความมั่นคง' && item.meeting_area.includes(" ทั้งหมด") ? true : false
           }
           if (!items[group]) {
             items[group] = []
@@ -1216,7 +1208,8 @@ export default defineComponent({
                 let obj = JSON.parse(JSON.stringify(res.data))    
                 console.log('sendApprove obj:', obj)            
                 // obj[0].approve_status === 'approved' ? alert('รายการถูกอนุมัติไปก่อนแล้ว') : alert('รายการถูกอนุมัติเรียบร้อยแล้ว');
-                // location.reload()
+                obj.approve_status === 'approved' ? alert('รายการถูกอนุมัติไปก่อนแล้ว') : alert('รายการถูกอนุมัติเรียบร้อยแล้ว');
+                location.reload()
               },
               (res) => {
                 // error callback
@@ -1304,7 +1297,6 @@ export default defineComponent({
       }
       console.log('Approve_VRF_Lst params myRequest: ', params)
       console.log('localStorage.getItem(user_role_id) :', localStorage.getItem('user_role_id'));
-
       await axios
         .get(process.env.VUE_APP_API_URL + '/get_vrf_approve_list', { params })
         .then(

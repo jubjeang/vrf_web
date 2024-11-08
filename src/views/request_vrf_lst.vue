@@ -396,8 +396,8 @@
                 </div>
                 <!-- End Second MeetingControlArea component -->
                 <div class="row p-2">
-                  <div class="col">จากวันที่:</div>
-                  <div class="col">
+                  <div class="col-md-2">จากวันที่:</div>
+                  <div class="col-md-2">
                     <!-- <datepicker class="form-control" v-model="NewVrf.date_from" style="width:7rem;"
                       inputFormat="dd/MM/yyyy" @update:model-value="setToDate('date_from_add')" /> -->
                     <datepicker class="form-control" v-model="NewVrf.date_from" style="width: 7rem"
@@ -406,8 +406,8 @@
                       กรุณาเลือกข้อมูล
                     </p>
                   </div>
-                  <div class="col">ถึงวันที่:</div>
-                  <div class="col">
+                  <div class="col-md-2">ถึงวันที่:</div>
+                  <div class="col-md-2">
                     <datepicker class="form-control" v-model="NewVrf.date_to" style="width: 7rem"
                       inputFormat="dd/MM/yyyy" @update:model-value="setToDateAdd('date_to_edit')" />
                     <!-- <datepicker class="form-control" v-model="NewVrf.date_to" style="width:7rem;" inputFormat="dd/MM/yyyy"
@@ -416,16 +416,16 @@
                       กรุณาเลือกข้อมูล
                     </p>
                   </div>
-                  <div class="col">
+                  <div class="col-md-2">
                     <input type="text" class="form-control" style="width: 15rem; display: none" />
                   </div>
-                  <div class="col">
+                  <div class="col-md-2">
                     <input type="text" class="form-control" style="width: 15rem; display: none" />
                   </div>
                 </div>
                 <div class="row p-2">
-                  <div class="col">เหตุผลในการเข้าพบ:</div>
-                  <div class="col">
+                  <div class="col-md-2">เหตุผลในการเข้าพบ:</div>
+                  <div class="col-md-2">
                     <input type="hidden" v-model="NewVrf.templete_id" />
                     <input type="text" id="reason" class="form-control" style="width: 100%" v-model="NewVrf.reason"
                       @input="complete_word('reason')" />
@@ -440,8 +440,8 @@
                       กรุณากรอกข้อมูล
                     </p>
                   </div>
-                  <div class="col">ชื่อบริษัทผู้มาติดต่อ:</div>
-                  <div class="col">
+                  <div class="col-md-2">ชื่อบริษัทผู้มาติดต่อ:</div>
+                  <div class="col-md-2">
                     <input type="text" id="contactor" class="form-control" style="width: 100%"
                       v-model="NewVrf.contactor" @input="complete_word('contactor')" />
                     <div v-if="result_search_complete_word.contactor.length > 0" class="autocomplete-results"
@@ -455,8 +455,8 @@
                       กรุณากรอกข้อมูล
                     </p>
                   </div>
-                  <div class="col">แนบไฟล์:</div>
-                  <div class="col d-flex align-items-center justify-content-start">
+                  <div class="col-md-2">แนบไฟล์:</div>
+                  <div class="col-md-2 d-flex align-items-center justify-content-start">
                     <label class="input-group-text" for="formFile" style="width: 40%; height: 70%">
                       เลือกไฟล์
                     </label>
@@ -466,8 +466,8 @@
                   </div>
                 </div>
                 <div class="row p-2">
-                  <div class="col">ผู้ร้องขอ:</div>
-                  <div class="col">
+                  <div class="col-md-2">ผู้ร้องขอ:</div>
+                  <div class="col-md-2">
                     <select class="form-select form-select-sm" v-model="NewVrf.requestor" name="requestor"
                       id="requestor" style="width: 100%; height: 2.5rem">
                       <option value=""></option>
@@ -486,7 +486,7 @@
                       กรุณาเลือกข้อมูล
                     </p>
                   </div>
-                  <div class="col">ตำแหน่งผู้ร้องขอ:</div>
+                  <div class="col-md-2">ตำแหน่งผู้ร้องขอ:</div>
                   <div class="col">
                     <select class="form-select form-select-sm" v-model="NewVrf.requestor_position"
                       name="requestor_position" id="requestor_position" style="width: 100%; height: 2.5rem">
@@ -508,8 +508,8 @@
                       กรุณาเลือกข้อมูล
                     </p>
                   </div>
-                  <div class="col">แผนกผู้ร้องขอ:</div>
-                  <div class="col">
+                  <div class="col-md-2">แผนกผู้ร้องขอ:</div>
+                  <div class="col-md-2">
                     <select class="form-select form-select-sm" v-model="NewVrf.requestor_dept" name="requestor_position"
                       id="requestor_position" style="width: 100%; height: 2.5rem">
                       <option value=""></option>
@@ -529,8 +529,8 @@
                   </div>
                 </div>
                 <div class="row p-2">
-                  <div class="col">เบอร์โทรผู้ร้องขอ:</div>
-                  <div class="col">
+                  <div class="col-md-2">เบอร์โทรผู้ร้องขอ:</div>
+                  <div class="col-md-2">
                     <input type="text" id="requestor_phone" class="form-control" style="width: 100%"
                       v-model="NewVrf.requestor_phone" />
                     <p v-if="VRF_error.requestor_phone && !NewVrf.requestor_phone
@@ -538,8 +538,8 @@
                       กรุณากรอกข้อมูล
                     </p>
                   </div>
-                  <div class="col">ชื่อผู้นำพา:</div>
-                  <div class="col">
+                  <div class="col-md-2">ชื่อผู้นำพา:</div>
+                  <div class="col-md-2">
                     <select class="form-select form-select-sm" v-model="NewVrf.navigator" name="navigator"
                       id="navigator" style="width: 100%; height: 2.5rem">
                       <option value=""></option>
@@ -551,8 +551,8 @@
                       กรุณาเลือกข้อมูล
                     </p>
                   </div>
-                  <div class="col"></div>
-                  <div class="col">
+                  <div class="col-md-2"></div>
+                  <div class="col-md-2">
                     <!-- <select
                       class="form-select form-select-sm"
                       v-model="NewVrf.area"
@@ -581,7 +581,6 @@
                         }" v-model="NewVrf.area" :select-label="null" :allow-empty="true" :close-on-select="true"
                         :value="id" track-by="id" placeholder="เลือก" :deselectLabel=null>
                       </VueMultiselect> -->
-
                     <p v-if="VRF_error.area && !NewVrf.area" class="error-message">
                       กรุณาเลือกข้อมูล
                     </p>
@@ -2315,7 +2314,7 @@ export default defineComponent({
           items[group].push(meetingArea)
         })
         MeetingArea_items.value = items
-        // console.log('MeetingArea_items.value: ', MeetingArea_items.value)
+        //console.log('fetchMeetingAreas MeetingArea_items.value: ', MeetingArea_items.value)
       } catch (error) {
         console.log(error)
       }
@@ -2348,8 +2347,8 @@ export default defineComponent({
             // selected: false,
             is_security_area:
               item.mag_type_meeting_area === 'พื้นที่ความมั่นคง' ? true : false,
-            is_area_group:
-              item.mag_type_meeting_area === 'พื้นที่ความมั่นคง' ? true : false
+              is_area_group:
+              item.mag_type_meeting_area === 'พื้นที่ความมั่นคง' && item.meeting_area.includes(" ทั้งหมด") ? true : false
           }
           if (!items[group]) {
             items[group] = []
@@ -2357,6 +2356,10 @@ export default defineComponent({
           items[group].push(meetingArea)
         })
         MeetingControlArea_items.value = items
+                console.log(
+         'fetchMeetingControlAreas MeetingControlArea_items.value: ',
+         MeetingControlArea_items.value
+        )
       } catch (error) {
         console.log(error)
       }
@@ -3145,7 +3148,7 @@ export default defineComponent({
      * Use vue.js watch to watch your state's change
      */
     const tableElement = ref(null)
-    // Watch for changes on `templete_vrf`
+    // Watch for changes on `templete_vrf` at dropdown
     watch(templete_vrf, async (newVal, oldVal) => {
       loading.value = true
       setTimeout(() => { loading.value = false }, 300)
@@ -3224,11 +3227,11 @@ export default defineComponent({
 
                 // แสดงผลลัพธ์
                 console.log(
-                  'MeetingAreas_selectedItems:',
+                  ' watch(templete_vrf MeetingAreas_selectedItems:',
                   MeetingAreas_selectedItems.value
                 )
                 console.log(
-                  'MeetingAreas_selectedControlItems:',
+                  ' watch(templete_vrf MeetingAreas_selectedControlItems:',
                   MeetingAreas_selectedControlItems.value
                 )
               } else {
@@ -3781,6 +3784,8 @@ export default defineComponent({
     }
     const addManualVRF = async () => {
       console.log('file.value: ', file.value)
+      console.log('addManualVRF JSON.stringify(MeetingAreas_selectedItems.value): ', JSON.stringify(MeetingAreas_selectedItems.value) )
+       console.log('addManualVRF JSON.stringify(MeetingAreas_selectedControlItems.value): ', JSON.stringify(MeetingAreas_selectedControlItems.value) )
       const formData = new FormData()
       formData.append('file', file.value)
       formData.append('reason', NewVrf.reason)
@@ -4334,12 +4339,12 @@ export default defineComponent({
       } else {
         VRF_error.navigator = ''
       }
-      if (!vrf_Existing.area_id) {
-        VRF_error.area = 'กรุณาใส่ข้อมูล'
-        isError = true
-      } else {
-        VRF_error.area = ''
-      }
+      // if (!vrf_Existing.area_id) {
+      //   VRF_error.area = 'กรุณาใส่ข้อมูล'
+      //   isError = true
+      // } else {
+      //   VRF_error.area = ''
+      // }
       if (!vrf_Existing.date_from) {
         VRF_error.date_from = 'กรุณาใส่ข้อมูล'
         isError = true
