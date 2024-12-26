@@ -1476,7 +1476,6 @@ export default defineComponent({
         return [];  // Return an empty array in case of an error during fetching
       }
     }
-
     // Table config
     const table = reactive({
       isLoading: false,

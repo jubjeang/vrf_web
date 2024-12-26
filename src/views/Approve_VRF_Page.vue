@@ -842,18 +842,9 @@ export default defineComponent({
               // success callback
               let obj = JSON.parse(JSON.stringify(res.data))
               console.log('obj[0]: ', obj[0])
-              // checkstatus_send_to_approve.value =
-              //   obj[0].approve_status === null ||
-              //     obj[0].approve_status === 0
-              //     ? true
-              //     : false
               vrf_Existing.id = obj[0].id
-              // vrf_Existing.date_from =  dateTime( new Date( obj[0].date_from ) )
-              // vrf_Existing.date_to = dateTime( new Date( obj[0].date_to ) )
               vrf_Existing.date_from = setDatepickup(obj[0].date_from)
               vrf_Existing.date_to = setDatepickup(obj[0].date_to)
-              // vrf_Existing.date_from = dateTime( obj[0].date_from )
-              // vrf_Existing.date_to = dateTime( obj[0].date_to )
               vrf_Existing.reason = obj[0].reason
               vrf_Existing.contactor = obj[0].contactor
               vrf_Existing.requestor = obj[0].requestor

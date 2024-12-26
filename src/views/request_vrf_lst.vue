@@ -59,7 +59,7 @@
     </div>
     <!-- </div> -->
   </div>
-  <!---------------------------------------------------------------------------------------------------------------------Modal AdvSearch--->
+  <!--------------------------------------------------------------------------------------------------Modal AdvSearch--->
   <div class="container py-2">
     <div class="py-2">
       <form id="form3">
@@ -2275,6 +2275,8 @@ export default defineComponent({
       router.push('/')
     }
     //-----end check session
+
+    
     //----------------------------------------------------meetingarea
     const MeetingAreas_selectedItems = ref([])
     const MeetingAreas_selectedControlItems = ref([])
