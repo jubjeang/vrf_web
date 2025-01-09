@@ -774,29 +774,31 @@ export default defineComponent({
           // Send mail
           try {
             await Promise.all(
-              selecteall.value.map(async (item) => {
-                await axios.get(process.env.VUE_APP_API_URL + '/setSendMail_next_approver', {
-                  params: {
-                    Id: item, // Use the current item's ID
+              selecteall.value.map(async (item) => { 
+                const params = {
+                  Id: item, // Use the current item's ID
                     department_id: localStorage.getItem('user_department_id'),
                     branch_id: localStorage.getItem('user_branch_id'),
                     role_id: localStorage.getItem('user_role_id'),
                     division_id: localStorage.getItem('user_division_id')
-                  }
+              }
+              console.log('/setSendMail_next_approver params: ',params)
+                await axios.get(process.env.VUE_APP_API_URL + '/setSendMail_next_approver', {
+                  params
                 });
               })
             );
             let message_
             update_vrf_trans_status_all_type.value === 'cancel' ? message_ = 'คุณยกเลิกรายการขอเข้าพื้นที่เรียบร้อยแล้ว' : message_ = 'รายการถูกอนุมัติเรียบร้อยแล้ว'
             alert(message_)
-            location.reload()
+            location.reload() //-----------------------------
           } catch (err) {
             console.error(err);
             console.log('setSendMail_next_approver error: ', err);
             message_addManual.value = 'Something went wrong: ' + err;
             error_addManual.value = true;
           }
-        }
+        }        
       } //if (function_selected.value === "update_vrf_trans_status_all")
       if (function_selected.value === 'update_vrf_trans_status') {
         setTimeout(() => {
@@ -859,7 +861,7 @@ export default defineComponent({
             error_addManual.value = true;
           }
 
-        }
+        }        
       } //if (function_selected.value === "update_vrf_trans_status")
     }
     const ClosemyModalNew_ = () => { 

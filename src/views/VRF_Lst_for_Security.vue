@@ -200,8 +200,27 @@
                         <tr v-for="(data, index) in vrf_Existing.vrf_Existing_det" :key="data.id"
                           :class="['tr-align-middle', getRowClass(data)]">
                           <td scope="col" class="colwidth10" style="white-space: nowrap; text-align: center">
+                            <div style="
+                              display: flex;
+                              align-items: center;
+                              justify-content: center;
+                            ">
+                            <select class="form-select form-select-sm" v-model="vrf_Existing
+                                .vrf_Existing_det[index].prefix_id
+                                " style="width: 7rem; margin-right: 0.5rem" @change="
+                                  validateInput(
+                                    'prefix_id',
+                                    index,
+                                    'กรุณาคำนำหน้า'
+                                  )
+                                  " :disabled="!checkstatus_send_to_approve">
+                                <option v-for="option in data_ddl.prefix" :value="option.id" :key="option.id">
+                                  {{ option.prefix }}
+                                </option>
+                              </select>
                             <input type="text" class="form-control" style="width: 10rem; display: inline-block"
-                              v-model="vrf_Existing.vrf_Existing_det[index].fullname" readonly />
+                            v-model="vrf_Existing.vrf_Existing_det[index].fullname" readonly />
+                            </div>                            
                           </td>
                           <td scope="col" class="colwidth10">
                             <input type="text" class="form-control" style="width: 7rem; display: inline-block"
@@ -482,22 +501,11 @@
                     <div class="col-md-2">
                       <select class="form-select form-select-sm" v-model="vrf_Existing.navigator_id"
                         style="width: 15rem; height: 2.5rem" :disabled="!checkstatus_send_to_approve">
-                        <option v-for="option in data_ddl.navigator" :value="option.user_id" :key="option.user_id">
-                          {{ option.fullname }}
+                        <option v-for="option in data_ddl.userlist" :value="option.user_id" :key="option.user_id">
+                          {{ option.first_name }}
                         </option>
                       </select>
-                      <!-- <VueMultiselect name="navigator" id="navigator" :options="data_ddl.navigator"
-                        class="form-select form-select-sm p-0" label="fullname" :style="{
-                          width: '15rem'
-                          , height: '0.5rem'
-                        }" v-model="vrf_Existing.navigator" :select-label="null" :allow-empty="true"
-                        :close-on-select="true" :value="user_id" track-by="user_id" placeholder="เลือก"
-                        :deselectLabel=null>
-                      </VueMultiselect> -->
-                      <p v-if="VRF_error.navigator_id && !vrf_Existing.navigator_id
-                      " class="error-message">
-                        กรุณาเลือกข้อมูล
-                      </p>
+                     
                     </div>
                     <div class="col-md-2 text-end">&nbsp;</div>
                     <div class="col-md-2 text-left" style="padding-left: 0; margin-left: 0">&nbsp;
@@ -1222,8 +1230,6 @@ export default defineComponent({
           console.error('Error in axios request: ', error);
         }
         loading.value = false;
-        tableLoading.value = false;
-
       } catch (error) {
         console.error('Error in CloseEditModal: ', error);
       } finally {
@@ -1756,7 +1762,16 @@ export default defineComponent({
             // ActitySelectd.branchtobranch
           }
         )
-      await axios
+        await axios.get(process.env.VUE_APP_API_URL + '/get_prefix').then(
+        (res) => {
+          data_ddl.prefix = res.data
+          // console.log('data_ddl.prefix: ', data_ddl.prefix);
+        },
+        (res) => {
+          console.log(res.data)
+        }
+      )
+        await axios
         .get(process.env.VUE_APP_API_URL + '/get_meeting_area', {
           params: { user_id: localStorage.getItem('user_id') }
         })
@@ -2196,16 +2211,6 @@ export default defineComponent({
                       // ตั้งค่า ref
                       MeetingAreas_selectedItems.value = generalAreas
                       MeetingAreas_selectedControlItems.value = secureAreas
-
-                      // แสดงผลลัพธ์
-                      console.log(
-                        'MeetingAreas_selectedItems:',
-                        MeetingAreas_selectedItems.value
-                      )
-                      console.log(
-                        'MeetingAreas_selectedControlItems:',
-                        MeetingAreas_selectedControlItems.value
-                      )
                     } else {
                       console.error('Fetched data is not an array.')
                     }
