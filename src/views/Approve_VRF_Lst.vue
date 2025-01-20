@@ -708,13 +708,7 @@ export default defineComponent({
       'ddlvehicle_color',
       'tbCardNo'
     ]
-    // const edit_validateAllInputs = () => {
-    //   vrf_Existing.vrf_Existing_det.forEach((data, index) => {
-    //     edit_fieldsToValidate.forEach((field) => {
-    //       edit_validateInput(field, index, 'กรุณาใส่ข้อมูล')
-    //     })
-    //   })
-    // }
+
     const edit_validateInput = (field, index, errorMessage) => {
       if (!vrf_Existing.vrf_Existing_det[index][field]) {
         vrf_Existing.vrf_Existing_det[index].errors = {
@@ -1182,50 +1176,89 @@ export default defineComponent({
           link.click()
         }) // Please catch me!
     }
-    const sendApprove = async (e) => {
-      // alert( vrf_Existing.orderId )
-      if (confirm('คุณต้องการอนุมัติรายการขอเข้าพื้นที่ ?')) {
+    const sendApprove = async () => {
+    if (confirm('คุณต้องการอนุมัติรายการขอเข้าพื้นที่ ?')) {
         const params = {
-          Id: vrf_Existing.id,
-          Type_: 'send_approve',
-          user_id: user_id.value,
-          role_id: localStorage.getItem('user_role_id'),
-          work_flow_id: localStorage.getItem('user_work_flow_id'),
-          department_id: department_id.value,
-          branch_id: localStorage.getItem('user_branch_id'),
-          division_id: localStorage.getItem('user_division_id'),
-          MeetingAreas_selectedItems: encodeURIComponent( JSON.stringify( MeetingAreas_selectedItems.value ) ),
-          MeetingAreas_selectedControlItems: encodeURIComponent( JSON.stringify( MeetingAreas_selectedControlItems.value ) )
-        }
-        console.log('sendApprove params:', params)
+            Id: vrf_Existing.id,
+            Type_: 'send_approve',
+            user_id: user_id.value,
+            role_id: localStorage.getItem('user_role_id'),
+            work_flow_id: localStorage.getItem('user_work_flow_id'),
+            department_id: department_id.value,
+            branch_id: localStorage.getItem('user_branch_id'),
+            division_id: localStorage.getItem('user_division_id'),
+            // MeetingAreas_selectedItems: encodeURIComponent(JSON.stringify(MeetingAreas_selectedItems.value)),
+            // MeetingAreas_selectedControlItems: encodeURIComponent(JSON.stringify(MeetingAreas_selectedControlItems.value))
+        };
+
+        console.log('sendApprove params:', params);
+        
         try {
-          await axios
-            .get(
-              process.env.VUE_APP_API_URL + '/update_vrf_trans_approve_status',
-              { params }
-            )
-            .then(
-              (res) => {
-                // success callback
-                let obj = JSON.parse(JSON.stringify(res.data))    
-                console.log('sendApprove obj:', obj)            
-                // obj[0].approve_status === 'approved' ? alert('รายการถูกอนุมัติไปก่อนแล้ว') : alert('รายการถูกอนุมัติเรียบร้อยแล้ว');
-                obj.approve_status === 'approved' ? alert('รายการถูกอนุมัติไปก่อนแล้ว') : alert('รายการถูกอนุมัติเรียบร้อยแล้ว');
-                location.reload()
-              },
-              (res) => {
-                // error callback
-                console.log(res.data)
-              }
-            )
-            .finally(() => {
-              //
-            })
-        } catch (err) {
-          console.log(err)
+            const response = await axios.get(
+                `${process.env.VUE_APP_API_URL}/update_vrf_trans_approve_status`,
+                { params }
+            );
+
+            console.log('Response from API:', response.data);
+
+            if (response.data.approve_status === 'approved') {
+                alert('รายการถูกอนุมัติไปก่อนแล้ว');
+            } else {
+                alert('รายการถูกอนุมัติเรียบร้อยแล้ว');
+            }
+
+            location.reload();
+        } catch (error) {
+            console.error('Error in sendApprove:', error);
+            alert('เกิดข้อผิดพลาด: ' + (error.response?.data?.error || error.message));
         }
-      }
     }
+};
+
+    // const sendApprove = async (e) => {
+    //   // alert( vrf_Existing.orderId )
+    //   if (confirm('คุณต้องการอนุมัติรายการขอเข้าพื้นที่ ?')) {
+    //     const params = {
+    //       Id: vrf_Existing.id,
+    //       Type_: 'send_approve',
+    //       user_id: user_id.value,
+    //       role_id: localStorage.getItem('user_role_id'),
+    //       work_flow_id: localStorage.getItem('user_work_flow_id'),
+    //       department_id: department_id.value,
+    //       branch_id: localStorage.getItem('user_branch_id'),
+    //       division_id: localStorage.getItem('user_division_id'),
+    //       MeetingAreas_selectedItems: encodeURIComponent( JSON.stringify( MeetingAreas_selectedItems.value ) ),
+    //       MeetingAreas_selectedControlItems: encodeURIComponent( JSON.stringify( MeetingAreas_selectedControlItems.value ) )
+    //     }
+    //     console.log('sendApprove params:', params)
+    //     try {
+    //       await axios
+    //         .get(
+    //           process.env.VUE_APP_API_URL + '/update_vrf_trans_approve_status',
+    //           { params }
+    //         )
+    //         .then(
+    //           (res) => {
+    //             // success callback
+    //             let obj = JSON.parse(JSON.stringify(res.data))    
+    //             console.log('sendApprove obj:', obj)            
+    //             // obj[0].approve_status === 'approved' ? alert('รายการถูกอนุมัติไปก่อนแล้ว') : alert('รายการถูกอนุมัติเรียบร้อยแล้ว');
+    //             obj.approve_status === 'approved' ? alert('รายการถูกอนุมัติไปก่อนแล้ว') : alert('รายการถูกอนุมัติเรียบร้อยแล้ว');
+    //             location.reload()
+    //           },
+    //           (res) => {
+    //             // error callback
+    //             console.log(res.data)
+    //           }
+    //         )
+    //         .finally(() => {
+    //           //
+    //         })
+    //     } catch (err) {
+    //       console.log(err)
+    //     }
+    //   }
+    // }
     const selectFile = (e) => {
       // file.value = this.$refs.file.files[0]
       file.value = e.target.files[0]
