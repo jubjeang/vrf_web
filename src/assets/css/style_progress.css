@@ -1,0 +1,65 @@
+
+.status-container { 
+    width: 100%;
+    padding: 16px;
+    background: #fff;
+    border-radius: 8px;
+  }
+  
+  .status-steps {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+  
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    text-align: center;
+    flex: 1;
+  }
+  
+  .circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #ccc;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    font-size: 16px;
+  }
+  
+  .label {
+    margin-top: 6px;
+    font-size: 14px;
+  }
+  
+  .line {
+    height: 4px;
+    background-color: #ccc;
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    width: 100%;
+    z-index: 0;
+    transform: translateX(0%);
+  }
+  
+  .step.completed .circle {
+    background-color: #1d72b8;
+  }
+  
+  .step.active .circle {
+    background-color: #0056a3;
+  }
+  
+  /* เส้นที่ completed ให้เป็นสีฟ้าน้ำเงิน */
+  .line.completedLine {
+    background-color: #1d72b8;
+  }
