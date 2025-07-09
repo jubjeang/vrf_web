@@ -1061,7 +1061,6 @@ export default defineComponent({
         }
       }
     }
-
     const removeSelectedControlItem = (item) => {
       console.log('Removing control item:', item)
       MeetingAreas_selectedControlItems.value =
@@ -1275,8 +1274,6 @@ export default defineComponent({
         }
       }
     };
-
-
     const selectFile = (e) => {
       // file.value = this.$refs.file.files[0]
       file.value = e.target.files[0]
