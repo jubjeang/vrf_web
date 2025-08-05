@@ -128,8 +128,8 @@ export default {
       </h3>
     </span>
     <span v-else>
-      <h1 @click="gotoMainPage" style="cursor: pointer;"><img src="@/assets/images/sl_logo.png"
-          style="display: block; max-width: auto; height: auto;" /></h1>
+      <h1 @click="gotoMainPage" style="cursor: pointer;" class="align-middle"><img src="@/assets/images/sl_logo.png"
+          style="display: block; max-width: 12rem; height: 3rem;"  /></h1>
     </span>
     <SidebarLink v-if="out_put.length" to="/templatevrflst" icon="fas fa-wallet" class="nav-link align-middle"
       v-show="out_put[0].template_vrf === '1'">รายการแม่แบบ

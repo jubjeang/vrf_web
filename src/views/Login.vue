@@ -3,7 +3,7 @@
     <div class="container-fluid h-custom pt-5">
       <div class="row d-flex justify-content-center align-items-center mt-5 pt-4">
         <div class="col-md-12 col-lg-12 col-xl-12 ps-0 ms-0  mb-3">
-          <img src="@/assets/images/gfcth.png" class="img-fluid" alt="Sample image" style="width: 15rem; height: 2rem" />
+          <img src="@/assets/images/gfcth.png" class="img-fluid" alt="Sample image" style="width: 12rem; height: 3rem" />
         </div>
       </div>
       <div class="row d-flex justify-content-center align-items-center mt-0">

@@ -94,8 +94,8 @@
                     <div class="col-sm-2">ชื่อผู้ร้องขอ</div>
                     <div class="col-sm-2 ps-0">
                       <VueMultiselect name="requestor" id="requestor" :options="data_ddl.userlist"
-                        class="form-select form-select-sm p-0" label="first_name" :style="{
-                          width: '9rem',
+                        class="form-select form-select-sm p-0" label="fullname" :style="{
+                          width: '19rem',
                           height: '0.5rem'
                         }" v-model="AdvSearch.requestor_id" :select-label="null" :allow-empty="true" :close-on-select="true" :value="user_id"
                         track-by="user_id" placeholder="เลือก" :deselectLabel="null"></VueMultiselect>
@@ -112,9 +112,23 @@
                     </div>
                   </div>
                   <div class="row p-2">
+                    <div class="col-sm-2">ชื่อบริษัทผู้มาติดต่อ</div>
+                    <div class="col-sm-2 ps-0">
+                       <input type="text" id="contactor_company" class="form-control" style="width: 15rem"
+                        placeholder="ชื่อบริษัทผู้มาติดต่อ" v-model="AdvSearch.contactor_company" />
+                    </div>
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-2">ชื่อผู้มาติดต่อ</div>
+                    <div class="col-sm-2 ps-0">
+                      <input type="text" id="contactor" class="form-control" style="width: 15rem"
+                        placeholder="ชื่อผู้มาติดต่อ" v-model="AdvSearch.contactor" />
+                    </div>
+                  </div>
+                  <div class="row p-2">
                     <div class="col-sm-2">สถานะ</div>
                     <div class="col-sm-2 ps-0">
-                      <select class="form-select form-select-sm" style="width: 9rem;"
+                     
+                        <select class="form-select form-select-sm" style="width: 9rem;"
                         v-model="AdvSearch.approve_status">
                         <option></option>
                         <option value="ตีกลับ">ตีกลับ</option>
@@ -127,72 +141,9 @@
                         <option value="">ทั้งหมด</option>
                       </select>
                     </div>
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-2">ชื่อผู้มาติดต่อ</div>
-                    <div class="col-sm-2 ps-0">
-                      <input type="text" id="contactor" class="form-control" style="width: 15rem"
-                        placeholder="ชื่อผู้มาติดต่อ" v-model="AdvSearch.contactor" />
-                      <!-- <VueMultiselect
-                        name="requestor_dept"
-                        id="requestor_dept"
-                        :options="data_ddl.dept"
-                        class="form-select form-select-sm p-0"
-                        label="department"
-                        :style="{
-                          width: '15rem',
-                          height: '0.5rem'
-                        }"
-                        v-model="AdvSearch.requestor_dept_id"
-                        :select-label="null"
-                        :allow-empty="true"
-                        :close-on-select="true"
-                        :value="id"
-                        track-by="id"
-                        placeholder="เลือก"
-                        :deselectLabel="null"
-                      ></VueMultiselect> -->
+                    
                     </div>
-                  </div>
-                  <!-- <div class="row p-2">
-                    <div class="col-sm-2">แผนกผู้ร้องขอ</div>
-                    <div class="col-sm-2 ps-0">
-                      <VueMultiselect
-                        name="requestor_dept"
-                        id="requestor_dept"
-                        :options="data_ddl.dept"
-                        class="form-select form-select-sm p-0"
-                        label="department"
-                        :style="{
-                          width: '15rem',
-                          height: '0.5rem'
-                        }"
-                        v-model="AdvSearch.requestor_dept_id"
-                        :select-label="null"
-                        :allow-empty="true"
-                        :close-on-select="true"
-                        :value="id"
-                        track-by="id"
-                        placeholder="เลือก"
-                        :deselectLabel="null"
-                      ></VueMultiselect>
-                    </div>
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-2">สถานะ</div>
-                    <div class="col-sm-2">
-                      <select class="form-select form-select-sm"
-                       v-model="AdvSearch.approve_status">
-                            <option></option>
-                            <option value="ตีกลับ">ตีกลับ</option>
-                            <option value="สร้างรายการ">สร้างรายการ</option>
-                            <option value="รอหัวหน้าอนุมัติ">รอหัวหน้าอนุมัติ</option>                            
-                            <option value="รอ ผจก. พื้นที่มั่นคงอนุมัติ">รอ ผจก. พื้นที่มั่นคงอนุมัติ</option>
-                            <option value="รอ SU อนุมัติ">รอ SU อนุมัติ</option>
-                            <option value="รอหัวหน้าความมั่นคงอนุมัติ">รอหัวหน้าความมั่นคงอนุมัติ</option>
-                            <option value="อนุมัติแล้ว">อนุมัติแล้ว</option>
-                            <option value="">ทั้งหมด</option>
-                          </select>
-                    </div>
-                  </div> -->
+
                 </div>
               </div>
               <div class="modal-footer pt-0 justify-content-center">
@@ -958,6 +909,7 @@ export default defineComponent({
       requestor_dept_id: 0,
       approve_status: '',
       contactor: '',
+      contactor_company:'',
     })
     const VueMultiselect_ = reactive({
       BranchOriginBG_Color: '',
@@ -1486,6 +1438,7 @@ export default defineComponent({
       AdvSearch.requestor_dept_id = 0
       AdvSearch.approve_status = ''
       AdvSearch.contactor = ''
+      AdvSearch.contactor_company = ''
       console.log("After reset:");
       //---------------------------
     }
@@ -2059,7 +2012,7 @@ export default defineComponent({
         }
       )
       await axios
-        .get(process.env.VUE_APP_API_URL + '/get_user', {
+        .get(process.env.VUE_APP_API_URL + '/get_all_user', {
           params: { department_id: localStorage.getItem('user_department_id') }
         })
         .then(
@@ -2142,15 +2095,15 @@ export default defineComponent({
             // error callback
           }
         )
-      await populateAreaNames(Data_.value)//-----MeetingAreas
-        .then(() => {
-          // ส่วนนี้จะทำงานเมื่อ Promise สำเร็จ
-          console.log('Data populated successfully');
-        })
-        .catch((error) => {
-          // ส่วนนี้จะทำงานเมื่อ Promise เกิดข้อผิดพลาด
-          console.error('Error populateAreaNames data:', error);
-        });//-----end MeetingAreas
+      // await populateAreaNames(Data_.value)//-----MeetingAreas
+      //   .then(() => {
+      //     // ส่วนนี้จะทำงานเมื่อ Promise สำเร็จ
+      //     console.log('Data populated successfully');
+      //   })
+      //   .catch((error) => {
+      //     // ส่วนนี้จะทำงานเมื่อ Promise เกิดข้อผิดพลาด
+      //     console.error('Error populateAreaNames data:', error);
+      //   });//-----end MeetingAreas
       return await new Promise((resolve, reject) => {
         try {
           table.isLoading = true
@@ -2853,22 +2806,36 @@ export default defineComponent({
         return;  // Exit the function early without making the API call
       }
 
+      // const params = {
+      //   tbDateF: AdvSearch.tbDateF !== '' ? AdvSearch.tbDateF : null,
+      //   tbDateT: AdvSearch.tbDateT !== '' ? AdvSearch.tbDateT : null,
+      //   requestor_id: AdvSearch.requestor_id !== 0 ? AdvSearch.requestor_id.user_id : null,
+      //   area_id: AdvSearch.area_id !== 0 ? AdvSearch.area_id.id : null,
+      //   requestor_dept_id: AdvSearch.requestor_dept_id !== 0 ? AdvSearch.requestor_dept_id.id : null,
+      //   department_id: department_id.value,
+      //   branch_id: localStorage.getItem('user_branch_id'),
+      //   checkin_status: null,
+      //   approve_status: AdvSearch.approve_status !== '' ? AdvSearch.approve_status : null,
+      //   contactor: AdvSearch.contactor !== '' ? AdvSearch.contactor : null
+      // }
       const params = {
         tbDateF: AdvSearch.tbDateF !== '' ? AdvSearch.tbDateF : null,
         tbDateT: AdvSearch.tbDateT !== '' ? AdvSearch.tbDateT : null,
-        requestor_id: AdvSearch.requestor_id !== 0 ? AdvSearch.requestor_id.user_id : null,
-        area_id: AdvSearch.area_id !== 0 ? AdvSearch.area_id.id : null,
-        requestor_dept_id: AdvSearch.requestor_dept_id !== 0 ? AdvSearch.requestor_dept_id.id : null,
+        requestor_id: AdvSearch.requestor_id?.user_id ?? null,
+        area_id: AdvSearch.area_id?.id ?? null,
+        requestor_dept_id: AdvSearch.requestor_dept_id?.id ?? null,
         department_id: department_id.value,
         branch_id: localStorage.getItem('user_branch_id'),
         checkin_status: null,
         approve_status: AdvSearch.approve_status !== '' ? AdvSearch.approve_status : null,
-        contactor: AdvSearch.contactor !== '' ? AdvSearch.contactor : null
+        contactor: AdvSearch.contactor !== '' ? AdvSearch.contactor : null,
+        contactor_company: AdvSearch.contactor_company !== '' ? AdvSearch.contactor_company : null  
       }
-      console.log('params: ', params)
+
+      console.log('AdvSearch_ params: ', params)
 
       try {
-        const res = await axios.get(process.env.VUE_APP_API_URL + '/get_search_vrf_list', { params });
+        const res = await axios.get(process.env.VUE_APP_API_URL + '/get_search_all_vrf_list', { params });
         data.rows = JSON.parse(JSON.stringify(res.data));
         console.log('JSON.parse(JSON.stringify(res.data): ', JSON.parse(JSON.stringify(res.data)));
       } catch (error) {
@@ -3914,9 +3881,9 @@ export default defineComponent({
 }
 
 .modalcustom_advancesearch {
-  max-width: 50rem;
+  max-width: 80rem;
   /* กำหนดความกว้างของโมดัลเป็น 800px */
-  width: 120rem;
+  width: 80rem;
   text-align: center;
 }
 
